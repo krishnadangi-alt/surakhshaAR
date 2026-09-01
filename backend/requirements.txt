@@ -1,0 +1,2 @@
+# Python dependencies for the SurakshaAR backend.
+# This file is intentionally empty until implementation begins.
