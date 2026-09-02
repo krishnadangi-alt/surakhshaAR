@@ -3,8 +3,13 @@ from app.schemas.module import ModuleOut, ModuleListOut
 from app.schemas.progress import ProgressCreate, ProgressOut, ProgressItemOut, ProgressListOut
 from app.schemas.assessment import (
     AssessmentCreate,
-    AssessmentOut,
+    AssessmentEvent,
     AssessmentHistoryOut,
+    AssessmentOut,
+    CompetencyScoreOut,
+    RetrainingModuleOut,
+    RetrainingPlanOut,
+    WeaknessOut,
 )
 from app.schemas.sync import SyncSession, SyncCreate, SyncOut, SyncStatusOut
 from app.schemas.certificate import (
@@ -31,8 +36,13 @@ __all__ = [
     "ProgressItemOut",
     "ProgressListOut",
     "AssessmentCreate",
+    "AssessmentEvent",
     "AssessmentOut",
     "AssessmentHistoryOut",
+    "CompetencyScoreOut",
+    "RetrainingModuleOut",
+    "RetrainingPlanOut",
+    "WeaknessOut",
     "SyncSession",
     "SyncCreate",
     "SyncOut",

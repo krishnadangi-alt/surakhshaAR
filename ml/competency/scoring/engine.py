@@ -100,6 +100,7 @@ class CompetencyScorer:
         - wrong_action
         - critical_action
         - evacuation_started
+        - emergency_procedure
         - assessment_completed
         
         Args:
@@ -121,6 +122,8 @@ class CompetencyScorer:
             self._score_critical_action(event)
         elif event_type == "evacuation_started":
             self._score_evacuation(event)
+        elif event_type == "emergency_procedure":
+            self._score_emergency_procedure(event)
         elif event_type == "assessment_completed":
             pass  # Finalize in get_result()
     
@@ -174,26 +177,39 @@ class CompetencyScorer:
             )
     
     def _score_wrong_action(self, event: Dict) -> None:
-        """Score wrong action - penalizes decision_making and procedure_compliance."""
+        """Score wrong action - penalizes procedure compliance and decision making.
+        
+        Scenario-aware: gas scenarios do not define procedure_compliance or
+        decision_making, so the penalties are mapped onto the closest gas
+        competencies (emergency_response for procedure violations,
+        hazard_identification for faulty decisions).
+        """
         severity = event.get("severity", "minor")  # minor, major, critical
         
+        if self.scenario_type == "gas":
+            procedure_competency = "emergency_response"
+            decision_competency = "hazard_identification"
+        else:
+            procedure_competency = "procedure_compliance"
+            decision_competency = "decision_making"
+        
         if severity == "major":
-            self.competency_scores["procedure_compliance"] = max(
+            self.competency_scores[procedure_competency] = max(
                 0.0,
-                self.competency_scores["procedure_compliance"] - 30.0
+                self.competency_scores[procedure_competency] - 30.0
             )
-            self.competency_scores["decision_making"] = max(
+            self.competency_scores[decision_competency] = max(
                 0.0,
-                self.competency_scores["decision_making"] - 25.0
+                self.competency_scores[decision_competency] - 25.0
             )
         else:  # minor
-            self.competency_scores["procedure_compliance"] = max(
+            self.competency_scores[procedure_competency] = max(
                 0.0,
-                self.competency_scores["procedure_compliance"] - 5.0
+                self.competency_scores[procedure_competency] - 5.0
             )
-            self.competency_scores["decision_making"] = max(
+            self.competency_scores[decision_competency] = max(
                 0.0,
-                self.competency_scores["decision_making"] - 3.0
+                self.competency_scores[decision_competency] - 3.0
             )
     
     def _score_critical_action(self, event: Dict) -> None:
@@ -233,6 +249,31 @@ class CompetencyScorer:
                     0.0,
                     self.competency_scores[competency] - 30.0
                 )
+    
+    def _score_emergency_procedure(self, event: Dict) -> None:
+        """Score emergency response procedures (alerting, rescue coordination).
+        
+        Gas scenarios map these actions onto the emergency_response competency,
+        whose aspects are alert_procedures, rescue_coordination, first_aid and
+        incident_reporting. Fire scenarios have no emergency_response
+        competency, so the event is ignored there.
+        """
+        correct = event.get("correct", False)
+        competency = "emergency_response"
+        
+        if competency not in self.competency_scores:
+            return  # Scenario does not track emergency_response (e.g. fire)
+        
+        if correct:
+            self.competency_scores[competency] = min(
+                100.0,
+                self.competency_scores[competency] + 50.0
+            )
+        else:
+            self.competency_scores[competency] = max(
+                0.0,
+                self.competency_scores[competency] - 25.0
+            )
     
     def get_result(self) -> ScoringResult:
         """

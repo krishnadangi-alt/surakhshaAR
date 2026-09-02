@@ -1,4 +1,10 @@
-"""Assessment endpoints."""
+"""Assessment endpoints — behaviour-based, scored by the ML competency engine.
+
+The client submits raw VR session events; the backend runs them through
+``app.services.competency_service`` (CompetencyScorer → WeaknessDetector →
+RetrainingRecommender) and stores the authoritative result. Client-supplied
+scores are never trusted.
+"""
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -11,6 +17,12 @@ from app.schemas.assessment import (
     AssessmentCreate,
     AssessmentHistoryOut,
     AssessmentOut,
+    RetrainingPlanOut,
+)
+from app.services.competency_service import (
+    UnsupportedScenarioError,
+    next_attempt_number,
+    score_events,
 )
 
 router = APIRouter(prefix="/assessments", tags=["assessments"])
@@ -32,16 +44,34 @@ def _get_module_or_404(db: Session, module_id: int) -> Module:
 
 @router.post("", response_model=AssessmentOut, status_code=201)
 def submit_assessment(payload: AssessmentCreate, db: Session = Depends(get_db)):
+    """Score the submitted behavioural events server-side and store the result."""
     _get_worker_or_404(db, payload.worker_id)
-    _get_module_or_404(db, payload.module_id)
+    module = _get_module_or_404(db, payload.module_id)
+
+    scenario_type = payload.scenario_type or module.code
+    events = [event.model_dump() for event in payload.events]
+    try:
+        scored = score_events(scenario_type, events)
+    except UnsupportedScenarioError as exc:
+        raise HTTPException(status_code=422, detail=str(exc))
+
+    result = scored["result"]
+    attempt_number = payload.attempt_number or next_attempt_number(
+        db, payload.worker_id, module.id
+    )
 
     assessment = Assessment(
         worker_id=payload.worker_id,
-        module_id=payload.module_id,
-        attempt_number=payload.attempt_number,
-        score=payload.score,
-        passed=payload.passed,
-        weaknesses=payload.weaknesses,
+        module_id=module.id,
+        attempt_number=attempt_number,
+        scenario_type=result["scenario_type"],
+        score=result["overall_score"],
+        passed=result["passed"],
+        pass_reason=result["pass_reason"],
+        weaknesses=scored["weaknesses"],
+        competency_scores=result["competency_scores"],
+        critical_errors=result["critical_errors"],
+        events=events,
     )
     db.add(assessment)
     db.commit()
@@ -73,3 +103,16 @@ def get_latest_assessment(worker_id: int, db: Session = Depends(get_db)):
     if not assessment:
         raise HTTPException(status_code=404, detail="No assessments found for worker")
     return assessment
+
+
+@router.get("/{assessment_id}/retraining-plan", response_model=RetrainingPlanOut)
+def get_retraining_plan(assessment_id: int, db: Session = Depends(get_db)):
+    """Recompute the targeted retraining plan from the stored assessment events."""
+    assessment = db.query(Assessment).filter(Assessment.id == assessment_id).first()
+    if not assessment:
+        raise HTTPException(status_code=404, detail="Assessment not found")
+    try:
+        scored = score_events(assessment.scenario_type, list(assessment.events or []))
+    except UnsupportedScenarioError as exc:
+        raise HTTPException(status_code=422, detail=str(exc))
+    return scored["retraining_plan"]

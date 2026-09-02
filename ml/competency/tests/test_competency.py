@@ -353,5 +353,80 @@ class TestIntegration:
         assert "CRITICAL" in result.pass_reason
 
 
+class TestGasScenario:
+    """Tests for the gas hazard scenario.
+
+    Regression coverage: the gas scenario defines emergency_response (baseline
+    50, threshold 70) and does not define procedure_compliance/decision_making,
+    so wrong_action handling and the emergency_procedure event are critical.
+    """
+
+    def test_gas_scorer_initialization(self):
+        scorer = CompetencyScorer(scenario_type="gas")
+        assert scorer.scenario_type == "gas"
+        assert "emergency_response" in scorer.competency_scores
+        assert "evacuation" in scorer.competency_scores
+        assert "procedure_compliance" not in scorer.competency_scores
+
+    def test_wrong_action_does_not_crash_gas_scenario(self):
+        """wrong_action must map onto gas competencies (no KeyError)."""
+        scorer = CompetencyScorer(scenario_type="gas")
+        scorer.process_event({"event_type": "wrong_action", "severity": "major"})
+        result = scorer.get_result()
+
+        assert result.passed is False
+        # major: emergency_response -30, hazard_identification -25
+        assert result.competency_scores["emergency_response"].score == 20.0
+        assert result.competency_scores["hazard_identification"].score == 25.0
+
+    def test_emergency_procedure_scores_gas(self):
+        """emergency_procedure is the only path to raise emergency_response."""
+        scorer = CompetencyScorer(scenario_type="gas")
+        scorer.process_event({
+            "event_type": "emergency_procedure",
+            "correct": True,
+            "action": "alert_supervisor",
+        })
+        result = scorer.get_result()
+        assert result.competency_scores["emergency_response"].score == 100.0
+
+    def test_good_gas_assessment_passes(self):
+        """A well-performed gas assessment must be passable."""
+        events = [
+            {"event_type": "hazard_identified", "correct": True, "hazard_type": "gas_leak"},
+            {"event_type": "ppe_selected", "correct": True, "items": ["respirator", "gloves"]},
+            {"event_type": "equipment_selected", "correct": True, "action": "gas_detector"},
+            {"event_type": "evacuation_started", "correct": True, "direction": "upwind"},
+            {"event_type": "emergency_procedure", "correct": True, "action": "alert_supervisor"},
+        ]
+        scorer = CompetencyScorer(scenario_type="gas")
+        for event in events:
+            scorer.process_event(event)
+        result = scorer.get_result()
+
+        assert result.passed is True
+        assert result.overall_score == 100.0
+        assert len(result.critical_errors) == 0
+
+    def test_emergency_procedure_ignored_for_fire(self):
+        """Fire has no emergency_response competency - the event is a no-op."""
+        scorer = CompetencyScorer(scenario_type="fire")
+        scorer.process_event({"event_type": "emergency_procedure", "correct": True})
+        result = scorer.get_result()
+        assert "emergency_response" not in result.competency_scores
+
+    def test_gas_weakness_detection_and_retraining(self):
+        scorer = CompetencyScorer(scenario_type="gas")
+        scorer.process_event({"event_type": "wrong_action", "severity": "major"})
+        result = scorer.get_result()
+
+        weaknesses = WeaknessDetector().detect_weaknesses(result)
+        assert len(weaknesses) > 0
+
+        plan = RetrainingRecommender("gas").get_retraining_plan(weaknesses)
+        assert plan["scenario_type"] == "gas"
+        assert plan["total_weaknesses"] == len(weaknesses)
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

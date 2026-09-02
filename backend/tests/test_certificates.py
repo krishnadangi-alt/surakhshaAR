@@ -1,4 +1,6 @@
-"""Tests for certificate endpoints."""
+"""Tests for certificate endpoints (competency gate)."""
+
+from events import GOOD_FIRE_EVENTS, GOOD_GAS_EVENTS
 
 
 def _create_worker(client):
@@ -8,8 +10,18 @@ def _create_worker(client):
     ).json()
 
 
+def _pass_assessment(client, worker_id, module_id=1):
+    """Submit a passing assessment so a certificate can be issued."""
+    events = GOOD_FIRE_EVENTS if module_id == 1 else GOOD_GAS_EVENTS
+    return client.post(
+        "/api/v1/assessments",
+        json={"worker_id": worker_id, "module_id": module_id, "events": events},
+    ).json()
+
+
 def test_issue_certificate(client):
     worker = _create_worker(client)
+    _pass_assessment(client, worker["id"], module_id=1)
     response = client.post(
         "/api/v1/certificates",
         json={"worker_id": worker["id"], "module_id": 1},
@@ -27,11 +39,25 @@ def test_issue_certificate(client):
 
 def test_issue_certificate_duplicate(client):
     worker = _create_worker(client)
+    _pass_assessment(client, worker["id"], module_id=1)
     payload = {"worker_id": worker["id"], "module_id": 1}
     assert client.post("/api/v1/certificates", json=payload).status_code == 201
     response = client.post("/api/v1/certificates", json=payload)
     assert response.status_code == 409
     assert response.json() == {"detail": "Certificate already issued for this worker and module"}
+
+
+def test_issue_certificate_without_passing_assessment(client):
+    """Certification is gated on demonstrated competency (passing assessment)."""
+    worker = _create_worker(client)
+    response = client.post(
+        "/api/v1/certificates",
+        json={"worker_id": worker["id"], "module_id": 1},
+    )
+    assert response.status_code == 409
+    assert response.json() == {
+        "detail": "Certificate requires a passing assessment for this module"
+    }
 
 
 def test_issue_certificate_worker_not_found(client):
@@ -55,6 +81,7 @@ def test_issue_certificate_module_not_found(client):
 
 def test_get_worker_certificates(client):
     worker = _create_worker(client)
+    _pass_assessment(client, worker["id"], module_id=1)
     client.post(
         "/api/v1/certificates",
         json={"worker_id": worker["id"], "module_id": 1},
@@ -75,6 +102,7 @@ def test_get_worker_certificates_not_found(client):
 
 def test_verify_certificate(client):
     worker = _create_worker(client)
+    _pass_assessment(client, worker["id"], module_id=1)
     cert = client.post(
         "/api/v1/certificates",
         json={"worker_id": worker["id"], "module_id": 1},
@@ -93,3 +121,17 @@ def test_verify_certificate_not_found(client):
     response = client.get("/api/v1/certificates/verify/SUR-2026-9999")
     assert response.status_code == 404
     assert response.json() == {"detail": "Certificate not found"}
+
+
+def test_issue_certificate_for_gas_module(client):
+    """End-to-end: passing gas assessment unlocks a gas-module certificate."""
+    worker = _create_worker(client)
+    _pass_assessment(client, worker["id"], module_id=2)
+    response = client.post(
+        "/api/v1/certificates",
+        json={"worker_id": worker["id"], "module_id": 2},
+    )
+    assert response.status_code == 201
+    data = response.json()
+    assert data["module_id"] == 2
+    assert data["status"] == "active"

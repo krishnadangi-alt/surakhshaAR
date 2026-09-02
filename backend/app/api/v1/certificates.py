@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_db
+from app.models.assessment import Assessment
 from app.models.certificate import Certificate
 from app.models.module import Module
 from app.models.worker import Worker
@@ -49,6 +50,24 @@ def issue_certificate(payload: CertificateCreate, db: Session = Depends(get_db))
         raise HTTPException(
             status_code=409,
             detail="Certificate already issued for this worker and module",
+        )
+
+    # Competency gate: a certificate may only be issued after the worker has
+    # demonstrated competency in this module (passing behavioural assessment
+    # scored by the ML competency engine).
+    passing_assessment = (
+        db.query(Assessment)
+        .filter(
+            Assessment.worker_id == payload.worker_id,
+            Assessment.module_id == payload.module_id,
+            Assessment.passed.is_(True),
+        )
+        .first()
+    )
+    if not passing_assessment:
+        raise HTTPException(
+            status_code=409,
+            detail="Certificate requires a passing assessment for this module",
         )
 
     certificate = Certificate(
