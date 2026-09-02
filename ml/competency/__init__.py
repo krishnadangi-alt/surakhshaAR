@@ -6,9 +6,17 @@ Components for scoring worker competency, detecting weaknesses, and recommending
 
 Modules:
 - scoring: Competency scoring engine
-- error_handling: Critical error detection and FAIL override
 - weakness_detection: Performance weakness identification
 - retraining: Targeted retraining recommendations
+- assess: Public ``assess(events)`` interface
+
+Public interface:
+    from ml.competency import assess
+    result = assess(events)
 """
 
+from .assess import assess
+
 __version__ = "0.1.0"
+
+__all__ = ["assess"]
