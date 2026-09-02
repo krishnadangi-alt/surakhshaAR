@@ -70,6 +70,10 @@ htmlcov/
 .hypothesis/
 .ipynb_checkpoints/
 
+# Local SQLite dev databases
+*.db
+*.sqlite3
+
 ##############
 # Node / Web (dashboard/)
 ##############
