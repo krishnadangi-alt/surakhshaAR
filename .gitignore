@@ -40,6 +40,13 @@ Assets/AssetStoreTools*
 .idea/
 .vs/
 .vscode/
+.vsconfig
+
+# Unity Android build artifacts
+.utmp/
+
+# Unity-generated solution files
+*.slnx
 
 ##############
 # Python (ml/, backend/)
@@ -111,3 +118,5 @@ Thumbs.db
 Desktop.ini
 *.swp
 *~
+# Unity crash-recovery snapshots
+assets/AR_Fire_foundation/_Recovery/

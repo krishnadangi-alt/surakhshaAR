@@ -25,6 +25,12 @@ from app.schemas.dashboard import (
     DashboardWorkerListOut,
     DashboardWorkerDetailOut,
 )
+from app.schemas.vision import (
+    PPECheckRequest,
+    PPECheckOut,
+    PPEDetectionOut,
+    VisionStatusOut,
+)
 
 __all__ = [
     "WorkerCreate",
@@ -56,4 +62,8 @@ __all__ = [
     "DashboardWorkerOut",
     "DashboardWorkerListOut",
     "DashboardWorkerDetailOut",
+    "PPECheckRequest",
+    "PPECheckOut",
+    "PPEDetectionOut",
+    "VisionStatusOut",
 ]

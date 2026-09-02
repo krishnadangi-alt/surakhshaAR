@@ -4,9 +4,14 @@ Computer-vision and on-device AI for SurakshaAR: turning the phone's **camera** 
 safety-relevant signals — *is the worker wearing PPE? what did the worker just say?* — that the AR
 training and assessment experience can react to.
 
-> **Status:** Design & feasibility document (Day 1 of the ML/Vision workstream). No models, weights or
-> inference code exist yet, and **nothing in this document has been tested**. All performance figures
-> below are untested estimates or feasibility expectations, clearly labelled as such.
+> **Status:** Design & feasibility document (Day 1 of the ML/Vision workstream), now with a working
+> **integration scaffold** (Day 2+): `ml/vision/{inference,preprocessing,service,config}` ship a
+> dependency-free, deterministic fallback engine behind the real detector interface, and the backend
+> exposes it at `POST /api/v1/vision/ppe-check` + `GET /api/v1/vision/status`. **No trained models or
+> weights exist yet** — until a checkpoint is configured the detector reports `model_error` for the
+> model path and the mock fallback answers, exactly matching the fallback strategy in Section 10.
+> Nothing in this document is field-validated; all performance figures below are untested estimates
+> or feasibility expectations, clearly labelled as such.
 >
 > Decisions here are grounded in what the repository actually contains: the main `README.md`,
 > `worker-app/README.md`, the backend API contract (`docs/api/API.md`), the backend data models, and the

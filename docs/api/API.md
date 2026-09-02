@@ -752,6 +752,88 @@ An assessment with no weaknesses returns an empty `recommended_modules` list.
 
 ---
 
+### 18. PPE Detection Check (Vision / ML)
+
+`POST /api/v1/vision/ppe-check`
+
+Detects whether the worker is wearing the required PPE from a camera frame.
+Powered by `ml/vision`; follows the module's "AI is never on the critical path"
+rule — the response always carries a `status` (`ok` | `low_confidence` |
+`model_error` | `disabled`) so the Unity app can degrade to the manual
+tap-to-select checklist when AI is unavailable. With no model checkpoint
+deployed the deterministic mock fallback answers (demo/offline mode).
+
+**Request body**
+
+```json
+{
+  "image_base64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJ...",
+  "required_ppe": ["helmet", "safety_vest"],
+  "mode": "auto"
+}
+```
+
+| Field | Type | Description |
+|---|---|---|
+| `image_base64` | string | Base64-encoded image (PNG/JPEG). |
+| `required_ppe` | string[] | Optional; defaults to `["helmet", "safety_vest"]`. |
+| `mode` | string \| null | Optional; `auto` (default), `mock`, or `model`. `model` returns `model_error` until a real checkpoint is configured. |
+
+**Response `200 OK`**
+
+```json
+{
+  "status": "ok",
+  "ppe_ok": true,
+  "detections": [
+    { "item": "helmet", "confidence": 0.98 },
+    { "item": "safety_vest", "confidence": 0.97 }
+  ],
+  "missing_items": [],
+  "confidence": 0.975,
+  "fallback_used": true,
+  "message": "Mock PPE detector: helmet and safety vest detected (no model configured).",
+  "required_ppe": ["helmet", "safety_vest"]
+}
+```
+
+**Errors**
+
+- `422` — invalid `image_base64` (not valid base64/empty) or empty `required_ppe`
+
+Note: an *unrecognised image* is **not** an error — it returns `status: "model_error"`
+with `ppe_ok: false`, so the client triggers its documented fallback UI.
+
+---
+
+### 19. Vision Stack Status
+
+`GET /api/v1/vision/status`
+
+Reports how the vision stack is configured (used by the app's capability check
+at startup — the feature auto-disables when no model is loaded).
+
+**Response `200 OK`**
+
+```json
+{
+  "status": "ok",
+  "module": "ml.vision",
+  "version": "0.1.0",
+  "mode": "auto",
+  "model_path": null,
+  "model_loaded": false,
+  "fallback_enabled": true,
+  "supported_items": ["helmet", "safety_vest"]
+}
+```
+
+**Errors**
+
+- None
+
+---
+
 ## Endpoint Summary
 
 | # | Method | Path | Status |
@@ -773,5 +855,7 @@ An assessment with no weaknesses returns an empty `recommended_modules` list.
 | 15 | GET | `/api/v1/dashboard/workers` | 200 |
 | 16 | GET | `/api/v1/dashboard/workers/{worker_id}` | 200 |
 | 17 | GET | `/api/v1/assessments/{assessment_id}/retraining-plan` | 200 |
+| 18 | POST | `/api/v1/vision/ppe-check` | 200 |
+| 19 | GET | `/api/v1/vision/status` | 200 |
 
-**5 POST + 12 GET = 17 endpoints.**
+**6 POST + 13 GET = 19 endpoints.**

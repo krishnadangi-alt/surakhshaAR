@@ -14,15 +14,9 @@ Pipeline applied to every assessment:
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 from typing import Any, Dict, List
 
-# Make the repository-level ``ml`` package importable no matter how the backend
-# is started (uvicorn via run.py, pytest, or as an imported module).
-_REPO_ROOT = Path(__file__).resolve().parents[3]
-if str(_REPO_ROOT) not in sys.path:
-    sys.path.insert(0, str(_REPO_ROOT))
+import app.ml_path  # noqa: F401  (adds repo-root `ml` package to sys.path)
 
 from ml.competency.retraining.recommender import RetrainingRecommender  # noqa: E402
 from ml.competency.scoring.engine import CompetencyScorer  # noqa: E402
