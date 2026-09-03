@@ -44,6 +44,15 @@ class AssessmentCreate(BaseModel):
         None,
         description="Optional; auto-incremented per worker+module when omitted.",
     )
+    client_session_id: str | None = Field(
+        None,
+        max_length=64,
+        description=(
+            "Optional client-generated idempotency key; re-submitting the same key "
+            "for the same worker+module returns the stored assessment (200) and "
+            "creates no duplicate record."
+        ),
+    )
     events: list[AssessmentEvent] = Field(..., min_length=1)
 
 

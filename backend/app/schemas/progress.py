@@ -58,3 +58,23 @@ class ProgressItemOut(BaseModel):
 class ProgressListOut(BaseModel):
     worker_id: int
     progress: list[ProgressItemOut]
+
+
+class WorkerProgressItemOut(BaseModel):
+    """Per-module progress row merged with stored assessment stats (workers-scoped endpoint)."""
+
+    module_id: int
+    module_code: str
+    module_name: str
+    stage: str | None = None
+    status: str | None = None
+    last_updated: datetime | None = None
+    attempt_number: int | None = None
+    overall_score: float | None = None
+    passed: bool | None = None
+    assessments_count: int = 0
+
+
+class WorkerProgressListOut(BaseModel):
+    worker_id: int
+    progress: list[WorkerProgressItemOut]
