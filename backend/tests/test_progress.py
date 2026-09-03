@@ -1,5 +1,7 @@
 """Tests for progress endpoints."""
 
+from events import BAD_FIRE_EVENTS, GOOD_FIRE_EVENTS
+
 
 def _create_worker(client):
     return client.post(
@@ -125,3 +127,63 @@ def test_update_progress_invalid_stage(client):
         },
     )
     assert response.status_code == 422
+
+
+def test_get_worker_progress_nested_empty(client):
+    worker = _create_worker(client)
+    response = client.get(f"/api/v1/workers/{worker['id']}/progress")
+    assert response.status_code == 200
+    assert response.json() == {"worker_id": worker["id"], "progress": []}
+
+
+def test_get_worker_progress_nested_not_found(client):
+    response = client.get("/api/v1/workers/999/progress")
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Worker not found"}
+
+
+def test_get_worker_progress_nested_after_update(client):
+    worker = _create_worker(client)
+    client.post(
+        "/api/v1/progress",
+        json={
+            "worker_id": worker["id"],
+            "module_id": 1,
+            "stage": "practice",
+            "status": "completed",
+        },
+    )
+    response = client.get(f"/api/v1/workers/{worker['id']}/progress")
+    assert response.status_code == 200
+    item = response.json()["progress"][0]
+    assert item["module_id"] == 1
+    assert item["module_code"] == "fire"
+    assert item["stage"] == "practice"
+    assert item["status"] == "completed"
+    assert item["attempt_number"] is None
+    assert item["overall_score"] is None
+    assert item["passed"] is None
+    assert item["assessments_count"] == 0
+
+
+def test_get_worker_progress_nested_reflects_assessments(client):
+    """Progress retrieval reflects stored assessment data even without progress rows."""
+    worker = _create_worker(client)
+    client.post(
+        "/api/v1/assessments",
+        json={"worker_id": worker["id"], "module_id": 1, "events": BAD_FIRE_EVENTS},
+    )
+    client.post(
+        "/api/v1/assessments",
+        json={"worker_id": worker["id"], "module_id": 1, "events": GOOD_FIRE_EVENTS},
+    )
+    response = client.get(f"/api/v1/workers/{worker['id']}/progress")
+    assert response.status_code == 200
+    item = response.json()["progress"][0]
+    assert item["module_id"] == 1
+    assert item["stage"] is None
+    assert item["status"] is None
+    assert item["attempt_number"] == 2
+    assert item["overall_score"] == 90.0
+    assert item["passed"] is True
+    assert item["assessments_count"] == 2

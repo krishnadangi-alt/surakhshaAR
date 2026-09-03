@@ -6,7 +6,8 @@ RetrainingRecommender) and stores the authoritative result. Client-supplied
 scores are never trusted.
 """
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_db
@@ -43,10 +44,29 @@ def _get_module_or_404(db: Session, module_id: int) -> Module:
 
 
 @router.post("", response_model=AssessmentOut, status_code=201)
-def submit_assessment(payload: AssessmentCreate, db: Session = Depends(get_db)):
+def submit_assessment(
+    payload: AssessmentCreate, response: Response, db: Session = Depends(get_db)
+):
     """Score the submitted behavioural events server-side and store the result."""
     _get_worker_or_404(db, payload.worker_id)
     module = _get_module_or_404(db, payload.module_id)
+
+    # Idempotent replay: if the client key (worker+module+client_session_id) has
+    # already been stored, return the existing assessment instead of creating a duplicate.
+    
+    if payload.client_session_id:
+        existing = (
+            db.query(Assessment)
+            .filter(
+                Assessment.worker_id == payload.worker_id,
+                Assessment.module_id == module.id,
+                Assessment.client_session_id == payload.client_session_id,
+            )
+            .first()
+        )
+        if existing:
+            response.status_code = 200
+            return existing
 
     scenario_type = payload.scenario_type or module.code
     events = [event.model_dump() for event in payload.events]
@@ -71,10 +91,28 @@ def submit_assessment(payload: AssessmentCreate, db: Session = Depends(get_db)):
         weaknesses=scored["weaknesses"],
         competency_scores=result["competency_scores"],
         critical_errors=result["critical_errors"],
+        client_session_id=payload.client_session_id,
         events=events,
     )
     db.add(assessment)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        if payload.client_session_id:
+            existing = (
+                db.query(Assessment)
+                .filter(
+                    Assessment.worker_id == payload.worker_id,
+                    Assessment.module_id == module.id,
+                    Assessment.client_session_id == payload.client_session_id,
+                )
+                .first()
+            )
+            if existing:
+                response.status_code = 200
+                return existing
+        raise
     db.refresh(assessment)
     return assessment
 

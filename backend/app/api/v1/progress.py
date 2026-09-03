@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_db
+from app.models.assessment import Assessment
 from app.models.module import Module
 from app.models.progress import WorkerProgress
 from app.models.worker import Worker
@@ -12,6 +13,8 @@ from app.schemas.progress import (
     ProgressItemOut,
     ProgressListOut,
     ProgressOut,
+    WorkerProgressItemOut,
+    WorkerProgressListOut,
 )
 
 router = APIRouter(prefix="/progress", tags=["progress"])
@@ -29,6 +32,56 @@ def _get_module_or_404(db: Session, module_id: int) -> Module:
     if not module:
         raise HTTPException(status_code=404, detail="Module not found")
     return module
+
+
+def build_worker_progress(db: Session, worker_id: int) -> list[WorkerProgressItemOut]:
+    """Merge per-module progress rows with the worker's stored assessment stats.
+
+    Returns one item per module the worker has progress and/or assessments."""
+    progress_by_module = {}
+    rows = (
+        db.query(WorkerProgress, Module)
+        .join(Module, WorkerProgress.module_id == Module.id)
+        .filter(WorkerProgress.worker_id == worker_id)
+        .order_by(Module.id)
+        .all()
+    )
+    for row, module in rows:
+        progress_by_module[module.id] = (row.stage, row.status, row.updated_at)
+
+    latest_by_module = {}
+    counts = {}
+    assessments = (
+        db.query(Assessment)
+        .filter(Assessment.worker_id == worker_id)
+        .order_by(Assessment.created_at.desc(), Assessment.id.desc())
+        .all()
+    )
+    for assessment in assessments:
+        counts[assessment.module_id] = counts.get(assessment.module_id, 0) + 1
+        latest_by_module.setdefault(assessment.module_id, assessment)
+
+    progress = []
+    for module in db.query(Module).order_by(Module.id).all():
+        prog = progress_by_module.get(module.id)
+        latest = latest_by_module.get(module.id)
+        if prog is None and latest is None:
+            continue
+        progress.append(
+            WorkerProgressItemOut(
+                module_id=module.id,
+                module_code=module.code,
+                module_name=module.name,
+                stage=prog[0] if prog else None,
+                status=prog[1] if prog else None,
+                last_updated=prog[2] if prog else (latest.created_at if latest else None),
+                attempt_number=latest.attempt_number if latest else None,
+                overall_score=latest.score if latest else None,
+                passed=latest.passed if latest else None,
+                assessments_count=counts.get(module.id, 0),
+            )
+        )
+    return progress
 
 
 @router.get("/{worker_id}", response_model=ProgressListOut)

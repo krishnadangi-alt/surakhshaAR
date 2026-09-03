@@ -1,6 +1,13 @@
 from app.schemas.worker import WorkerCreate, WorkerOut
 from app.schemas.module import ModuleOut, ModuleListOut
-from app.schemas.progress import ProgressCreate, ProgressOut, ProgressItemOut, ProgressListOut
+from app.schemas.progress import (
+    ProgressCreate,
+    ProgressOut,
+    ProgressItemOut,
+    ProgressListOut,
+    WorkerProgressItemOut,
+    WorkerProgressListOut,
+)
 from app.schemas.assessment import (
     AssessmentCreate,
     AssessmentEvent,
@@ -41,6 +48,8 @@ __all__ = [
     "ProgressOut",
     "ProgressItemOut",
     "ProgressListOut",
+    "WorkerProgressItemOut",
+    "WorkerProgressListOut",
     "AssessmentCreate",
     "AssessmentEvent",
     "AssessmentOut",
