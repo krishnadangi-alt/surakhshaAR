@@ -6,7 +6,8 @@ records, so scores produced on untrusted devices never enter the database.
 Sessions without events are logged as-is (legacy clients).
 """
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_db
@@ -32,8 +33,30 @@ def _get_worker_or_404(db: Session, worker_id: int) -> Worker:
 
 
 @router.post("", response_model=SyncOut, status_code=201)
-def sync_sessions(payload: SyncCreate, db: Session = Depends(get_db)):
+def sync_sessions(payload: SyncCreate, response: Response, db: Session = Depends(get_db)):
     _get_worker_or_404(db, payload.worker_id)
+
+    # Idempotent replay: a previously synced batch_id returns the stored sync result.
+
+    
+    if payload.batch_id:
+        replay = (
+            db.query(SyncLog)
+            .filter(
+                SyncLog.worker_id == payload.worker_id,
+                SyncLog.batch_id == payload.batch_id,
+            )
+            .first()
+        )
+        if replay:
+            response.status_code = 200
+            return SyncOut(
+                sync_id=replay.id,
+                worker_id=replay.worker_id,
+                synced_at=replay.synced_at,
+                sessions_synced=replay.sessions_synced,
+                assessments_created=replay.assessments_created,
+            )
 
     assessments_created = 0
     for session in payload.sessions:
@@ -46,6 +69,19 @@ def sync_sessions(payload: SyncCreate, db: Session = Depends(get_db)):
                 status_code=404,
                 detail=f"Module not found for synced session (module_id={session.module_id})",
             )
+
+        if session.client_session_id:
+            already = (
+                db.query(Assessment)
+                .filter(
+                    Assessment.worker_id == payload.worker_id,
+                    Assessment.module_id == module.id,
+                    Assessment.client_session_id == session.client_session_id,
+                )
+                .first()
+            )
+            if already:
+                continue
 
         scenario_type = session.scenario_type or module.code
         events = [event.model_dump() for event in session.events]
@@ -67,6 +103,7 @@ def sync_sessions(payload: SyncCreate, db: Session = Depends(get_db)):
             weaknesses=scored["weaknesses"],
             competency_scores=result["competency_scores"],
             critical_errors=result["critical_errors"],
+            client_session_id=session.client_session_id,
             events=events,
         )
         db.add(assessment)
@@ -76,10 +113,35 @@ def sync_sessions(payload: SyncCreate, db: Session = Depends(get_db)):
     log = SyncLog(
         worker_id=payload.worker_id,
         device_id=payload.device_id,
+        batch_id=payload.batch_id,
+        sessions_synced=len(payload.sessions),
+        assessments_created=assessments_created,
         payload=payload.model_dump(mode="json"),
     )
     db.add(log)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        if payload.batch_id:
+            replay = (
+                db.query(SyncLog)
+                .filter(
+                    SyncLog.worker_id == payload.worker_id,
+                    SyncLog.batch_id == payload.batch_id,
+                )
+                .first()
+            )
+            if replay:
+                response.status_code = 200
+                return SyncOut(
+                    sync_id=replay.id,
+                    worker_id=replay.worker_id,
+                    synced_at=replay.synced_at,
+                    sessions_synced=replay.sessions_synced,
+                    assessments_created=replay.assessments_created,
+                )
+        raise
     db.refresh(log)
     return SyncOut(
         sync_id=log.id,
