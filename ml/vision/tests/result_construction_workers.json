@@ -1,0 +1,47 @@
+{
+  "feature": "ppe_verification",
+  "detected": false,
+  "label": "PPE incomplete",
+  "confidence": 0.546,
+  "latency_ms": 373.38,
+  "status": "fail",
+  "details": {
+    "detections": [
+      {
+        "label": "Hardhat",
+        "class_id": 3,
+        "confidence": 0.546,
+        "bbox": [
+          344.3,
+          46.8,
+          376.6,
+          82.4
+        ]
+      }
+    ],
+    "latency_ms": {
+      "preprocess": 4.1,
+      "inference": 368.3,
+      "postprocess": 0.98,
+      "total": 373.38
+    },
+    "input_shape": [
+      424,
+      640
+    ],
+    "ppe_check": {
+      "required": [
+        "Hardhat",
+        "Safety Vest"
+      ],
+      "worn": [
+        "Hardhat"
+      ],
+      "missing": [
+        "Safety Vest"
+      ],
+      "all_required_present": false,
+      "status": "fail"
+    }
+  }
+}
