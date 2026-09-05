@@ -2,20 +2,32 @@
   "feature": "ppe_verification",
   "detected": false,
   "label": "PPE incomplete",
-  "confidence": 0.0,
-  "latency_ms": 266.66,
+  "confidence": 0.5271,
+  "latency_ms": 254.62,
   "status": "fail",
   "details": {
-    "detections": [],
+    "detections": [
+      {
+        "label": "NO-Hardhat",
+        "class_id": 8,
+        "confidence": 0.5271,
+        "bbox": [
+          256.4,
+          73.9,
+          311.6,
+          124.8
+        ]
+      }
+    ],
     "latency_ms": {
-      "preprocess": 5.79,
-      "inference": 260.46,
-      "postprocess": 0.41,
-      "total": 266.66
+      "preprocess": 4.22,
+      "inference": 249.69,
+      "postprocess": 0.72,
+      "total": 254.62
     },
     "input_shape": [
-      280,
-      182
+      363,
+      550
     ],
     "ppe_check": {
       "required": [

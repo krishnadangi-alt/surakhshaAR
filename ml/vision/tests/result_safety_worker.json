@@ -3,7 +3,7 @@
   "detected": false,
   "label": "PPE incomplete",
   "confidence": 0.546,
-  "latency_ms": 265.51,
+  "latency_ms": 399.17,
   "status": "fail",
   "details": {
     "detections": [
@@ -20,10 +20,10 @@
       }
     ],
     "latency_ms": {
-      "preprocess": 4.79,
-      "inference": 259.99,
-      "postprocess": 0.73,
-      "total": 265.51
+      "preprocess": 5.15,
+      "inference": 393.32,
+      "postprocess": 0.7,
+      "total": 399.17
     },
     "input_shape": [
       424,
