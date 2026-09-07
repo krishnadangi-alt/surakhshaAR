@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+  <ui:VisualElement class="ar-root">
+    <ui:VisualElement name="ar-step" class="ar-top"><ui:Label name="ar-step-text" class="ar-step-text" /></ui:VisualElement>
+    <ui:VisualElement name="ar-progress" class="ar-progress"><ui:VisualElement name="ar-progress-fill" class="ar-progress-fill" /><ui:Label name="ar-progress-text" class="ar-progress-text" /></ui:VisualElement>
+    <ui:VisualElement name="ar-card" class="ar-card"><ui:Label name="ar-card-title" class="ar-card-title" /><ui:Label name="ar-card-body" class="ar-card-body" /><ui:Label name="ar-card-footer" class="ar-card-footer" /></ui:VisualElement>
+    <ui:VisualElement name="ar-completion" class="ar-card ar-completion"><ui:Label text="✓  TRAINING COMPLETE" class="ar-card-title success-state" /><ui:Label name="ar-completion-text" class="ar-card-body" /><ui:VisualElement class="button-row"><ui:Button name="ar-retry" text="RETRY TRAINING" class="secondary-button" /><ui:Button name="ar-home" text="BACK TO HOME" class="primary-button" /></ui:VisualElement></ui:VisualElement>
+    <ui:VisualElement name="ar-action" class="ar-action"><ui:Button name="ar-action-button" class="primary-button"><ui:Label name="ar-action-text" /></ui:Button></ui:VisualElement>
+    <ui:VisualElement name="ar-hint" class="ar-hint"><ui:Label name="ar-hint-text" class="ar-hint-text" /></ui:VisualElement>
+  </ui:VisualElement>
+</ui:UXML>

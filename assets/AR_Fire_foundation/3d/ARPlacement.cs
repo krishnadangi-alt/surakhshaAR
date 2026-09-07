@@ -1,32 +1,40 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
-using UnityEngine.InputSystem.EnhancedTouch;
-using System.Collections.Generic;
 
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class ARPlacement : MonoBehaviour
 {
-    [Header("Fire Extinguisher")]
-    public GameObject fireExtinguisher;
+    [Header("Fire Scenario")]
+    [SerializeField] private GameObject fireScenario;
 
-    [Header("Size")]
-    [Tooltip("Adjust this if the extinguisher is too big or too small.")]
-    [Range(0.01f, 1.0f)]
-    public float extinguisherScale = 0.15f;
+    [Header("Scenario Settings")]
+    [SerializeField] private float scenarioScale = 1f;
+    [SerializeField] private bool usePrefabRotation = true;
 
-    [Header("Placement")]
-    [Tooltip("Keeps the rotation saved in the prefab.")]
-    public bool usePrefabRotation = true;
+    [Header("Placement Indicator")]
+    [SerializeField] private float indicatorRadius = 0.12f;
+    [SerializeField] private float indicatorWidth = 0.01f;
+    [SerializeField] private float indicatorHeight = 0.003f;
 
     private ARRaycastManager raycastManager;
     private ARPlaneManager planeManager;
 
-    private readonly List<ARRaycastHit> hits =
+    private readonly List<ARRaycastHit> raycastHits =
         new List<ARRaycastHit>();
 
-    private GameObject spawnedObject;
+    private GameObject spawnedScenario;
+
+    private GameObject placementIndicator;
+    private LineRenderer indicatorLine;
+
+    private Pose currentPose;
+    private bool hasValidPose;
+    private bool scenarioPlaced;
+
 
     private void Awake()
     {
@@ -36,153 +44,367 @@ public class ARPlacement : MonoBehaviour
         if (raycastManager == null)
         {
             Debug.LogError(
-                "ARPlacement needs an ARRaycastManager on XR Origin."
+                "ARPlacement: ARRaycastManager is missing from XR Origin."
             );
         }
 
         if (planeManager == null)
         {
             Debug.LogError(
-                "ARPlacement needs an ARPlaneManager on XR Origin."
+                "ARPlacement: ARPlaneManager is missing from XR Origin."
             );
         }
+
+        if (fireScenario == null)
+        {
+            Debug.LogError(
+                "ARPlacement: Fire Scenario is not assigned."
+            );
+        }
+
+        // The template must NEVER be visible before placement.
+        if (fireScenario != null)
+        {
+            fireScenario.SetActive(false);
+        }
+
+        CreatePlacementIndicator();
     }
+
 
     private void OnEnable()
     {
         EnhancedTouchSupport.Enable();
     }
 
+
     private void OnDisable()
     {
         EnhancedTouchSupport.Disable();
     }
 
+
     private void Update()
     {
-        // Only allow one placement.
-        if (spawnedObject != null)
+        if (scenarioPlaced)
             return;
 
-        // No touch.
-        if (Touch.activeTouches.Count == 0)
+        UpdatePlacementPosition();
+
+        CheckForTap();
+    }
+
+
+    // ---------------------------------------------------------
+    // AR RAYCAST
+    // ---------------------------------------------------------
+
+    private void UpdatePlacementPosition()
+    {
+        hasValidPose = false;
+
+        if (raycastManager == null)
             return;
 
-        Touch touch = Touch.activeTouches[0];
+        Camera arCamera = Camera.main;
 
-        // Only respond to the initial tap.
-        if (touch.phase != UnityEngine.InputSystem.TouchPhase.Began)
+        if (arCamera == null)
             return;
 
-        Vector2 screenPosition = touch.screenPosition;
+        Vector2 screenCenter = new Vector2(
+            Screen.width * 0.5f,
+            Screen.height * 0.5f
+        );
 
-        // Check whether the user tapped a detected AR plane.
-        if (raycastManager.Raycast(
-            screenPosition,
-            hits,
-            TrackableType.PlaneWithinPolygon))
+        raycastHits.Clear();
+
+        bool hit = raycastManager.Raycast(
+            screenCenter,
+            raycastHits,
+            TrackableType.PlaneWithinPolygon
+        );
+
+        if (!hit || raycastHits.Count == 0)
         {
-            Pose hitPose = hits[0].pose;
+            if (placementIndicator != null)
+                placementIndicator.SetActive(false);
 
-            PlaceFireExtinguisher(hitPose);
+            return;
+        }
+
+        currentPose = raycastHits[0].pose;
+        hasValidPose = true;
+
+        UpdateIndicator();
+    }
+
+
+    // ---------------------------------------------------------
+    // BLUE CIRCLE
+    // ---------------------------------------------------------
+
+    private void CreatePlacementIndicator()
+    {
+        placementIndicator = new GameObject(
+            "RuntimePlacementIndicator"
+        );
+
+        placementIndicator.transform.SetParent(
+            transform,
+            false
+        );
+
+        indicatorLine =
+            placementIndicator.AddComponent<LineRenderer>();
+
+        indicatorLine.useWorldSpace = false;
+
+        indicatorLine.loop = true;
+
+        indicatorLine.positionCount = 65;
+
+        indicatorLine.startWidth = indicatorWidth;
+        indicatorLine.endWidth = indicatorWidth;
+
+        indicatorLine.numCapVertices = 4;
+
+        indicatorLine.numCornerVertices = 4;
+
+        // Try URP first.
+        Shader shader =
+            Shader.Find(
+                "Universal Render Pipeline/Unlit"
+            );
+
+        // Fallback.
+        if (shader == null)
+        {
+            shader = Shader.Find("Sprites/Default");
+        }
+
+        if (shader != null)
+        {
+            Material material =
+                new Material(shader);
+
+            material.color =
+                new Color(
+                    0.0f,
+                    0.65f,
+                    1.0f,
+                    1.0f
+                );
+
+            indicatorLine.material = material;
+        }
+
+        CreateCircleVertices();
+
+        placementIndicator.SetActive(false);
+    }
+
+
+    private void CreateCircleVertices()
+    {
+        if (indicatorLine == null)
+            return;
+
+        int segments = 64;
+
+        indicatorLine.positionCount =
+            segments + 1;
+
+        for (int i = 0; i <= segments; i++)
+        {
+            float angle =
+                (float)i /
+                segments *
+                Mathf.PI *
+                2f;
+
+            float x =
+                Mathf.Cos(angle) *
+                indicatorRadius;
+
+            float z =
+                Mathf.Sin(angle) *
+                indicatorRadius;
+
+            indicatorLine.SetPosition(
+                i,
+                new Vector3(
+                    x,
+                    0f,
+                    z
+                )
+            );
         }
     }
 
-    private void PlaceFireExtinguisher(Pose hitPose)
+
+    private void UpdateIndicator()
     {
-        if (fireExtinguisher == null)
+        if (placementIndicator == null)
+            return;
+
+        if (!hasValidPose)
         {
-            Debug.LogError(
-                "FIRE EXTINGUISHER PREFAB IS NOT ASSIGNED!"
+            placementIndicator.SetActive(false);
+            return;
+        }
+
+        placementIndicator.SetActive(true);
+
+        placementIndicator.transform.position =
+            currentPose.position +
+            currentPose.rotation *
+            Vector3.up *
+            indicatorHeight;
+
+        placementIndicator.transform.rotation =
+            currentPose.rotation;
+    }
+
+
+    // ---------------------------------------------------------
+    // TOUCH
+    // ---------------------------------------------------------
+
+    private void CheckForTap()
+    {
+        if (Touch.activeTouches.Count == 0)
+            return;
+
+        Touch touch =
+            Touch.activeTouches[0];
+
+        if (touch.phase !=
+            UnityEngine.InputSystem.TouchPhase.Began)
+        {
+            return;
+        }
+
+        Vector2 touchPosition =
+            touch.screenPosition;
+
+        raycastHits.Clear();
+
+        bool hit =
+            raycastManager.Raycast(
+                touchPosition,
+                raycastHits,
+                TrackableType.PlaneWithinPolygon
+            );
+
+        if (!hit || raycastHits.Count == 0)
+        {
+            Debug.Log(
+                "ARPlacement: Tap did not hit a detected floor."
             );
 
             return;
         }
 
-        /*
-         * IMPORTANT:
-         *
-         * We preserve the rotation of the prefab.
-         *
-         * Your prefab has:
-         * X = -90
-         * Y = 0
-         * Z = 0
-         *
-         * So we do NOT replace it with Quaternion.identity.
-         */
+        Pose hitPose =
+            raycastHits[0].pose;
+
+        PlaceFireScenario(hitPose);
+    }
+
+
+    // ---------------------------------------------------------
+    // PLACE COMPLETE FIRE SCENARIO
+    // ---------------------------------------------------------
+
+    private void PlaceFireScenario(Pose hitPose)
+    {
+        if (fireScenario == null)
+            return;
 
         Quaternion rotation;
 
         if (usePrefabRotation)
         {
-            rotation = fireExtinguisher.transform.rotation;
+            rotation =
+                fireScenario.transform.rotation;
         }
         else
         {
-            rotation = hitPose.rotation;
+            rotation =
+                Quaternion.Euler(
+                    0f,
+                    hitPose.rotation.eulerAngles.y,
+                    0f
+                );
         }
 
-        // Create the extinguisher.
-        spawnedObject = Instantiate(
-            fireExtinguisher,
-            hitPose.position,
-            rotation
-        );
 
-        // Set the size.
-        spawnedObject.transform.localScale =
-            Vector3.one * extinguisherScale;
+        spawnedScenario =
+            Instantiate(
+                fireScenario,
+                hitPose.position,
+                rotation
+            );
 
-        /*
-         * Make the bottom of the extinguisher
-         * sit on the detected surface.
-         */
-        PlaceBottomOnSurface(hitPose.position);
 
-        // Hide yellow AR planes.
+        spawnedScenario.SetActive(true);
+
+
+        spawnedScenario.transform.localScale =
+            Vector3.one * scenarioScale;
+
+
+        // Add AR Anchor to the complete scenario.
+        ARAnchor anchor =
+            spawnedScenario.GetComponent<ARAnchor>();
+
+        if (anchor == null)
+        {
+            anchor =
+                spawnedScenario.AddComponent<ARAnchor>();
+        }
+
+
+        // Hide original template.
+        fireScenario.SetActive(false);
+
+
+        // Hide blue circle.
+        if (placementIndicator != null)
+        {
+            placementIndicator.SetActive(false);
+        }
+
+
+        // Placement is permanently finished.
+        scenarioPlaced = true;
+
+
+        // Stop plane detection.
         HidePlanes();
 
+
         Debug.Log(
-            "FIRE EXTINGUISHER PLACED SUCCESSFULLY!"
+            "training_started"
+        );
+
+        Debug.Log(
+            "FireScenario placed and anchored."
         );
     }
 
-    private void PlaceBottomOnSurface(Vector3 surfacePosition)
-    {
-        if (spawnedObject == null)
-            return;
 
-        Renderer[] renderers =
-            spawnedObject.GetComponentsInChildren<Renderer>();
-
-        if (renderers.Length == 0)
-            return;
-
-        Bounds bounds = renderers[0].bounds;
-
-        for (int i = 1; i < renderers.Length; i++)
-        {
-            bounds.Encapsulate(
-                renderers[i].bounds
-            );
-        }
-
-        // Move model upward/downward so its bottom
-        // touches the detected surface.
-        float difference =
-            surfacePosition.y - bounds.min.y;
-
-        spawnedObject.transform.position +=
-            Vector3.up * difference;
-    }
+    // ---------------------------------------------------------
+    // HIDE PLANES
+    // ---------------------------------------------------------
 
     private void HidePlanes()
     {
         if (planeManager == null)
             return;
 
-        foreach (ARPlane plane in planeManager.trackables)
+        foreach (ARPlane plane in
+                 planeManager.trackables)
         {
             if (plane != null)
             {
@@ -190,7 +412,19 @@ public class ARPlacement : MonoBehaviour
             }
         }
 
-        // Stop detecting new planes after placement.
         planeManager.enabled = false;
+    }
+
+
+    // ---------------------------------------------------------
+    // CLEANUP
+    // ---------------------------------------------------------
+
+    private void OnDestroy()
+    {
+        if (placementIndicator != null)
+        {
+            Destroy(placementIndicator);
+        }
     }
 }
