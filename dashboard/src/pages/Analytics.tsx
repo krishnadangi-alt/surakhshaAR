@@ -64,7 +64,7 @@ export default function Analytics() {
             <DonutChart
               data={[
                 { label: 'Passed', value: passedCount, color: '#15803d' },
-                { label: 'Failed / Retraining', value: failedCount, color: '#b95309' },
+                { label: 'Failed / Retraining', value: failedCount, color: '#b91c1c' },
               ]}
             />
           </div>
