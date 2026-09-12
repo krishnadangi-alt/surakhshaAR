@@ -7,6 +7,9 @@ from app.schemas.progress import (
     ProgressListOut,
     WorkerProgressItemOut,
     WorkerProgressListOut,
+    RetentionMilestoneOut,
+    WorkerRetentionOut,
+    WorkerRetentionListOut,
 )
 from app.schemas.assessment import (
     AssessmentCreate,
@@ -58,6 +61,9 @@ __all__ = [
     "ProgressListOut",
     "WorkerProgressItemOut",
     "WorkerProgressListOut",
+    "RetentionMilestoneOut",
+    "WorkerRetentionOut",
+    "WorkerRetentionListOut",
     "AssessmentCreate",
     "AssessmentEvent",
     "AssessmentOut",

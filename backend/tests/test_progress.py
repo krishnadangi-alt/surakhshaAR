@@ -187,3 +187,22 @@ def test_get_worker_progress_nested_reflects_assessments(client):
     assert item["overall_score"] == 90.0
     assert item["passed"] is True
     assert item["assessments_count"] == 2
+
+
+def test_get_worker_retention_schedule(client):
+    worker = _create_worker(client)
+    # Complete an assessment
+    client.post(
+        "/api/v1/assessments",
+        json={"worker_id": worker["id"], "module_id": 1, "events": GOOD_FIRE_EVENTS},
+    )
+    response = client.get(f"/api/v1/progress/{worker['id']}/retention")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["worker_id"] == worker["id"]
+    assert len(data["retention_schedules"]) >= 1
+    schedule = data["retention_schedules"][0]
+    assert schedule["module_code"] == "fire"
+    assert len(schedule["milestones"]) == 3
+    days = [m["day"] for m in schedule["milestones"]]
+    assert days == [1, 7, 30]
