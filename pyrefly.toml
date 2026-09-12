@@ -1,0 +1,20 @@
+project-includes = [
+    "backend",
+    "ml",
+]
+search-path = [
+    "backend",
+    "ml",
+]
+python-version = "3.13.0"
+site-package-path = [
+    ".venv/Lib/site-packages",
+]
+
+[errors]
+missing-import = "ignore"
+bad-argument-type = "ignore"
+unsupported-operation = "ignore"
+bad-return = "ignore"
+missing-attribute = "ignore"
+bad-assignment = "ignore"

@@ -10,7 +10,6 @@ from app.api.v1 import (
     modules,
     progress,
     sync,
-    vision,
     workers,
 )
 
@@ -22,5 +21,4 @@ api_router.include_router(assessments.router)
 api_router.include_router(events.router)
 api_router.include_router(sync.router)
 api_router.include_router(certificates.router)
-api_router.include_router(dashboard.router)
-api_router.include_router(vision.router)
+api_router.include_router(dashboard.router)

@@ -35,12 +35,6 @@ from app.schemas.dashboard import (
     DashboardWorkerListOut,
     DashboardWorkerDetailOut,
 )
-from app.schemas.vision import (
-    PPECheckRequest,
-    PPECheckOut,
-    PPEDetectionOut,
-    VisionStatusOut,
-)
 
 from app.schemas.event import (
     EventBatchCreate,
@@ -85,10 +79,6 @@ __all__ = [
     "DashboardWorkerOut",
     "DashboardWorkerListOut",
     "DashboardWorkerDetailOut",
-    "PPECheckRequest",
-    "PPECheckOut",
-    "PPEDetectionOut",
-    "VisionStatusOut",
     "EventItemCreate",
     "EventBatchCreate",
     "EventOut",
