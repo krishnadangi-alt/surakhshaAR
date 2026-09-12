@@ -245,3 +245,63 @@ def test_get_retraining_plan_assessment_not_found(client):
     response = client.get("/api/v1/assessments/999/retraining-plan")
     assert response.status_code == 404
     assert response.json() == {"detail": "Assessment not found"}
+
+
+def test_submit_assessment_idempotent_client_session_id(client):
+    """Re-submitting the same client_session_id replays the stored assessment."""
+    worker = _create_worker(client)
+    body = {
+        "worker_id": worker["id"],
+        "module_id": 1,
+        "client_session_id": "assess-sess-001",
+        "events": GOOD_FIRE_EVENTS,
+    }
+    first = client.post("/api/v1/assessments", json=body)
+    assert first.status_code == 201
+    first_data = first.json()
+    assert first_data["attempt_number"] == 1
+
+    second = client.post("/api/v1/assessments", json=body)
+    assert second.status_code == 200
+    second_data = second.json()
+    assert second_data["id"] == first_data["id"]
+    assert second_data["attempt_number"] == first_data["attempt_number"]
+
+    history = client.get(f"/api/v1/assessments/{worker['id']}").json()["assessments"]
+    assert len(history) == 1
+
+
+def test_assessment_persisted_with_events(client):
+    """Raw events and the idempotency key are stored on the assessment row."""
+    worker = _create_worker(client)
+    response = client.post(
+        "/api/v1/assessments",
+        json={
+            "worker_id": worker["id"],
+            "module_id": 1,
+            "client_session_id": "persist-001",
+            "events": GOOD_FIRE_EVENTS,
+        },
+    )
+    assert response.status_code == 201
+    assessment_id = response.json()["id"]
+
+    from conftest import TestingSessionLocal
+
+    from app.models.assessment import Assessment
+
+    db = TestingSessionLocal()
+    try:
+        row = db.query(Assessment).filter(Assessment.id == assessment_id).first()
+        assert row is not None
+        # The schema injects `timestamp: None` for events without one; the raw
+        # behavioural fields (including event-specific extras) are stored as-is.
+        stripped = [
+            {k: v for k, v in event.items() if k != "timestamp"}
+            for event in row.events
+        ]
+        assert stripped == GOOD_FIRE_EVENTS
+        assert row.client_session_id == "persist-001"
+        assert row.worker_id == worker["id"]
+    finally:
+        db.close()

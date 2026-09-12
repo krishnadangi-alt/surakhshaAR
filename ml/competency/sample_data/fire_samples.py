@@ -175,13 +175,68 @@ FIRE_ASSESSMENT_CRITICAL_ERROR = {
     ]
 }
 
+# Sample Fire Assessment - Weak Area (FAIL due to specific weak competency)
+# This assessment has one weak category (ppe_selection) while others are acceptable.
+# It demonstrates weakness detection and targeted retraining.
+FIRE_ASSESSMENT_WEAK_AREA = {
+    "assessment_id": "fire_assess_001_weak_area",
+    "scenario_type": "fire",
+    "worker_id": "worker_45",
+    "start_time": "2026-09-02T11:00:00Z",
+    "scenario_name": "Fire in Storage Area",
+    "description": "Worker discovers active fire but has weakness in PPE selection",
+    "events": [
+        {
+            "event_type": "assessment_started",
+            "timestamp": "2026-09-02T11:00:00Z",
+            "scenario": "fire_storage_area"
+        },
+        {
+            "event_type": "hazard_identified",
+            "timestamp": "2026-09-02T11:01:15Z",
+            "correct": True,
+            "hazard_type": "fire_source",
+            "description": "Correctly identified active fire in storage area"
+        },
+        {
+            "event_type": "ppe_selected",
+            "timestamp": "2026-09-02T11:02:30Z",
+            "correct": False,
+            "items": [],
+            "description": "Failed to select appropriate fire-resistant PPE - left items empty"
+        },
+        {
+            "event_type": "equipment_selected",
+            "timestamp": "2026-09-02T11:03:45Z",
+            "correct": True,
+            "equipment": "fire_extinguisher_class_d",
+            "description": "Selected correct fire extinguisher for chemical fire"
+        },
+        {
+            "event_type": "evacuation_started",
+            "timestamp": "2026-09-02T11:05:00Z",
+            "correct": True,
+            "description": "Correctly initiated evacuation procedures",
+            "evacuees_assisted": 1
+        },
+        {
+            "event_type": "assessment_completed",
+            "timestamp": "2026-09-02T11:06:15Z",
+            "completion_status": "failure_weakness"
+        }
+    ]
+}
+
+
+
+
 
 def get_sample_fire_assessment(assessment_type: str = "good"):
     """
     Get sample fire assessment data.
     
     Args:
-        assessment_type: "good", "poor", or "critical"
+        assessment_type: "good", "poor", "critical", or "weak_area"
         
     Returns:
         Dict with assessment events
@@ -190,6 +245,7 @@ def get_sample_fire_assessment(assessment_type: str = "good"):
         "good": FIRE_ASSESSMENT_GOOD,
         "poor": FIRE_ASSESSMENT_POOR,
         "critical": FIRE_ASSESSMENT_CRITICAL_ERROR,
+        "weak_area": FIRE_ASSESSMENT_WEAK_AREA,
     }
     return assessments.get(assessment_type, FIRE_ASSESSMENT_GOOD)
 
@@ -200,6 +256,7 @@ def get_all_fire_samples():
         "good": FIRE_ASSESSMENT_GOOD,
         "poor": FIRE_ASSESSMENT_POOR,
         "critical": FIRE_ASSESSMENT_CRITICAL_ERROR,
+        "weak_area": FIRE_ASSESSMENT_WEAK_AREA,
     }
 
 

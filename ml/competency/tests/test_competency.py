@@ -6,17 +6,20 @@ Tests cover:
 - Critical error handling (FAIL override)
 - Weakness detection
 - Retraining recommendations
+- Public assess() interface
 """
 
 import pytest
 from ml.competency.scoring import CompetencyScorer, ScoringResult
 from ml.competency.weakness_detection import WeaknessDetector
 from ml.competency.retraining import RetrainingRecommender
+from ml.competency.assess import assess
 from ml.competency.sample_data import (
     get_sample_fire_assessment,
     FIRE_ASSESSMENT_GOOD,
     FIRE_ASSESSMENT_POOR,
     FIRE_ASSESSMENT_CRITICAL_ERROR,
+    FIRE_ASSESSMENT_WEAK_AREA,
 )
 
 
@@ -426,6 +429,94 @@ class TestGasScenario:
         plan = RetrainingRecommender("gas").get_retraining_plan(weaknesses)
         assert plan["scenario_type"] == "gas"
         assert plan["total_weaknesses"] == len(weaknesses)
+
+
+class TestPublicAssessInterface:
+    """Tests for the public assess() interface (REQUIREMENT 7)."""
+
+    def _expected_keys(self):
+        return {"score", "passed", "competency_status", "weaknesses", "retraining"}
+
+    def test_assess_returns_required_keys(self):
+        """assess() result must contain all required public fields."""
+        result = assess(FIRE_ASSESSMENT_GOOD["events"])
+        assert self._expected_keys().issubset(set(result.keys()))
+
+    # --- PASS CASE ---
+    def test_assess_pass_case(self):
+        """PASS: score meets threshold, no critical action."""
+        result = assess(FIRE_ASSESSMENT_GOOD["events"])
+        assert result["passed"] is True
+        assert result["competency_status"] == "competent"
+        assert result["score"] >= 70.0
+
+    # --- FAIL CASE ---
+    def test_assess_fail_case(self):
+        """FAIL: low score, not competent."""
+        result = assess(FIRE_ASSESSMENT_POOR["events"])
+        assert result["passed"] is False
+        assert result["competency_status"] == "not_competent"
+
+    # --- CRITICAL ACTION CASE ---
+    def test_assess_critical_action_case(self):
+        """Critical action triggers automatic FAIL regardless of score."""
+        result = assess(FIRE_ASSESSMENT_CRITICAL_ERROR["events"])
+        assert result["passed"] is False
+        assert result["competency_status"] == "not_competent"
+
+    # --- WEAK AREA CASE ---
+    def test_assess_weak_area_case(self):
+        """Weak area: low category score, weakness + retraining returned."""
+        result = assess(FIRE_ASSESSMENT_WEAK_AREA["events"])
+        assert result["passed"] is False
+        assert result["competency_status"] == "not_competent"
+        assert len(result["weaknesses"]) > 0, "Should detect at least one weakness"
+        assert result["retraining"] == result["weaknesses"], (
+            "Retraining must match weaknesses 1:1"
+        )
+
+    def test_assess_weak_area_has_ppe_weakness(self):
+        """Weak-area sample should flag ppe_selection as a weakness."""
+        result = assess(FIRE_ASSESSMENT_WEAK_AREA["events"])
+        assert "ppe_selection" in result["weaknesses"]
+        assert "ppe_selection" in result["retraining"]
+
+    # --- Invalid / empty input ---
+    def test_assess_empty_events(self):
+        """Empty event list returns safe zero-score FAIL."""
+        result = assess([])
+        assert result["passed"] is False
+        assert result["competency_status"] == "not_competent"
+        assert result["score"] == 0.0
+        assert result["weaknesses"] == []
+        assert result["retraining"] == []
+
+    def test_assess_none_events(self):
+        """None input returns safe zero-score FAIL."""
+        result = assess(None)
+        assert result["passed"] is False
+        assert result["score"] == 0.0
+
+    def test_assess_skips_non_dict_events(self):
+        """Non-dict events in the list are safely skipped."""
+        events = [
+            {"event_type": "hazard_identified", "correct": True},
+            "not a dict",
+            42,
+            None,
+            {"event_type": "assessment_completed"},
+        ]
+        result = assess(events)
+        # Should process without crashing; hazard_identified correct -> score raised
+        assert result["score"] > 0.0
+
+    def test_assess_multiple_weaknesses(self):
+        """Multiple weak categories are all reported, not just one."""
+        result = assess(FIRE_ASSESSMENT_POOR["events"])
+        assert len(result["weaknesses"]) >= 2, (
+            "Poor assessment should have multiple weak areas"
+        )
+        assert len(result["retraining"]) == len(result["weaknesses"])
 
 
 if __name__ == "__main__":

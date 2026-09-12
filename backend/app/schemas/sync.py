@@ -24,12 +24,29 @@ class SyncSession(BaseModel):
     occurred_at: datetime
     scenario_type: str | None = None
     attempt_number: int | None = None
+    client_session_id: str | None = Field(
+        None,
+        max_length=64,
+        description=(
+            "Optional per-session idempotency key; an assessment already scored for "
+            "the same worker+module+key is skipped on re-sync."
+        ),
+    )
     events: list[AssessmentEvent] = Field(default_factory=list)
 
 
 class SyncCreate(BaseModel):
     worker_id: int
     device_id: str
+    batch_id: str | None = Field(
+        None,
+        max_length=64,
+        description=(
+            "Optional client-generated batch idempotency key; re-sending the same "
+            "batch_id for a worker returns the original sync result (200) and "
+            "creates no duplicate log or assessment rows."
+        ),
+    )
     sessions: list[SyncSession]
 
 

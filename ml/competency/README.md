@@ -12,6 +12,7 @@ The competency engine provides:
 2. **Critical error handling** with automatic FAIL override for safety violations
 3. **Weakness detection** to identify performance gaps
 4. **Targeted retraining** recommendations mapped to specific training modules
+5. **Public `assess()` interface** — a single entry point that converts raw events into a complete competency verdict
 
 This is a **prototype implementation** and uses example thresholds and scoring rules. 
 **All scoring thresholds, pass/fail criteria, and competency definitions must be validated against official industrial safety procedures and domain experts before production deployment.**
@@ -20,6 +21,7 @@ This is a **prototype implementation** and uses example thresholds and scoring r
 
 | Path | Purpose |
 |---|---|
+| `assess.py` | Public ``assess(events)`` interface — single entry point for the whole pipeline |
 | `scoring/` | Competency scoring engine, configuration, and competency definitions |
 | `weakness_detection/` | Detection of skill/performance weaknesses from assessment results |
 | `retraining/` | Targeted retraining recommendations based on detected weaknesses |
@@ -85,17 +87,22 @@ Competencies for gas hazard scenarios:
 
 **Deterministic Scoring:**
 - Each event updates competency scores directly (no machine learning)
-- Scores range from 0–100
+- Scores range from 0–100, bounded to [0, 100]
 - Correct actions add points; mistakes subtract points
-- Scores are bounded to [0, 100]
+- All competency scores start at a neutral baseline of 50
 
-**Scoring Rules:**
-- Correct hazard identification: +25 points
-- Correct PPE: +30 points
-- Correct equipment use: +25 points
-- Correct evacuation: +35 points
-- Wrong action (minor): -10 procedure, -5 decision-making
-- Wrong action (major): -25 procedure, -20 decision-making
+**Scoring Rules** (per `docs/api/API.md`):
+- Correct hazard identification: +50 / incorrect: −25 → `hazard_identification`
+- Correct PPE (non-empty items): +60 / incorrect: −30 → `ppe_selection`
+- Correct equipment: +50 / incorrect: −25 → `equipment_use`
+- Correct evacuation: +50 / incorrect: −30 → `procedure_compliance` (fire) or `evacuation` (gas)
+- Wrong action (minor): −5 procedure, −3 decision-making
+- Wrong action (major): −30 procedure, −25 decision-making
+  - fire: affects `procedure_compliance` + `decision_making`
+  - gas: affects `emergency_response` + `hazard_identification`
+- Emergency procedure (gas only): +50 / −25 → `emergency_response`
+- `critical_action`: automatic FAIL (logged, no score change)
+- `training_started`, `assessment_started`, `assessment_completed`: logged for audit, no score change
 
 ### Pass/Fail Logic
 
@@ -118,6 +125,46 @@ An assessment **FAILS** if:
 - Any other defined critical safety violation
 
 Critical errors override numerical scores — a worker with 90% overall score still fails if they commit a critical error.
+
+## Public Interface (`assess.py`)
+
+The one clean entry point for application/backend integration. It wraps the full
+pipeline (scoring → weakness detection → retraining) and returns a single canonical
+dict. The engine computes the result itself; client-supplied ``passed``/``score``
+values are never trusted.
+
+```python
+from ml.competency import assess
+
+result = assess(events)               # scenario_type defaults to "fire"
+result = assess(events, "gas")        # explicit gas scenario
+```
+
+**Input:** a list of event dicts (each with at least an ``event_type`` key; see
+``docs/api/API.md``). Unknown/missing fields are handled safely. Empty/``None``
+input returns a zero-score FAIL.
+
+**Output:**
+
+```python
+{
+    "score":            <float>,   # overall score 0–100 (mean of category scores)
+    "passed":           <bool>,    # True if competent
+    "competency_status": <str>,    # "competent" | "not_competent"
+    "weaknesses":       [<str>],   # low-scoring category names
+    "retraining":       [<str>],   # matching retraining categories (1:1)
+}
+```
+
+**competency_status** is derived from ``passed``:
+- ``True``  → ``"competent"``
+- ``False`` → ``"not_competent"``
+
+This interface is consumed by the backend service
+(``backend/app/services/competency_service.py``) and can be called directly by any
+application code.
+
+
 
 ## Weakness Detection (`weakness_detection/`)
 
@@ -163,32 +210,38 @@ The retraining recommender maps detected weaknesses to targeted training modules
 
 ## Sample Data (`sample_data/`)
 
-Three fire scenario samples for testing:
+Four fire scenario samples for testing:
 
 1. **Good Assessment** (`FIRE_ASSESSMENT_GOOD`)
    - Expected result: PASS
-   - Overall score: ~85%
+   - Overall score: ~88%
    - Events: Correct hazard ID, appropriate PPE, minor procedural issue
 
 2. **Poor Assessment** (`FIRE_ASSESSMENT_POOR`)
    - Expected result: FAIL
-   - Overall score: ~35%
+   - Overall score: ~19%
    - Events: Missed hazards, wrong PPE, major procedural violations
 
 3. **Critical Error** (`FIRE_ASSESSMENT_CRITICAL_ERROR`)
    - Expected result: FAIL (critical error override)
    - Events: Good initial choices, then critical violation (re-entered unsafe area)
 
+4. **Weak Area** (`FIRE_ASSESSMENT_WEAK_AREA`)
+   - Expected result: FAIL (specific weak competency)
+   - Overall score: ~74% (above 70% but fails on per-competency threshold)
+   - Events: Correct hazard/equipment/evacuation, but failed PPE selection
+   - Demonstrates weakness detection + targeted retraining
+
 **Usage:**
 ```python
 from ml.competency.sample_data import get_sample_fire_assessment
 
-assessment = get_sample_fire_assessment("good")  # "good", "poor", or "critical"
+assessment = get_sample_fire_assessment("good")  # "good", "poor", "critical", "weak_area"
 ```
 
 ## Tests (`tests/`)
 
-Comprehensive test suite with 20+ tests covering:
+Comprehensive test suite with 36 tests covering:
 
 **Scoring Engine Tests:**
 - Scorer initialization
@@ -215,12 +268,39 @@ Comprehensive test suite with 20+ tests covering:
 - End-to-end poor assessment workflow
 - End-to-end critical error workflow
 
+**Public Interface Tests** (``assess()``):
+- PASS case: score ≥ 70, no critical action, competent
+- FAIL case: low score, not competent
+- Critical action case: automatic FAIL regardless of score
+- Weak area case: weakness detected, matching retraining returned
+- Multiple weaknesses: all reported (not just one)
+- Empty/None input: safe zero-score FAIL
+- Non-dict events: safely skipped
+
 **Run Tests:**
 ```bash
 pytest ml/competency/tests/ -v
 ```
 
 ## Usage Example
+
+### Simple: one-call assessment
+
+```python
+from ml.competency import assess
+from ml.competency.sample_data import get_sample_fire_assessment
+
+assessment = get_sample_fire_assessment("good")
+result = assess(assessment["events"])
+
+print(f"Score: {result['score']:.1f}")           # Score: 88.4
+print(f"Passed: {result['passed']}")             # Passed: True
+print(f"Status: {result['competency_status']}")  # Status: competent
+print(f"Weaknesses: {result['weaknesses']}")     # Weaknesses: []
+print(f"Retraining: {result['retraining']}")     # Retraining: []
+```
+
+### Advanced: direct pipeline access
 
 ```python
 from ml.competency.scoring import CompetencyScorer

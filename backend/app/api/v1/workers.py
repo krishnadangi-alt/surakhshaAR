@@ -4,7 +4,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_db
+from app.api.v1.progress import build_worker_progress
 from app.models.worker import Worker
+from app.schemas.progress import WorkerProgressListOut
 from app.schemas.worker import WorkerCreate, WorkerOut
 
 router = APIRouter(prefix="/workers", tags=["workers"])
@@ -35,3 +37,19 @@ def get_worker(worker_id: int, db: Session = Depends(get_db)):
     if not worker:
         raise HTTPException(status_code=404, detail="Worker not found")
     return worker
+
+
+def _get_worker_or_404(db: Session, worker_id: int) -> Worker:
+    worker = db.query(Worker).filter(Worker.id == worker_id).first()
+    if not worker:
+        raise HTTPException(status_code=404, detail="Worker not found")
+    return worker
+
+
+@router.get("/{worker_id}/progress", response_model=WorkerProgressListOut)
+def get_worker_progress(worker_id: int, db: Session = Depends(get_db)):
+    """Return the worker's per-module progress merged with stored assessment stats."""
+    _get_worker_or_404(db, worker_id)
+    return WorkerProgressListOut(
+        worker_id=worker_id, progress=build_worker_progress(db, worker_id)
+    )

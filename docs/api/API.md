@@ -247,6 +247,7 @@ auto-incremented per worker + module when omitted.
 {
   "worker_id": 1,
   "module_id": 1,
+  "client_session_id": "assess-sess-001",
   "events": [
     { "event_type": "hazard_identified", "correct": true, "hazard_type": "electrical_fire" },
     { "event_type": "ppe_selected", "correct": true, "items": ["helmet", "gloves", "jacket"] },
@@ -255,6 +256,10 @@ auto-incremented per worker + module when omitted.
   ]
 }
 ```
+
+`client_session_id` (optional) is a client-generated idempotency key. Re-submitting the
+same key for the same worker + module returns the stored assessment with `200 OK` and
+creates no duplicate record; the events are not re-scored.
 
 **Response `201 Created`**
 
@@ -411,11 +416,13 @@ are stored in the sync log only, and do not create assessment records).
 {
   "worker_id": 1,
   "device_id": "device-abc-123",
+  "batch_id": "batch-xyz-456",
   "sessions": [
     {
       "type": "assessment",
       "module_id": 1,
       "occurred_at": "2026-09-01T10:00:00Z",
+      "client_session_id": "sess-001",
       "events": [
         { "event_type": "hazard_identified", "correct": true, "hazard_type": "electrical_fire" },
         { "event_type": "ppe_selected", "correct": true, "items": ["helmet", "gloves", "jacket"] },
@@ -434,6 +441,12 @@ are stored in the sync log only, and do not create assessment records).
   ]
 }
 ```
+
+`batch_id` (optional) makes the sync batch idempotent: re-sending the same `batch_id` for a
+worker returns the original sync result with `200 OK` and creates no new sync log or
+assessment rows. A per-session `client_session_id` (optional) skips an assessment already
+scored for the same worker + module + key, preventing duplicate assessment/event records
+when a device retries.
 
 **Response `201 Created`**
 
@@ -834,6 +847,43 @@ at startup — the feature auto-disables when no model is loaded).
 
 ---
 
+### 20. Get Worker Progress (workers-scoped)
+
+`GET /api/v1/workers/{worker_id}/progress`
+
+Returns the worker's per-module progress merged with the stored assessment data. For each
+module the worker has progress and/or assessments, the response carries the latest attempt
+number, overall score, pass/fail decision, the number of stored assessments, and — for
+modules without an explicit progress row — the latest assessment timestamp as `last_updated`.
+
+**Response `200 OK`**
+
+```json
+{
+  "worker_id": 1,
+  "progress": [
+    {
+      "module_id": 1,
+      "module_code": "fire",
+      "module_name": "Fire & Explosion Response",
+      "stage": "assess",
+      "status": "in_progress",
+      "last_updated": "2026-09-01T11:30:00Z",
+      "attempt_number": 2,
+      "overall_score": 90.0,
+      "passed": true,
+      "assessments_count": 2
+    }
+  ]
+}
+```
+
+**Errors**
+
+- `404` — `{"detail": "Worker not found"}`
+
+---
+
 ## Endpoint Summary
 
 | # | Method | Path | Status |
@@ -857,5 +907,6 @@ at startup — the feature auto-disables when no model is loaded).
 | 17 | GET | `/api/v1/assessments/{assessment_id}/retraining-plan` | 200 |
 | 18 | POST | `/api/v1/vision/ppe-check` | 200 |
 | 19 | GET | `/api/v1/vision/status` | 200 |
+| 20 | GET | `/api/v1/workers/{worker_id}/progress` | 200 |
 
-**6 POST + 13 GET = 19 endpoints.**
+**6 POST + 14 GET = 20 endpoints.**
