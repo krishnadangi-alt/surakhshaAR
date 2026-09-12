@@ -51,9 +51,22 @@ namespace SurakshaAR.Data
             { "emergency_response",    new CompetencyDef("emergency_response", "Emergency Protocol", 70.0f, "Proper emergency response and buddy system procedure") }
         };
 
+        private static readonly Dictionary<string, CompetencyDef> MachineryCompetencies = new Dictionary<string, CompetencyDef>
+        {
+            { "hazard_identification", new CompetencyDef("hazard_identification", "Machine Hazard Recognition", 75.0f, "Ability to detect pinch points, unshielded gears, and mechanical hazards") },
+            { "ppe_selection",         new CompetencyDef("ppe_selection", "Mechanical Safety PPE", 80.0f, "Correct eye protection, hearing protection, and loose clothing restraint") },
+            { "loto_procedure",        new CompetencyDef("loto_procedure", "Lockout / Tagout (LOTO)", 80.0f, "Execution of zero energy state lockout and tagout procedures") },
+            { "equipment_use",         new CompetencyDef("equipment_use", "Machine Guard Operation", 75.0f, "Proper operation of fixed and interlocked safety guards") },
+            { "emergency_response",    new CompetencyDef("emergency_response", "E-Stop Crisis Reaction", 70.0f, "Immediate emergency stop activation and entrapment response") }
+        };
+
         public static Dictionary<string, CompetencyDef> GetDefinitions(string scenarioType)
         {
-            return (scenarioType != null && scenarioType.ToLower().Contains("gas")) ? GasCompetencies : FireCompetencies;
+            if (string.IsNullOrEmpty(scenarioType)) return FireCompetencies;
+            string st = scenarioType.ToLower();
+            if (st.Contains("gas")) return GasCompetencies;
+            if (st.Contains("machin")) return MachineryCompetencies;
+            return FireCompetencies;
         }
 
         /// <summary>
@@ -78,8 +91,10 @@ namespace SurakshaAR.Data
                 foreach (var ev in events)
                 {
                     if (ev == null) continue;
-                    switch (ev.event_type)
+                    string normalizedType = ev.event_type != null ? ev.event_type.Trim() : "";
+                    switch (normalizedType)
                     {
+                        case CommonAssessmentEvents.HAZARD_IDENTIFIED:
                         case "hazard_identified":
                             if (ev.correct)
                                 scores["hazard_identification"] = Mathf.Min(100.0f, scores["hazard_identification"] + 50.0f);
@@ -87,6 +102,7 @@ namespace SurakshaAR.Data
                                 scores["hazard_identification"] = Mathf.Max(0.0f, scores["hazard_identification"] - 25.0f);
                             break;
 
+                        case CommonAssessmentEvents.PPE_SELECTED:
                         case "ppe_selected":
                             if (ev.correct)
                                 scores["ppe_selection"] = Mathf.Min(100.0f, scores["ppe_selection"] + 60.0f);
@@ -94,6 +110,8 @@ namespace SurakshaAR.Data
                                 scores["ppe_selection"] = Mathf.Max(0.0f, scores["ppe_selection"] - 30.0f);
                             break;
 
+                        case CommonAssessmentEvents.EQUIPMENT_SELECTED:
+                        case CommonAssessmentEvents.OBJECT_INTERACTION:
                         case "equipment_selected":
                             if (scores.ContainsKey("equipment_use"))
                             {
@@ -104,17 +122,54 @@ namespace SurakshaAR.Data
                             }
                             break;
 
+                        case CommonAssessmentEvents.CORRECT_ACTION:
+                        case "correct_action":
+                            string correctProcKey = (scenarioType == "gas" || scenarioType == "machinery") ? "emergency_response" : "procedure_compliance";
+                            if (scores.ContainsKey(correctProcKey))
+                                scores[correctProcKey] = Mathf.Min(100.0f, scores[correctProcKey] + 15.0f);
+                            if (ev.action != null && ev.action.StartsWith("loto_") && scores.ContainsKey("loto_procedure"))
+                                scores["loto_procedure"] = Mathf.Min(100.0f, scores["loto_procedure"] + 25.0f);
+                            break;
+
+                        case CommonAssessmentEvents.WRONG_ACTION:
+                        case CommonAssessmentEvents.SEQUENCE_ERROR:
                         case "wrong_action":
-                            string procKey = (scenarioType == "gas") ? "emergency_response" : "procedure_compliance";
-                            string decKey = (scenarioType == "gas") ? "hazard_identification" : "decision_making";
-                            bool isMajor = ev.severity == "major";
+                            string procKey = (scenarioType == "gas" || scenarioType == "machinery") ? "emergency_response" : "procedure_compliance";
+                            string decKey = (scenarioType == "gas") ? "hazard_identification" : ((scenarioType == "machinery") ? "loto_procedure" : "decision_making");
+                            bool isMajor = ev.severity == "major" || normalizedType == CommonAssessmentEvents.SEQUENCE_ERROR;
 
                             if (scores.ContainsKey(procKey))
                                 scores[procKey] = Mathf.Max(0.0f, scores[procKey] - (isMajor ? 30.0f : 5.0f));
                             if (scores.ContainsKey(decKey))
                                 scores[decKey] = Mathf.Max(0.0f, scores[decKey] - (isMajor ? 25.0f : 3.0f));
+                            if (normalizedType == CommonAssessmentEvents.SEQUENCE_ERROR && scores.ContainsKey("loto_procedure"))
+                                scores["loto_procedure"] = Mathf.Max(0.0f, scores["loto_procedure"] - 30.0f);
                             break;
 
+                        case CommonAssessmentEvents.RESPONSE_TIME:
+                        case "response_time":
+                            // Advanced Day 4 timing metrics
+                            string speedKey = scores.ContainsKey("emergency_response") ? "emergency_response" : "decision_making";
+                            if (ev.duration_seconds > 0f)
+                            {
+                                if (ev.duration_seconds <= 3.0f && scores.ContainsKey(speedKey))
+                                    scores[speedKey] = Mathf.Min(100.0f, scores[speedKey] + 5.0f); // Rapid reaction bonus
+                                else if (ev.duration_seconds > 15.0f && scores.ContainsKey(speedKey))
+                                    scores[speedKey] = Mathf.Max(0.0f, scores[speedKey] - 10.0f); // Excessive latency deduction
+                            }
+                            break;
+
+                        case CommonAssessmentEvents.UNSAFE_ACTION:
+                        case "unsafe_action":
+                            string unsafeProc = (scenarioType == "gas" || scenarioType == "machinery") ? "emergency_response" : "procedure_compliance";
+                            string unsafeDec = (scenarioType == "gas") ? "hazard_identification" : "decision_making";
+                            if (scores.ContainsKey(unsafeProc))
+                                scores[unsafeProc] = Mathf.Max(0.0f, scores[unsafeProc] - 25.0f);
+                            if (scores.ContainsKey(unsafeDec))
+                                scores[unsafeDec] = Mathf.Max(0.0f, scores[unsafeDec] - 20.0f);
+                            break;
+
+                        case CommonAssessmentEvents.CRITICAL_ACTION:
                         case "critical_action":
                             string reason = !string.IsNullOrEmpty(ev.reason) ? ev.reason : (!string.IsNullOrEmpty(ev.action) ? ev.action : "Critical safety violation");
                             criticalErrors.Add(reason);
@@ -291,6 +346,18 @@ namespace SurakshaAR.Data
                             difficulty_level = "Advanced",
                             competencies_addressed = new List<string> { "decision_making", "emergency_response" },
                             reason = "Sharpen real-time emergency decision judgment"
+                        });
+                        break;
+                    case "loto_procedure":
+                        plan.Add(new RetrainingModuleData
+                        {
+                            module_id = "retrain_loto_01",
+                            name = "Zero Energy Lockout / Tagout (LOTO) Drill",
+                            description = "Step-by-step master drill for electrical isolation, padlock application, and zero-energy verification.",
+                            estimated_duration_minutes = 20,
+                            difficulty_level = "Intermediate",
+                            competencies_addressed = new List<string> { "loto_procedure" },
+                            reason = "Rectify life-critical lockout / tagout protocol error"
                         });
                         break;
                 }

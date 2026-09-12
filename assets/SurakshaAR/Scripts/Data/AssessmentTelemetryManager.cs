@@ -45,6 +45,7 @@ namespace SurakshaAR.Data
 
         private void SubscribeTrainingEvents()
         {
+            // Legacy / Scenario events
             TrainingEventManager.OnTrainingStarted += HandleTrainingStarted;
             TrainingEventManager.OnHazardIdentified += HandleHazardIdentified;
             TrainingEventManager.OnAlarmActivated += HandleAlarmActivated;
@@ -59,6 +60,18 @@ namespace SurakshaAR.Data
             TrainingEventManager.OnEvacuationStarted += HandleEvacuation;
             TrainingEventManager.OnPpeSelected += HandlePpeSelected;
             TrainingEventManager.OnEquipmentSelected += HandleEquipmentSelected;
+
+            // ── 12 Common Assessment Events (Day 1 Standard) ──
+            TrainingEventManager.OnScenarioStartedCommon += HandleCommonScenarioStarted;
+            TrainingEventManager.OnHazardIdentifiedCommon += HandleCommonHazardIdentified;
+            TrainingEventManager.OnPpeSelectedCommon += HandleCommonPpeSelected;
+            TrainingEventManager.OnEquipmentSelectedCommon += HandleCommonEquipmentSelected;
+            TrainingEventManager.OnObjectInteractionCommon += HandleCommonObjectInteraction;
+            TrainingEventManager.OnCorrectActionCommon += HandleCommonCorrectAction;
+            TrainingEventManager.OnUnsafeActionCommon += HandleCommonUnsafeAction;
+            TrainingEventManager.OnSequenceErrorCommon += HandleCommonSequenceError;
+            TrainingEventManager.OnResponseTimeCommon += HandleCommonResponseTime;
+            TrainingEventManager.OnScenarioCompletedCommon += HandleCommonScenarioCompleted;
         }
 
         private void UnsubscribeTrainingEvents()
@@ -77,6 +90,18 @@ namespace SurakshaAR.Data
             TrainingEventManager.OnEvacuationStarted -= HandleEvacuation;
             TrainingEventManager.OnPpeSelected -= HandlePpeSelected;
             TrainingEventManager.OnEquipmentSelected -= HandleEquipmentSelected;
+
+            // ── 12 Common Assessment Events (Day 1 Standard) ──
+            TrainingEventManager.OnScenarioStartedCommon -= HandleCommonScenarioStarted;
+            TrainingEventManager.OnHazardIdentifiedCommon -= HandleCommonHazardIdentified;
+            TrainingEventManager.OnPpeSelectedCommon -= HandleCommonPpeSelected;
+            TrainingEventManager.OnEquipmentSelectedCommon -= HandleCommonEquipmentSelected;
+            TrainingEventManager.OnObjectInteractionCommon -= HandleCommonObjectInteraction;
+            TrainingEventManager.OnCorrectActionCommon -= HandleCommonCorrectAction;
+            TrainingEventManager.OnUnsafeActionCommon -= HandleCommonUnsafeAction;
+            TrainingEventManager.OnSequenceErrorCommon -= HandleCommonSequenceError;
+            TrainingEventManager.OnResponseTimeCommon -= HandleCommonResponseTime;
+            TrainingEventManager.OnScenarioCompletedCommon -= HandleCommonScenarioCompleted;
         }
 
         public void StartSession(string scenarioType = "fire")
@@ -306,6 +331,97 @@ namespace SurakshaAR.Data
                 correct = correct,
                 action = "select_equipment"
             });
+        }
+
+        // ── Day 1 Common Assessment Event Handlers ───────────────────────
+        private int GetCurrentWorkerId()
+        {
+            return (AppState.Instance != null && AppState.Instance.CurrentUser != null)
+                ? AppState.Instance.CurrentUser.id
+                : 1;
+        }
+
+        private void HandleCommonScenarioStarted(string module, string scenario)
+        {
+            StartSession(module);
+            var ev = AssessmentEvent.Create(CommonAssessmentEvents.SCENARIO_STARTED, "scenario_start", "info");
+            ev.worker_id = GetCurrentWorkerId();
+            ev.module = module;
+            ev.scenario = scenario;
+            LogEvent(ev);
+        }
+
+        private void HandleCommonHazardIdentified(string hazardType, float responseTime)
+        {
+            var ev = AssessmentEvent.CreateHazardIdentified(hazardType, responseTime);
+            ev.worker_id = GetCurrentWorkerId();
+            ev.module = CurrentScenarioType;
+            LogEvent(ev);
+        }
+
+        private void HandleCommonPpeSelected(string ppeType, bool correct, float responseTime)
+        {
+            var ev = AssessmentEvent.CreatePpeSelected(ppeType, correct, responseTime);
+            ev.worker_id = GetCurrentWorkerId();
+            ev.module = CurrentScenarioType;
+            LogEvent(ev);
+        }
+
+        private void HandleCommonEquipmentSelected(string equipType, bool correct, float responseTime)
+        {
+            var ev = AssessmentEvent.CreateEquipmentSelected(equipType, correct, responseTime);
+            ev.worker_id = GetCurrentWorkerId();
+            ev.module = CurrentScenarioType;
+            LogEvent(ev);
+        }
+
+        private void HandleCommonObjectInteraction(string objectId, string interactionType, float responseTime)
+        {
+            var ev = AssessmentEvent.CreateObjectInteraction(objectId, interactionType, responseTime);
+            ev.worker_id = GetCurrentWorkerId();
+            ev.module = CurrentScenarioType;
+            LogEvent(ev);
+        }
+
+        private void HandleCommonCorrectAction(string action, float responseTime)
+        {
+            var ev = AssessmentEvent.CreateCorrectAction(action, responseTime);
+            ev.worker_id = GetCurrentWorkerId();
+            ev.module = CurrentScenarioType;
+            LogEvent(ev);
+        }
+
+        private void HandleCommonUnsafeAction(string action, string reason)
+        {
+            var ev = AssessmentEvent.CreateUnsafeAction(action, reason);
+            ev.worker_id = GetCurrentWorkerId();
+            ev.module = CurrentScenarioType;
+            LogEvent(ev);
+        }
+
+        private void HandleCommonSequenceError(string expectedAction, string actualAction)
+        {
+            var ev = AssessmentEvent.CreateSequenceError(expectedAction, actualAction);
+            ev.worker_id = GetCurrentWorkerId();
+            ev.module = CurrentScenarioType;
+            LogEvent(ev);
+        }
+
+        private void HandleCommonResponseTime(string action, float seconds)
+        {
+            var ev = AssessmentEvent.CreateResponseTime(action, seconds);
+            ev.worker_id = GetCurrentWorkerId();
+            ev.module = CurrentScenarioType;
+            LogEvent(ev);
+        }
+
+        private void HandleCommonScenarioCompleted(string module, float score, bool passed)
+        {
+            var ev = AssessmentEvent.Create(CommonAssessmentEvents.SCENARIO_COMPLETED, "complete_scenario", passed ? "correct" : "wrong");
+            ev.worker_id = GetCurrentWorkerId();
+            ev.module = module;
+            LogEvent(ev);
+            CompleteSession();
         }
     }
 }
