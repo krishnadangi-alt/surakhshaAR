@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    FIRE SAFETY AR TRAINING
    PROFESSIONAL MOBILE UI
    Unity UI Toolkit USS
@@ -11,24 +11,24 @@
 
 :root {
 
-    --color-primary: #B3261E;
-    --color-primary-dark: #7F1D1D;
-    --color-primary-soft: #FBEDEC;
+    --color-primary: #123F66;
+    --color-primary-dark: #0D2F4A;
+    --color-primary-soft: #EAF3F9;
 
     --color-ink: #17212B;
-    --color-ink-soft: #34424D;
+    --color-ink-soft: #52606D;
 
-    --color-background: #F5F6F7;
+    --color-background: #F6F8FA;
     --color-surface: #FFFFFF;
 
-    --color-muted: #65717C;
-    --color-muted-light: #8A949C;
+    --color-muted: #52606D;
+    --color-muted-light: #7B8794;
 
-    --color-border: #E1E5E8;
-    --color-border-dark: #CDD3D8;
+    --color-border: #D9E1E7;
+    --color-border-dark: #C4CFD8;
 
-    --color-success: #18794E;
-    --color-success-soft: #E8F5EE;
+    --color-success: #238636;
+    --color-success-soft: #E6F4EC;
 
     --color-white: #FFFFFF;
 
@@ -311,7 +311,6 @@
 
     -unity-font-style: bold;
 
-    line-height: 34px;
 
     white-space: normal;
 
@@ -325,7 +324,6 @@
 
     font-size: 15px;
 
-    line-height: 22px;
 
     white-space: normal;
 }
@@ -337,7 +335,6 @@
 
     font-size: 11px;
 
-    line-height: 16px;
 
     white-space: normal;
 }
@@ -396,7 +393,7 @@
 
 .eyebrow--light {
 
-    color: #FFB4AC;
+    color: #9FC3E0;
 }
 
 
@@ -408,7 +405,6 @@
 
     -unity-font-style: bold;
 
-    line-height: 43px;
 
     white-space: normal;
 }
@@ -422,13 +418,13 @@
 
 .display--accent {
 
-    color: #FFB4AC;
+    color: #9FC3E0;
 }
 
 
 .subtitle--light {
 
-    color: #D5DCE3;
+    color: #C9D6E2;
 }
 
 
@@ -454,7 +450,7 @@
     border-radius: 88px;
 
     border-width: 1px;
-    border-color: #52606B;
+    border-color: #3E5A74;
 
     align-items: center;
     justify-content: center;
@@ -475,7 +471,7 @@
 
 .hero-circle__accent {
 
-    color: #FFB4AC;
+    color: #9FC3E0;
 
     font-size: 34px;
 
@@ -487,7 +483,7 @@
 
 .hero-caption {
 
-    color: #AEB8C0;
+    color: #8FA9BF;
 
     font-size: 10px;
 
@@ -547,7 +543,7 @@
 
 .primary-button:active {
 
-    background-color: #641515;
+    background-color: #0A2539;
 }
 
 
@@ -579,9 +575,9 @@
 
 .primary-button--light:hover {
 
-    background-color: #F5F5F5;
+    background-color: #EDF3F8;
 
-    border-color: #F5F5F5;
+    border-color: #EDF3F8;
 }
 
 
@@ -777,7 +773,7 @@
 
     border-color: var(--color-primary);
 
-    background-color: #FFF9F8;
+    background-color: #EDF3F9;
 }
 
 
@@ -790,7 +786,7 @@
 
     border-radius: 23px;
 
-    background-color: #F1F3F4;
+    background-color: #F0F3F6;
 
     align-items: center;
 
@@ -1016,7 +1012,7 @@
 
 .training-card:hover {
 
-    background-color: #FFF9F8;
+    background-color: #EDF3F9;
 
     border-color: var(--color-primary);
 }
@@ -1125,7 +1121,6 @@
 
     font-size: 14px;
 
-    line-height: 21px;
 
     white-space: normal;
 }
@@ -1236,7 +1231,7 @@
 
     height: 5px;
 
-    background-color: #E0E4E7;
+    background-color: #D9E1E7;
 
     border-radius: 3px;
 
@@ -1383,7 +1378,6 @@
 
     font-size: 13px;
 
-    line-height: 19px;
 
     white-space: normal;
 }
@@ -1463,7 +1457,7 @@
 
     background-color: var(--color-primary-soft);
 
-    border-color: #E6BDB9;
+    border-color: #B7CDE0;
 }
 
 
@@ -1559,7 +1553,7 @@
 
     border-radius: 22px;
 
-    background-color: #F0F2F3;
+    background-color: #F0F3F6;
 
     align-items: center;
 
@@ -1623,7 +1617,6 @@
 
     font-size: 12px;
 
-    line-height: 17px;
 
     white-space: normal;
 }
@@ -1730,7 +1723,6 @@
 
     align-self: center;
 
-    z-index: 1;
 }
 
 
@@ -1754,9 +1746,8 @@
 
     font-size: 14px;
 
-    line-height: 20px;
 
-    text-align: center;
+    -unity-text-align: center;
 
     white-space: normal;
 }
@@ -1801,7 +1792,7 @@
 
     -unity-font-style: bold;
 
-    text-align: center;
+    -unity-text-align: center;
 
     margin-bottom: 9px;
 }
@@ -1813,11 +1804,10 @@
 
     font-size: 14px;
 
-    line-height: 21px;
 
     white-space: normal;
 
-    text-align: center;
+    -unity-text-align: center;
 }
 
 
@@ -1829,7 +1819,7 @@
 
     -unity-font-style: bold;
 
-    text-align: center;
+    -unity-text-align: center;
 
     margin-top: 17px;
 }
@@ -1867,7 +1857,6 @@
 
         font-size: 24px;
 
-        line-height: 30px;
     }
 
 
@@ -1875,7 +1864,6 @@
 
         font-size: 34px;
 
-        line-height: 38px;
     }
 
 
@@ -1948,7 +1936,6 @@
 
         font-size: 11px;
 
-        line-height: 16px;
     }
 }
 
@@ -1973,7 +1960,6 @@
 
         font-size: 22px;
 
-        line-height: 27px;
     }
 
 
@@ -1981,7 +1967,6 @@
 
         font-size: 13px;
 
-        line-height: 19px;
     }
 
 

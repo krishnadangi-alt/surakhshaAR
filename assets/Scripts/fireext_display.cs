@@ -76,6 +76,12 @@ public class ExtinguisherDisplayPickup : MonoBehaviour
 
     void TryPickup(Vector2 screenPosition)
     {
+        if (UnityEngine.EventSystems.EventSystem.current != null &&
+            UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
         Camera cam = null;
 
         if (arCamera != null)
@@ -104,18 +110,38 @@ public class ExtinguisherDisplayPickup : MonoBehaviour
         {
             Transform hitObject = hit.transform;
 
-            // Display object or any child
+            // Display object or any child or parent
             if (hitObject == transform ||
-                hitObject.IsChildOf(transform))
+                hitObject.IsChildOf(transform) ||
+                transform.IsChildOf(hitObject))
             {
                 Pickup();
 
                 return;
             }
         }
+
+        // Fallback: screen-space tap tolerance (130px) for seamless mobile AR tapping
+        Vector3 extPos = transform.position;
+        Collider col = GetComponent<Collider>();
+        if (col != null)
+        {
+            extPos = col.bounds.center;
+        }
+        else
+        {
+            Renderer rend = GetComponentInChildren<Renderer>();
+            if (rend != null) extPos = rend.bounds.center;
+        }
+
+        Vector3 extScreen = cam.WorldToScreenPoint(extPos);
+        if (extScreen.z > 0f && Vector2.Distance(extScreen, screenPosition) <= 130f)
+        {
+            Pickup();
+        }
     }
 
-    void Pickup()
+    public void Pickup()
     {
         if (pickedUp)
             return;

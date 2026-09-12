@@ -85,7 +85,7 @@ public class FireScenarioARPlacement : MonoBehaviour
         if (raycastManager == null)
         {
             raycastManager =
-                FindFirstObjectByType<ARRaycastManager>();
+                FindAnyObjectByType<ARRaycastManager>();
         }
 
         // Plane manager lives on the same XR Origin

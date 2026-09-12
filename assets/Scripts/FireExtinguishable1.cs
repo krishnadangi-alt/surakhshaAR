@@ -4,30 +4,28 @@ using UnityEngine.Events;
 public class FireExtinguishable : MonoBehaviour
 {
     [Header("Fire")]
-    [SerializeField] public ParticleSystem fireParticle;
+    [SerializeField] private ParticleSystem fireParticle;
+
+    [Header("Spray")]
+    [SerializeField] private DryPowderSpray powderSpray;
+    [SerializeField] private ExtinguisherSprayCollision sprayCollision;
 
     [Header("Extinguishing")]
     [SerializeField] public float extinguishTime = 10f;
-
-    [Header("Powder Spray")]
-    [SerializeField] private DryPowderSpray powderSpray;
-
-    [Header("Detection")]
-    [SerializeField] private float sprayRange = 5f;
-
-    [SerializeField] private float maxAimAngle = 35f;
+    [SerializeField] private float sprayRange = 4.5f;
+    [SerializeField] private float maxAimAngle = 45f;
 
     [Header("Events")]
     public UnityEvent OnExtinguished;
 
     public bool IsExtinguished { get; private set; }
 
-    private float extinguishTimer = 0f;
+    private float timer = 0f;
+    private bool particleColliding = false;
 
-    // =========================================================
-    // PUBLIC PROPERTIES
-    // Used by FireScenarioFlowManager
-    // =========================================================
+    // ---------------------------------------------------------
+    // Properties used by FireScenarioFlowManager & UI
+    // ---------------------------------------------------------
 
     public bool IsBeingSprayed
     {
@@ -36,13 +34,7 @@ public class FireExtinguishable : MonoBehaviour
             if (IsExtinguished)
                 return false;
 
-            if (powderSpray == null)
-                return false;
-
-            if (!powderSpray.IsSpraying())
-                return false;
-
-            return IsSprayAimedAtFire();
+            return IsSprayHittingFire();
         }
     }
 
@@ -53,198 +45,264 @@ public class FireExtinguishable : MonoBehaviour
             if (extinguishTime <= 0f)
                 return 1f;
 
-            return Mathf.Clamp01(
-                extinguishTimer / extinguishTime
-            );
+            return Mathf.Clamp01(timer / extinguishTime);
         }
     }
 
-    // =========================================================
-    // START
-    // =========================================================
+    public float RemainingTime => Mathf.Max(0f, extinguishTime - timer);
+
+    // ---------------------------------------------------------
+    // INITIALIZATION
+    // ---------------------------------------------------------
+
+    private void Awake()
+    {
+        IsExtinguished = false;
+        timer = 0f;
+    }
 
     private void Start()
     {
-        IsExtinguished = false;
-        extinguishTimer = 0f;
+        // 1. Find the spray collision script
+        if (sprayCollision == null)
+        {
+            sprayCollision = FindAnyObjectByType<ExtinguisherSprayCollision>();
+        }
 
-        // Start fire.
+        // 2. Find the spray script if not assigned
+        if (powderSpray == null)
+        {
+            powderSpray = FindAnyObjectByType<DryPowderSpray>();
+        }
+
+        // 3. Find fireParticle automatically if not assigned
+        if (fireParticle == null)
+        {
+            var hazard = GameObject.Find("Hazard") ?? GameObject.Find("Electric Box");
+            if (hazard != null)
+            {
+                var pSystems = hazard.GetComponentsInChildren<ParticleSystem>(true);
+                foreach (var ps in pSystems)
+                {
+                    string pName = ps.name.ToLower();
+                    if (pName.Contains("fire") || pName.Contains("flame"))
+                    {
+                        fireParticle = ps;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Start fire particles if present
         if (fireParticle != null)
         {
             fireParticle.gameObject.SetActive(true);
             fireParticle.Clear();
             fireParticle.Play();
         }
+    }
 
-        // Find spray automatically if not assigned.
-        if (powderSpray == null)
+    // ---------------------------------------------------------
+    // COLLISION NOTIFICATION FROM ExtinguisherSprayCollision
+    // ---------------------------------------------------------
+
+    public void NotifyParticleCollision(bool isColliding, float currentTimer, float maxTime)
+    {
+        particleColliding = isColliding;
+        extinguishTime = maxTime > 0f ? maxTime : 10f;
+        timer = currentTimer;
+
+        if (timer >= extinguishTime && !IsExtinguished)
         {
-            powderSpray =
-                FindFirstObjectByType<DryPowderSpray>();
+            ExtinguishFire();
         }
     }
 
-    // =========================================================
+    // ---------------------------------------------------------
     // UPDATE
-    // =========================================================
+    // ---------------------------------------------------------
 
     private void Update()
     {
         if (IsExtinguished)
             return;
 
-        // Find spray if reference is missing.
-        if (powderSpray == null)
-        {
-            powderSpray =
-                FindFirstObjectByType<DryPowderSpray>();
+        // Lazy resolution if objects were enabled dynamically
+        if (sprayCollision == null)
+            sprayCollision = FindAnyObjectByType<ExtinguisherSprayCollision>();
 
-            if (powderSpray == null)
-                return;
+        if (powderSpray == null)
+            powderSpray = FindAnyObjectByType<DryPowderSpray>();
+
+        // If ExtinguisherSprayCollision is active and handling timer, it calls NotifyParticleCollision.
+        // If ExtinguisherSprayCollision is not directly calling, handle timing here:
+        if (sprayCollision != null)
+        {
+            particleColliding = sprayCollision.IsTouchingFire;
+            timer = sprayCollision.ContactTimer;
+            if (timer >= extinguishTime)
+            {
+                ExtinguishFire();
+            }
+            return;
         }
 
-        // Spray is currently aimed at the fire.
-        if (IsBeingSprayed)
+        // Fallback timing if sprayCollision component is absent
+        if (IsSprayHittingFire())
         {
-            extinguishTimer += Time.deltaTime;
+            timer += Time.deltaTime;
 
-            // 10 continuous seconds reached.
-            if (extinguishTimer >= extinguishTime)
+            if (timer >= extinguishTime)
             {
                 ExtinguishFire();
             }
         }
         else
         {
-            // Spray is not reaching fire.
-            // Reset the timer.
-            extinguishTimer = 0f;
+            // Continuous collision broken -> RESTART TIMER!
+            timer = 0f;
         }
     }
 
-    // =========================================================
+    // ---------------------------------------------------------
     // SPRAY DETECTION
-    // =========================================================
+    // ---------------------------------------------------------
 
-    private bool IsSprayAimedAtFire()
+    private bool IsSprayHittingFire()
     {
-        Transform sprayPoint =
-            powderSpray.GetSprayPoint();
+        // 1. Direct particle collision check (highest priority)
+        if (particleColliding)
+            return true;
 
+        if (sprayCollision != null && sprayCollision.IsTouchingFire)
+            return true;
+
+        // 2. Vector & angle check as secondary fallback
+        if (powderSpray == null || !powderSpray.IsSpraying())
+            return false;
+
+        Transform sprayPoint = powderSpray.GetSprayPoint();
         if (sprayPoint == null)
             return false;
 
-        Vector3 firePosition;
+        Vector3 firePosition = fireParticle != null ? fireParticle.transform.position : transform.position;
+        Vector3 fireBase = firePosition + Vector3.down * 0.5f;
 
-        if (fireParticle != null)
-        {
-            firePosition =
-                fireParticle.transform.position;
-        }
-        else
-        {
-            firePosition =
-                transform.position;
-        }
+        return IsAimedAt(sprayPoint, firePosition) || IsAimedAt(sprayPoint, fireBase);
+    }
 
-        Vector3 directionToFire =
-            firePosition - sprayPoint.position;
+    private bool IsAimedAt(Transform sprayPoint, Vector3 targetPosition)
+    {
+        Vector3 toTarget = targetPosition - sprayPoint.position;
+        float distance = toTarget.magnitude;
 
-        float distance =
-            directionToFire.magnitude;
-
-        // Too far away.
         if (distance > sprayRange)
             return false;
 
-        // Prevent invalid angle calculation.
-        if (distance < 0.001f)
+        if (distance < 0.01f)
             return true;
 
-        directionToFire.Normalize();
+        Vector3 direction = toTarget.normalized;
+        float forwardAngle = Vector3.Angle(sprayPoint.forward, direction);
+        float backwardAngle = Vector3.Angle(-sprayPoint.forward, direction);
+        float angle = Mathf.Min(forwardAngle, backwardAngle);
 
-        // Normal spray direction.
-        float forwardAngle =
-            Vector3.Angle(
-                sprayPoint.forward,
-                directionToFire
-            );
-
-        // Support spray pointing backwards.
-        float backwardAngle =
-            Vector3.Angle(
-                -sprayPoint.forward,
-                directionToFire
-            );
-
-        float finalAngle =
-            Mathf.Min(
-                forwardAngle,
-                backwardAngle
-            );
-
-        return finalAngle <= maxAimAngle;
+        return angle <= maxAimAngle;
     }
 
-    // =========================================================
+    // ---------------------------------------------------------
     // EXTINGUISH
-    // =========================================================
+    // ---------------------------------------------------------
 
-    private void ExtinguishFire()
+    public void ExtinguishFire()
     {
         if (IsExtinguished)
             return;
 
         IsExtinguished = true;
+        timer = extinguishTime;
 
-        extinguishTimer = extinguishTime;
-
-        // Stop fire immediately.
+        // 1. Stop primary fire particle system
         if (fireParticle != null)
         {
-            fireParticle.Stop(
-                true,
-                ParticleSystemStopBehavior.StopEmittingAndClear
-            );
-
+            fireParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             fireParticle.gameObject.SetActive(false);
         }
 
-        Debug.Log("FIRE_EXTINGUISHED");
-        Debug.Log("Fire extinguished after 10 seconds.");
+        // 2. Stop and deactivate all other fire particle systems under Hazard
+        var hazard = GameObject.Find("Hazard") ?? GameObject.Find("Electric Box");
+        if (hazard != null)
+        {
+            var allPS = hazard.GetComponentsInChildren<ParticleSystem>(true);
+            foreach (var ps in allPS)
+            {
+                if (ps != null)
+                {
+                    ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                    ps.gameObject.SetActive(false);
+                }
+            }
+
+            // Deactivate VFX_Fire_01_Small GameObject
+            var vfx = hazard.transform.Find("Electric Box/VFX_Fire_01_Small")
+                   ?? hazard.transform.Find("VFX_Fire_01_Small");
+            if (vfx != null)
+            {
+                vfx.gameObject.SetActive(false);
+            }
+        }
+
+        Debug.Log("================================");
+        Debug.Log("FIRE EXTINGUISHED (10s Continuous Spray Complete)");
+        Debug.Log("================================");
 
         OnExtinguished?.Invoke();
     }
 
-    // =========================================================
+    // ---------------------------------------------------------
     // PROGRESS
-    // =========================================================
+    // ---------------------------------------------------------
 
     public float GetProgress()
     {
         if (extinguishTime <= 0f)
             return 1f;
 
-        return Mathf.Clamp01(
-            extinguishTimer / extinguishTime
-        );
+        return Mathf.Clamp01(timer / extinguishTime);
     }
 
-    // =========================================================
+    // ---------------------------------------------------------
     // RESET
-    // =========================================================
+    // ---------------------------------------------------------
 
     public void ResetFire()
     {
         IsExtinguished = false;
-        extinguishTimer = 0f;
+        timer = 0f;
+        particleColliding = false;
+
+        if (sprayCollision != null)
+        {
+            sprayCollision.ResetCollisionTimer();
+        }
 
         if (fireParticle != null)
         {
             fireParticle.gameObject.SetActive(true);
-
             fireParticle.Clear();
             fireParticle.Play();
+        }
+
+        var hazard = GameObject.Find("Hazard") ?? GameObject.Find("Electric Box");
+        if (hazard != null)
+        {
+            var vfx = hazard.transform.Find("Electric Box/VFX_Fire_01_Small")
+                   ?? hazard.transform.Find("VFX_Fire_01_Small");
+            if (vfx != null)
+            {
+                vfx.gameObject.SetActive(true);
+            }
         }
     }
 }

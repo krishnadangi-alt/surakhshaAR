@@ -32,6 +32,14 @@ from app.schemas.vision import (
     VisionStatusOut,
 )
 
+from app.schemas.event import (
+    EventBatchCreate,
+    EventBatchOut,
+    EventItemCreate,
+    EventOut,
+    EventStatsOut,
+)
+
 __all__ = [
     "WorkerCreate",
     "WorkerOut",
@@ -66,4 +74,9 @@ __all__ = [
     "PPECheckOut",
     "PPEDetectionOut",
     "VisionStatusOut",
+    "EventItemCreate",
+    "EventBatchCreate",
+    "EventOut",
+    "EventBatchOut",
+    "EventStatsOut",
 ]

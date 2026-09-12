@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements">
-  <ui:VisualElement class="ar-root">
+  <ui:VisualElement class="ar-root safe-area-all">
     <ui:VisualElement name="ar-step" class="ar-top"><ui:Label name="ar-step-text" class="ar-step-text" /></ui:VisualElement>
     <ui:VisualElement name="ar-progress" class="ar-progress"><ui:VisualElement name="ar-progress-fill" class="ar-progress-fill" /><ui:Label name="ar-progress-text" class="ar-progress-text" /></ui:VisualElement>
     <ui:VisualElement name="ar-card" class="ar-card"><ui:Label name="ar-card-title" class="ar-card-title" /><ui:Label name="ar-card-body" class="ar-card-body" /><ui:Label name="ar-card-footer" class="ar-card-footer" /></ui:VisualElement>

@@ -28,14 +28,9 @@ public class ExtinguisherGripInteraction : MonoBehaviour
 
     private void Awake()
     {
-        arCamera = Camera.main;
-
-        if (arCamera == null)
-        {
-            Debug.LogError(
-                "ExtinguisherGripInteraction: Main Camera not found."
-            );
-        }
+        // Camera.main is resolved lazily in Update - the AR camera may not
+        // be tagged/active yet when this component's Awake runs during an
+        // additive scene load (the UI scene camera loads first).
     }
 
     private void Start()
@@ -45,6 +40,23 @@ public class ExtinguisherGripInteraction : MonoBehaviour
             sprayAudio.playOnAwake = false;
             sprayAudio.loop = true;
             sprayAudio.Stop();
+        }
+
+        if (powderSpray == null)
+        {
+            powderSpray = GetComponentInChildren<DryPowderSpray>(true)
+                       ?? FindAnyObjectByType<DryPowderSpray>();
+        }
+
+        if (powderSpray == null)
+        {
+            var sprayGO = transform.Find("spraypoint/spray")?.gameObject
+                       ?? GameObject.Find("spray");
+            if (sprayGO != null)
+            {
+                powderSpray = sprayGO.GetComponent<DryPowderSpray>()
+                           ?? sprayGO.AddComponent<DryPowderSpray>();
+            }
         }
 
         if (powderSpray != null)
@@ -61,11 +73,20 @@ public class ExtinguisherGripInteraction : MonoBehaviour
     private void OnDisable()
     {
         StopGrip();
-        EnhancedTouchSupport.Disable();
+        // NOTE: intentionally NOT calling EnhancedTouchSupport.Disable().
+        // EnhancedTouchSupport is shared by every interaction script in the
+        // scene (pin, pickup, hose, AR placement). Disabling it here would
+        // kill touch input for those systems. ARPlacement disables it when
+        // the AR session ends.
     }
 
     private void Update()
     {
+        // Resolve the camera lazily - Camera.main may not be valid yet when
+        // Awake runs on additively loaded AR scenes.
+        if (arCamera == null)
+            arCamera = Camera.main;
+
         if (arCamera == null)
             return;
 
@@ -128,7 +149,7 @@ public class ExtinguisherGripInteraction : MonoBehaviour
         }
     }
 
-    private void StartGrip()
+    public void StartGrip()
     {
         if (IsGripHeld)
             return;
@@ -164,7 +185,7 @@ public class ExtinguisherGripInteraction : MonoBehaviour
         OnSprayStarted?.Invoke();
     }
 
-    private void StopGrip()
+    public void StopGrip()
     {
         if (!IsGripHeld)
             return;

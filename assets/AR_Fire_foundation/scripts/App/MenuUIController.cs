@@ -30,21 +30,44 @@ public sealed class MenuUIController : MonoBehaviour
         }
 
         document = gameObject.AddComponent<UIDocument>();
-        document.panelSettings = ScriptableObject.CreateInstance<PanelSettings>();
+        document.panelSettings = CreatePanelSettings();
         document.visualTreeAsset = layout;
         root = document.rootVisualElement;
         root.styleSheets.Add(theme);
+
+        // Apply Android safe-area insets (status bar / gesture bar).
+        var safeArea = SurakshaAR.Core.SafeAreaDriver.Instance;
+        if (safeArea == null)
+        {
+            safeArea = new GameObject("SafeAreaDriver").AddComponent<SurakshaAR.Core.SafeAreaDriver>();
+        }
+        safeArea.RegisterRoot(root);
 
         WireButtons();
         Show("splash-screen");
     }
 
+    /// <summary>
+    /// Shared mobile scaling: 500x1111 (9:20) width-matched reference, so the
+    /// CSS-scale USS values (11-22px) render at Figma-proportional sizes on
+    /// every portrait Android resolution.
+    /// </summary>
+    private static PanelSettings CreatePanelSettings()
+    {
+        PanelSettings settings = ScriptableObject.CreateInstance<PanelSettings>();
+        settings.scaleMode = PanelScaleMode.ScaleWithScreenSize;
+        settings.referenceResolution = new Vector2Int(500, 1111);
+        settings.screenMatchMode = PanelScreenMatchMode.MatchWidthOrHeight;
+        settings.match = 0f; // match width
+        return settings;
+    }
+
     private void WireButtons()
     {
-        Button("get-started").clicked += () => Show("login-screen");
+        Button("get-started").clicked += () => Show("language-screen");
         Button("login-back").clicked += () => Show("splash-screen");
         Button("login-continue").clicked += Login;
-        Button("language-back").clicked += () => Show("login-screen");
+        Button("language-back").clicked += () => Show("splash-screen");
         Button("language-continue").clicked += ContinueFromLanguage;
         Button("intro-back").clicked += () => Show("catalogue-screen");
         Button("intro-next").clicked += () => Show("equipment-screen");
@@ -52,6 +75,8 @@ public sealed class MenuUIController : MonoBehaviour
         Button("equipment-next").clicked += () => Show("howto-screen");
         Button("howto-back").clicked += () => Show("equipment-screen");
         Button("start-ar").clicked += StartFireTraining;
+        Button("home-start").clicked += () => Show("catalogue-screen");
+        Button("home-modules").clicked += () => Show("catalogue-screen");
 
         foreach (string language in new[] { "English", "Hindi", "Santali" })
         {
@@ -86,7 +111,7 @@ public sealed class MenuUIController : MonoBehaviour
         error.text = string.Empty;
         AppSession.Instance.CompleteLogin(employeeId);
         TrainingEventManager.RaiseLogin(employeeId);
-        Show("language-screen");
+        Show("home-screen");
     }
 
     private void SelectLanguage(string language)
@@ -105,7 +130,7 @@ public sealed class MenuUIController : MonoBehaviour
         AppSession.Instance.SetLanguage(selectedLanguage);
         SimpleLocalization.SetLanguage(selectedLanguage);
         TrainingEventManager.RaiseLanguageSelected(selectedLanguage);
-        Show("catalogue-screen");
+        Show("login-screen");
     }
 
     private void FilterTraining(string query)

@@ -41,6 +41,9 @@ public static class TrainingEventManager
     /// <summary>Raised when the fire scenario is placed on the floor.</summary>
     public static event Action OnScenarioPlaced;
 
+    /// <summary>Raised when the fire hazard is identified.</summary>
+    public static event Action OnHazardIdentified;
+
     /// <summary>Raised when the fire alarm is activated.</summary>
     public static event Action OnAlarmActivated;
 
@@ -58,6 +61,15 @@ public static class TrainingEventManager
 
     /// <summary>Raised when the training flow is fully completed.</summary>
     public static event Action OnTrainingCompleted;
+
+    // Backend Telemetry Events
+    public static event Action<string> OnAssessmentStarted;
+    public static event Action<string, string, string> OnWrongAction; // action, severity, reason
+    public static event Action<string, string> OnCriticalAction; // action, reason
+    public static event Action<string, bool> OnEvacuationStarted; // route, safe
+    public static event Action<string, bool> OnPpeSelected; // ppeType, correct
+    public static event Action<string, bool> OnEquipmentSelected; // equipmentType, correct
+    public static event Action<float> OnAssessmentCompleted; // durationSeconds
 
     // =====================================================
     // RAISE METHODS (single logging point)
@@ -91,6 +103,12 @@ public static class TrainingEventManager
     {
         Log("ScenarioPlaced");
         OnScenarioPlaced?.Invoke();
+    }
+
+    public static void RaiseHazardIdentified()
+    {
+        Log("HazardIdentified");
+        OnHazardIdentified?.Invoke();
     }
 
     public static void RaiseAlarmActivated()
@@ -127,6 +145,48 @@ public static class TrainingEventManager
     {
         Log("TrainingCompleted");
         OnTrainingCompleted?.Invoke();
+    }
+
+    public static void RaiseAssessmentStarted(string scenarioType)
+    {
+        Log("AssessmentStarted: " + scenarioType);
+        OnAssessmentStarted?.Invoke(scenarioType);
+    }
+
+    public static void RaiseWrongAction(string action, string severity, string reason)
+    {
+        Log($"WrongAction [{severity}]: {action} - {reason}");
+        OnWrongAction?.Invoke(action, severity, reason);
+    }
+
+    public static void RaiseCriticalAction(string action, string reason)
+    {
+        Log($"CRITICAL ACTION: {action} - {reason}");
+        OnCriticalAction?.Invoke(action, reason);
+    }
+
+    public static void RaiseEvacuationStarted(string route, bool safe)
+    {
+        Log($"EvacuationStarted: Route={route}, Safe={safe}");
+        OnEvacuationStarted?.Invoke(route, safe);
+    }
+
+    public static void RaisePpeSelected(string ppeType, bool correct)
+    {
+        Log($"PpeSelected: {ppeType}, Correct={correct}");
+        OnPpeSelected?.Invoke(ppeType, correct);
+    }
+
+    public static void RaiseEquipmentSelected(string equipmentType, bool correct)
+    {
+        Log($"EquipmentSelected: {equipmentType}, Correct={correct}");
+        OnEquipmentSelected?.Invoke(equipmentType, correct);
+    }
+
+    public static void RaiseAssessmentCompleted(float durationSeconds)
+    {
+        Log($"AssessmentCompleted: duration={durationSeconds}s");
+        OnAssessmentCompleted?.Invoke(durationSeconds);
     }
 
     private static void Log(string message)
