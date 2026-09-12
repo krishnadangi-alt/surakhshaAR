@@ -143,6 +143,7 @@ namespace SurakshaAR.Core
             {
                 worker_id = 1,
                 device_id = store.Data.device_id,
+                batch_id = $"batch_{Guid.NewGuid():N}".Substring(0, 16),
                 sessions = pendingList
             };
 

@@ -99,6 +99,9 @@ namespace SurakshaAR.Data
                 occurred_at = DateTime.UtcNow.ToString("o"),
                 scenario_type = scenarioType,
                 attempt_number = Data.assessments.Count,
+                client_session_id = AssessmentTelemetryManager.Instance != null && !string.IsNullOrEmpty(AssessmentTelemetryManager.Instance.CurrentSessionId)
+                    ? AssessmentTelemetryManager.Instance.CurrentSessionId
+                    : $"sess_{Guid.NewGuid():N}".Substring(0, 16),
                 events = new List<AssessmentEvent>(events ?? new List<AssessmentEvent>())
             };
 
