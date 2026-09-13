@@ -6,8 +6,10 @@ same way the VR worker app does.
 
 Scoring notes (baseline 50 per competency, thresholds per scenario):
 - GOOD_FIRE_EVENTS -> overall 90.0, all competencies pass (decision_making
-  stays at its baseline 50 >= threshold 45).
-- GOOD_GAS_EVENTS  -> overall 100.0, all competencies pass.
+  stays at its baseline 50 >= threshold 45), includes assessment_completed
+  (Day 1: completion is mandatory for PASS).
+- GOOD_GAS_EVENTS  -> overall 100.0, all competencies pass, includes
+  assessment_completed.
 - BAD_FIRE_EVENTS  -> single major wrong_action -> overall 39.0, FAIL.
 """
 
@@ -31,6 +33,11 @@ GOOD_FIRE_EVENTS = [
         "event_type": "evacuation_started",
         "correct": True,
         "route": "north_exit",
+    },
+    # Day 1 (Rehan rule 4): completion is mandatory for PASS.
+    {
+        "event_type": "assessment_completed",
+        "completion_status": "success",
     },
 ]
 
@@ -59,6 +66,11 @@ GOOD_GAS_EVENTS = [
         "event_type": "emergency_procedure",
         "correct": True,
         "action": "alert_supervisor",
+    },
+    # Day 1 (Rehan rule 4): completion is mandatory for PASS.
+    {
+        "event_type": "assessment_completed",
+        "completion_status": "success",
     },
 ]
 

@@ -116,13 +116,15 @@ namespace SurakshaAR.Networking
             public string timestamp;
             public bool correct;
             public string[] items;
-            public string severity;   // wrong_action: minor | major
+            public string severity;   // wrong_action: minor | major | critical (critical -> auto-FAIL)
+            public bool critical;     // Day 1: flags any event as a Critical Safety Error (auto-FAIL)
             public string action;
             public string hazard_type;
             public string reason;     // critical_action
             public string route;      // evacuation_started
             public string direction;  // evacuation_started (gas: upwind)
-            public string completion_status; // assessment_completed
+            public string completion_status; // assessment_completed / scenario_completed
+            public float response_time_seconds; // Day 1: reaction time in seconds (0 = not recorded)
         }
 
         [Serializable]

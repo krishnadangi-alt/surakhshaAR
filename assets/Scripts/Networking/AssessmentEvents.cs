@@ -79,6 +79,54 @@ namespace SurakshaAR.Networking
         }
 
         /// <summary>
+        /// unsafe_action - Day 1: increases hazard exposure but is NOT immediately
+        /// fatal. Large penalty (-20..-25 band) on the server; does NOT auto-FAIL.
+        /// </summary>
+        public static ApiContracts.AssessmentEvent UnsafeAction(string action)
+        {
+            return new ApiContracts.AssessmentEvent
+            {
+                event_type = "unsafe_action",
+                action = action,
+            };
+        }
+
+        /// <summary>
+        /// assessment_completed - Day 1: completion is mandatory for PASS. Send as
+        /// the final event of every assessment submission.
+        /// </summary>
+        public static ApiContracts.AssessmentEvent AssessmentCompleted(string completionStatus)
+        {
+            return new ApiContracts.AssessmentEvent
+            {
+                event_type = "assessment_completed",
+                completion_status = completionStatus,
+            };
+        }
+
+        /// <summary>scenario_completed - alternative Day 1 completion marker.</summary>
+        public static ApiContracts.AssessmentEvent ScenarioCompleted(string completionStatus)
+        {
+            return new ApiContracts.AssessmentEvent
+            {
+                event_type = "scenario_completed",
+                completion_status = completionStatus,
+            };
+        }
+
+        /// <summary>
+        /// Day 1: stamps an event with the worker's reaction time in seconds.
+        /// Rules: &lt; 3s +5% bonus | 3-15s baseline | &gt; 15s -10% latency penalty |
+        /// Machinery E-Stop benchmark &lt; 2.5s (late reaction recorded server-side).
+        /// </summary>
+        public static ApiContracts.AssessmentEvent WithResponseTime(
+            ApiContracts.AssessmentEvent e, float seconds)
+        {
+            e.response_time_seconds = seconds;
+            return e;
+        }
+
+        /// <summary>
         /// critical_action - a safety violation. Triggers automatic FAIL on the
         /// server regardless of all other scores.
         /// </summary>

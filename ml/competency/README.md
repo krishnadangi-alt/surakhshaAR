@@ -52,10 +52,15 @@ The scorer handles events from the AR worker application (API standard):
 - `hazard_identified` — Worker identified a hazard (correct/incorrect)
 - `ppe_selected` — Worker selected PPE equipment
 - `equipment_selected` — Worker selected tools/equipment
-- `wrong_action` — Incorrect action (severity: minor/major/critical)
-- `critical_action` — Safety-critical violation (triggers automatic FAIL)
+- `wrong_action` — Incorrect procedural/operational mistake (severity: minor/major; `severity: "critical"` is a Critical Safety Error → automatic FAIL)
+- `unsafe_action` — Hazard-exposing but not immediately fatal action (penalty in the −20..−25 band; does NOT auto-FAIL)
+- `critical_action` — Safety-critical violation (triggers automatic FAIL), as do `critical: true` / `severity: "critical"` on any event
 - `evacuation_started` — Evacuation procedure initiated
-- `assessment_completed` — Assessment concluded
+- `assessment_completed` / `scenario_completed` — Assessment concluded (**completion is mandatory for PASS**)
+
+Any event may carry an optional `response_time_seconds` (float, > 0): < 3s → +5% bonus on the
+event's score delta · 3–15s → baseline · > 15s → −10% latency penalty. Machinery E-Stop
+benchmark: < 2.5s (late reactions are recorded in `ScoringResult.delayed_estop_reactions`).
 
 ### Competency Definitions
 

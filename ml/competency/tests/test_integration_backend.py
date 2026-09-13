@@ -13,12 +13,17 @@ class TestBackendEventFormatIntegration:
     """Integration tests verifying the competency engine works with backend-style events."""
 
     def test_assess_with_backend_good_fire_events(self):
-        """assess() should process backend-format fire events and return a pass."""
+        """assess() should process backend-format fire events and return a pass.
+
+        Day 1 (Rehan rule 4): completion is mandatory, so the event list ends
+        with an assessment_completed event.
+        """
         events = [
             {"event_type": "hazard_identified", "correct": True, "hazard_type": "electrical_fire"},
             {"event_type": "ppe_selected", "correct": True, "items": ["helmet", "gloves", "jacket"]},
             {"event_type": "equipment_selected", "correct": True, "action": "grab_extinguisher"},
             {"event_type": "evacuation_started", "correct": True, "route": "north_exit"},
+            {"event_type": "assessment_completed", "completion_status": "success"},
         ]
         result = assess(events, scenario_type="fire")
         assert result["passed"] is True
@@ -48,32 +53,40 @@ class TestBackendEventFormatIntegration:
 
 
     def test_assess_handles_response_time_seconds_gracefully(self):
-        """assess() should handle events with response_time_seconds without errors.
+        """assess() must apply the confirmed Day 1 response-time rules.
 
-        The API contract includes response_time_seconds as an optional field.
-        The existing scoring rules do not define response-time-based scoring,
-        so this field should be safely ignored (handled according to existing rules).
+        - response_time_seconds < 3.0s  -> +5% bonus on the event's delta
+        - 3.0-15.0s                     -> baseline (no change)
+        - response_time_seconds > 15.0s -> -10% procedural latency penalty
+        - Non-positive / missing values are treated as "no data" (Unity's
+          JsonUtility serialises unset floats as 0.0).
         """
-        events = [
-            {
-                "event_type": "hazard_identified",
-                "correct": True,
-                "hazard_type": "electrical_fire",
-                "response_time_seconds": 12.5,  # Slow response
-            },
-            {
-                "event_type": "ppe_selected",
-                "correct": True,
-                "items": ["helmet", "gloves"],
-                "response_time_seconds": 8.0,
-            },
+        # In-band responses (8.0s / 12.5s) -> baseline, same as no response time.
+        baseline_events = [
+            {"event_type": "hazard_identified", "correct": True, "hazard_type": "electrical_fire",
+             "response_time_seconds": 12.5},
+            {"event_type": "ppe_selected", "correct": True, "items": ["helmet", "gloves"],
+             "response_time_seconds": 8.0},
             {"event_type": "equipment_selected", "correct": True, "action": "grab_extinguisher"},
             {"event_type": "evacuation_started", "correct": True, "route": "north_exit"},
+            {"event_type": "assessment_completed", "completion_status": "success"},
         ]
-        # Should not raise an exception; response_time is not scored by existing rules
-        result = assess(events, scenario_type="fire")
+        result = assess(baseline_events, scenario_type="fire")
         assert result["passed"] is True
-        assert result["score"] >= 70.0
+        assert result["score"] == 90.0  # identical to the same events without response times
+
+        # No response-time data at all (and 0.0 sent by Unity) -> also baseline.
+        no_data_events = [
+            {"event_type": "hazard_identified", "correct": True, "hazard_type": "electrical_fire"},
+            {"event_type": "ppe_selected", "correct": True, "items": ["helmet", "gloves"],
+             "response_time_seconds": 0.0},
+            {"event_type": "equipment_selected", "correct": True, "action": "grab_extinguisher"},
+            {"event_type": "evacuation_started", "correct": True, "route": "north_exit"},
+            {"event_type": "assessment_completed", "completion_status": "success"},
+        ]
+        result = assess(no_data_events, scenario_type="fire")
+        assert result["passed"] is True
+        assert result["score"] == 90.0
 
     def test_assess_with_full_backend_assessment_payload(self):
         """assess() should handle a complete realistic fire assessment event sequence."""
@@ -117,6 +130,7 @@ class TestBackendEventFormatIntegration:
             {"event_type": "equipment_selected", "correct": True, "action": "grab_extinguisher"},
             {"event_type": "wrong_action", "severity": "minor", "action": "approached_at_wrong_angle"},
             {"event_type": "evacuation_started", "correct": True, "route": "north_exit"},
+            {"event_type": "assessment_completed", "completion_status": "success"},
         ]
         result = assess(events, scenario_type="fire")
         # Minor wrong action should still allow a pass

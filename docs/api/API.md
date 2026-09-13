@@ -60,15 +60,22 @@ Assessment endpoints accept raw behavioural events. Each event carries an `event
 | `equipment_selected` | `correct` | `equipment_use` +50 / −25 |
 | `evacuation_started` | `correct` | fire: `procedure_compliance` +50/−30 · gas: `evacuation` +50/−30 |
 | `emergency_procedure` | `correct`, `action` | gas only: `emergency_response` +50/−25 (ignored for fire) |
-| `wrong_action` | `severity` (`minor`/`major`) | minor −5/−3 · major −30/−25 on the procedure & decision competencies (fire: `procedure_compliance` + `decision_making` · gas: `emergency_response` + `hazard_identification`) |
+| `wrong_action` | `severity` (`minor`/`major`/`critical`) | minor −5/−3 · major −30/−25 on the procedure & decision competencies (fire: `procedure_compliance` + `decision_making` · gas: `emergency_response` + `hazard_identification`) · **`severity: "critical"` → automatic FAIL** (Critical Safety Error) |
+| `unsafe_action` | `action` | −22 procedure / −20 decision (fire: `procedure_compliance` + `decision_making` · gas: `emergency_response` + `hazard_identification`) — **does NOT auto-FAIL** (fails only via the numeric pass rules) |
 | `critical_action` | `action`, `reason` | **Automatic FAIL** regardless of all scores |
-| `training_started`, `assessment_started`, `assessment_completed` | — | Logged for audit; no score change |
+| `training_started`, `assessment_started` | — | Logged for audit; no score change |
+| `assessment_completed` | optional `completion_status` | Logged for audit; no score change — **but completion is mandatory for PASS** (see pass rules) |
+| any event | optional `response_time_seconds` (float, > 0) | `< 3.0s` → +5% on the event's delta · `3.0–15.0s` → baseline · `> 15.0s` → −10% (latency penalty). E-Stop benchmark: **< 2.5s** (a slower correct E-Stop is recorded as a delayed reaction) |
 
 **Pass rules** (overall pass threshold: `70.0`) — an assessment passes only if **all** hold:
 
-1. No `critical_action` events (critical errors → automatic FAIL).
+1. No critical errors (any `critical_action` event, any event with `critical: true`, or any event
+   with `severity: "critical"` → automatic FAIL).
 2. Overall score (mean of all competency scores) ≥ `70.0`.
 3. Every competency score ≥ its per-competency pass threshold.
+4. The assessment **was completed**: at least one `assessment_completed` (or `scenario_completed`)
+   event was submitted. A submission without a completion event is **incomplete → FAIL**
+   ("Incomplete assessment"), even with otherwise passing scores.
 
 Per-competency thresholds — **fire**: `hazard_identification` 75, `ppe_selection` 80,
 `procedure_compliance` 75, `equipment_use` 75, `decision_making` 45. **gas**:
@@ -252,7 +259,8 @@ auto-incremented per worker + module when omitted.
     { "event_type": "hazard_identified", "correct": true, "hazard_type": "electrical_fire" },
     { "event_type": "ppe_selected", "correct": true, "items": ["helmet", "gloves", "jacket"] },
     { "event_type": "equipment_selected", "correct": true, "action": "grab_extinguisher" },
-    { "event_type": "evacuation_started", "correct": true, "route": "north_exit" }
+    { "event_type": "evacuation_started", "correct": true, "route": "north_exit" },
+    { "event_type": "assessment_completed", "completion_status": "success" }
   ]
 }
 ```
@@ -288,7 +296,12 @@ creates no duplicate record; the events are not re-scored.
 
 A failing assessment returns `passed: false` with structured `weaknesses` and, when a
 safety-critical mistake was made, a non-empty `critical_errors` list and a
-`pass_reason` beginning with `CRITICAL ERRORS:`.
+`pass_reason` beginning with `CRITICAL ERRORS:`. Each weakness carries
+`affected_aspects` — the sub-skill aspects of the weak competency (from the ML engine's
+competency definitions), e.g. `"affected_aspects": ["select_correct_ppe", "proper_donning",
+"ppe_completeness", "ppe_inspection"]` for a weak `ppe_selection`. An assessment submitted
+without any `assessment_completed` event returns `passed: false` with `pass_reason`
+"Incomplete assessment: ..." (completion is mandatory).
 
 **Errors**
 

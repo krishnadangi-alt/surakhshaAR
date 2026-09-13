@@ -394,13 +394,15 @@ class TestGasScenario:
         assert result.competency_scores["emergency_response"].score == 100.0
 
     def test_good_gas_assessment_passes(self):
-        """A well-performed gas assessment must be passable."""
+        """A well-performed, completed gas assessment must be passable."""
         events = [
             {"event_type": "hazard_identified", "correct": True, "hazard_type": "gas_leak"},
             {"event_type": "ppe_selected", "correct": True, "items": ["respirator", "gloves"]},
             {"event_type": "equipment_selected", "correct": True, "action": "gas_detector"},
             {"event_type": "evacuation_started", "correct": True, "direction": "upwind"},
             {"event_type": "emergency_procedure", "correct": True, "action": "alert_supervisor"},
+            # Day 1 (Rehan rule 4): completion is mandatory for PASS.
+            {"event_type": "assessment_completed", "completion_status": "success"},
         ]
         scorer = CompetencyScorer(scenario_type="gas")
         for event in events:

@@ -165,12 +165,67 @@ CRITICAL_ERROR_WEIGHT = 0.5    # How much critical errors factor into FAIL
 WEAKNESS_THRESHOLD = 60.0      # Score below this = weakness
 SEVERE_WEAKNESS_THRESHOLD = 50.0  # Score below this = severe weakness
 
-# Retraining recommendations
+# ============================================================================
+# DAY 1 — REHAN CONFIRMED RULES (FINAL SCORING & COMPETENCY)
+# ============================================================================
+# Locked SIH/demo baseline values. These are provisional for production and
+# must be re-validated against official industrial SOPs before deployment.
+
+# Event-type penalty ladder (points deducted per affected competency):
+# - WRONG_ACTION (minor, non-life-threatening procedural mistake): small penalty.
+# - UNSAFE_ACTION (increases hazard exposure, NOT immediately fatal): -20..-25.
+#   The exact project-level value is UNSAFE_ACTION_PENALTY (default 22.0);
+#   UNSAFE_ACTION_PENALTY_RANGE documents the confirmed (-20 to -25) band.
+# - CRITICAL_ACTION (life-threatening/catastrophic): instant automatic FAIL.
+UNSAFE_ACTION_PENALTY = 22.0
+UNSAFE_ACTION_PENALTY_RANGE = (-25.0, -20.0)
+UNSAFE_ACTION_DECISION_PENALTY = 20.0
+WRONG_ACTION_MINOR_PROCEDURE_PENALTY = 5.0
+WRONG_ACTION_MINOR_DECISION_PENALTY = 3.0
+WRONG_ACTION_MAJOR_PROCEDURE_PENALTY = 30.0
+WRONG_ACTION_MAJOR_DECISION_PENALTY = 25.0
+
+# Response-time rules (seconds) — applied per event carrying
+# ``response_time_seconds`` (see scoring/engine.py):
+# - < 3.0s  -> +5% speed bonus on the event's score delta.
+# - 3.0-15.0s -> baseline / no change.
+# - > 15.0s -> -10% procedural latency penalty on the event's score delta.
+# - Machinery E-Stop benchmark: < 2.5s; a late E-Stop reaction is recorded as
+#   a delayed-reaction penalty (tracked on the result, score effect applied
+#   through the same latency penalty path).
+RESPONSE_TIME_FAST_THRESHOLD_SECONDS = 3.0
+RESPONSE_TIME_SLOW_THRESHOLD_SECONDS = 15.0
+RESPONSE_TIME_FAST_BONUS = 0.05
+RESPONSE_TIME_SLOW_PENALTY = 0.10
+ESTOP_BENCHMARK_SECONDS = 2.5
+
+# Completion: an assessment without SCENARIO_COMPLETED / required completion
+# must NOT pass.
+COMPLETION_EVENT_TYPES = ("assessment_completed", "scenario_completed")
+
+# Competency pass thresholds are defined per CompetencyDefinition above and
+# mirror the locked SIH/demo baseline below. OVERALL_PASS_THRESHOLD is the
+# overall PASS gate (>= 70%).
+
+# Retraining recommendations (prototype severity bands; still used by docs/tests).
 RETRAINING_SEVERITY_THRESHOLDS = {
     "urgent": 40.0,      # Critical retraining needed
     "high": 50.0,        # Important retraining
     "medium": 65.0,      # Recommended retraining
 }
+
+# ============================================================================
+# SIH BASELINE THRESHOLDS (locked demo values, provisional for production)
+# ============================================================================
+SIH_BASELINE_THRESHOLDS = {
+    "overall_pass": 70.0,
+    "hazard_recognition": 75.0,
+    "ppe_selection_loto": 80.0,
+    "emergency_response_procedure_min": 70.0,
+    "emergency_response_procedure_max": 75.0,
+    "decision_making": 45.0,
+}
+
 
 
 def get_competencies(scenario_type: str) -> Dict[str, CompetencyDefinition]:
