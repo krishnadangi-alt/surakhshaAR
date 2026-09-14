@@ -26,8 +26,8 @@ from app.models.assessment import Assessment  # noqa: E402
 from sqlalchemy.orm import Session  # noqa: E402
 
 # Scenario types supported by the competency engine. They map 1:1 to the
-# training module codes seeded in the backend (fire / gas).
-SUPPORTED_SCENARIOS = ("fire", "gas")
+# training module codes seeded in the backend (fire / gas / machinery).
+SUPPORTED_SCENARIOS = ("fire", "gas", "machinery")
 
 # Default time budget handed to the retraining recommender.
 DEFAULT_RETRAINING_TIME_LIMIT_MINUTES = 120

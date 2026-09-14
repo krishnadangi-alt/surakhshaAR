@@ -120,3 +120,7 @@ Desktop.ini
 *~
 # Unity crash-recovery snapshots
 assets/AR_Fire_foundation/_Recovery/
+
+Assets/_Recovery/
+UI_Legacy_Backup/
+_UIBackup_Old/

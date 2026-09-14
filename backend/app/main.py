@@ -40,6 +40,19 @@ app.add_middleware(
 app.include_router(api_router)
 
 
+from pathlib import Path
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
 @app.get("/health", tags=["health"])
 def health_check():
     return {"status": "ok"}
+
+
+DASHBOARD_DIR = Path(__file__).resolve().parent.parent.parent / "dashboard"
+if DASHBOARD_DIR.exists() and (DASHBOARD_DIR / "index.html").exists():
+    app.mount("/dashboard", StaticFiles(directory=str(DASHBOARD_DIR), html=True), name="dashboard")
+
+    @app.get("/", include_in_schema=False)
+    def root():
+        return FileResponse(str(DASHBOARD_DIR / "index.html"))

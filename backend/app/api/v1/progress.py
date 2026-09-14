@@ -1,4 +1,4 @@
-"""Progress endpoints."""
+from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -13,8 +13,11 @@ from app.schemas.progress import (
     ProgressItemOut,
     ProgressListOut,
     ProgressOut,
+    RetentionMilestoneOut,
     WorkerProgressItemOut,
     WorkerProgressListOut,
+    WorkerRetentionListOut,
+    WorkerRetentionOut,
 )
 
 router = APIRouter(prefix="/progress", tags=["progress"])
@@ -141,3 +144,107 @@ def update_progress(payload: ProgressCreate, db: Session = Depends(get_db)):
         status=progress.status,
         updated_at=progress.updated_at,
     )
+
+
+@router.get("/{worker_id}/retention", response_model=WorkerRetentionListOut)
+def get_worker_retention(worker_id: int, db: Session = Depends(get_db)):
+    """Calculate Day 1, Day 7, Day 30 retention schedule and audit status."""
+    _get_worker_or_404(db, worker_id)
+
+    now = datetime.now(timezone.utc)
+    schedules = []
+
+    for module in db.query(Module).order_by(Module.id).all():
+        # Find latest passing assessment for this module
+        latest_pass = (
+            db.query(Assessment)
+            .filter(
+                Assessment.worker_id == worker_id,
+                Assessment.module_id == module.id,
+                Assessment.passed.is_(True),
+            )
+            .order_by(Assessment.created_at.desc())
+            .first()
+        )
+
+        # Or progress completion
+        prog = (
+            db.query(WorkerProgress)
+            .filter(
+                WorkerProgress.worker_id == worker_id,
+                WorkerProgress.module_id == module.id,
+            )
+            .first()
+        )
+
+        base_dt = None
+        if latest_pass and latest_pass.created_at:
+            base_dt = latest_pass.created_at
+        elif prog and prog.updated_at:
+            base_dt = prog.updated_at
+
+        if not base_dt:
+            continue
+
+        if base_dt.tzinfo is None:
+            base_dt = base_dt.replace(tzinfo=timezone.utc)
+
+        milestones = []
+        for day, title in [
+            (1, "Day 1 Immediate Retention Check"),
+            (7, "Day 7 Refresher Check"),
+            (30, "Day 30 Competency Audit"),
+        ]:
+            due_date = base_dt + timedelta(days=day)
+            
+            # Check if there is an assessment completed around or after due date
+            ret_assessment = (
+                db.query(Assessment)
+                .filter(
+                    Assessment.worker_id == worker_id,
+                    Assessment.module_id == module.id,
+                    Assessment.created_at >= due_date - timedelta(hours=12),
+                )
+                .order_by(Assessment.created_at.desc())
+                .first()
+            )
+
+            if ret_assessment:
+                status = "completed"
+                passed = ret_assessment.passed
+                score = ret_assessment.score
+            elif now >= due_date:
+                status = "due"
+                passed = None
+                score = None
+            else:
+                status = "pending"
+                passed = None
+                score = None
+
+            milestones.append(
+                RetentionMilestoneOut(
+                    day=day,
+                    title=title,
+                    due_date=due_date,
+                    status=status,
+                    passed=passed,
+                    score=score,
+                )
+            )
+
+        schedules.append(
+            WorkerRetentionOut(
+                worker_id=worker_id,
+                module_id=module.id,
+                module_code=module.code,
+                module_name=module.name,
+                base_date=base_dt,
+                milestones=milestones,
+            )
+        )
+
+    return WorkerRetentionListOut(
+        worker_id=worker_id,
+        retention_schedules=schedules,
+    )

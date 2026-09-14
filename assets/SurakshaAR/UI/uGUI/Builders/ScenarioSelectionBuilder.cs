@@ -1,0 +1,215 @@
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace SurakshaAR.UI.Builders
+{
+    /// <summary>
+    /// Scenario Selection screen builder:
+    /// Displays industrial safety scenarios for the chosen module.
+    /// Provides 3 interactive scenario cards wired to ScenarioSelectionController:
+    /// - card-scenario-1: Electrical Panel Fire (AR-ready)
+    /// - card-scenario-2: Chemical Storage Fire
+    /// - card-scenario-3: Workshop Fire
+    /// </summary>
+    public static class ScenarioSelectionBuilder
+    {
+        public static GameObject Build()
+        {
+            var root = new GameObject("ScenarioSelectionScreen");
+            root.AddComponent<RectTransform>();
+            var rootImg = root.AddComponent<Image>();
+            rootImg.color = UIColors.Hex("#F8FAFC");
+            rootImg.sprite = UIHelper.GetWhiteSprite();
+
+            // ── Scrollable Body ──────────────────────────────────────────
+            var scrollRoot = UIHelper.MakeRect("ScrollArea", root.transform);
+            scrollRoot.anchorMin = Vector2.zero;
+            scrollRoot.anchorMax = Vector2.one;
+            scrollRoot.offsetMin = Vector2.zero;
+            scrollRoot.offsetMax = Vector2.zero;
+
+            var scrollRect = scrollRoot.gameObject.AddComponent<ScrollRect>();
+            scrollRect.horizontal = false;
+            scrollRect.vertical = true;
+            scrollRect.movementType = ScrollRect.MovementType.Clamped;
+            scrollRect.scrollSensitivity = 25f;
+
+            var viewport = UIHelper.MakeRect("Viewport", scrollRoot);
+            viewport.anchorMin = Vector2.zero;
+            viewport.anchorMax = Vector2.one;
+            viewport.offsetMin = Vector2.zero;
+            viewport.offsetMax = Vector2.zero;
+            viewport.gameObject.AddComponent<RectMask2D>();
+            scrollRect.viewport = viewport;
+
+            var content = UIHelper.MakeRect("Content", viewport);
+            content.anchorMin = new Vector2(0, 1);
+            content.anchorMax = new Vector2(1, 1);
+            content.pivot = new Vector2(0.5f, 1);
+            content.sizeDelta = new Vector2(0, 1600);
+            scrollRect.content = content;
+
+            var vlg = content.gameObject.AddComponent<VerticalLayoutGroup>();
+            vlg.spacing = 24;
+            vlg.padding = new RectOffset(40, 40, 48, 60);
+            vlg.childForceExpandWidth = true;
+            vlg.childForceExpandHeight = false;
+            vlg.childControlWidth = true;
+            vlg.childControlHeight = false;
+
+            var csf = content.gameObject.AddComponent<ContentSizeFitter>();
+            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+            // ── Top Header ───────────────────────────────────────────────
+            BuildTopBar(content);
+
+            // ── Banner Info ──────────────────────────────────────────────
+            BuildInfoBanner(content);
+
+            // ── Scenarios List ───────────────────────────────────────────
+            BuildScenarioCards(content);
+
+            return root;
+        }
+
+        private static void BuildTopBar(Transform parent)
+        {
+            var row = UIHelper.MakeHorizontal("TopBarRow", parent, 16);
+            UIHelper.SetLayout(row.gameObject, preferredHeight: 64);
+
+            var backBtn = UIHelper.MakeButton("btn-back", row, "‹", 38, Color.white, UIColors.PrimaryDark, 18);
+            UIHelper.SetLayout(backBtn.gameObject, preferredWidth: 56, preferredHeight: 56);
+            var border = backBtn.gameObject.AddComponent<Outline>();
+            border.effectColor = UIColors.Border;
+            border.effectDistance = new Vector2(1, -1);
+
+            var titleLbl = UIHelper.MakeLabel("label-title", row, "Select Scenario", 26, UIColors.PrimaryDark, bold: true);
+            UIHelper.SetLayout(titleLbl.gameObject, flexibleWidth: true, flexWidth: 1);
+        }
+
+        private static void BuildInfoBanner(Transform parent)
+        {
+            var banner = new GameObject("InfoBanner");
+            banner.transform.SetParent(parent, false);
+            UIHelper.SetLayout(banner, preferredHeight: 110);
+
+            var bImg = banner.AddComponent<Image>();
+            bImg.color = UIColors.Hex("#EBF5FF");
+            UIHelper.SetImageRoundedSprite(bImg, 18);
+
+            var inner = UIHelper.MakeVertical("Inner", banner.transform, 6, new RectOffset(20, 20, 14, 14));
+            UIHelper.Stretch(inner, 0, 0, 0, 0);
+
+            var title = UIHelper.MakeLabel("BannerTitle", inner, "🎯 Standard Industrial Scenarios", 18, UIColors.PrimaryDark, bold: true);
+            UIHelper.SetLayout(title.gameObject, preferredHeight: 24);
+
+            var desc = UIHelper.MakeLabel("BannerDesc", inner,
+                "Select an emergency situation below to begin mobile AR assessment. Zero critical errors are required for compliance certification.",
+                14, UIColors.TextSecondary);
+            UIHelper.SetLayout(desc.gameObject, preferredHeight: 48);
+        }
+
+        private static void BuildScenarioCards(Transform parent)
+        {
+            var col = UIHelper.MakeVertical("ScenarioList", parent, 18);
+
+            // Card 1: Electrical Panel Fire
+            BuildScenarioCard(
+                parent: col,
+                btnName: "card-scenario-1",
+                scenarioNum: "01",
+                title: "1. Electrical Panel Fire",
+                subtitle: "High voltage breaker ignition in substation. Requires Class C/CO2 agent selection.",
+                badge: "AR PRACTICAL READY",
+                badgeColor: UIColors.SafetyGreen,
+                badgeBg: UIColors.Hex("#E6F4EC"),
+                icon: "⚡"
+            );
+
+            // Card 2: Chemical Storage Fire
+            BuildScenarioCard(
+                parent: col,
+                btnName: "card-scenario-2",
+                scenarioNum: "02",
+                title: "2. Chemical Storage Fire",
+                subtitle: "Flammable hydrocarbon leak near storage tanks. Dry chemical powder protocol.",
+                badge: "SIMULATION READY",
+                badgeColor: UIColors.Primary,
+                badgeBg: UIColors.Hex("#EBF5FF"),
+                icon: "🧪"
+            );
+
+            // Card 3: Workshop Conveyor Fire
+            BuildScenarioCard(
+                parent: col,
+                btnName: "card-scenario-3",
+                scenarioNum: "03",
+                title: "3. Workshop Conveyor Fire",
+                subtitle: "Friction ignition on coal conveyor belt. Alarm activation and emergency exit path.",
+                badge: "SIMULATION READY",
+                badgeColor: UIColors.Warning,
+                badgeBg: UIColors.Hex("#FEF3C7"),
+                icon: "⚙️"
+            );
+        }
+
+        private static void BuildScenarioCard(
+            Transform parent,
+            string btnName,
+            string scenarioNum,
+            string title,
+            string subtitle,
+            string badge,
+            Color badgeColor,
+            Color badgeBg,
+            string icon)
+        {
+            var btn = UIHelper.MakeButton(btnName, parent, "", 16, Color.white, UIColors.TextPrimary, 20);
+            UIHelper.SetLayout(btn.gameObject, preferredHeight: 146);
+
+            var outline = btn.gameObject.AddComponent<Outline>();
+            outline.effectColor = UIColors.Border;
+            outline.effectDistance = new Vector2(1, -1);
+
+            var inner = UIHelper.MakeHorizontal("Inner", btn.transform, 18, new RectOffset(20, 20, 18, 18));
+            UIHelper.Stretch(inner, 0, 0, 0, 0);
+
+            // Left Icon Box
+            var iconBox = UIHelper.MakeRect("IconBox", inner);
+            UIHelper.SetLayout(iconBox.gameObject, preferredWidth: 68, preferredHeight: 68);
+            var iconBg = iconBox.gameObject.AddComponent<Image>();
+            iconBg.color = badgeBg;
+            UIHelper.SetImageRoundedSprite(iconBg, 16);
+
+            var iconLbl = UIHelper.MakeLabel("IconLbl", iconBox, icon, 32, Color.white, TextAlignmentOptions.Center);
+            UIHelper.Stretch(iconLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
+
+            // Middle Content Column
+            var textCol = UIHelper.MakeVertical("TextCol", inner, 4);
+            UIHelper.SetLayout(textCol.gameObject, flexibleWidth: true, flexWidth: 1);
+
+            var titleLbl = UIHelper.MakeLabel("Title", textCol, title, 20, UIColors.PrimaryDark, bold: true);
+            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 26);
+
+            var descLbl = UIHelper.MakeLabel("Desc", textCol, subtitle, 14, UIColors.TextSecondary);
+            UIHelper.SetLayout(descLbl.gameObject, preferredHeight: 40);
+
+            var badgeRow = UIHelper.MakeHorizontal("BadgeRow", textCol, 6);
+            UIHelper.SetLayout(badgeRow.gameObject, preferredHeight: 24);
+
+            var badgePill = UIHelper.MakeRect("BadgePill", badgeRow);
+            UIHelper.SetLayout(badgePill.gameObject, preferredWidth: 140, preferredHeight: 24);
+            var bImg = badgePill.gameObject.AddComponent<Image>();
+            bImg.color = badgeBg;
+            UIHelper.SetImageRoundedSprite(bImg, 6);
+
+            var bLbl = UIHelper.MakeLabel("BLbl", badgePill, badge, 11, badgeColor, TextAlignmentOptions.Center, bold: true);
+            UIHelper.Stretch(bLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
+
+            // Right Arrow
+            var arrow = UIHelper.MakeLabel("Arrow", inner, "➔", 22, UIColors.TextMuted, TextAlignmentOptions.Right);
+            UIHelper.SetLayout(arrow.gameObject, preferredWidth: 28);
+        }
+    }
+}

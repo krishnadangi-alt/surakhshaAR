@@ -226,7 +226,64 @@ RETRAINING_CURRICULUM = {
                 reason=""
             ),
         ],
-    }
+    },
+    "machinery": {
+        "hazard_identification": [
+            TrainingModule(
+                module_id="machinery_hazard_001",
+                name="Mechanical Hazard & In-Running Nip Detection",
+                description="Recognize pinch points, rotating shafts, and nip hazards on conveyor and milling systems",
+                estimated_duration_minutes=15,
+                difficulty_level="beginner",
+                competencies_addressed=["hazard_identification"],
+                reason=""
+            ),
+        ],
+        "ppe_selection": [
+            TrainingModule(
+                module_id="machinery_ppe_001",
+                name="Machinery PPE & Loose Article Safety",
+                description="Select impact-rated eye protection, steel toes, and prevent entanglement of clothing/hair",
+                estimated_duration_minutes=10,
+                difficulty_level="beginner",
+                competencies_addressed=["ppe_selection"],
+                reason=""
+            ),
+        ],
+        "loto_procedure": [
+            TrainingModule(
+                module_id="machinery_loto_001",
+                name="Zero Energy Lockout / Tagout (LOTO)",
+                description="Master the 6-step OSHA/DGMS energy isolation procedure with hasps, padlocks, and tags",
+                estimated_duration_minutes=20,
+                difficulty_level="intermediate",
+                competencies_addressed=["loto_procedure"],
+                reason=""
+            ),
+        ],
+        "equipment_use": [
+            TrainingModule(
+                module_id="machinery_equip_001",
+                name="Machine Guarding & Safety Interlocks",
+                description="Verification and testing of fixed, interlocking, and presence-sensing guards",
+                estimated_duration_minutes=15,
+                difficulty_level="intermediate",
+                competencies_addressed=["equipment_use"],
+                reason=""
+            ),
+        ],
+        "emergency_response": [
+            TrainingModule(
+                module_id="machinery_emerg_001",
+                name="Emergency Stop & Mechanical Crisis Protocol",
+                description="Rapid E-stop actuation and entrapment response drills",
+                estimated_duration_minutes=12,
+                difficulty_level="advanced",
+                competencies_addressed=["emergency_response"],
+                reason=""
+            ),
+        ],
+    },
 }
 
 

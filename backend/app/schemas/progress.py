@@ -78,3 +78,26 @@ class WorkerProgressItemOut(BaseModel):
 class WorkerProgressListOut(BaseModel):
     worker_id: int
     progress: list[WorkerProgressItemOut]
+
+
+class RetentionMilestoneOut(BaseModel):
+    day: int
+    title: str
+    due_date: datetime
+    status: str  # "completed", "due", "pending"
+    passed: bool | None = None
+    score: float | None = None
+
+
+class WorkerRetentionOut(BaseModel):
+    worker_id: int
+    module_id: int
+    module_code: str
+    module_name: str
+    base_date: datetime
+    milestones: list[RetentionMilestoneOut]
+
+
+class WorkerRetentionListOut(BaseModel):
+    worker_id: int
+    retention_schedules: list[WorkerRetentionOut]

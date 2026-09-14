@@ -4,6 +4,7 @@ from app.models.progress import WorkerProgress
 from app.models.assessment import Assessment
 from app.models.certificate import Certificate
 from app.models.sync_log import SyncLog
+from app.models.event import EventModel
 
 __all__ = [
     "Worker",
@@ -12,4 +13,5 @@ __all__ = [
     "Assessment",
     "Certificate",
     "SyncLog",
+    "EventModel",
 ]

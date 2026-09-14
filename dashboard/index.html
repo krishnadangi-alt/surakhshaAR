@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SurakshaAR • Industrial Mine Safety Command Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+  <!-- Header Bar -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="seal-icon">🛡️</div>
+      <div>
+        <div class="header-title">SURAKSHA-AR COMMAND DASHBOARD</div>
+        <div class="header-subtitle">Ministry of Mines • Govt. of Jharkhand • Industrial Safety Portal</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="live-pill" id="live-pill">
+        <span class="pulsing-dot"></span>
+        <span id="connection-status">Connecting to Backend...</span>
+      </div>
+      <button class="btn-refresh" id="btn-refresh" title="Refresh Dashboard Data">⟳ Refresh</button>
+    </div>
+  </header>
+
+  <!-- Tricolor Bar -->
+  <div class="tricolor-bar">
+    <div class="color-saffron"></div>
+    <div class="color-white"></div>
+    <div class="color-green"></div>
+  </div>
+
+  <main class="dashboard-content">
+    <!-- Top KPI Cards Row -->
+    <section class="kpi-grid">
+      <div class="kpi-card card-primary">
+        <div class="kpi-label">TOTAL WORKERS</div>
+        <div class="kpi-value" id="stat-total-workers">--</div>
+        <div class="kpi-sub">Enrolled in SurakshaAR</div>
+      </div>
+      <div class="kpi-card card-success">
+        <div class="kpi-label">CERTIFIED WORKERS</div>
+        <div class="kpi-value" id="stat-certified-workers">--</div>
+        <div class="kpi-sub">Level 1 Competency Achieved</div>
+      </div>
+      <div class="kpi-card card-warning">
+        <div class="kpi-label">IN ACTIVE TRAINING</div>
+        <div class="kpi-value" id="stat-workers-training">--</div>
+        <div class="kpi-sub">Practice & Assessment</div>
+      </div>
+      <div class="kpi-card card-info">
+        <div class="kpi-label">OVERALL PASS RATE</div>
+        <div class="kpi-value" id="stat-pass-rate">--%</div>
+        <div class="kpi-sub">Authoritative ML Scored</div>
+      </div>
+    </section>
+
+    <!-- Main Grid: Modules & Real-time Live Event Feed -->
+    <section class="layout-split">
+      <!-- Left Column: Modules & Compliance Analytics -->
+      <div class="split-col-left">
+        <!-- Module Statistics -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <h3>Mining Safety Training Modules</h3>
+            <span class="badge-tag">MVP Modules</span>
+          </div>
+          <div class="module-list" id="module-stats-list">
+            <div class="loading-placeholder">Loading modules data...</div>
+          </div>
+        </div>
+
+        <!-- Worker Directory & Retention Day 1/7/30 Tracking -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <h3>Worker Compliance & Retention Audit</h3>
+            <span class="badge-tag">Day 1 / 7 / 30 Schedule</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table" id="workers-table">
+              <thead>
+                <tr>
+                  <th>Worker Name</th>
+                  <th>Employee ID</th>
+                  <th>Role</th>
+                  <th>Certified Modules</th>
+                  <th>Retention Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="workers-tbody">
+                <tr><td colspan="6" class="text-center">Loading workers...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Certificate Verification Tool -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <h3>Certificate QR & ID Verification</h3>
+            <span class="badge-tag">Cryptographic Check</span>
+          </div>
+          <div class="verify-bar">
+            <input type="text" id="cert-input" placeholder="Enter Certificate ID (e.g. CERT-FIRE-00001 or IND-SAR-2026-0941)" class="cert-input" />
+            <button class="btn-verify" id="btn-verify">Verify Now</button>
+          </div>
+          <div id="cert-verify-result" class="verify-result-box" style="display: none;"></div>
+        </div>
+      </div>
+
+      <!-- Right Column: Live Telemetry Feed (WebSocket) -->
+      <div class="split-col-right">
+        <div class="panel-card live-feed-panel">
+          <div class="panel-header">
+            <div>
+              <h3>Live AR Event Telemetry</h3>
+              <div class="feed-sub">Direct real-time stream from Worker App</div>
+            </div>
+            <span class="live-tag">LIVE WS</span>
+          </div>
+          <div class="feed-container" id="feed-container">
+            <div class="feed-empty" id="feed-empty">Waiting for live events from Unity Worker App...</div>
+          </div>
+          <div class="feed-footer">
+            <span id="feed-counter">0 events received this session</span>
+            <button class="btn-clear-feed" id="btn-clear-feed">Clear</button>
+          </div>
+        </div>
+
+        <!-- Common Weaknesses / ML Diagnostic Insights -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <h3>ML Weakness Diagnostic Insights</h3>
+            <span class="badge-tag">Targeted Retraining</span>
+          </div>
+          <div id="weakness-list" class="weakness-list">
+            <div class="loading-placeholder">Evaluating diagnostic records...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <div>SurakshaAR System • Built for SIH PS 26041 (Ministry of Mines | Govt. of Jharkhand)</div>
+    <div>Backend API: <code id="api-url">http://127.0.0.1:8000/api/v1</code></div>
+  </footer>
+
+  <script src="src/app.js"></script>
+</body>
+</html>
