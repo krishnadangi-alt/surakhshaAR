@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Dusky, human, warm charcoal-brown color palette inspired by reference */
+  --color-suraksha-bg: #14100E;
+  --color-suraksha-dark: #181310;
+  --color-suraksha-card: #1E1814;
+  --color-suraksha-surface: #261E19;
+  --color-suraksha-border: #342821;
+  --color-suraksha-borderLight: #46362D;
+  --color-suraksha-hover: #2A211B;
+  --color-suraksha-muted: #7A6C62;
+  --color-suraksha-subtext: #A8998C;
+  --color-suraksha-text: #F5EFEA;
+  --color-suraksha-heading: #FFFFFF;
+
+  /* Warm dusky burnt amber & emerald accents */
+  --color-suraksha-blue: #E87722;
+  --color-suraksha-blueHover: #C96316;
+  --color-suraksha-amber: #E88024;
+  --color-suraksha-amberDark: #B85B12;
+  --color-suraksha-green: #2DC870;
+  --color-suraksha-red: #E5484D;
+
+  /* Warm dusky shadows */
+  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.6);
+  --shadow-subtle: 0 2px 8px 0 rgba(0, 0, 0, 0.4);
+  --shadow-elevated: 0 8px 30px rgba(0, 0, 0, 0.7);
+}
+
+@layer base {
+  * {
+    border-color: #342821;
+  }
+  body {
+    background-color: #14100E;
+    color: #F5EFEA;
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  }
+}
+
+/* Custom scrollbar matching warm dusky palette */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #181310;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #342821;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #46362D;
+}
+
+/* Print styling for official certificates */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
