@@ -30,6 +30,7 @@ def test_fire_clean_pass():
         {"event_type": "correct_action", "action": "squeeze_lever"},
         {"event_type": "correct_action", "action": "sweep_base"},
         {"event_type": "evacuation_started", "safe": True, "route": "emergency_exit_A"},
+        {"event_type": "assessment_completed"},
     ]
     result = assess(events, scenario_type="fire")
     assert result["passed"] is True
@@ -66,6 +67,7 @@ def test_gas_clean_pass():
         {"event_type": "equipment_selected", "correct": True, "equipment_type": "multigas_detector"},
         {"event_type": "correct_action", "action": "isolate_valve"},
         {"event_type": "evacuation_started", "safe": True, "route": "upwind_crosswind"},
+        {"event_type": "assessment_completed"},
     ]
     result = assess(events, scenario_type="gas")
     assert result["passed"] is True
@@ -107,6 +109,7 @@ def test_machinery_clean_pass():
         {"event_type": "correct_action", "action": "loto_apply_hasp_padlock"},
         {"event_type": "correct_action", "action": "loto_verify_zero_energy"},
         {"event_type": "equipment_selected", "correct": True, "equipment_type": "fixed_machine_guard"},
+        {"event_type": "assessment_completed"},
     ]
     result = assess(events, scenario_type="machinery")
     assert result["passed"] is True
