@@ -1,4 +1,4 @@
-﻿"""Assessment request/response schemas.
+"""Assessment request/response schemas.
 
 Assessments are behaviour-based: the client submits the raw VR session events
 and the backend scores them with the ML competency engine (see
@@ -9,7 +9,7 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-VALID_WRONG_ACTION_SEVERITIES = {"minor", "major"}
+VALID_WRONG_ACTION_SEVERITIES = {"minor", "major", "critical"}
 
 
 class AssessmentEvent(BaseModel):
@@ -50,7 +50,7 @@ class AssessmentEvent(BaseModel):
         if self.event_type.lower() in {"wrong_action", "sequence_error"}:
             severity = getattr(self, "severity", None)
             if severity is not None and str(severity).lower() not in VALID_WRONG_ACTION_SEVERITIES:
-                raise ValueError("severity must be 'minor' or 'major' for wrong_action events")
+                raise ValueError("severity must be 'minor', 'major', or 'critical' for wrong_action events")
         return self
 
 
