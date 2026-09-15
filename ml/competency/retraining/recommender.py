@@ -5,7 +5,7 @@ Maps detected weaknesses to specific training modules for targeted learning.
 """
 
 from dataclasses import dataclass
-from typing import List, Dict
+from typing import List, Dict, Any
 from ..weakness_detection import Weakness
 
 
@@ -19,6 +19,8 @@ class TrainingModule:
     difficulty_level: str  # beginner, intermediate, advanced
     competencies_addressed: List[str]
     reason: str  # Why this was recommended
+    required_practice: str = "Perform 3 successful guided practice trials"
+    reassessment_condition: str = "Reassess on targeted weak competency"
 
 
 # Mapping from competency weaknesses to training modules
@@ -366,7 +368,9 @@ class RetrainingRecommender:
                     estimated_duration_minutes=module.estimated_duration_minutes,
                     difficulty_level=module.difficulty_level,
                     competencies_addressed=module.competencies_addressed,
-                    reason=f"Weakness in {competency}: score {weakness.score:.1f} (severity: {weakness.severity})"
+                    reason=f"Weakness in {competency}: score {weakness.score:.1f} (severity: {weakness.severity})",
+                    required_practice=f"Complete 3 practice trials focusing on {competency}",
+                    reassessment_condition=f"Reassess worker on {competency} after practice completion"
                 )
                 recommended_modules.append(rec_module)
         
@@ -402,6 +406,8 @@ class RetrainingRecommender:
                     "difficulty_level": m.difficulty_level,
                     "competencies_addressed": m.competencies_addressed,
                     "reason": m.reason,
+                    "required_practice": m.required_practice,
+                    "reassessment_condition": m.reassessment_condition
                 }
                 for m in modules
             ],

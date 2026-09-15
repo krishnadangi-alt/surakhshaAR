@@ -1,8 +1,10 @@
 project-includes = [
+    ".",
     "backend",
     "ml",
 ]
 search-path = [
+    ".",
     "backend",
     "ml",
 ]

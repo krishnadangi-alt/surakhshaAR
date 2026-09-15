@@ -1,9 +1,11 @@
 {
   "include": [
+    ".",
     "backend",
     "ml"
   ],
   "extraPaths": [
+    ".",
     "backend",
     "ml"
   ],
