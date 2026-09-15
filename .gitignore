@@ -124,3 +124,10 @@ assets/AR_Fire_foundation/_Recovery/
 Assets/_Recovery/
 UI_Legacy_Backup/
 _UIBackup_Old/
+
+##############
+# Temporary / test artifacts
+##############
+__tmp_read.txt
+**/__tmp_read.txt
+backend/pytest_results.txt
