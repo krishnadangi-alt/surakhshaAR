@@ -1,9 +1,24 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
+/// <summary>
+/// ExtinguisherGripInteraction
+/// ===========================
+/// Handles squeezing and releasing the operating lever/grip on the extinguisher.
+/// 
+/// DUAL ACTIVATION MODES:
+///   1. 3D AR Interaction:
+///      - Touch (Mobile): Touch and hold the grip collider in AR to spray; releasing stops spray.
+///      - Mouse (Editor/PC): Click and hold the grip collider to spray; releasing stops spray.
+///   2. UI Action Button (Accessibility & SOP Guidance):
+///      - ToggleGrip() / StartGrip(): Taps the "Press Handle & Spray" button to activate continuous spray.
+///        Does NOT get cancelled if touch count is 0!
+///      - StopGrip(): Stops spraying when handle is released, button is clicked again, or fire is extinguished.
+/// </summary>
 public class ExtinguisherGripInteraction : MonoBehaviour
 {
     [Header("Safety Pin")]
@@ -15,7 +30,7 @@ public class ExtinguisherGripInteraction : MonoBehaviour
     [Header("Spray Audio")]
     [SerializeField] private AudioSource sprayAudio;
 
-    [Header("Touch")]
+    [Header("Touch & Raycast")]
     [SerializeField] private float raycastDistance = 100f;
 
     public bool IsGripHeld { get; private set; }
@@ -25,12 +40,10 @@ public class ExtinguisherGripInteraction : MonoBehaviour
     public UnityEvent OnPinRemovalRequired;
 
     private Camera arCamera;
+    private bool gripHeldBy3DInput = false;
 
     private void Awake()
     {
-        // Camera.main is resolved lazily in Update - the AR camera may not
-        // be tagged/active yet when this component's Awake runs during an
-        // additive scene load (the UI scene camera loads first).
     }
 
     private void Start()
@@ -59,6 +72,16 @@ public class ExtinguisherGripInteraction : MonoBehaviour
             }
         }
 
+        if (pin == null)
+        {
+            var pinComp = GetComponentInChildren<FirePinInteraction>(true)
+                       ?? FindAnyObjectByType<FirePinInteraction>();
+            if (pinComp != null)
+            {
+                pin = pinComp.gameObject;
+            }
+        }
+
         if (powderSpray != null)
         {
             powderSpray.StopSpray();
@@ -73,79 +96,111 @@ public class ExtinguisherGripInteraction : MonoBehaviour
     private void OnDisable()
     {
         StopGrip();
-        // NOTE: intentionally NOT calling EnhancedTouchSupport.Disable().
-        // EnhancedTouchSupport is shared by every interaction script in the
-        // scene (pin, pickup, hose, AR placement). Disabling it here would
-        // kill touch input for those systems. ARPlacement disables it when
-        // the AR session ends.
     }
 
     private void Update()
     {
-        // Resolve the camera lazily - Camera.main may not be valid yet when
-        // Awake runs on additively loaded AR scenes.
         if (arCamera == null)
             arCamera = Camera.main;
 
         if (arCamera == null)
             return;
 
-        if (Touch.activeTouches.Count == 0)
+        // ── 1. Mobile Touch Input (3D AR Grip) ────────────────────────────────
+        if (Touch.activeTouches.Count > 0)
         {
-            if (IsGripHeld)
-                StopGrip();
+            Touch touch = Touch.activeTouches[0];
 
-            return;
+            if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
+            {
+                // Check if touch is on 3D grip (and not on UI)
+                if (UnityEngine.EventSystems.EventSystem.current == null ||
+                    !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+                {
+                    if (CheckGripRaycast(touch.screenPosition))
+                    {
+                        gripHeldBy3DInput = true;
+                        StartGrip();
+                    }
+                }
+            }
+            else if (touch.phase == UnityEngine.InputSystem.TouchPhase.Ended ||
+                     touch.phase == UnityEngine.InputSystem.TouchPhase.Canceled)
+            {
+                if (gripHeldBy3DInput)
+                {
+                    gripHeldBy3DInput = false;
+                    StopGrip();
+                }
+            }
         }
 
-        Touch touch = Touch.activeTouches[0];
-
-        if (touch.phase ==
-            UnityEngine.InputSystem.TouchPhase.Began)
+        // ── 2. Mouse Input (Editor & Desktop Testing) ─────────────────────────
+        if (Mouse.current != null)
         {
-            CheckGripTap(touch.screenPosition);
-        }
-
-        if (touch.phase ==
-                UnityEngine.InputSystem.TouchPhase.Ended ||
-            touch.phase ==
-                UnityEngine.InputSystem.TouchPhase.Canceled)
-        {
-            StopGrip();
+            if (Mouse.current.leftButton.wasPressedThisFrame)
+            {
+                if (UnityEngine.EventSystems.EventSystem.current == null ||
+                    !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+                {
+                    Vector2 mousePos = Mouse.current.position.ReadValue();
+                    if (CheckGripRaycast(mousePos))
+                    {
+                        gripHeldBy3DInput = true;
+                        StartGrip();
+                    }
+                }
+            }
+            else if (Mouse.current.leftButton.wasReleasedThisFrame)
+            {
+                if (gripHeldBy3DInput)
+                {
+                    gripHeldBy3DInput = false;
+                    StopGrip();
+                }
+            }
         }
     }
 
-    private void CheckGripTap(Vector2 screenPosition)
+    private bool CheckGripRaycast(Vector2 screenPosition)
     {
-        Ray ray =
-            arCamera.ScreenPointToRay(screenPosition);
+        if (arCamera == null) return false;
 
-        RaycastHit[] hits =
-            Physics.RaycastAll(
-                ray,
-                raycastDistance,
-                Physics.DefaultRaycastLayers,
-                QueryTriggerInteraction.Collide
-            );
+        Ray ray = arCamera.ScreenPointToRay(screenPosition);
+        RaycastHit[] hits = Physics.RaycastAll(
+            ray,
+            raycastDistance,
+            Physics.DefaultRaycastLayers,
+            QueryTriggerInteraction.Collide
+        );
 
         foreach (RaycastHit hit in hits)
         {
-            Transform hitTransform =
-                hit.collider.transform;
+            Transform hitTransform = hit.collider.transform;
 
-            // Grip collider itself.
-            if (hitTransform == transform)
+            // Grip collider itself or any child collider of Grip
+            if (hitTransform == transform || hitTransform.IsChildOf(transform))
             {
-                StartGrip();
-                return;
+                return true;
             }
+        }
 
-            // Any child collider of Grip.
-            if (hitTransform.IsChildOf(transform))
-            {
-                StartGrip();
-                return;
-            }
+        return false;
+    }
+
+    /// <summary>
+    /// Toggles the spray handle on or off (used by the guidance card CTA button).
+    /// </summary>
+    public void ToggleGrip()
+    {
+        if (IsGripHeld)
+        {
+            gripHeldBy3DInput = false;
+            StopGrip();
+        }
+        else
+        {
+            StartGrip();
         }
     }
 
@@ -154,32 +209,36 @@ public class ExtinguisherGripInteraction : MonoBehaviour
         if (IsGripHeld)
             return;
 
-        // Safety pin must be removed first.
-        if (pin != null && pin.activeInHierarchy)
+        // Safety pin must be removed first
+        FirePinInteraction pinComp = null;
+        if (pin != null) pinComp = pin.GetComponent<FirePinInteraction>();
+        if (pinComp == null)
         {
-            Debug.Log(
-                "SAFETY PIN STILL INSERTED"
-            );
+            pinComp = GetComponentInChildren<FirePinInteraction>(true)
+                   ?? FindAnyObjectByType<FirePinInteraction>(FindObjectsInactive.Include);
+            if (pinComp != null) pin = pinComp.gameObject;
+        }
 
+        bool isPinStillInserted = (pinComp != null && !pinComp.IsPinRemoved()) || (pin != null && pin.activeInHierarchy);
+        if (isPinStillInserted)
+        {
+            Debug.Log("[ExtinguisherGripInteraction] Safety pin is still inserted! Cannot spray.");
             OnPinRemovalRequired?.Invoke();
-
             return;
         }
 
         IsGripHeld = true;
 
-        Debug.Log("GRIP PRESSED");
-        Debug.Log("SPRAY STARTED");
+        Debug.Log("[ExtinguisherGripInteraction] Grip pressed -> Spray Started");
 
         if (powderSpray != null)
         {
             powderSpray.StartSpray();
         }
 
-        if (sprayAudio != null)
+        if (sprayAudio != null && !sprayAudio.isPlaying)
         {
-            if (!sprayAudio.isPlaying)
-                sprayAudio.Play();
+            sprayAudio.Play();
         }
 
         OnSprayStarted?.Invoke();
@@ -191,18 +250,19 @@ public class ExtinguisherGripInteraction : MonoBehaviour
             return;
 
         IsGripHeld = false;
+        gripHeldBy3DInput = false;
 
         if (powderSpray != null)
         {
             powderSpray.StopSpray();
         }
 
-        if (sprayAudio != null)
+        if (sprayAudio != null && sprayAudio.isPlaying)
         {
             sprayAudio.Stop();
         }
 
-        Debug.Log("SPRAY STOPPED");
+        Debug.Log("[ExtinguisherGripInteraction] Grip released -> Spray Stopped");
 
         OnSprayStopped?.Invoke();
     }

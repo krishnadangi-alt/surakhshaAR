@@ -59,7 +59,7 @@ namespace SurakshaAR.UI.Builders
             vlg.childForceExpandWidth = true;
             vlg.childForceExpandHeight = false;
             vlg.childControlWidth = true;
-            vlg.childControlHeight = false;
+            vlg.childControlHeight = true;
 
             var csf = content.gameObject.AddComponent<ContentSizeFitter>();
             csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
@@ -85,7 +85,9 @@ namespace SurakshaAR.UI.Builders
         private static void BuildHeaderStatus(Transform parent)
         {
             var headerBox = UIHelper.MakeVertical("HeaderBox", parent, 10);
-            UIHelper.SetLayout(headerBox.gameObject, preferredHeight: 140);
+            UIHelper.SetLayout(headerBox.gameObject, minHeight: 160);
+            var csf = headerBox.gameObject.AddComponent<ContentSizeFitter>();
+            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             // Circular Badge
             var circle = UIHelper.MakeRect("Circle", headerBox);
@@ -94,17 +96,21 @@ namespace SurakshaAR.UI.Builders
             circleImg.sprite = UIHelper.GetCircleSprite();
             circleImg.color = UIColors.Hex("#E6F4EC"); // Pass green tint (or amber for fail)
 
-            var badgeIcon = UIHelper.MakeLabel("label-badge-icon", circle, "✓", 46, UIColors.SafetyGreen, TextAlignmentOptions.Center, bold: true);
-            UIHelper.Stretch(badgeIcon.GetComponent<RectTransform>(), 0, 0, 0, 0);
+            var badgeIconGO = new GameObject("label-badge-icon");
+            badgeIconGO.transform.SetParent(circle, false);
+            var badgeImg = badgeIconGO.AddComponent<Image>();
+            badgeImg.sprite = UIHelper.GetCheckmarkSprite();
+            badgeImg.color = UIColors.SafetyGreen;
+            UIHelper.AnchorCenter(badgeIconGO.GetComponent<RectTransform>(), 46, 46);
 
             var titleLbl = UIHelper.MakeLabel("label-result-title", headerBox, "Assessment Passed!",
-                28, UIColors.PrimaryDark, TextAlignmentOptions.Center, bold: true);
-            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 36);
+                28, UIColors.PrimaryDark, TextAlignmentOptions.Center, bold: true, wrap: true);
+            UIHelper.SetLayout(titleLbl.gameObject, minHeight: 36);
 
             var subLbl = UIHelper.MakeLabel("label-result-sub", headerBox,
                 "Demonstrated compliance with Ministry of Mines Industrial Safety SOP.",
-                16, UIColors.TextSecondary, TextAlignmentOptions.Center);
-            UIHelper.SetLayout(subLbl.gameObject, preferredHeight: 24);
+                16, UIColors.TextSecondary, TextAlignmentOptions.Center, wrap: true);
+            UIHelper.SetLayout(subLbl.gameObject, minHeight: 24);
         }
 
         private static void BuildMetricsCard(Transform parent)
@@ -172,10 +178,10 @@ namespace SurakshaAR.UI.Builders
             var titleLbl = UIHelper.MakeLabel("CompTitle", col, "Competency Breakdown", 18, UIColors.PrimaryDark, bold: true);
             UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 26);
 
-            BuildCompetencyRow(col, "Hazard Recognition", "Strong", UIColors.SafetyGreen, "✓");
-            BuildCompetencyRow(col, "Emergency Alarm Response", "Strong", UIColors.SafetyGreen, "✓");
-            BuildCompetencyRow(col, "Equipment Selection (CO2)", "Strong", UIColors.SafetyGreen, "✓");
-            BuildCompetencyRow(col, "Suppression & Evacuation", "Strong", UIColors.SafetyGreen, "✓");
+            BuildCompetencyRow(col, "Hazard Recognition", "Strong", UIColors.SafetyGreen, "Pass");
+            BuildCompetencyRow(col, "Emergency Alarm Response", "Strong", UIColors.SafetyGreen, "Pass");
+            BuildCompetencyRow(col, "Equipment Selection (CO2)", "Strong", UIColors.SafetyGreen, "Pass");
+            BuildCompetencyRow(col, "Suppression & Evacuation", "Strong", UIColors.SafetyGreen, "Pass");
         }
 
         private static void BuildCompetencyRow(Transform parent, string name, string status, Color statusColor, string icon)
@@ -209,11 +215,11 @@ namespace SurakshaAR.UI.Builders
             var col = UIHelper.MakeVertical("Inner", card.transform, 6, new RectOffset(18, 18, 14, 14));
             UIHelper.Stretch(col, 0, 0, 0, 0);
 
-            var titleLbl = UIHelper.MakeLabel("CompTitle", col, "📈 Continuous Safety Improvement", 15, UIColors.Primary, bold: true);
+            var titleLbl = UIHelper.MakeLabel("CompTitle", col, "Continuous Safety Improvement", 15, UIColors.Primary, bold: true);
             UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 22);
 
             var descLbl = UIHelper.MakeLabel("label-comp-desc", col,
-                "Previous Attempt: 65%  ➔  Current Performance: 95% (+30% Improvement)",
+                "Previous Attempt: 65%  >  Current Performance: 95% (+30% Improvement)",
                 14, UIColors.TextPrimary);
             UIHelper.SetLayout(descLbl.gameObject, preferredHeight: 22);
 

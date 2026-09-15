@@ -24,7 +24,8 @@ namespace SurakshaAR.UI.Builders
                 case ScreenId.Result:            return ResultBuilder.Build();
                 case ScreenId.Certificate:       return CertificateBuilder.Build();
                 case ScreenId.Progress:          return ProgressBuilder.Build();
-                case ScreenId.ProfileSetup:      return LoginBuilder.Build(); // simplified
+                case ScreenId.ProfileSetup:      return ProfileBuilder.Build();
+                case ScreenId.Notifications:     return NotificationsBuilder.Build();
                 default:
                     Debug.LogWarning($"[ScreenFactory] No builder for {id}, returning empty screen.");
                     return MakeFallback(id.ToString());

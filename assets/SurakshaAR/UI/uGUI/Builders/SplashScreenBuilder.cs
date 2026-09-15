@@ -5,135 +5,79 @@ using UnityEngine.UI;
 namespace SurakshaAR.UI.Builders
 {
     /// <summary>
-    /// Builds the Splash screen uGUI hierarchy at runtime.
-    /// Navy background, centered logo + app name, loading progress bar.
+    /// Builds the Splash screen hierarchy matching Reference 3 (Left image).
+    /// Full-bleed daytime industrial mining sunrise artwork with
+    /// Ashoka emblem, 4 feature badges, and pill-shaped loading bar.
     /// </summary>
     public static class SplashScreenBuilder
     {
         public static GameObject Build()
         {
-            // Root
             var root = new GameObject("SplashScreen");
             var rootRT = root.AddComponent<RectTransform>();
+            rootRT.anchorMin = Vector2.zero;
+            rootRT.anchorMax = Vector2.one;
+            rootRT.offsetMin = Vector2.zero;
+            rootRT.offsetMax = Vector2.zero;
 
-            // Background
+            // 1. Full-bleed background artwork matching Reference 3 Left
             var bg = root.AddComponent<Image>();
-            var splashSpr = UIHelper.LoadProjectSprite("splashbackgroundimage");
+            var splashSpr = UIHelper.LoadProjectSprite("splashbackgroundimage.png")
+                         ?? UIHelper.LoadProjectSprite("splashbackgroundimage");
             if (splashSpr != null)
             {
                 bg.sprite = splashSpr;
                 bg.color = Color.white;
+                bg.preserveAspect = false;
             }
             else
             {
-                bg.color = UIColors.PrimaryDark;
+                bg.color = UIColors.Hex("#F8FAFC");
                 bg.sprite = UIHelper.GetWhiteSprite();
             }
 
-            // Dark overlay for readability
-            var overlay = UIHelper.MakeStretchRect("BgOverlay", root.transform);
-            var overImg = overlay.gameObject.AddComponent<Image>();
-            overImg.color = new Color(0.04f, 0.10f, 0.16f, 0.75f);
+            // 2. Training description subtitle located right under the 4 badges
+            var subGO = UIHelper.MakeRect("label-tagline", root.transform);
+            subGO.anchorMin = new Vector2(0.5f, 0.47f);
+            subGO.anchorMax = new Vector2(0.5f, 0.47f);
+            subGO.pivot = new Vector2(0.5f, 0.5f);
+            subGO.sizeDelta = new Vector2(700f, 70f);
 
-            // Center content column
-            var center = UIHelper.MakeRect("CenterContent", root.transform);
-            center.anchorMin = new Vector2(0.08f, 0.22f);
-            center.anchorMax = new Vector2(0.92f, 0.88f);
-            center.offsetMin = Vector2.zero;
-            center.offsetMax = Vector2.zero;
+            var subTMP = UIHelper.AddTMP(subGO.gameObject);
+            subTMP.text = "AR-Based Safety Training\nfor Industrial Workers";
+            subTMP.fontSize = 28f;
+            subTMP.fontStyle = FontStyles.Normal;
+            subTMP.color = UIColors.Hex("#475569");
+            subTMP.alignment = TextAlignmentOptions.Center;
+            subTMP.lineSpacing = 10f;
+            subTMP.raycastTarget = false;
 
-            var centerVLG = center.gameObject.AddComponent<VerticalLayoutGroup>();
-            centerVLG.childAlignment = TextAnchor.MiddleCenter;
-            centerVLG.spacing = 14;
-            centerVLG.childForceExpandWidth = true;
-            centerVLG.childForceExpandHeight = false;
-            centerVLG.childControlHeight = false;
-
-            // Government Header
-            var govtLbl = UIHelper.MakeLabel("GovtHeader", center, "GOVERNMENT OF INDIA\nMINISTRY OF MINES", 18, new Color(1f, 1f, 1f, 0.85f), TextAlignmentOptions.Center, bold: true);
-            UIHelper.SetLayout(govtLbl.gameObject, preferredHeight: 46);
-
-            // Shield / emblem circle
-            var emblemRT = UIHelper.MakeRect("EmblemCircle", center);
-            emblemRT.sizeDelta = new Vector2(104, 104);
-            var emblemLE = emblemRT.gameObject.AddComponent<LayoutElement>();
-            emblemLE.preferredWidth = 104;
-            emblemLE.preferredHeight = 104;
-
-            var emblemImg = emblemRT.gameObject.AddComponent<Image>();
-            emblemImg.sprite = UIHelper.GetCircleSprite();
-            emblemImg.color = new Color(1f, 1f, 1f, 0.15f);
-
-            var emblemLabelRT = UIHelper.MakeStretchRect("Icon", emblemRT);
-            var emblemTMP = UIHelper.AddTMP(emblemLabelRT.gameObject);
-            emblemTMP.text = "AR";
-            emblemTMP.fontSize = 44;
-            emblemTMP.fontStyle = FontStyles.Bold;
-            emblemTMP.alignment = TextAlignmentOptions.Center;
-            emblemTMP.color = Color.white;
-            emblemTMP.raycastTarget = false;
-
-            // App Name
-            var appNameGO = new GameObject("label-app-name");
-            appNameGO.transform.SetParent(center, false);
-            var appNameLE = appNameGO.AddComponent<LayoutElement>();
-            appNameLE.preferredHeight = 64;
-            var appNameTMP = UIHelper.AddTMP(appNameGO);
-            appNameTMP.text = "SURAKSHAAR";
-            appNameTMP.fontSize = 50;
-            appNameTMP.fontStyle = FontStyles.Bold;
-            appNameTMP.color = Color.white;
-            appNameTMP.alignment = TextAlignmentOptions.Center;
-            appNameTMP.raycastTarget = false;
-
-            // Tagline
-            var taglineGO = new GameObject("label-tagline");
-            taglineGO.transform.SetParent(center, false);
-            var taglineLE = taglineGO.AddComponent<LayoutElement>();
-            taglineLE.preferredHeight = 40;
-            var taglineTMP = UIHelper.AddTMP(taglineGO);
-            taglineTMP.text = "AR-Based Safety Training for Industrial Workers";
-            taglineTMP.fontSize = 20;
-            taglineTMP.color = new Color(1f, 1f, 1f, 0.80f);
-            taglineTMP.alignment = TextAlignmentOptions.Center;
-            taglineTMP.raycastTarget = false;
-
-            // Progress bar at bottom
+            // 3. Frosted Pill Loading Bar (matching Reference 3 Left)
             var barArea = UIHelper.MakeRect("ProgressBarArea", root.transform);
-            barArea.anchorMin = new Vector2(0.12f, 0.12f);
-            barArea.anchorMax = new Vector2(0.88f, 0.15f);
-            barArea.offsetMin = Vector2.zero;
-            barArea.offsetMax = Vector2.zero;
+            barArea.anchorMin = new Vector2(0.5f, 0.165f);
+            barArea.anchorMax = new Vector2(0.5f, 0.165f);
+            barArea.pivot = new Vector2(0.5f, 0.5f);
+            barArea.sizeDelta = new Vector2(560f, 44f);
 
             var barBg = barArea.gameObject.AddComponent<Image>();
-            barBg.color = new Color(1f, 1f, 1f, 0.18f);
+            barBg.color = new Color(1f, 1f, 1f, 0.55f);
             barBg.sprite = UIHelper.GetWhiteSprite();
-            UIHelper.SetImageRoundedSprite(barBg, 6);
+            UIHelper.SetImageRoundedSprite(barBg, 22);
+
+            var barBorder = barArea.gameObject.AddComponent<Outline>();
+            barBorder.effectColor = new Color(1f, 1f, 1f, 0.85f);
+            barBorder.effectDistance = new Vector2(1.5f, -1.5f);
 
             var barFillRT = UIHelper.MakeRect("progress-fill", barArea);
-            barFillRT.anchorMin = Vector2.zero;
-            barFillRT.anchorMax = new Vector2(0f, 1f); // starts at 0 width
+            barFillRT.anchorMin = new Vector2(0.02f, 0.14f);
+            barFillRT.anchorMax = new Vector2(0.35f, 0.86f); // default initial progress for static preview
             barFillRT.offsetMin = Vector2.zero;
             barFillRT.offsetMax = Vector2.zero;
 
             var barFillImg = barFillRT.gameObject.AddComponent<Image>();
-            barFillImg.color = UIColors.SafetyGreen;
+            barFillImg.color = UIColors.Hex("#0B1B32"); // Dark Navy
             barFillImg.sprite = UIHelper.GetWhiteSprite();
-            UIHelper.SetImageRoundedSprite(barFillImg, 6);
-
-            // Motto at very bottom
-            var footerRT = UIHelper.MakeRect("footer", root.transform);
-            footerRT.anchorMin = new Vector2(0f, 0.04f);
-            footerRT.anchorMax = new Vector2(1f, 0.09f);
-            footerRT.offsetMin = Vector2.zero;
-            footerRT.offsetMax = Vector2.zero;
-            var footerTMP = UIHelper.AddTMP(footerRT.gameObject);
-            footerTMP.text = "SAFE WORKERS, STRONGER INDIA";
-            footerTMP.fontSize = 18;
-            footerTMP.fontStyle = FontStyles.Bold;
-            footerTMP.color = new Color(1f, 1f, 1f, 0.70f);
-            footerTMP.alignment = TextAlignmentOptions.Center;
-            footerTMP.raycastTarget = false;
+            UIHelper.SetImageRoundedSprite(barFillImg, 16);
 
             return root;
         }

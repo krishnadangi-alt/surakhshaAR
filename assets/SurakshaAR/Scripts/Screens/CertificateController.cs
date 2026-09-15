@@ -40,11 +40,11 @@ namespace SurakshaAR.Screens
                 if (module != null)
                 {
                     string title = loc != null ? loc.Get(module.titleKey) : module.titleKey;
-                    labelModuleTitle.text = "🔥 " + title;
+                    labelModuleTitle.text = title;
                 }
                 else
                 {
-                    labelModuleTitle.text = "🔥 Fire & Explosion Response";
+                    labelModuleTitle.text = "Fire & Explosion Response";
                 }
             }
 

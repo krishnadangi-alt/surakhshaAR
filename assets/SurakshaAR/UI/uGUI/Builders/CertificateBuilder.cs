@@ -58,7 +58,7 @@ namespace SurakshaAR.UI.Builders
             vlg.childForceExpandWidth = true;
             vlg.childForceExpandHeight = false;
             vlg.childControlWidth = true;
-            vlg.childControlHeight = false;
+            vlg.childControlHeight = true;
 
             var csf = content.gameObject.AddComponent<ContentSizeFitter>();
             csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
@@ -136,8 +136,12 @@ namespace SurakshaAR.UI.Builders
             sealImg.sprite = UIHelper.GetCircleSprite();
             sealImg.color = UIColors.Hex("#FEF3C7"); // Warm Gold
 
-            var sealIcon = UIHelper.MakeLabel("SealIcon", sealCircle, "🛡️", 36, Color.white, TextAlignmentOptions.Center);
-            UIHelper.Stretch(sealIcon.GetComponent<RectTransform>(), 0, 0, 0, 0);
+            var sealIconGO = new GameObject("SealIcon");
+            sealIconGO.transform.SetParent(sealCircle, false);
+            var sealIconImg = sealIconGO.AddComponent<Image>();
+            sealIconImg.sprite = UIHelper.GetShieldSprite();
+            sealIconImg.color = UIColors.PrimaryDark;
+            UIHelper.AnchorCenter(sealIconGO.GetComponent<RectTransform>(), 40, 40);
 
             // Title
             var certTitle = UIHelper.MakeLabel("CertTitle", inner, "CERTIFICATE OF SAFETY COMPETENCY", 22, UIColors.PrimaryDark, TextAlignmentOptions.Center, bold: true);
@@ -166,7 +170,7 @@ namespace SurakshaAR.UI.Builders
             bImg.color = UIColors.Hex("#F0FDF4"); // Soft mint green
             UIHelper.SetImageRoundedSprite(bImg, 12);
 
-            var modTitle = UIHelper.MakeLabel("label-module-title", modBadge, "🔥 Fire & Explosion Response", 18, UIColors.SafetyGreen, TextAlignmentOptions.Center, bold: true);
+            var modTitle = UIHelper.MakeLabel("label-module-title", modBadge, "Fire & Explosion Response", 18, UIColors.SafetyGreen, TextAlignmentOptions.Center, bold: true);
             UIHelper.SetLayout(modTitle.gameObject, preferredHeight: 24);
 
             var scoreText = UIHelper.MakeLabel("label-score-grade", modBadge, "Competency Grade: Level 1 (95% Score • 0 Critical Errors)", 13, UIColors.PrimaryDark, TextAlignmentOptions.Center);
@@ -186,7 +190,7 @@ namespace SurakshaAR.UI.Builders
             qrImg.color = UIColors.PrimaryDark;
             UIHelper.SetImageRoundedSprite(qrImg, 8);
 
-            var qrText = UIHelper.MakeLabel("QRText", qrBox, "▦\nQR", 22, Color.white, TextAlignmentOptions.Center, bold: true);
+            var qrText = UIHelper.MakeLabel("QRText", qrBox, "QR", 22, Color.white, TextAlignmentOptions.Center, bold: true);
             UIHelper.Stretch(qrText.GetComponent<RectTransform>(), 0, 0, 0, 0);
 
             var qrInfoCol = UIHelper.MakeVertical("QRInfo", qrRow, 4);
@@ -198,24 +202,24 @@ namespace SurakshaAR.UI.Builders
             var dateLbl = UIHelper.MakeLabel("label-cert-date", qrInfoCol, "Date Issued: 12 Sept 2026", 12, UIColors.TextSecondary);
             UIHelper.SetLayout(dateLbl.gameObject, preferredHeight: 16);
 
-            var statusLbl = UIHelper.MakeLabel("StatusLbl", qrInfoCol, "Status: ✓ Cryptographically Verified", 12, UIColors.SafetyGreen, bold: true);
+            var statusLbl = UIHelper.MakeLabel("StatusLbl", qrInfoCol, "Status: Cryptographically Verified", 12, UIColors.SafetyGreen, bold: true);
             UIHelper.SetLayout(statusLbl.gameObject, preferredHeight: 16);
         }
 
         private static void BuildActionButtons(Transform parent)
         {
             var col = UIHelper.MakeVertical("ActionButtons", parent, 12);
-            UIHelper.SetLayout(col.gameObject, preferredHeight: 180);
+            UIHelper.SetLayout(col.gameObject, preferredHeight: 180, minHeight: 188);
 
             // Download Button
-            var downloadBtn = UIHelper.MakeButton("btn-download-cert", col, "⬇ Download Certificate (PDF)", 18,
+            var downloadBtn = UIHelper.MakeButton("btn-download-cert", col, "Download Certificate (PDF)", 18,
                 UIColors.SafetyGreen, Color.white, 16);
-            UIHelper.SetLayout(downloadBtn.gameObject, preferredHeight: 58);
+            UIHelper.SetLayout(downloadBtn.gameObject, preferredHeight: 58, minHeight: 50);
 
             // Share Button
-            var shareBtn = UIHelper.MakeButton("btn-share-cert", col, "🔗 Share Official Verification", 17,
+            var shareBtn = UIHelper.MakeButton("btn-share-cert", col, "Share Official Verification", 17,
                 Color.white, UIColors.PrimaryDark, 16);
-            UIHelper.SetLayout(shareBtn.gameObject, preferredHeight: 54);
+            UIHelper.SetLayout(shareBtn.gameObject, preferredHeight: 54, minHeight: 46);
             var shareBorder = shareBtn.gameObject.AddComponent<Outline>();
             shareBorder.effectColor = UIColors.Border;
             shareBorder.effectDistance = new Vector2(1, -1);
@@ -223,7 +227,7 @@ namespace SurakshaAR.UI.Builders
             // Return to Home Button
             var homeBtn = UIHelper.MakeButton("btn-back-home", col, "Return to Dashboard", 17,
                 UIColors.Hex("#F3F5F7"), UIColors.TextPrimary, 16);
-            UIHelper.SetLayout(homeBtn.gameObject, preferredHeight: 52);
+            UIHelper.SetLayout(homeBtn.gameObject, preferredHeight: 52, minHeight: 44);
         }
     }
 }

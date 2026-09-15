@@ -56,7 +56,7 @@ namespace SurakshaAR.UI.Builders
             vlg.childForceExpandWidth = true;
             vlg.childForceExpandHeight = false;
             vlg.childControlWidth = true;
-            vlg.childControlHeight = false;
+            vlg.childControlHeight = true;
 
             var csf = content.gameObject.AddComponent<ContentSizeFitter>();
             csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
@@ -101,7 +101,7 @@ namespace SurakshaAR.UI.Builders
             var inner = UIHelper.MakeVertical("Inner", banner.transform, 6, new RectOffset(20, 20, 14, 14));
             UIHelper.Stretch(inner, 0, 0, 0, 0);
 
-            var title = UIHelper.MakeLabel("BannerTitle", inner, "🎯 Standard Industrial Scenarios", 18, UIColors.PrimaryDark, bold: true);
+            var title = UIHelper.MakeLabel("BannerTitle", inner, "Standard Industrial Scenarios", 18, UIColors.PrimaryDark, bold: true);
             UIHelper.SetLayout(title.gameObject, preferredHeight: 24);
 
             var desc = UIHelper.MakeLabel("BannerDesc", inner,
@@ -113,6 +113,9 @@ namespace SurakshaAR.UI.Builders
         private static void BuildScenarioCards(Transform parent)
         {
             var col = UIHelper.MakeVertical("ScenarioList", parent, 18);
+            UIHelper.SetLayout(col.gameObject, minHeight: 480);
+            var csf = col.gameObject.AddComponent<ContentSizeFitter>();
+            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             // Card 1: Electrical Panel Fire
             BuildScenarioCard(
@@ -124,7 +127,7 @@ namespace SurakshaAR.UI.Builders
                 badge: "AR PRACTICAL READY",
                 badgeColor: UIColors.SafetyGreen,
                 badgeBg: UIColors.Hex("#E6F4EC"),
-                icon: "⚡"
+                icon: "electrical"
             );
 
             // Card 2: Chemical Storage Fire
@@ -137,7 +140,7 @@ namespace SurakshaAR.UI.Builders
                 badge: "SIMULATION READY",
                 badgeColor: UIColors.Primary,
                 badgeBg: UIColors.Hex("#EBF5FF"),
-                icon: "🧪"
+                icon: "gas"
             );
 
             // Card 3: Workshop Conveyor Fire
@@ -150,7 +153,7 @@ namespace SurakshaAR.UI.Builders
                 badge: "SIMULATION READY",
                 badgeColor: UIColors.Warning,
                 badgeBg: UIColors.Hex("#FEF3C7"),
-                icon: "⚙️"
+                icon: "machinery"
             );
         }
 
@@ -166,7 +169,7 @@ namespace SurakshaAR.UI.Builders
             string icon)
         {
             var btn = UIHelper.MakeButton(btnName, parent, "", 16, Color.white, UIColors.TextPrimary, 20);
-            UIHelper.SetLayout(btn.gameObject, preferredHeight: 146);
+            UIHelper.SetLayout(btn.gameObject, preferredHeight: 146, minHeight: 120);
 
             var outline = btn.gameObject.AddComponent<Outline>();
             outline.effectColor = UIColors.Border;
@@ -182,8 +185,29 @@ namespace SurakshaAR.UI.Builders
             iconBg.color = badgeBg;
             UIHelper.SetImageRoundedSprite(iconBg, 16);
 
-            var iconLbl = UIHelper.MakeLabel("IconLbl", iconBox, icon, 32, Color.white, TextAlignmentOptions.Center);
-            UIHelper.Stretch(iconLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
+            Sprite spr = null;
+            if (icon.Contains("🔥") || icon.ToLower().Contains("fire")) spr = UIHelper.GetFireEmojiSprite();
+            else if (icon.Contains("☁") || icon.ToLower().Contains("gas")) spr = UIHelper.GetGasEmojiSprite();
+            else if (icon.Contains("⚙") || icon.ToLower().Contains("gear") || icon.ToLower().Contains("machin")) spr = UIHelper.GetGearEmojiSprite();
+            else if (icon.ToLower().Contains("electr")) spr = UIHelper.GetShieldSprite();
+
+            if (spr != null)
+            {
+                var iconImgGo = new GameObject("IconImg");
+                iconImgGo.transform.SetParent(iconBox, false);
+                var img = iconImgGo.AddComponent<Image>();
+                img.sprite = spr;
+                img.preserveAspect = true;
+                var rt = iconImgGo.GetComponent<RectTransform>();
+                rt.anchorMin = new Vector2(0.5f, 0.5f);
+                rt.anchorMax = new Vector2(0.5f, 0.5f);
+                rt.sizeDelta = new Vector2(40, 40);
+            }
+            else
+            {
+                var iconLbl = UIHelper.MakeLabel("IconLbl", iconBox, icon, 32, Color.white, TextAlignmentOptions.Center);
+                UIHelper.Stretch(iconLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
+            }
 
             // Middle Content Column
             var textCol = UIHelper.MakeVertical("TextCol", inner, 4);
@@ -208,7 +232,7 @@ namespace SurakshaAR.UI.Builders
             UIHelper.Stretch(bLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
 
             // Right Arrow
-            var arrow = UIHelper.MakeLabel("Arrow", inner, "➔", 22, UIColors.TextMuted, TextAlignmentOptions.Right);
+            var arrow = UIHelper.MakeLabel("Arrow", inner, ">", 22, UIColors.TextMuted, TextAlignmentOptions.Right);
             UIHelper.SetLayout(arrow.gameObject, preferredWidth: 28);
         }
     }

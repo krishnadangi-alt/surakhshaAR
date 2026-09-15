@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace SurakshaAR.Core
 {
@@ -17,11 +18,13 @@ namespace SurakshaAR.Core
         public static SafeAreaDriver Instance { get; private set; }
 
         private RectTransform _rectTransform;
+        private CanvasScaler _scaler;
         private Rect _lastSafeArea = Rect.zero;
         private ScreenOrientation _lastOrientation = ScreenOrientation.AutoRotation;
 
         private void Awake()
         {
+            if (!Application.isPlaying) return;
             if (Instance != null && Instance != this)
             {
                 Destroy(this);
@@ -29,6 +32,7 @@ namespace SurakshaAR.Core
             }
             Instance = this;
             _rectTransform = GetComponent<RectTransform>();
+            _scaler = GetComponentInParent<CanvasScaler>();
         }
 
         private void OnDestroy()
@@ -36,8 +40,21 @@ namespace SurakshaAR.Core
             if (Instance == this) Instance = null;
         }
 
+        private void Start()
+        {
+            if (!Application.isPlaying) return;
+            ApplySafeArea(Screen.safeArea);
+        }
+
+        private void OnEnable()
+        {
+            if (!Application.isPlaying) return;
+            ApplySafeArea(Screen.safeArea);
+        }
+
         private void Update()
         {
+            if (!Application.isPlaying) return;
             Rect safe = Screen.safeArea;
             ScreenOrientation orientation = Screen.orientation;
 
@@ -46,6 +63,17 @@ namespace SurakshaAR.Core
                 _lastSafeArea = safe;
                 _lastOrientation = orientation;
                 ApplySafeArea(safe);
+            }
+
+            if (_scaler != null)
+            {
+                // In portrait mobile (height >= width), match width (0f).
+                // If rotated or split-screen landscape (width > height), match height (1f) to prevent vertical squash.
+                float targetMatch = Screen.width > Screen.height ? 1f : 0f;
+                if (!Mathf.Approximately(_scaler.matchWidthOrHeight, targetMatch))
+                {
+                    _scaler.matchWidthOrHeight = targetMatch;
+                }
             }
         }
 
@@ -56,6 +84,7 @@ namespace SurakshaAR.Core
             // Convert safe area from screen pixels to canvas-relative anchors.
             float sw = Screen.width;
             float sh = Screen.height;
+            if (sw <= 0f || sh <= 0f) return;
 
             Vector2 anchorMin = safe.position;
             Vector2 anchorMax = safe.position + safe.size;
@@ -64,6 +93,11 @@ namespace SurakshaAR.Core
             anchorMin.y /= sh;
             anchorMax.x /= sw;
             anchorMax.y /= sh;
+
+            anchorMin.x = Mathf.Clamp01(anchorMin.x);
+            anchorMin.y = Mathf.Clamp01(anchorMin.y);
+            anchorMax.x = Mathf.Clamp01(anchorMax.x);
+            anchorMax.y = Mathf.Clamp01(anchorMax.y);
 
             _rectTransform.anchorMin = anchorMin;
             _rectTransform.anchorMax = anchorMax;

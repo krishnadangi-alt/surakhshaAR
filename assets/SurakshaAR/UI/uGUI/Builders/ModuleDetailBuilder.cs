@@ -328,8 +328,8 @@ namespace SurakshaAR.UI.Builders
 
         private static void BuildStartButton(Transform parent)
         {
-            var btn = UIHelper.MakeButton("btn-start-module", parent, "START MODULE  →", 34,
-                UIColors.SafetyGreen, Color.white, 26);
+            var btn = UIHelper.MakeButton("btn-start-module", parent, "START MODULE  >", 34,
+                UIColors.Hex("#0A192F"), Color.white, 28f);
             btn.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 120);
             var le = btn.gameObject.GetComponent<LayoutElement>() ?? btn.gameObject.AddComponent<LayoutElement>();
             le.preferredHeight = 120;

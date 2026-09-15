@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using SurakshaAR.Data;
 using SurakshaAR.Screens;
 using SurakshaAR.UI;
 using SurakshaAR.UI.Builders;
@@ -31,6 +32,7 @@ namespace SurakshaAR.Core
 
         // ── Internal canvas hierarchy ─────────────────────────────────
         private Canvas _mainCanvas;
+        private Image _canvasBg;
         private RectTransform _screenContainer;
         private GameObject _activeScreenGO;
         private IScreenController _activeController;
@@ -92,6 +94,24 @@ namespace SurakshaAR.Core
                 rt.offsetMax = Vector2.zero;
             }
             _activeScreenGO = screenGO;
+            UpdateCanvasBackground(screenId);
+
+            // Force immediate layout update so layout groups calculate with the actual container bounds
+            Canvas.ForceUpdateCanvases();
+            if (rt != null)
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
+            }
+
+            // Synchronize menu font across all text components on every screen
+            var menuFont = UI.UIHelper.GetDefaultFont();
+            if (menuFont != null)
+            {
+                foreach (var tmp in screenGO.GetComponentsInChildren<TMPro.TextMeshProUGUI>(true))
+                {
+                    tmp.font = menuFont;
+                }
+            }
 
             // Track navigation history
             if (_hasShownAnyScreen)
@@ -138,6 +158,19 @@ namespace SurakshaAR.Core
 
             canvasGO.AddComponent<GraphicRaycaster>();
 
+            // ── Fullscreen Canvas Background (fills notches, camera cutouts, nav insets) ──
+            var bgGO = new GameObject("CanvasBackground");
+            bgGO.transform.SetParent(canvasGO.transform, false);
+            var bgRT = bgGO.AddComponent<RectTransform>();
+            bgRT.anchorMin = Vector2.zero;
+            bgRT.anchorMax = Vector2.one;
+            bgRT.offsetMin = Vector2.zero;
+            bgRT.offsetMax = Vector2.zero;
+            _canvasBg = bgGO.AddComponent<Image>();
+            _canvasBg.color = UIColors.Background;
+            _canvasBg.sprite = UIHelper.GetWhiteSprite();
+            _canvasBg.raycastTarget = false;
+
             // ── Safe Area Panel ───────────────────────────────────────
             var safeAreaGO = new GameObject("SafeArea");
             safeAreaGO.transform.SetParent(canvasGO.transform, false);
@@ -159,6 +192,27 @@ namespace SurakshaAR.Core
             _screenContainer.anchorMax = Vector2.one;
             _screenContainer.offsetMin = Vector2.zero;
             _screenContainer.offsetMax = Vector2.zero;
+        }
+
+        private void UpdateCanvasBackground(ScreenId screenId)
+        {
+            if (_canvasBg == null) return;
+            switch (screenId)
+            {
+                case ScreenId.Splash:
+                case ScreenId.Login:
+                    _canvasBg.color = UIColors.PrimaryDark;
+                    break;
+                case ScreenId.Assessment:
+                    _canvasBg.color = UIColors.Hex("#0A1926");
+                    break;
+                case ScreenId.Certificate:
+                    _canvasBg.color = UIColors.Hex("#07131F");
+                    break;
+                default:
+                    _canvasBg.color = UIColors.Hex("#F8FAFC");
+                    break;
+            }
         }
 
         // ──────────────────────────────────────────────────────────────
@@ -217,7 +271,8 @@ namespace SurakshaAR.Core
                 case ScreenId.ARTraining:         return null; // AR scene, no UI controller
                 case ScreenId.Certificate:        return new CertificateController();
                 case ScreenId.Progress:           return new ProgressController();
-                case ScreenId.ProfileSetup:       return new ProfileSetupController();
+                case ScreenId.ProfileSetup:       return new ProfileController();
+                case ScreenId.Notifications:      return new NotificationsController();
                 default:                          return null;
             }
         }

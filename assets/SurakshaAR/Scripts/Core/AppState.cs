@@ -11,7 +11,7 @@ namespace SurakshaAR.Core
     /// </summary>
     public class AppState : MonoBehaviour
     {
-        public static AppState Instance { get; private set; }
+        public static AppState Instance { get; set; }
 
         public AppLanguage CurrentLanguage { get; set; } = AppLanguage.English;
         public string EmployeeId { get; set; } = "M10234";
@@ -24,17 +24,19 @@ namespace SurakshaAR.Core
         public string SelectedScenarioTitle { get; set; } = "Electrical Panel Fire";
 
         public int AssessmentScore { get; set; } = 95;
-        public int AssessmentTotalQuestions { get; set; } = 7;
+        public int AssessmentTotalQuestions { get; set; } = 6;
         public int CompletedModulesCount { get; set; } = 3;
         public int TotalModulesCount { get; set; } = 5;
 
         // Rich Competency & Attempt Tracking
         public float LastARTimerSeconds { get; set; } = 48f;
-        public int CorrectActionsCount { get; set; } = 7;
+        public int CorrectActionsCount { get; set; } = 6;
         public int WrongActionsCount { get; set; } = 0;
         public int UnsafeActionsCount { get; set; } = 0;
         public int CriticalErrorsCount { get; set; } = 0;
-        public bool IsPassed => AssessmentScore >= 75 && CriticalErrorsCount == 0;
+        public bool LastAttemptTimedOut { get; set; } = false;
+        public bool FireExtinguishedSuccess { get; set; } = true;
+        public bool IsPassed => AssessmentScore >= 75 && CriticalErrorsCount == 0 && !LastAttemptTimedOut;
         public bool IsRetrainingMode { get; set; } = false;
         public int PreviousAttemptScore { get; set; } = 65;
         public string CertificateId { get; set; } = "IND-SAR-2026-0941";

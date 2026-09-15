@@ -17,6 +17,7 @@ namespace SurakshaAR.Core
         Result = 9,
         Certificate = 10,
         Progress = 11,
-        ProfileSetup = 12
+        ProfileSetup = 12,
+        Notifications = 13
     }
 }

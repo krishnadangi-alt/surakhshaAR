@@ -5,191 +5,234 @@ using UnityEngine.UI;
 namespace SurakshaAR.UI.Builders
 {
     /// <summary>
-    /// Language Selection screen — pixel-perfect recreation of Figma reference:
+    /// Language Selection screen — pixel-perfect recreation of design reference:
     /// 1080 × 2400 reference scaling:
-    /// - Deep navy header with language badge, 46px title, 26px subtitle, and Skip pill button.
-    /// - 3 rich language cards (190px high) with 96x96 country code badges (GB, IN, ST),
-    ///   clean 38px typography without □ glyph boxes, and 54x54 circular radio indicators.
-    /// - Fixed-height elements (no vertical sausage stretching).
-    /// - Rich safety green "Continue →" CTA button (128px high) in #1B5E3C.
+    /// - Clean pure white background with status bar safe area.
+    /// - Left-aligned header:
+    ///     - "Select Your Language" (50px bold #0F172A).
+    ///     - "Choose your preferred language" (27px #64748B).
+    /// - Three stacked language cards (190px high, 26px rounded corners, 28px spacing):
+    ///     1. English (Blue badge with white "Aअ", active blue border and blue chevron) — Selected.
+    ///     2. Hindi (Warm orange badge with white "अ", subtle gray border, gray chevron).
+    ///     3. Santali (Emerald green badge with white floral/leaf icon, subtle gray border, gray chevron).
+    /// - Bottom Continue button (Solid Dark Navy #0A192F, 118px high, rounded 28px, white bold text).
+    /// - Fully responsive across all portrait screen sizes with safe-area and scroll-safety.
     /// </summary>
     public static class LanguageSelectionBuilder
     {
         public static GameObject Build()
         {
             var root = new GameObject("LanguageSelectionScreen");
-            root.AddComponent<RectTransform>();
-            var bg = root.AddComponent<Image>();
-            bg.color = UIColors.Hex("#F8FAFC");
-            bg.sprite = UIHelper.GetWhiteSprite();
+            var rootRT = root.AddComponent<RectTransform>();
+            rootRT.anchorMin = Vector2.zero;
+            rootRT.anchorMax = Vector2.one;
+            rootRT.offsetMin = Vector2.zero;
+            rootRT.offsetMax = Vector2.zero;
 
-            // ── 1. Header (Anchored to top, 320px) ──────────────────────────
-            BuildHeader(root.transform);
+            // Pure clean light background
+            var rootImg = root.AddComponent<Image>();
+            rootImg.color = Color.white;
+            rootImg.sprite = UIHelper.GetWhiteSprite();
 
-            // ── 2. Cards & CTA Body (Below Header) ─────────────────────────
-            var bodyRT = UIHelper.MakeRect("CardsBody", root.transform);
-            bodyRT.anchorMin = new Vector2(0f, 0f);
+            // ── 1. Header (Left-aligned, spacious top padding for notch/status bar) ──
+            var headerRT = UIHelper.MakeRect("HeaderArea", root.transform);
+            headerRT.anchorMin = new Vector2(0f, 1f);
+            headerRT.anchorMax = new Vector2(1f, 1f);
+            headerRT.pivot = new Vector2(0f, 1f);
+            headerRT.sizeDelta = new Vector2(0f, 260f);
+            headerRT.anchoredPosition = Vector2.zero;
+
+            var headerVLG = headerRT.gameObject.AddComponent<VerticalLayoutGroup>();
+            headerVLG.padding = new RectOffset(60, 60, 130, 10); // 130px top breathing space for status bar
+            headerVLG.spacing = 10f;
+            headerVLG.childAlignment = TextAnchor.UpperLeft;
+            headerVLG.childForceExpandWidth = true;
+            headerVLG.childForceExpandHeight = false;
+            headerVLG.childControlWidth = true;
+            headerVLG.childControlHeight = true;
+
+            // Title: "Select Your Language"
+            var titleTMP = UIHelper.MakeLabel("label-title", headerRT, "Select Your Language", 50f, UIColors.Hex("#0F172A"), TextAlignmentOptions.Left, bold: true, wrap: false);
+            var titleLE = titleTMP.gameObject.GetComponent<LayoutElement>() ?? titleTMP.gameObject.AddComponent<LayoutElement>();
+            titleLE.preferredHeight = 58f;
+            titleLE.minHeight = 58f;
+
+            // Subtitle: "Choose your preferred language"
+            var subTMP = UIHelper.MakeLabel("label-subtitle", headerRT, "Choose your preferred language", 27f, UIColors.Hex("#64748B"), TextAlignmentOptions.Left, bold: false, wrap: false);
+            var subLE = subTMP.gameObject.GetComponent<LayoutElement>() ?? subTMP.gameObject.AddComponent<LayoutElement>();
+            subLE.preferredHeight = 34f;
+            subLE.minHeight = 34f;
+
+            // ── 2. Bottom Continue Button (Fixed to bottom safe area) ───────
+            var bottomAreaRT = UIHelper.MakeRect("BottomArea", root.transform);
+            bottomAreaRT.anchorMin = new Vector2(0f, 0f);
+            bottomAreaRT.anchorMax = new Vector2(1f, 0f);
+            bottomAreaRT.pivot = new Vector2(0.5f, 0f);
+            bottomAreaRT.offsetMin = new Vector2(60f, 80f);
+            bottomAreaRT.offsetMax = new Vector2(-60f, 198f); // 118px height
+
+            var btn = UIHelper.MakeButton("btn-continue", bottomAreaRT,
+                "Continue >", 34f, UIColors.Hex("#0A192F"), Color.white, 28f);
+            var btnRT = btn.GetComponent<RectTransform>();
+            UIHelper.Stretch(btnRT, 0, 0, 0, 0);
+
+            // ── 3. Middle Cards Scroll Container (Between Header & Button) ──
+            var scrollAreaRT = UIHelper.MakeRect("ScrollArea", root.transform);
+            scrollAreaRT.anchorMin = new Vector2(0f, 0f);
+            scrollAreaRT.anchorMax = new Vector2(1f, 1f);
+            scrollAreaRT.offsetMin = new Vector2(0f, 218f);  // Above bottom button
+            scrollAreaRT.offsetMax = new Vector2(0f, -270f); // Below header
+
+            var scrollRect = scrollAreaRT.gameObject.AddComponent<ScrollRect>();
+            scrollRect.horizontal = false;
+            scrollRect.vertical = true;
+            scrollRect.movementType = ScrollRect.MovementType.Clamped;
+            scrollRect.scrollSensitivity = 30f;
+
+            var viewport = UIHelper.MakeRect("Viewport", scrollAreaRT);
+            viewport.anchorMin = Vector2.zero;
+            viewport.anchorMax = Vector2.one;
+            viewport.offsetMin = Vector2.zero;
+            viewport.offsetMax = Vector2.zero;
+            viewport.gameObject.AddComponent<RectMask2D>();
+            scrollRect.viewport = viewport;
+
+            var bodyRT = UIHelper.MakeRect("CardsBody", viewport);
+            bodyRT.anchorMin = new Vector2(0f, 1f);
             bodyRT.anchorMax = new Vector2(1f, 1f);
+            bodyRT.pivot = new Vector2(0.5f, 1f);
             bodyRT.offsetMin = Vector2.zero;
-            bodyRT.offsetMax = new Vector2(0f, -320f); // below 320px header
+            bodyRT.offsetMax = Vector2.zero;
+            bodyRT.sizeDelta = new Vector2(0, 800);
+            scrollRect.content = bodyRT;
 
             var bodyVLG = bodyRT.gameObject.AddComponent<VerticalLayoutGroup>();
-            bodyVLG.padding = new RectOffset(48, 48, 48, 60);
-            bodyVLG.spacing = 28;
+            bodyVLG.padding = new RectOffset(60, 60, 16, 24);
+            bodyVLG.spacing = 28f;
+            bodyVLG.childAlignment = TextAnchor.UpperCenter;
             bodyVLG.childForceExpandWidth = true;
             bodyVLG.childForceExpandHeight = false;
             bodyVLG.childControlWidth = true;
-            bodyVLG.childControlHeight = false; // NEVER force-expand children heights
+            bodyVLG.childControlHeight = true;
 
-            string hindiTitle = UIHelper.HasDevanagariSupport() ? "हिन्दी (Hindi)" : "Hindi";
-            string santaliTitle = UIHelper.HasOlChikiSupport() ? "ᱥᱟᱱᱛᱟᱲᱤ (Santali)" : "Santali";
+            var csf = bodyRT.gameObject.AddComponent<ContentSizeFitter>();
+            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-            // Language Cards (English selected by default)
-            BuildCard(bodyRT, "row-english", "check-english", "EN", "English", "English · Standard", selected: true);
-            BuildCard(bodyRT, "row-hindi",   "check-hindi",   "HI", hindiTitle, "Hindi · Devanagari", selected: false);
-            BuildCard(bodyRT, "row-santali", "check-santali", "SAT", santaliTitle, "Santali · Ol Chiki / Latin", selected: false);
+            // ── 4. The 3 Language Cards matching Reference Mockup ──────────
+            // Card 1: English (Blue badge with white "Aअ") - Selected by default
+            BuildLanguageCard(bodyRT, "row-english", "check-english",
+                badgeText: "Aअ",
+                badgeIcon: null,
+                badgeColor: UIColors.Hex("#2563EB"),
+                title: "English",
+                subtitle: "Continue in English",
+                isDevanagari: false,
+                selected: true);
 
-            // Spacer
-            var spacer = UIHelper.MakeRect("Spacer", bodyRT);
-            spacer.sizeDelta = new Vector2(0, 24);
-            UIHelper.SetLayout(spacer.gameObject, preferredHeight: 24);
+            // Card 2: Hindi (Orange badge with white "अ")
+            BuildLanguageCard(bodyRT, "row-hindi", "check-hindi",
+                badgeText: "अ",
+                badgeIcon: null,
+                badgeColor: UIColors.Hex("#EA580C"),
+                title: "हिंदी",
+                subtitle: "हिंदी में जारी रखें",
+                isDevanagari: true,
+                selected: false);
 
-            // Continue Button (Rich Safety Green, 128px high)
-            var btn = UIHelper.MakeButton("btn-continue", bodyRT,
-                "Continue →", 36f, UIColors.SafetyGreen, Color.white, 28f);
-            btn.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 128);
-            var le = btn.gameObject.GetComponent<LayoutElement>() ?? btn.gameObject.AddComponent<LayoutElement>();
-            le.preferredHeight = 128;
-            le.minHeight = 128;
+            // Card 3: Santali (Green badge with floral/leaf icon)
+            BuildLanguageCard(bodyRT, "row-santali", "check-santali",
+                badgeText: null,
+                badgeIcon: UIHelper.GetLeafSprite(),
+                badgeColor: UIColors.Hex("#16A34A"),
+                title: "Santali (संताली)",
+                subtitle: "संताली में जारी रखें",
+                isDevanagari: true,
+                selected: false);
 
             return root;
         }
 
-        private static void BuildHeader(Transform parent)
-        {
-            var headerRT = UIHelper.MakeRect("Header", parent);
-            headerRT.anchorMin = new Vector2(0f, 1f);
-            headerRT.anchorMax = new Vector2(1f, 1f);
-            headerRT.pivot = new Vector2(0.5f, 1f);
-            headerRT.sizeDelta = new Vector2(0f, 320f);
-            headerRT.anchoredPosition = Vector2.zero;
-
-            var bg = headerRT.gameObject.AddComponent<Image>();
-            bg.color = UIColors.PrimaryDark;
-            bg.sprite = UIHelper.GetWhiteSprite();
-
-            // Language Emblem Box (top-left, 90x90)
-            var emblemBox = UIHelper.MakeRect("EmblemBox", headerRT);
-            emblemBox.anchorMin = new Vector2(0f, 1f);
-            emblemBox.anchorMax = new Vector2(0f, 1f);
-            emblemBox.pivot = new Vector2(0f, 1f);
-            emblemBox.sizeDelta = new Vector2(90f, 90f);
-            emblemBox.anchoredPosition = new Vector2(48f, -64f);
-
-            var emblemImg = emblemBox.gameObject.AddComponent<Image>();
-            emblemImg.color = new Color(1f, 1f, 1f, 0.16f);
-            UIHelper.SetImageRoundedSprite(emblemImg, 24f);
-
-            var emblemLbl = UIHelper.MakeLabel("EmblemText", emblemBox,
-                "EN", 34f, Color.white, TextAlignmentOptions.Center, bold: true, wrap: false);
-            UIHelper.Stretch(emblemLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
-
-            // Skip button (top-right pill)
-            var skipBtn = UIHelper.MakeButton("btn-skip", headerRT,
-                "Skip", 26f, new Color(1f, 1f, 1f, 0.18f), Color.white, 24f);
-            var skipRT = skipBtn.GetComponent<RectTransform>();
-            skipRT.anchorMin = new Vector2(1f, 1f);
-            skipRT.anchorMax = new Vector2(1f, 1f);
-            skipRT.pivot = new Vector2(1f, 1f);
-            skipRT.sizeDelta = new Vector2(120f, 58f);
-            skipRT.anchoredPosition = new Vector2(-48f, -80f);
-
-            // Title & Subtitle column
-            var textCol = UIHelper.MakeRect("HeaderTextCol", headerRT);
-            textCol.anchorMin = new Vector2(0f, 1f);
-            textCol.anchorMax = new Vector2(1f, 1f);
-            textCol.pivot = new Vector2(0f, 1f);
-            textCol.offsetMin = new Vector2(160f, -300f);
-            textCol.offsetMax = new Vector2(-190f, -50f);
-
-            var titleTMP = UIHelper.MakeLabel("label-title", textCol, "Select Language", 44f, Color.white, bold: true, wrap: false);
-            var titleRT = titleTMP.GetComponent<RectTransform>();
-            titleRT.anchorMin = new Vector2(0f, 1f);
-            titleRT.anchorMax = new Vector2(1f, 1f);
-            titleRT.pivot = new Vector2(0f, 1f);
-            titleRT.sizeDelta = new Vector2(0f, 52f);
-            titleRT.anchoredPosition = new Vector2(0f, 0f);
-
-            var subTMP = UIHelper.MakeLabel("label-subtitle", textCol, "Choose your preferred language to continue", 24f, Hex("#94A3B8"), bold: false, wrap: false);
-            var subRT = subTMP.GetComponent<RectTransform>();
-            subRT.anchorMin = new Vector2(0f, 1f);
-            subRT.anchorMax = new Vector2(1f, 1f);
-            subRT.pivot = new Vector2(0f, 1f);
-            subRT.sizeDelta = new Vector2(0f, 34f);
-            subRT.anchoredPosition = new Vector2(0f, -56f);
-        }
-
-        private static void BuildCard(Transform parent,
+        private static void BuildLanguageCard(Transform parent,
             string cardName, string checkName,
-            string badge, string title, string subtitle, bool selected)
+            string badgeText, Sprite badgeIcon, Color badgeColor,
+            string title, string subtitle, bool isDevanagari, bool selected)
         {
             var cardGO = UIHelper.MakeRect(cardName, parent);
-            cardGO.sizeDelta = new Vector2(0, 180f);
+            cardGO.sizeDelta = new Vector2(0, 190f);
             var le = cardGO.gameObject.AddComponent<LayoutElement>();
-            le.preferredHeight = 180f;
-            le.minHeight = 180f;
+            le.preferredHeight = 190f;
+            le.minHeight = 190f;
+            le.flexibleWidth = 1f;
 
             var cardImg = cardGO.gameObject.AddComponent<Image>();
-            cardImg.color = selected ? UIColors.Primary : Color.white;
+            cardImg.color = Color.white;
             cardImg.sprite = UIHelper.GetWhiteSprite();
-            UIHelper.SetImageRoundedSprite(cardImg, 28f);
+            UIHelper.SetImageRoundedSprite(cardImg, 26f);
 
             var cardOutline = cardGO.gameObject.AddComponent<Outline>();
-            cardOutline.effectColor = selected ? UIColors.PrimaryMid : Hex("#E2E8F0");
-            cardOutline.effectDistance = new Vector2(2, -2);
+            cardOutline.effectColor = selected ? UIColors.Hex("#2563EB") : UIColors.Hex("#E2E8F0");
+            cardOutline.effectDistance = selected ? new Vector2(3.5f, -3.5f) : new Vector2(1.5f, -1.5f);
 
             var btn = cardGO.gameObject.AddComponent<Button>();
             var cols = btn.colors;
             cols.normalColor = Color.white;
-            cols.highlightedColor = new Color(0.96f, 0.97f, 1f);
-            cols.pressedColor = new Color(0.92f, 0.94f, 0.98f);
+            cols.highlightedColor = new Color(0.96f, 0.98f, 1f);
+            cols.pressedColor = new Color(0.92f, 0.95f, 1f);
             btn.colors = cols;
 
-            // Inner Horizontal Row — childControlHeight = false to prevent stretching!
+            // Inner Horizontal Layout
             var hlg = cardGO.gameObject.AddComponent<HorizontalLayoutGroup>();
-            hlg.padding = new RectOffset(32, 32, 0, 0);
-            hlg.spacing = 28;
+            hlg.padding = new RectOffset(32, 32, 24, 24);
+            hlg.spacing = 26f;
             hlg.childAlignment = TextAnchor.MiddleLeft;
             hlg.childForceExpandWidth = false;
-            hlg.childForceExpandHeight = false; // NEVER true
+            hlg.childForceExpandHeight = false;
             hlg.childControlWidth = true;
-            hlg.childControlHeight = false;     // NEVER true
+            hlg.childControlHeight = true;
 
-            // Badge Box (left, 92x92)
+            // 1. Left Badge Box (96x96)
             var badgeBox = UIHelper.MakeRect("BadgeBox", cardGO.transform);
-            badgeBox.sizeDelta = new Vector2(92f, 92f);
+            badgeBox.sizeDelta = new Vector2(96f, 96f);
             var bLE = badgeBox.gameObject.AddComponent<LayoutElement>();
-            bLE.preferredWidth = 92f;
-            bLE.preferredHeight = 92f;
-            bLE.minWidth = 92f;
-            bLE.minHeight = 92f;
+            bLE.preferredWidth = 96f;
+            bLE.preferredHeight = 96f;
+            bLE.minWidth = 96f;
+            bLE.minHeight = 96f;
+            bLE.flexibleWidth = 0f;
+            bLE.flexibleHeight = 0f;
 
             var badgeImg = badgeBox.gameObject.AddComponent<Image>();
-            badgeImg.color = selected ? new Color(1f, 1f, 1f, 0.16f) : Hex("#EEF2F6");
+            badgeImg.color = badgeColor;
             UIHelper.SetImageRoundedSprite(badgeImg, 22f);
 
-            var badgeLbl = UIHelper.MakeLabel("BadgeText", badgeBox,
-                badge, 36f, selected ? Color.white : UIColors.Primary,
-                TextAlignmentOptions.Center, bold: true, wrap: false);
-            UIHelper.Stretch(badgeLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
+            if (badgeIcon != null)
+            {
+                var iconRT = UIHelper.MakeRect("BadgeIcon", badgeBox);
+                iconRT.sizeDelta = new Vector2(52f, 52f);
+                var iconImg = iconRT.gameObject.AddComponent<Image>();
+                iconImg.sprite = badgeIcon;
+                iconImg.color = Color.white;
+                iconImg.preserveAspect = true;
+                iconImg.raycastTarget = false;
+                UIHelper.Stretch(iconRT, 22, 22, 22, 22);
+            }
+            else
+            {
+                var badgeLbl = UIHelper.MakeLabel("BadgeText", badgeBox,
+                    badgeText ?? "", 36f, Color.white,
+                    TextAlignmentOptions.Center, bold: true, wrap: false);
+                UIHelper.Stretch(badgeLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
+            }
 
-            // Center Text Column
+            // 2. Center Text Column (Title + Subtitle)
             var textCol = UIHelper.MakeRect("TextCol", cardGO.transform);
             var textLE = textCol.gameObject.AddComponent<LayoutElement>();
             textLE.flexibleWidth = 1f;
+            textLE.preferredHeight = 115f;
+            textLE.minHeight = 90f;
 
             var textVLG = textCol.gameObject.AddComponent<VerticalLayoutGroup>();
-            textVLG.spacing = 6;
+            textVLG.spacing = 6f;
             textVLG.childAlignment = TextAnchor.MiddleLeft;
             textVLG.childForceExpandWidth = true;
             textVLG.childForceExpandHeight = false;
@@ -197,43 +240,40 @@ namespace SurakshaAR.UI.Builders
             textVLG.childControlHeight = true;
 
             var titleLbl = UIHelper.MakeLabel("Title", textCol,
-                title, 36f, selected ? Color.white : UIColors.TextPrimary,
+                title, 38f, UIColors.Hex("#0F172A"),
                 TextAlignmentOptions.Left, bold: true, wrap: false);
-            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 46f);
+            var titleLE = titleLbl.gameObject.GetComponent<LayoutElement>() ?? titleLbl.gameObject.AddComponent<LayoutElement>();
+            titleLE.preferredHeight = 48f;
+            titleLE.minHeight = 48f;
 
             var subLbl = UIHelper.MakeLabel("Sub", textCol,
-                subtitle, 24f, selected ? UIColors.TextOnNavyDim : Hex("#64748B"),
+                subtitle, 26f, UIColors.Hex("#64748B"),
                 TextAlignmentOptions.Left, bold: false, wrap: false);
-            UIHelper.SetLayout(subLbl.gameObject, preferredHeight: 32f);
+            var subLE = subLbl.gameObject.GetComponent<LayoutElement>() ?? subLbl.gameObject.AddComponent<LayoutElement>();
+            subLE.preferredHeight = 34f;
+            subLE.minHeight = 34f;
 
-            // Right Radio Indicator Box (54x54)
-            var radioBox = UIHelper.MakeRect(checkName, cardGO.transform);
-            radioBox.sizeDelta = new Vector2(54f, 54f);
-            var rLE = radioBox.gameObject.AddComponent<LayoutElement>();
-            rLE.preferredWidth = 54f;
-            rLE.preferredHeight = 54f;
-            rLE.minWidth = 54f;
-            rLE.minHeight = 54f;
+            // 3. Right Chevron Indicator (Sleek vector chevron)
+            var chevronBox = UIHelper.MakeRect(checkName, cardGO.transform);
+            chevronBox.sizeDelta = new Vector2(36f, 36f);
+            var cLE = chevronBox.gameObject.AddComponent<LayoutElement>();
+            cLE.preferredWidth = 36f;
+            cLE.preferredHeight = 36f;
+            cLE.minWidth = 36f;
+            cLE.minHeight = 36f;
+            cLE.flexibleWidth = 0f;
+            cLE.flexibleHeight = 0f;
 
-            var radioImg = radioBox.gameObject.AddComponent<Image>();
-            radioImg.sprite = UIHelper.GetCircleOutlineSprite();
-            radioImg.color = selected ? Color.white : Hex("#CBD5E1");
+            var chevronImg = chevronBox.gameObject.AddComponent<Image>();
+            chevronImg.sprite = UIHelper.GetRightChevronSprite();
+            chevronImg.color = selected ? UIColors.Hex("#2563EB") : UIColors.Hex("#94A3B8");
+            chevronImg.preserveAspect = true;
+            chevronImg.raycastTarget = false;
 
-            var dotBox = UIHelper.MakeRect("InnerDot", radioBox);
-            dotBox.sizeDelta = new Vector2(26f, 26f);
-            var dotImg = dotBox.gameObject.AddComponent<Image>();
-            dotImg.sprite = UIHelper.GetCircleSprite();
-            dotImg.color = Color.white;
-            dotBox.gameObject.SetActive(selected);
-
-            // Safe fallback TMP with empty string for legacy references
-            var checkTMP = UIHelper.MakeLabel($"CheckText_{checkName}", radioBox,
-                "", 20f, Color.clear,
-                TextAlignmentOptions.Center, bold: false, wrap: false);
+            // Safe fallback label for legacy references
+            var checkTMP = UIHelper.MakeLabel($"CheckText_{checkName}", chevronBox,
+                "", 1f, Color.clear, TextAlignmentOptions.Center, bold: false, wrap: false);
             checkTMP.raycastTarget = false;
-            UIHelper.Stretch(checkTMP.GetComponent<RectTransform>(), 0, 0, 0, 0);
         }
-
-        private static Color Hex(string hex) => UIColors.Hex(hex);
     }
 }

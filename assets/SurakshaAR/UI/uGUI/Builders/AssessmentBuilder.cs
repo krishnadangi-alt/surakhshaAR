@@ -55,7 +55,7 @@ namespace SurakshaAR.UI.Builders
             vlg.childForceExpandWidth = true;
             vlg.childForceExpandHeight = false;
             vlg.childControlWidth = true;
-            vlg.childControlHeight = false;
+            vlg.childControlHeight = true;
 
             var csf = content.gameObject.AddComponent<ContentSizeFitter>();
             csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
@@ -99,7 +99,7 @@ namespace SurakshaAR.UI.Builders
             var textRow = UIHelper.MakeHorizontal("TextRow", bannerCol, 8);
             UIHelper.SetLayout(textRow.gameObject, preferredHeight: 24);
 
-            var titleLbl = UIHelper.MakeLabel("label-title", textRow, "🔥 Fire Response", 18, Color.white, bold: true);
+            var titleLbl = UIHelper.MakeLabel("label-title", textRow, "Fire Response", 18, Color.white, bold: true);
             UIHelper.SetLayout(titleLbl.gameObject, flexibleWidth: true, flexWidth: 1);
 
             var stepLbl = UIHelper.MakeLabel("StepLbl", textRow, "Step 1 / 4", 17, UIColors.TextOnNavyDim, TextAlignmentOptions.Right);
@@ -126,36 +126,47 @@ namespace SurakshaAR.UI.Builders
         {
             var card = new GameObject("InstructionCard");
             card.transform.SetParent(parent, false);
-            UIHelper.SetLayout(card, preferredHeight: 180);
 
             var cardImg = card.AddComponent<Image>();
             cardImg.color = new Color(0.08f, 0.12f, 0.18f, 0.85f);
             UIHelper.SetImageRoundedSprite(cardImg, 22);
 
-            var inner = UIHelper.MakeVertical("Inner", card.transform, 10, new RectOffset(24, 24, 20, 20));
-            UIHelper.Stretch(inner, 0, 0, 0, 0);
+            var vlg = card.AddComponent<VerticalLayoutGroup>();
+            vlg.padding = new RectOffset(24, 24, 20, 20);
+            vlg.spacing = 10;
+            vlg.childForceExpandWidth = true;
+            vlg.childForceExpandHeight = false;
+            vlg.childControlWidth = true;
+            vlg.childControlHeight = true;
 
-            var titleRow = UIHelper.MakeHorizontal("TitleRow", inner, 12);
-            UIHelper.SetLayout(titleRow.gameObject, preferredHeight: 36);
+            var titleRow = UIHelper.MakeHorizontal("TitleRow", card.transform, 12);
+            UIHelper.SetLayout(titleRow.gameObject, minHeight: 36);
 
-            var title = UIHelper.MakeLabel("CardTitle", titleRow, "Identify the Fire Source", 24, Color.white, bold: true);
+            var title = UIHelper.MakeLabel("CardTitle", titleRow, "Which extinguisher is correct for an electrical panel fire?", 20, Color.white, bold: true, wrap: true);
             UIHelper.SetLayout(title.gameObject, flexibleWidth: true, flexWidth: 1);
 
-            var hintBtn = UIHelper.MakeButton("btn-hint", titleRow, "💡 Hint", 16, new Color(0.9f, 0.7f, 0.1f, 0.25f), Hex("#FBBF24"), 16);
+            var hintBtn = UIHelper.MakeButton("btn-hint", titleRow, "Hint", 16, new Color(0.9f, 0.7f, 0.1f, 0.25f), Hex("#FBBF24"), 16);
             UIHelper.SetLayout(hintBtn.gameObject, preferredWidth: 84, preferredHeight: 34);
 
-            var desc = UIHelper.MakeLabel("CardDesc", inner,
-                "Look around the environment. Locate the fire symbol marker. Do NOT approach without protective equipment.",
-                18, new Color(1, 1, 1, 0.78f));
-            UIHelper.SetLayout(desc.gameObject, preferredHeight: 60);
+            var desc = UIHelper.MakeLabel("CardDesc", card.transform,
+                "A 415V live electrical panel fire is a CLASS C hazard. Select the ONLY agent that is electrically non-conductive and safe. Water and foam conduct electricity — DO NOT use them on live equipment.",
+                16, new Color(1, 1, 1, 0.78f), wrap: true);
+            UIHelper.SetLayout(desc.gameObject, minHeight: 60, flexibleWidth: true, flexWidth: 1);
+
+            UIHelper.SetLayout(card, minHeight: 180);
+            var csf = card.AddComponent<ContentSizeFitter>();
+            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
         }
 
         private static void BuildQuizOptions(Transform parent)
         {
             var optCol = UIHelper.MakeVertical("QuizOptions", parent, 14);
+            UIHelper.SetLayout(optCol.gameObject, minHeight: 320);
+            var csf = optCol.gameObject.AddComponent<ContentSizeFitter>();
+            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             string[] defaultOptions = {
-                "CO₂ Extinguisher (Class C/Electrical)",
+                "CO<sub>2</sub> Extinguisher (Class C/Electrical)",
                 "Water Hose Reel (Class A only)",
                 "Dry Powder Extinguisher (Multipurpose)",
                 "Foam Extinguisher (Flammable Liquids)"
@@ -171,7 +182,7 @@ namespace SurakshaAR.UI.Builders
         {
             var btn = UIHelper.MakeButton(name, parent, "", 18,
                 isSelected ? Hex("#1B3855") : Hex("#102233"), Color.white, 16);
-            UIHelper.SetLayout(btn.gameObject, preferredHeight: 70);
+            UIHelper.SetLayout(btn.gameObject, preferredHeight: 70, minHeight: 56);
 
             var inner = UIHelper.MakeHorizontal("Inner", btn.transform, 16, new RectOffset(20, 20, 14, 14));
             UIHelper.Stretch(inner, 0, 0, 0, 0);
@@ -183,8 +194,12 @@ namespace SurakshaAR.UI.Builders
             radioImg.sprite = UIHelper.GetCircleSprite();
             radioImg.color = isSelected ? UIColors.Primary : new Color(1, 1, 1, 0.25f);
 
-            var checkLbl = UIHelper.MakeLabel("Check", radio, isSelected ? "✓" : "", 18, Color.white, TextAlignmentOptions.Center, bold: true);
-            UIHelper.Stretch(checkLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
+            var checkGO = new GameObject("Check");
+            checkGO.transform.SetParent(radio, false);
+            var checkImg = checkGO.AddComponent<Image>();
+            checkImg.sprite = UIHelper.GetCheckmarkSprite();
+            checkImg.color = isSelected ? Color.white : Color.clear;
+            UIHelper.AnchorCenter(checkGO.GetComponent<RectTransform>(), 20, 20);
 
             // Option text
             var optLbl = UIHelper.MakeLabel("Text", inner, text, 18, Color.white);
@@ -195,7 +210,7 @@ namespace SurakshaAR.UI.Builders
         {
             var submitBtn = UIHelper.MakeButton("btn-submit-assessment", parent, "Submit Assessment Response",
                 22, UIColors.SafetyGreen, Color.white, 20);
-            UIHelper.SetLayout(submitBtn.gameObject, preferredHeight: 68);
+            UIHelper.SetLayout(submitBtn.gameObject, preferredHeight: 68, minHeight: 56);
         }
 
         private static Color Hex(string hex) => UIColors.Hex(hex);

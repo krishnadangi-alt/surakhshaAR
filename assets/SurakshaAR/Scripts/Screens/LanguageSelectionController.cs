@@ -112,52 +112,40 @@ namespace SurakshaAR.Screens
         {
             if (rowBtn == null) return;
 
-            // Card background
+            // Card background & outline
             var rowImg = rowBtn.GetComponent<Image>();
             if (rowImg != null)
-                rowImg.color = isSelected ? UIColors.Primary : Color.white;
+            {
+                rowImg.color = Color.white;
+                UIHelper.SetImageRoundedSprite(rowImg, 26f);
+            }
 
-            // Badge box background (direct child or under Inner/)
-            var badgeTr = rowBtn.transform.Find("BadgeBox") ?? rowBtn.transform.Find("Inner/BadgeBox");
-            var badgeImg = badgeTr?.GetComponent<Image>();
-            if (badgeImg != null)
-                badgeImg.color = isSelected
-                    ? new Color(1f, 1f, 1f, 0.16f)
-                    : UIColors.Hex("#EBF2F8");
-
-            // Badge text colour
-            var badgeText = badgeTr?.Find("BadgeText")?.GetComponent<TextMeshProUGUI>();
-            if (badgeText != null)
-                badgeText.color = isSelected ? Color.white : UIColors.PrimaryDark;
+            var outline = rowBtn.GetComponent<Outline>() ?? rowBtn.gameObject.AddComponent<Outline>();
+            outline.effectColor = isSelected ? UIColors.Hex("#2563EB") : UIColors.Hex("#E2E8F0");
+            outline.effectDistance = isSelected ? new Vector2(3.5f, -3.5f) : new Vector2(1.5f, -1.5f);
 
             // Title & Subtitle colour
             var textCol = rowBtn.transform.Find("TextCol") ?? rowBtn.transform.Find("Inner/TextCol");
             var title = textCol?.Find("Title")?.GetComponent<TextMeshProUGUI>();
             if (title != null)
-                title.color = isSelected ? Color.white : UIColors.TextPrimary;
+                title.color = UIColors.Hex("#0F172A");
 
             var sub = textCol?.Find("Sub")?.GetComponent<TextMeshProUGUI>();
             if (sub != null)
-                sub.color = isSelected ? UIColors.TextOnNavyDim : UIColors.TextSecondary;
+                sub.color = UIColors.Hex("#64748B");
 
-            // Radio / checkmark circle
-            var radioTr = rowBtn.transform.Find(checkName) ?? rowBtn.transform.Find($"Inner/{checkName}");
-            var radioImg = radioTr?.GetComponent<Image>();
-            if (radioImg != null)
+            // Right chevron indicator (vector icon or TMP arrow)
+            var chevronTr = rowBtn.transform.Find(checkName) ?? rowBtn.transform.Find($"Inner/{checkName}");
+            if (chevronTr != null)
             {
-                radioImg.sprite = UIHelper.GetCircleOutlineSprite();
-                radioImg.color = isSelected ? Color.white : UIColors.Hex("#CBD5E1");
-            }
+                var chevImg = chevronTr.GetComponentInChildren<Image>();
+                if (chevImg != null)
+                    chevImg.color = isSelected ? UIColors.Hex("#2563EB") : UIColors.Hex("#94A3B8");
 
-            var innerDot = radioTr?.Find("InnerDot");
-            if (innerDot != null)
-            {
-                innerDot.gameObject.SetActive(isSelected);
+                var chevronTMP = chevronTr.GetComponentInChildren<TextMeshProUGUI>();
+                if (chevronTMP != null)
+                    chevronTMP.color = isSelected ? UIColors.Hex("#2563EB") : UIColors.Hex("#94A3B8");
             }
-
-            var checkTmp = radioTr?.Find($"CheckText_{checkName}")?.GetComponent<TextMeshProUGUI>();
-            if (checkTmp != null)
-                checkTmp.text = "";
         }
 
         // ─────────────────────────────────────────────────────────────────

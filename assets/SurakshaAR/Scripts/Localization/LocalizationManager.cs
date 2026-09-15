@@ -28,7 +28,7 @@ namespace SurakshaAR.Localization
     /// </summary>
     public class LocalizationManager
     {
-        public AppLanguage CurrentLanguage { get; private set; } = AppLanguage.English;
+        public AppLanguage CurrentLanguage { get; private set; } = AppLanguage.Hindi;
 
         private const string PrefsKey = "SurakshaAR_Language";
 
@@ -99,12 +99,10 @@ namespace SurakshaAR.Localization
                         break;
 
                     case AppLanguage.Hindi:
-                        if (UI.UIHelper.HasDevanagariSupport() && !string.IsNullOrEmpty(entry.hi))
+                        if (!string.IsNullOrEmpty(entry.hi))
                             return entry.hi;
                         if (!string.IsNullOrEmpty(entry.hi_roman))
                             return entry.hi_roman;
-                        if (!string.IsNullOrEmpty(entry.hi))
-                            return DevanagariTransliteration.Transliterate(entry.hi);
                         break;
 
                     case AppLanguage.Santali:
@@ -127,10 +125,6 @@ namespace SurakshaAR.Localization
             {
                 if (languages.TryGetValue(CurrentLanguage, out var value) && !string.IsNullOrEmpty(value))
                 {
-                    if (CurrentLanguage == AppLanguage.Hindi && !UI.UIHelper.HasDevanagariSupport())
-                    {
-                        return DevanagariTransliteration.Transliterate(value);
-                    }
                     return value;
                 }
                 if (languages.TryGetValue(AppLanguage.English, out var fallback))

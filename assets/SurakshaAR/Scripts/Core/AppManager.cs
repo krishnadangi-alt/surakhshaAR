@@ -76,13 +76,13 @@ namespace SurakshaAR.Core
 
         /// <summary>
         /// Called by ARModuleLauncher when returning from an AR scenario
-        /// to bring the SurakshaAR UI back to Scenario Selection.
+        /// mid-training (worker pressed Back). Returns to Home Dashboard
+        /// so they can choose to retry via the Module Detail screen.
         /// </summary>
         public void ReturnFromARToScenarioSelection()
         {
             UIManager.SetUIVisible(true);
-            var fireModule = GetModule(ModuleId.FireAndExplosion);
-            UIManager.ShowScreen(ScreenId.ScenarioSelection, fireModule);
+            UIManager.ShowScreen(ScreenId.HomeDashboard);
         }
 
         /// <summary>

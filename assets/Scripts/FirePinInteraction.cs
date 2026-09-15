@@ -114,11 +114,8 @@ public class FirePinInteraction : MonoBehaviour
             // Accept:
             // 1. The pin itself
             // 2. Any child of the pin
-            // 3. A collider on one of the pin's parents (e.g. a mesh
-            //    collider on the extinguisher body that contains the pin)
             if (hitTransform == transform ||
-                hitTransform.IsChildOf(transform) ||
-                transform.IsChildOf(hitTransform))
+                hitTransform.IsChildOf(transform))
             {
                 Debug.Log("PIN TAP DETECTED");
 
@@ -178,8 +175,19 @@ public class FirePinInteraction : MonoBehaviour
         Debug.Log("equipment_selected");
         Debug.Log("Safety pin removed. Extinguisher is READY.");
 
-        // Hide the pin.
+        // Hide the pin GameObject
         gameObject.SetActive(false);
+
+        // Also synchronize any sibling pin instances in the scene
+        var allPins = Object.FindObjectsByType<FirePinInteraction>(FindObjectsInactive.Include);
+        foreach (var p in allPins)
+        {
+            if (p != null && p != this)
+            {
+                p.pinRemoved = true;
+                p.gameObject.SetActive(false);
+            }
+        }
 
         // Tell other systems.
         OnPinRemoved?.Invoke();

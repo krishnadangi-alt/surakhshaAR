@@ -35,6 +35,26 @@ public class ARPlacement : MonoBehaviour
     private bool hasValidPose;
     private bool scenarioPlaced;
 
+    [Header("Events")]
+    public UnityEngine.Events.UnityEvent OnScenarioPlaced = new UnityEngine.Events.UnityEvent();
+
+    public bool IsScenarioPlaced => scenarioPlaced;
+    public bool PlacementActive { get; private set; } = true;
+
+    public void SetPlacementActive(bool active)
+    {
+        PlacementActive = active;
+        if (!active && placementIndicator != null)
+            placementIndicator.SetActive(false);
+    }
+
+    public void SimulatePlacement()
+    {
+        if (scenarioPlaced) return;
+        Pose p = hasValidPose ? currentPose : new Pose(Vector3.forward * 2f, Quaternion.identity);
+        PlaceFireScenario(p);
+    }
+
 
     private void Awake()
     {
@@ -88,6 +108,13 @@ public class ARPlacement : MonoBehaviour
     {
         if (scenarioPlaced)
             return;
+
+        if (!PlacementActive)
+        {
+            if (placementIndicator != null && placementIndicator.activeSelf)
+                placementIndicator.SetActive(false);
+            return;
+        }
 
         UpdatePlacementPosition();
 
@@ -378,6 +405,7 @@ public class ARPlacement : MonoBehaviour
 
         // Placement is permanently finished.
         scenarioPlaced = true;
+        PlacementActive = false;
 
 
         // Stop plane detection.
@@ -391,6 +419,18 @@ public class ARPlacement : MonoBehaviour
         Debug.Log(
             "FireScenario placed and anchored."
         );
+
+        if (spawnedScenario != null)
+        {
+            var flows = spawnedScenario.GetComponentsInChildren<FireScenarioFlowManager>(true);
+            foreach (var flow in flows)
+            {
+                flow.NotifyScenarioPlacedByAR();
+            }
+        }
+
+        OnScenarioPlaced?.Invoke();
+        TrainingEventManager.RaiseScenarioPlaced();
     }
 
 

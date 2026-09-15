@@ -32,6 +32,15 @@ namespace SurakshaAR.Screens
 
             var loc = AppManager.Instance?.Localization;
             string title = loc != null ? loc.Get(_module.titleKey) : _module.titleKey;
+            if (string.IsNullOrEmpty(title) || title == _module.titleKey)
+            {
+                if (_module.id == ModuleId.FireAndExplosion || (_module.titleKey != null && _module.titleKey.Contains("fire")))
+                    title = "Fire & Explosion Response";
+                else if (_module.id == ModuleId.GasLeakConfinedSpace || (_module.titleKey != null && _module.titleKey.Contains("gas")))
+                    title = "Gas Leak & Confined Space";
+                else if (_module.id == ModuleId.MachinerySafety || (_module.titleKey != null && _module.titleKey.Contains("machinery")))
+                    title = "Machinery Safety";
+            }
             string description = loc != null ? loc.Get(_module.descriptionKey) : _module.descriptionKey;
             string difficulty = loc != null ? loc.Get(_module.difficultyKey) : _module.difficultyKey;
 
@@ -46,16 +55,16 @@ namespace SurakshaAR.Screens
 
             // Stat chips
             var chipScenarios = UIHelper.FindTMP(root, "chip-scenarios-value");
-            if (chipScenarios != null) chipScenarios.text = $"📑 {_module.scenarioCount} Steps";
+            if (chipScenarios != null) chipScenarios.text = $"{_module.scenarioCount} Steps";
 
             var chipDuration = UIHelper.FindTMP(root, "chip-duration-value");
             if (chipDuration != null && !string.IsNullOrEmpty(_module.durationLabel))
             {
-                chipDuration.text = $"⏱ {_module.durationLabel}";
+                chipDuration.text = $"{_module.durationLabel}";
             }
 
             var chipDifficulty = UIHelper.FindTMP(root, "chip-difficulty-value");
-            if (chipDifficulty != null) chipDifficulty.text = $"📊 {difficulty}";
+            if (chipDifficulty != null) chipDifficulty.text = $"{difficulty}";
 
             // Learn list
             var learnList = UIHelper.FindRect(root, "learn-list");

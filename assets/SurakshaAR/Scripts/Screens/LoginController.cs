@@ -69,10 +69,10 @@ namespace SurakshaAR.Screens
                 LocalizeLabelText(root, "LoginSubtitle", loc.Get("login.tagline"));
                 LocalizeLabelText(root, "AppSubtitle",   loc.Get("splash.tagline"));
 
-                var loginLbl = _btnLogin?.GetComponentInChildren<TextMeshProUGUI>();
+                var loginLbl = UIHelper.FindTMP(root, "LoginText") ?? _btnLogin?.GetComponentInChildren<TextMeshProUGUI>();
                 if (loginLbl != null) loginLbl.text = loc.Get("login.submit");
 
-                var qrLbl = _btnLoginQr?.GetComponentInChildren<TextMeshProUGUI>();
+                var qrLbl = UIHelper.FindTMP(root, "QRText") ?? _btnLoginQr?.GetComponentInChildren<TextMeshProUGUI>();
                 if (qrLbl != null) qrLbl.text = loc.Get("login.qrCode");
             }
         }
@@ -120,18 +120,26 @@ namespace SurakshaAR.Screens
 
             if (guest)
             {
-                if (workerImg  != null) workerImg.color  = UIColors.Transparent;
-                if (guestImg   != null) guestImg.color   = UIColors.Primary;
-                if (workerText != null) workerText.color = UIColors.TextSecondary;
+                if (workerImg  != null) workerImg.color  = Color.clear;
+                if (guestImg   != null)
+                {
+                    guestImg.color = UIColors.Hex("#0A192F");
+                    UIHelper.SetImageRoundedSprite(guestImg, 16f);
+                }
+                if (workerText != null) workerText.color = UIColors.Hex("#64748B");
                 if (guestText  != null) guestText.color  = Color.white;
                 if (_fieldEmployeeId != null) _fieldEmployeeId.text = "GUEST_USER";
             }
             else
             {
-                if (workerImg  != null) workerImg.color  = UIColors.Primary;
-                if (guestImg   != null) guestImg.color   = UIColors.Transparent;
+                if (workerImg  != null)
+                {
+                    workerImg.color = UIColors.Hex("#0A192F");
+                    UIHelper.SetImageRoundedSprite(workerImg, 16f);
+                }
+                if (guestImg   != null) guestImg.color   = Color.clear;
                 if (workerText != null) workerText.color = Color.white;
-                if (guestText  != null) guestText.color  = UIColors.TextSecondary;
+                if (guestText  != null) guestText.color  = UIColors.Hex("#64748B");
                 if (_fieldEmployeeId != null) _fieldEmployeeId.text = "";
             }
         }

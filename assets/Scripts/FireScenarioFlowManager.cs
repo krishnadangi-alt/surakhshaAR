@@ -43,6 +43,8 @@ public class FireScenarioFlowManager : MonoBehaviour
         Step5_AimBase,
         Step6_Extinguish,
         Step7_Evacuate,
+        Timeout,
+        MoveToExit,
         Success,
         Complete
     }
@@ -50,11 +52,13 @@ public class FireScenarioFlowManager : MonoBehaviour
     [Header("Cross References (Preserved for Unity Scene Serializations)")]
     public GameObject fireScenario;
     public FireScenarioARPlacement placement;
+    public ARPlacement arPlacement;
     public ExtinguisherDisplayPickup displayPickup;
     public ExtinguisherPickup originalPickup;
     public FirePinInteraction pinInteraction;
     public ExtinguisherGripInteraction gripInteraction;
     public FireExtinguishable fire;
+    public AlarmInteraction alarmInteraction;
     public FireScenarioUIController ui;
 
     [Header("Mode Configuration")]
@@ -69,7 +73,10 @@ public class FireScenarioFlowManager : MonoBehaviour
 
     [Header("Timing")]
     public float scenarioTimer = 0f;
+    [Tooltip("Overall training time limit in seconds (420 = 7 minutes). Worker is guided to exit after this.")] 
+    public float maxTrainingTimeSeconds = 420f;
     private bool isTimerRunning = false;
+    private bool timeoutTriggered = false;
 
     public Stage CurrentStage => stage;
 
@@ -78,6 +85,7 @@ public class FireScenarioFlowManager : MonoBehaviour
     private Coroutine messageRoutine;
     private float hazardLookTimer = 0f;
     private float aimBaseLookTimer = 0f;
+    private bool _wasSprayingOffTarget = false;
 
     // =====================================================
     // LIFECYCLE
@@ -88,7 +96,18 @@ public class FireScenarioFlowManager : MonoBehaviour
         ResolveReferences();
         BuildUI();
         SubscribeEvents();
-        BeginIntro();
+
+        bool alreadyPlaced = (arPlacement != null && arPlacement.IsScenarioPlaced) ||
+                             (placement != null && placement.IsPlaced);
+
+        if (alreadyPlaced)
+        {
+            HandleScenarioPlaced();
+        }
+        else
+        {
+            BeginIntro();
+        }
     }
 
     private void OnDestroy()
@@ -114,9 +133,18 @@ public class FireScenarioFlowManager : MonoBehaviour
         if (!isTimerRunning) return;
 
         scenarioTimer += Time.deltaTime;
+
         if (ui != null)
         {
+            // Overall training stopwatch timer (00:00 to 07:00 / 420s)
             ui.SetTimer(scenarioTimer);
+        }
+
+        // Trigger timeout once when time runs out (420 seconds)
+        if (!timeoutTriggered && scenarioTimer >= maxTrainingTimeSeconds)
+        {
+            timeoutTriggered = true;
+            TransitionToTimeout();
         }
     }
 
@@ -171,6 +199,11 @@ public class FireScenarioFlowManager : MonoBehaviour
             placement = FindAnyObjectByType<FireScenarioARPlacement>();
         }
 
+        if (arPlacement == null)
+        {
+            arPlacement = FindAnyObjectByType<ARPlacement>();
+        }
+
         if (fireScenario != null)
         {
             if (displayPickup == null)
@@ -181,6 +214,23 @@ public class FireScenarioFlowManager : MonoBehaviour
 
             if (fire == null)
                 fire = fireScenario.GetComponentInChildren<FireExtinguishable>(true);
+
+            // Alarm interaction — looks for AlarmInteraction anywhere on the scenario root
+            if (alarmInteraction == null)
+                alarmInteraction = fireScenario.GetComponentInChildren<AlarmInteraction>(true);
+
+            if (alarmInteraction == null)
+            {
+                var alignment = fireScenario.GetComponentInChildren<FireScenarioAlignment>(true);
+                if (alignment != null && alignment.fireAlarm != null)
+                {
+                    if (alignment.fireAlarm.GetComponent<Collider>() == null)
+                        alignment.fireAlarm.gameObject.AddComponent<BoxCollider>();
+
+                    alarmInteraction = alignment.fireAlarm.GetComponent<AlarmInteraction>()
+                                       ?? alignment.fireAlarm.gameObject.AddComponent<AlarmInteraction>();
+                }
+            }
 
             if (pinInteraction == null)
             {
@@ -214,6 +264,38 @@ public class FireScenarioFlowManager : MonoBehaviour
                 {
                     gripInteraction = allGrips[0];
                 }
+            }
+        }
+
+        // Scene-wide fallback resolution
+        if (fire == null)
+            fire = FindAnyObjectByType<FireExtinguishable>();
+
+        if (gripInteraction == null)
+            gripInteraction = FindAnyObjectByType<ExtinguisherGripInteraction>();
+
+        if (pinInteraction == null)
+            pinInteraction = FindAnyObjectByType<FirePinInteraction>();
+
+        if (alarmInteraction == null)
+            alarmInteraction = FindAnyObjectByType<AlarmInteraction>();
+
+        if (alarmInteraction == null)
+        {
+            var alarmGO = GameObject.Find("FireAlarm") ?? GameObject.Find("Alarm");
+            if (alarmGO != null)
+            {
+                alarmInteraction = alarmGO.GetComponent<AlarmInteraction>() ?? alarmGO.AddComponent<AlarmInteraction>();
+            }
+            else
+            {
+                var target = fireScenario != null ? fireScenario.transform : transform;
+                var newAlarm = new GameObject("FireAlarm");
+                newAlarm.transform.SetParent(target, false);
+                newAlarm.transform.localPosition = new Vector3(0, 1.2f, 0.5f);
+                var box = newAlarm.AddComponent<BoxCollider>();
+                box.size = new Vector3(0.5f, 0.5f, 0.5f);
+                alarmInteraction = newAlarm.AddComponent<AlarmInteraction>();
             }
         }
     }
@@ -252,12 +334,30 @@ public class FireScenarioFlowManager : MonoBehaviour
     // EVENT SUBSCRIPTIONS
     // =====================================================
 
+    public void NotifyScenarioPlacedByAR()
+    {
+        HandleScenarioPlaced();
+    }
+
+    private void HandleScenarioPlacedFromEvent()
+    {
+        HandleScenarioPlaced();
+    }
+
     private void SubscribeEvents()
     {
         if (subscribed) return;
 
         if (placement != null)
             placement.OnScenarioPlaced.AddListener(HandleScenarioPlaced);
+
+        if (arPlacement != null)
+            arPlacement.OnScenarioPlaced.AddListener(HandleScenarioPlaced);
+
+        TrainingEventManager.OnScenarioPlaced += HandleScenarioPlacedFromEvent;
+
+        if (alarmInteraction != null)
+            alarmInteraction.OnAlarmActivated.AddListener(HandleAlarmActivated);
 
         if (displayPickup != null)
             displayPickup.OnPickedUp.AddListener(HandleExtinguisherPickedUp);
@@ -284,6 +384,14 @@ public class FireScenarioFlowManager : MonoBehaviour
 
         if (placement != null)
             placement.OnScenarioPlaced.RemoveListener(HandleScenarioPlaced);
+
+        if (arPlacement != null)
+            arPlacement.OnScenarioPlaced.RemoveListener(HandleScenarioPlaced);
+
+        TrainingEventManager.OnScenarioPlaced -= HandleScenarioPlacedFromEvent;
+
+        if (alarmInteraction != null)
+            alarmInteraction.OnAlarmActivated.RemoveListener(HandleAlarmActivated);
 
         if (displayPickup != null)
             displayPickup.OnPickedUp.RemoveListener(HandleExtinguisherPickedUp);
@@ -313,7 +421,7 @@ public class FireScenarioFlowManager : MonoBehaviour
         stage = Stage.Intro;
         isTimerRunning = false;
         scenarioTimer = 0f;
-        currentScore = 70;
+        currentScore = 40;
         correctActions = 0;
         wrongActions = 0;
         unsafeActions = 0;
@@ -321,6 +429,8 @@ public class FireScenarioFlowManager : MonoBehaviour
 
         if (placement != null)
             placement.SetPlacementActive(false);
+        if (arPlacement != null)
+            arPlacement.SetPlacementActive(false);
 
         if (ui != null)
         {
@@ -334,7 +444,7 @@ public class FireScenarioFlowManager : MonoBehaviour
                 title: "Industrial Fire Response Training",
                 description: "In this scenario, an electrical equipment fire breaks out in a mining facility.\nFollow standard operating procedures (SOP) to safely respond and evacuate.",
                 hint: "Scan the floor and tap the reticle to anchor the 3D training scenario.",
-                actionBtnText: "Start AR Placement",
+                actionBtnText: "Tap to Start AR Training",
                 onActionClicked: BeginScanning
             );
         }
@@ -355,17 +465,20 @@ public class FireScenarioFlowManager : MonoBehaviour
                 actionBtnText: "Simulate Placement",
                 onActionClicked: () =>
                 {
-                    if (placement != null)
-                    {
-                        // Simulate placement for editor/testing or fallback
+                    if (arPlacement != null)
+                        arPlacement.SimulatePlacement();
+                    else if (placement != null)
                         HandleScenarioPlaced();
-                    }
+                    else
+                        HandleScenarioPlaced();
                 }
             );
         }
 
         if (placement != null)
             placement.SetPlacementActive(true);
+        if (arPlacement != null)
+            arPlacement.SetPlacementActive(true);
     }
 
     private void HandleScenarioPlaced()
@@ -374,8 +487,11 @@ public class FireScenarioFlowManager : MonoBehaviour
 
         if (placement != null)
             placement.SetPlacementActive(false);
+        if (arPlacement != null)
+            arPlacement.SetPlacementActive(false);
 
         isTimerRunning = true;
+        scenarioTimer = 0f;
         TrainingEventManager.RaiseScenarioPlaced();
 
         // Step 1: Identify Fire Hazard
@@ -394,8 +510,10 @@ public class FireScenarioFlowManager : MonoBehaviour
         Camera cam = Camera.main;
         if (cam == null) return;
 
+        Vector3 firePos = fire.FireWorldPosition;
+
         // 1. Check Camera Look / Aim at Fire
-        Vector3 toFire = fire.transform.position - cam.transform.position;
+        Vector3 toFire = firePos - cam.transform.position;
         float dist = toFire.magnitude;
         if (dist > 0.1f && dist < 7f)
         {
@@ -443,15 +561,19 @@ public class FireScenarioFlowManager : MonoBehaviour
             RaycastHit[] hits = Physics.RaycastAll(ray, 100f);
             foreach (var hit in hits)
             {
-                if (hit.transform == fire.transform || hit.transform.IsChildOf(fire.transform) || fire.transform.IsChildOf(hit.transform))
+                Transform ht = hit.transform;
+                string n = ht.name.ToLower();
+                if (ht == fire.transform || ht.IsChildOf(fire.transform) ||
+                    (fire.FireParticle != null && (ht == fire.FireParticle.transform || ht.IsChildOf(fire.FireParticle.transform))) ||
+                    n.Contains("fire") || n.Contains("flame") || n.Contains("hazard") || n.Contains("electric"))
                 {
                     OnHazardIdentified();
                     return;
                 }
             }
 
-            Vector3 fireScreen = cam.WorldToScreenPoint(fire.transform.position);
-            if (fireScreen.z > 0 && Vector2.Distance(fireScreen, screenPos) <= 140f)
+            Vector3 fireScreen = cam.WorldToScreenPoint(firePos);
+            if (fireScreen.z > 0 && Vector2.Distance(fireScreen, screenPos) <= 160f)
             {
                 OnHazardIdentified();
                 return;
@@ -467,7 +589,8 @@ public class FireScenarioFlowManager : MonoBehaviour
         Camera cam = Camera.main;
         if (cam == null) return;
 
-        Vector3 toFire = fire.transform.position - cam.transform.position;
+        Vector3 firePos = fire.FireWorldPosition;
+        Vector3 toFire = firePos - cam.transform.position;
         float dist = toFire.magnitude;
         if (dist > 0.1f && dist < 6f)
         {
@@ -503,7 +626,7 @@ public class FireScenarioFlowManager : MonoBehaviour
         ui.HideProgress();
 
         ui.ShowGuidance(
-            stepTag: "🔥 STEP 1 OF 6",
+            stepTag: "STEP 1 OF 6",
             title: "Identify Fire Hazard",
             description: "Look around your surroundings to locate the electrical fire. Aim your camera at the flames or tap directly on the fire in AR.",
             hint: "Look for sparks, dark smoke, and electrical panel indicators.",
@@ -523,30 +646,79 @@ public class FireScenarioFlowManager : MonoBehaviour
         {
             ui.ShowTransientToast(
                 title: "Hazard Identified!",
-                subtitle: "Now locate the fire extinguisher",
+                subtitle: "Activate the fire alarm immediately!",
                 duration: 2.0f,
                 onDismiss: () =>
                 {
-                    TransitionToStep2_SelectExtinguisher();
+                    // SOP Step 2: Activate Alarm BEFORE reaching for extinguisher
+                    TransitionToStep2_ActivateAlarm();
                 }
             );
         }
         else
         {
-            TransitionToStep2_SelectExtinguisher();
+            TransitionToStep2_ActivateAlarm();
         }
     }
 
-    // --- STEP 2: SELECT EXTINGUISHER ---
-    public void TransitionToStep2_SelectExtinguisher()
+    // --- STEP 2: ACTIVATE FIRE ALARM ---
+    public void TransitionToStep2_ActivateAlarm()
     {
-        stage = Stage.Step3_SelectExtinguisher;
+        stage = Stage.Step2_ActivateAlarm;
         if (ui == null) return;
 
         ui.SetModuleInfo("Fire & Explosion Response", 2, 6);
 
         ui.ShowGuidance(
-            stepTag: "🧯 STEP 2 OF 6",
+            stepTag: "STEP 2 OF 6",
+            title: "Activate Fire Alarm",
+            description: "Locate the red fire alarm pull station on the wall and tap it to alert all personnel in the facility.",
+            hint: "Always alert others before attempting to fight a fire alone. Never skip the alarm.",
+            actionBtnText: "Activate Fire Alarm",
+            onActionClicked: () =>
+            {
+                if (alarmInteraction != null)
+                    alarmInteraction.ActivateAlarm();
+                else
+                    HandleAlarmActivated(); // fallback if no 3D alarm in scene
+            }
+        );
+    }
+
+    private void HandleAlarmActivated()
+    {
+        if (stage != Stage.Step2_ActivateAlarm) return;
+
+        AddScore(10, "Fire Alarm Activated");
+
+        if (ui != null)
+        {
+            ui.ShowTransientToast(
+                title: "Alarm Activated!",
+                subtitle: "Personnel alerted. Now locate the extinguisher.",
+                duration: 2.0f,
+                onDismiss: () =>
+                {
+                    TransitionToStep3_SelectExtinguisher();
+                }
+            );
+        }
+        else
+        {
+            TransitionToStep3_SelectExtinguisher();
+        }
+    }
+
+    // --- STEP 3: SELECT EXTINGUISHER ---
+    public void TransitionToStep3_SelectExtinguisher()
+    {
+        stage = Stage.Step3_SelectExtinguisher;
+        if (ui == null) return;
+
+        ui.SetModuleInfo("Fire & Explosion Response", 3, 6);
+
+        ui.ShowGuidance(
+            stepTag: "STEP 3 OF 6",
             title: "Select Correct Extinguisher",
             description: "Examine the burning equipment. Tap on the CO2 Extinguisher (Black band) in your surroundings to equip it.",
             hint: "DANGER: Never use Water or Foam on live electrical panels! Electrocution hazard.",
@@ -554,27 +726,31 @@ public class FireScenarioFlowManager : MonoBehaviour
             onActionClicked: () =>
             {
                 if (displayPickup != null)
-                {
                     displayPickup.Pickup();
-                }
                 else
-                {
                     HandleExtinguisherPickedUp();
-                }
             }
         );
     }
 
-    // Legacy alias
-    public void TransitionToStep2() => TransitionToStep2_SelectExtinguisher();
-    public void TransitionToStep3() => TransitionToStep2_SelectExtinguisher();
+    // Legacy aliases (backward compatibility for any external callers)
+    public void TransitionToStep2_SelectExtinguisher() => TransitionToStep3_SelectExtinguisher();
+    public void TransitionToStep2() => TransitionToStep2_ActivateAlarm();
+    public void TransitionToStep3() => TransitionToStep3_SelectExtinguisher();
 
     private void HandleExtinguisherPickedUp()
     {
-        if (stage != Stage.Step3_SelectExtinguisher && stage != Stage.Step2_ActivateAlarm) return;
+        if (stage != Stage.Step3_SelectExtinguisher) return;
 
         AddScore(10, "CO2 Extinguisher Selected");
         TrainingEventManager.RaiseExtinguisherPickedUp();
+
+        // Dynamically re-bind components to the active functional extinguisher
+        if (originalPickup != null)
+        {
+            pinInteraction = originalPickup.GetComponentInChildren<FirePinInteraction>(true) ?? pinInteraction;
+            gripInteraction = originalPickup.GetComponentInChildren<ExtinguisherGripInteraction>(true) ?? gripInteraction;
+        }
 
         if (ui != null)
         {
@@ -594,16 +770,16 @@ public class FireScenarioFlowManager : MonoBehaviour
         }
     }
 
-    // --- STEP 3: REMOVE SAFETY PIN ---
+    // --- STEP 4: REMOVE SAFETY PIN ---
     public void TransitionToStep3_RemovePin()
     {
         stage = Stage.Step4_RemovePin;
         if (ui == null) return;
 
-        ui.SetModuleInfo("Fire & Explosion Response", 3, 6);
+        ui.SetModuleInfo("Fire & Explosion Response", 4, 6);
 
         ui.ShowGuidance(
-            stepTag: "📌 STEP 3 OF 6",
+            stepTag: "STEP 4 OF 6",
             title: "Remove Safety Pin",
             description: "Tap the safety pin on the extinguisher handle to break the tamper seal and unlock the lever.",
             hint: "Twist slightly and pull firmly. Do not squeeze the lever while pulling.",
@@ -622,8 +798,9 @@ public class FireScenarioFlowManager : MonoBehaviour
         );
     }
 
-    // Legacy alias
+    // Legacy aliases
     public void TransitionToStep4() => TransitionToStep3_RemovePin();
+    public void TransitionToStep4_RemovePin() => TransitionToStep3_RemovePin();
 
     private void HandlePinRemoved()
     {
@@ -655,17 +832,17 @@ public class FireScenarioFlowManager : MonoBehaviour
         DeductScore(5, "Safety pin must be removed before operating the lever!", isUnsafe: false);
     }
 
-    // --- STEP 4: AIM AT BASE OF FIRE ---
+    // --- STEP 5: AIM AT BASE OF FIRE ---
     public void TransitionToStep4_AimBase()
     {
         stage = Stage.Step5_AimBase;
         aimBaseLookTimer = 0f;
         if (ui == null) return;
 
-        ui.SetModuleInfo("Fire & Explosion Response", 4, 6);
+        ui.SetModuleInfo("Fire & Explosion Response", 5, 6);
 
         ui.ShowGuidance(
-            stepTag: "🎯 STEP 4 OF 6",
+            stepTag: "STEP 5 OF 6",
             title: "Aim at Fire Base",
             description: "Hold the insulated discharge horn. Aim directly at the fuel base of the fire, not at the high flames.",
             hint: "Aiming at the flames allows the fire to continue feeding from the combustible base.",
@@ -701,34 +878,30 @@ public class FireScenarioFlowManager : MonoBehaviour
         }
     }
 
-    // --- STEP 5: EXTINGUISH (SWEEP & SPRAY) ---
+    // --- STEP 6: EXTINGUISH (SWEEP & SPRAY) ---
     public void TransitionToStep5_Extinguish()
     {
         stage = Stage.Step6_Extinguish;
         if (ui == null) return;
 
-        ui.SetModuleInfo("Fire & Explosion Response", 5, 6);
+        ui.SetModuleInfo("Fire & Explosion Response", 6, 6);
 
         ui.ShowGuidance(
-            stepTag: "🔥 STEP 5 OF 6",
+            stepTag: "STEP 6 OF 6",
             title: "Extinguish the Fire",
-            description: "Squeeze the operating lever and sweep side-to-side across the base until the fire is completely out.",
-            hint: "Maintain continuous discharge until all embers and smoke cease.",
-            actionBtnText: "Press Handle & Spray",
+            description: "Squeeze the operating lever or tap the button below to discharge spray. Sweep side-to-side across the fuel base until the fire is completely out.",
+            hint: "Maintain continuous discharge for 10 seconds until all flames and smoke cease.",
+            actionBtnText: gripInteraction != null && gripInteraction.IsGripHeld ? "Release Handle (Stop Spray)" : "Press Handle & Spray",
             onActionClicked: () =>
             {
                 if (gripInteraction != null)
                 {
-                    gripInteraction.StartGrip();
-                }
-                else if (fire != null)
-                {
-                    fire.ExtinguishFire();
+                    gripInteraction.ToggleGrip();
                 }
             }
         );
 
-        ui.ShowProgress(0f, "Spraying fire base... 10.0s remaining");
+        ui.ShowProgress(0f, 0f, 10f, "Ready");
     }
 
     // Legacy alias
@@ -739,11 +912,43 @@ public class FireScenarioFlowManager : MonoBehaviour
         if (stage == Stage.Step6_Extinguish)
         {
             TrainingEventManager.RaiseExtinguisherUsed();
+            if (ui != null)
+            {
+                ui.ShowGuidance(
+                    stepTag: "🔥 STEP 6 OF 6",
+                    title: "Extinguish the Fire",
+                    description: "Spraying active! Sweep side-to-side across the fuel base. Keep particles directly on the fire.",
+                    hint: "Maintain continuous discharge for 10 seconds until all flames cease.",
+                    actionBtnText: "Release Handle (Stop Spray)",
+                    onActionClicked: () =>
+                    {
+                        if (gripInteraction != null) gripInteraction.ToggleGrip();
+                    }
+                );
+            }
         }
     }
 
     private void HandleSprayStopped()
     {
+        _wasSprayingOffTarget = false;
+        if (stage == Stage.Step6_Extinguish)
+        {
+            if (ui != null)
+            {
+                ui.ShowGuidance(
+                    stepTag: "🔥 STEP 6 OF 6",
+                    title: "Extinguish the Fire",
+                    description: "Squeeze the operating lever or tap the button below to discharge spray. Sweep side-to-side across the fuel base until the fire is completely out.",
+                    hint: "Maintain continuous discharge for 10 seconds until all flames and smoke cease.",
+                    actionBtnText: "Press Handle & Spray",
+                    onActionClicked: () =>
+                    {
+                        if (gripInteraction != null) gripInteraction.ToggleGrip();
+                    }
+                );
+            }
+        }
     }
 
     private void UpdateSprayProgress()
@@ -753,23 +958,29 @@ public class FireScenarioFlowManager : MonoBehaviour
 
         float progress = fire.SprayProgress01;
         float total = fire.extinguishTime > 0 ? fire.extinguishTime : 10f;
-        float remaining = Mathf.Clamp(total - (progress * total), 0f, total);
+        float elapsed = fire.CurrentContactTimer;
 
         if (fire.IsBeingSprayed)
         {
-            // Continuously colliding: live countdown from 10.0s to 0.0s!
-            ui.ShowProgress(progress, string.Format("Extinguishing Fire: {0:F1}s / {1:F0}s (Keep Spraying!)", remaining, total));
+            _wasSprayingOffTarget = false;
+            // Continuously colliding: live timer counts up to 10.0s!
+            ui.ShowProgress(progress, elapsed, total, "Spraying...");
         }
         else if (gripInteraction != null && gripInteraction.IsGripHeld)
         {
-            // Spray is held but particles moved away / off-target: timer restarts!
-            ui.ShowProgress(0f, string.Format("Off Target! Timer Restarted: {0:F1}s / {1:F0}s", total, total));
-            ui.ShowFeedback(FireScenarioUIController.FeedbackType.Wrong, "Off Target - Timer Reset!", "Spray particles must continuously hit the fire for 10s!", 1.2f);
+            // Spray is active but particles are off-target: timer reset!
+            ui.ShowProgress(0f, 0f, total, "Off Target");
+            if (!_wasSprayingOffTarget)
+            {
+                _wasSprayingOffTarget = true;
+                ui.ShowFeedback(FireScenarioUIController.FeedbackType.Wrong, "Off Target - Timer Reset!", "Spray particles must continuously hit the fire for 10s!", 1.5f);
+            }
         }
         else
         {
+            _wasSprayingOffTarget = false;
             // Extinguisher ready to spray
-            ui.ShowProgress(0f, string.Format("Aim Nozzle & Press Handle ({0:F0}s Continuous Spray)", total));
+            ui.ShowProgress(0f, 0f, total, "Ready to Spray");
         }
     }
 
@@ -791,21 +1002,21 @@ public class FireScenarioFlowManager : MonoBehaviour
         {
             ui.ShowTransientToast(
                 title: "Fire Fully Extinguished!",
-                subtitle: "Hazard neutralized. Prepare for evacuation.",
+                subtitle: "Hazard neutralized. Training complete!",
                 duration: 2.0f,
                 onDismiss: () =>
                 {
-                    TransitionToStep6_Evacuate();
+                    CompleteScenario(true);
                 }
             );
         }
         else
         {
-            TransitionToStep6_Evacuate();
+            CompleteScenario(true);
         }
     }
 
-    // --- STEP 6: EVACUATION & EXIT ---
+    // --- OPTIONAL / LEGACY EVACUATION STEP ---
     public void TransitionToStep6_Evacuate()
     {
         stage = Stage.Step7_Evacuate;
@@ -815,27 +1026,91 @@ public class FireScenarioFlowManager : MonoBehaviour
         ui.HideProgress();
 
         ui.ShowGuidance(
-            stepTag: "🚪 STEP 6 OF 6",
+            stepTag: "🚪 SAFE EVACUATION",
             title: "Safe Evacuation",
             description: "The fire is suppressed. Back away slowly while keeping visual contact. Follow the emergency EXIT signs to the assembly point.",
             hint: "Never turn your back on a suppressed fire due to re-ignition risk.",
             actionBtnText: "Proceed to Emergency Exit",
-            onActionClicked: CompleteScenario
+            onActionClicked: () => CompleteScenario(true)
         );
     }
 
     // Legacy alias
     public void TransitionToStep7() => TransitionToStep6_Evacuate();
 
-    public void CompleteScenario()
+    // =====================================================
+    // TIMEOUT & EXIT STATES (SEPARATE BRANCH)
+    // =====================================================
+
+    private void TransitionToTimeout()
     {
-        stage = Stage.Complete;
+        // Don't override completion or already-exited states
+        if (stage == Stage.Complete || stage == Stage.Success || stage == Stage.Timeout || stage == Stage.MoveToExit) return;
+
+        stage = Stage.Timeout;
         isTimerRunning = false;
 
-        // Record metrics into AppState and AppSession
+        if (ui != null)
+        {
+            ui.HideProgress();
+            ui.ShowGuidance(
+                stepTag: "⏰ TIME LIMIT REACHED",
+                title: "Training Time Expired",
+                description: "The 7-minute time limit has been reached. The fire was not suppressed in time. You must now evacuate via the emergency exit.",
+                hint: "Safety first: Never remain in a hazard zone once the emergency timeout is reached.",
+                actionBtnText: "Proceed to Emergency Exit",
+                onActionClicked: TransitionToMoveToExit
+            );
+        }
+    }
+
+    private void TransitionToMoveToExit()
+    {
+        stage = Stage.MoveToExit;
+        TrainingEventManager.RaiseEvacuationStarted("emergency_exit_timeout", true);
+        if (ui == null) return;
+
+        ui.ShowGuidance(
+            stepTag: "🚪 EMERGENCY EVACUATION",
+            title: "Evacuate the Hazard Zone",
+            description: "Follow the green EXIT signs to the emergency assembly point. Do not attempt to re-enter.",
+            hint: "Inform emergency services of fire location, fuel type, and any personnel still inside.",
+            actionBtnText: "Exit Reached — Complete Evacuation",
+            onActionClicked: () => CompleteScenario(false)
+        );
+    }
+
+    // =====================================================
+    // SCENARIO COMPLETION (SUCCESS VS TIMEOUT BRANCHES)
+    // =====================================================
+
+    public void CompleteScenario()
+    {
+        CompleteScenario(stage != Stage.Timeout && stage != Stage.MoveToExit);
+    }
+
+    public void CompleteScenario(bool isSuccess)
+    {
+        stage = isSuccess ? Stage.Complete : Stage.Timeout;
+        isTimerRunning = false;
+
+        // Record metrics into AppState for Result and Certificate screens
         if (AppState.Instance != null)
         {
-            AppState.Instance.RecordAssessmentResult(currentScore, 7);
+            AppState.Instance.LastARTimerSeconds   = scenarioTimer;
+            AppState.Instance.CorrectActionsCount  = correctActions;
+            AppState.Instance.WrongActionsCount    = wrongActions;
+            AppState.Instance.UnsafeActionsCount   = unsafeActions;
+            AppState.Instance.LastAttemptTimedOut  = !isSuccess;
+            AppState.Instance.FireExtinguishedSuccess = isSuccess;
+            if (!isSuccess)
+            {
+                // Timeout penalty: flag critical error so it does NOT count as successful fire extinguishing
+                criticalErrors = Mathf.Max(1, criticalErrors);
+                currentScore = Mathf.Clamp(currentScore - 30, 0, 100);
+            }
+            AppState.Instance.CriticalErrorsCount  = criticalErrors;
+            AppState.Instance.RecordAssessmentResult(currentScore, 6); // 6 SOP steps
         }
 
         if (AppSession.Instance != null)
@@ -853,19 +1128,38 @@ public class FireScenarioFlowManager : MonoBehaviour
         {
             ui.HideGuidance();
             ui.HideProgress();
-            ui.ShowCompletion(
-                title: "TRAINING COMPLETED",
-                message: "Excellent performance! You successfully executed all 7 fire safety SOP steps in accordance with Ministry of Mines safety guidelines.",
-                score: currentScore,
-                timeTaken: timeStr,
-                onContinue: () =>
-                {
-                    if (ARModuleLauncher.Instance != null)
+            if (isSuccess)
+            {
+                ui.ShowCompletion(
+                    title: "TRAINING COMPLETED",
+                    message: "Excellent performance! You successfully executed all 6 fire safety SOP steps in accordance with Ministry of Mines safety guidelines.",
+                    score: currentScore,
+                    timeTaken: timeStr,
+                    onContinue: () =>
                     {
-                        ARModuleLauncher.Instance.ExitCurrentARScene();
+                        if (ARModuleLauncher.Instance != null)
+                        {
+                            ARModuleLauncher.Instance.ExitCurrentARScene();
+                        }
                     }
-                }
-            );
+                );
+            }
+            else
+            {
+                ui.ShowCompletion(
+                    title: "EVACUATION COMPLETE (TIMEOUT)",
+                    message: "You safely evacuated via the emergency exit. The 7-minute limit expired before the fire was extinguished. Retraining is recommended.",
+                    score: currentScore,
+                    timeTaken: timeStr,
+                    onContinue: () =>
+                    {
+                        if (ARModuleLauncher.Instance != null)
+                        {
+                            ARModuleLauncher.Instance.ExitCurrentARScene();
+                        }
+                    }
+                );
+            }
         }
     }
 
@@ -885,19 +1179,26 @@ public class FireScenarioFlowManager : MonoBehaviour
             gripInteraction.StopGrip();
         }
 
-        // Return to Step 1
-        currentScore = 70;
-        scenarioTimer = 0f;
-        isTimerRunning = true;
-        correctActions = 0;
-        wrongActions = 0;
-        unsafeActions = 0;
-        criticalErrors = 0;
+        // Reset alarm interaction for re-play
+        if (alarmInteraction != null)
+        {
+            alarmInteraction.ResetAlarm();
+        }
+
+        // Return to Step 1 — reset all counters
+        currentScore    = 40;
+        scenarioTimer   = 0f;
+        isTimerRunning  = true;
+        timeoutTriggered = false;
+        correctActions  = 0;
+        wrongActions    = 0;
+        unsafeActions   = 0;
+        criticalErrors  = 0;
 
         if (ui != null)
         {
             ui.SetScore(currentScore, 0);
-            ui.SetTimer(0f);
+            ui.SetTimer(maxTrainingTimeSeconds); // show full countdown time at restart
             ui.HideProgress();
         }
 

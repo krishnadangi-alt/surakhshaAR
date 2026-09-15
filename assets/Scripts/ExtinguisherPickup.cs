@@ -8,11 +8,11 @@ public class ExtinguisherPickup : MonoBehaviour
 
     [Header("Position While Holding")]
     public Vector3 holdPosition =
-        new Vector3(0f, -0.20f, 0.80f);
+        new Vector3(0f, -0.70f, 0.80f);
 
     [Header("Rotation While Holding")]
     public Vector3 holdRotation =
-        new Vector3(0f, 0f, 0f);
+        new Vector3(0f, 20f, 0f);
 
     [Header("Hose References")]
     public Transform hose;
@@ -235,6 +235,8 @@ public class ExtinguisherPickup : MonoBehaviour
             hose.TransformPoint(
                 sprayPointLocalPosition
             );
+
+        sprayPoint.rotation = hose.rotation * Quaternion.Euler(0, 180, 0);
     }
 
 
