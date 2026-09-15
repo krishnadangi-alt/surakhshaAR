@@ -1,0 +1,14 @@
+{
+  "include": [
+    ".",
+    "backend",
+    "ml"
+  ],
+  "extraPaths": [
+    ".",
+    "backend",
+    "ml"
+  ],
+  "pythonVersion": "3.10",
+  "reportMissingImports": "warning"
+}

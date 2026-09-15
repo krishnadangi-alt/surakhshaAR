@@ -21,8 +21,8 @@ from .config import (
     WRONG_ACTION_MAJOR_PROCEDURE_PENALTY,
     WRONG_ACTION_MINOR_DECISION_PENALTY,
     WRONG_ACTION_MINOR_PROCEDURE_PENALTY,
-    get_competencies, OVERALL_PASS_THRESHOLD, WEAKNESS_THRESHOLD,
-    SEVERE_WEAKNESS_THRESHOLD
+    get_competencies,
+    OVERALL_PASS_THRESHOLD,
 )
 
 @dataclass
@@ -252,7 +252,8 @@ class CompetencyScorer:
             event: Event dict with 'event_type', 'timestamp', and event-specific data
         """
         self.event_log.append(event)
-        event_type = event.get("event_type", "")
+        raw_type = event.get("event_type", "")
+        event_type = raw_type.lower().strip()
 
         # Day 1 (Rehan) rule 3: audit counters are tracked once per event.
         self._track_response_time(event)
@@ -271,20 +272,17 @@ class CompetencyScorer:
             self._score_hazard_identification(event)
         elif event_type == "ppe_selected":
             self._score_ppe_selection(event)
-        elif event_type == "equipment_selected":
+        elif event_type in ("equipment_selected", "object_interaction"):
             self._score_equipment_use(event)
-        elif event_type == "wrong_action":
+        elif event_type in ("wrong_action", "sequence_error"):
             self._score_wrong_action(event)
         elif event_type == "unsafe_action":
             self._score_unsafe_action(event)
         elif event_type == "critical_action":
-            # (Normally unreachable: caught by _is_critical_event above.
-            # Kept so the explicit event_type still FAILs even if helpers
-            # change.)
             self._score_critical_action(event)
         elif event_type == "evacuation_started":
             self._score_evacuation(event)
-        elif event_type == "emergency_procedure":
+        elif event_type in ("emergency_procedure", "correct_action"):
             self._score_emergency_procedure(event)
         elif event_type in COMPLETION_EVENT_TYPES:
             self.completion_events += 1
@@ -292,8 +290,7 @@ class CompetencyScorer:
     
     def _score_hazard_identification(self, event: Dict) -> None:
         """Score hazard identification competency."""
-        correct = event.get("correct", False)
-
+        correct = event.get("correct", True)
         if correct:
             # Correct identification gets full points
             self._apply_delta("hazard_identification", 50.0, event)
@@ -305,8 +302,10 @@ class CompetencyScorer:
         """Score PPE selection competency."""
         correct_ppe = event.get("correct", False)
         ppe_items = event.get("items", [])
+        ppe_type = event.get("ppe_type")
+        has_items = (len(ppe_items) > 0) or (ppe_type is not None and len(str(ppe_type).strip()) > 0)
 
-        if correct_ppe and len(ppe_items) > 0:
+        if correct_ppe and has_items:
             self._apply_delta("ppe_selection", 60.0, event)
         else:
             self._apply_delta("ppe_selection", -30.0, event)
@@ -412,11 +411,10 @@ class CompetencyScorer:
     
     def _score_evacuation(self, event: Dict) -> None:
         """Score evacuation behavior."""
-        correct = event.get("correct", False)
-
+        correct = event.get("correct", event.get("safe", False))
         if self.scenario_type == "gas":
             competency = "evacuation"
-        else:  # fire
+        else:  # fire / machinery
             competency = "procedure_compliance"
 
         if correct:
@@ -425,23 +423,26 @@ class CompetencyScorer:
             self._apply_delta(competency, -30.0, event)
 
     def _score_emergency_procedure(self, event: Dict) -> None:
-        """Score emergency response procedures (alerting, rescue coordination).
-
-        Gas scenarios map these actions onto the emergency_response competency,
-        whose aspects are alert_procedures, rescue_coordination, first_aid and
-        incident_reporting. Fire scenarios have no emergency_response
-        competency, so the event is ignored there.
-        """
-        correct = event.get("correct", False)
-        competency = "emergency_response"
-
-        if competency not in self.competency_scores:
-            return  # Scenario does not track emergency_response (e.g. fire)
-
-        if correct:
-            self._apply_delta(competency, 50.0, event)
-        else:
-            self._apply_delta(competency, -25.0, event)
+        """Score emergency response procedures, correct actions, and LOTO steps."""
+        correct = event.get("correct", True)
+        action = str(event.get("action", "")).lower()
+        
+        # 1. Fire: procedure compliance
+        if "procedure_compliance" in self.competency_scores:
+            if correct:
+                self._apply_delta("procedure_compliance", 25.0, event)
+        
+        # 2. Gas / Machinery: emergency response
+        if "emergency_response" in self.competency_scores:
+            if correct:
+                self._apply_delta("emergency_response", 50.0, event)
+            else:
+                self._apply_delta("emergency_response", -25.0, event)
+        
+        # 3. Machinery: LOTO procedure
+        if "loto_procedure" in self.competency_scores:
+            if "loto" in action and correct:
+                self._apply_delta("loto_procedure", 25.0, event)
     
     def get_result(self) -> ScoringResult:
         """

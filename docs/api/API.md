@@ -13,11 +13,20 @@
 - **Content-Type:** `application/json` for all requests and responses.
 - **Timestamps:** ISO 8601 UTC strings, e.g. `2026-09-01T11:00:00Z`.
 - **Errors:** All application errors use the JSON shape `{"detail": "<message>"}`.
+  - `401 Unauthorized` — missing, malformed or expired Bearer token
+  - `403 Forbidden` — authenticated but not permitted (wrong role, or another worker's data)
   - `404 Not Found` — resource does not exist
-  - `409 Conflict` — duplicate resource (e.g. duplicate `employee_id` or certificate)
+  - `409 Conflict` — duplicate resource or unmet prerequisite (duplicate `employee_id` /
+    certificate, ineligible certification)
   - `422 Unprocessable Entity` — request validation failure (FastAPI standard shape)
-- **Authentication:** Not implemented in this MVP. The `worker_id` is passed in the path or body.
-  The backend structure is ready for the security team to integrate authentication later.
+- **Authentication:** Every route requires `Authorization: Bearer <token>` obtained from
+  `POST /api/v1/auth/login`, **except** two public routes: `POST /api/v1/auth/login` itself and
+  the read-only QR verification route `GET /api/v1/certificates/verify/{certificate_number}`.
+  Roles (`admin` / `worker`) and worker ownership are enforced server-side from the token claims;
+  a client-supplied role or `worker_id` is never trusted. See `backend/DAY4_AUTH_HANDOFF.md`.
+- **Assessment scoring:** All assessments are scored **server-side** by the ML competency engine
+  (`ml/competency`). Clients submit raw behavioural events; scores, pass/fail decisions and
+  weaknesses returned by the API are authoritative. Client-computed scores are never trusted.
 
 ## Workflow Stages
 
@@ -44,6 +53,45 @@ Valid values for the `status` field: `in_progress`, `completed`.
 |---|---|---|
 | 1 | `fire` | Fire & Explosion Response |
 | 2 | `gas` | Gas Leak & Confined Space Protocol |
+
+## Assessment Events (ML Competency Engine)
+
+Assessment endpoints accept raw behavioural events. Each event carries an `event_type`
+(plus `timestamp` and event-specific fields; unknown fields are preserved as-is).
+
+| Event type | Fields | Scoring effect |
+|---|---|---|
+| `hazard_identified` | `correct`, `hazard_type` | `hazard_identification` +50 / −25 |
+| `ppe_selected` | `correct`, `items` | `ppe_selection` +60 (correct, non-empty items) / −30 |
+| `equipment_selected` | `correct` | `equipment_use` +50 / −25 |
+| `evacuation_started` | `correct` | fire: `procedure_compliance` +50/−30 · gas: `evacuation` +50/−30 |
+| `emergency_procedure` | `correct`, `action` | gas only: `emergency_response` +50/−25 (ignored for fire) |
+| `wrong_action` | `severity` (`minor`/`major`/`critical`) | minor −5/−3 · major −30/−25 on the procedure & decision competencies (fire: `procedure_compliance` + `decision_making` · gas: `emergency_response` + `hazard_identification`) · **`severity: "critical"` → automatic FAIL** (Critical Safety Error) |
+| `unsafe_action` | `action` | −22 procedure / −20 decision (fire: `procedure_compliance` + `decision_making` · gas: `emergency_response` + `hazard_identification`) — **does NOT auto-FAIL** (fails only via the numeric pass rules) |
+| `critical_action` | `action`, `reason` | **Automatic FAIL** regardless of all scores |
+| `training_started`, `assessment_started` | — | Logged for audit; no score change |
+| `assessment_completed` | optional `completion_status` | Logged for audit; no score change — **but completion is mandatory for PASS** (see pass rules) |
+| any event | optional `response_time_seconds` (float, > 0) | `< 3.0s` → +5% on the event's delta · `3.0–15.0s` → baseline · `> 15.0s` → −10% (latency penalty). E-Stop benchmark: **< 2.5s** (a slower correct E-Stop is recorded as a delayed reaction) |
+
+**Pass rules** (overall pass threshold: `70.0`) — an assessment passes only if **all** hold:
+
+1. No critical errors (any `critical_action` event, any event with `critical: true`, or any event
+   with `severity: "critical"` → automatic FAIL).
+2. Overall score (mean of all competency scores) ≥ `70.0`.
+3. Every competency score ≥ its per-competency pass threshold.
+4. The assessment **was completed**: at least one `assessment_completed` (or `scenario_completed`)
+   event was submitted. A submission without a completion event is **incomplete → FAIL**
+   ("Incomplete assessment"), even with otherwise passing scores.
+
+Per-competency thresholds — **fire**: `hazard_identification` 75, `ppe_selection` 80,
+`procedure_compliance` 75, `equipment_use` 75, `decision_making` 45. **gas**:
+`hazard_identification` 75, `ppe_selection` 80, `evacuation` 75, `equipment_use` 75,
+`emergency_response` 70.
+
+> ⚠️ These are prototype thresholds. They must be validated against official industrial SOPs
+> and domain experts before production deployment (see `ml/competency/README.md`).
+
+**Weakness severity** (per failing competency): `severe` < 50, `moderate` < 60, `mild` < threshold.
 
 ---
 
@@ -201,18 +249,31 @@ Valid values for the `status` field: `in_progress`, `completed`.
 
 `POST /api/v1/assessments`
 
+Assessments are **behaviour-based**: the client submits the raw VR session events and the
+backend scores them with the ML competency engine. `scenario_type` is derived from the
+module code (`fire`/`gas`) and may be overridden explicitly; `attempt_number` is
+auto-incremented per worker + module when omitted.
+
 **Request body**
 
 ```json
 {
   "worker_id": 1,
   "module_id": 1,
-  "attempt_number": 1,
-  "score": 85.0,
-  "passed": true,
-  "weaknesses": ["incorrect_extinguisher_selection"]
+  "client_session_id": "assess-sess-001",
+  "events": [
+    { "event_type": "hazard_identified", "correct": true, "hazard_type": "electrical_fire" },
+    { "event_type": "ppe_selected", "correct": true, "items": ["helmet", "gloves", "jacket"] },
+    { "event_type": "equipment_selected", "correct": true, "action": "grab_extinguisher" },
+    { "event_type": "evacuation_started", "correct": true, "route": "north_exit" },
+    { "event_type": "assessment_completed", "completion_status": "success" }
+  ]
 }
 ```
+
+`client_session_id` (optional) is a client-generated idempotency key. Re-submitting the
+same key for the same worker + module returns the stored assessment with `200 OK` and
+creates no duplicate record; the events are not re-scored.
 
 **Response `201 Created`**
 
@@ -222,17 +283,36 @@ Valid values for the `status` field: `in_progress`, `completed`.
   "worker_id": 1,
   "module_id": 1,
   "attempt_number": 1,
-  "score": 85.0,
+  "scenario_type": "fire",
+  "score": 90.0,
   "passed": true,
-  "weaknesses": ["incorrect_extinguisher_selection"],
+  "pass_reason": "Assessment passed (overall score: 90.0)",
+  "weaknesses": [],
+  "competency_scores": {
+    "hazard_identification": { "name": "hazard_identification", "score": 100.0, "passed": true, "pass_threshold": 75.0 },
+    "ppe_selection": { "name": "ppe_selection", "score": 100.0, "passed": true, "pass_threshold": 80.0 },
+    "procedure_compliance": { "name": "procedure_compliance", "score": 100.0, "passed": true, "pass_threshold": 75.0 },
+    "equipment_use": { "name": "equipment_use", "score": 100.0, "passed": true, "pass_threshold": 75.0 },
+    "decision_making": { "name": "decision_making", "score": 50.0, "passed": true, "pass_threshold": 45.0 }
+  },
+  "critical_errors": [],
   "created_at": "2026-09-01T11:10:00Z"
 }
 ```
 
+A failing assessment returns `passed: false` with structured `weaknesses` and, when a
+safety-critical mistake was made, a non-empty `critical_errors` list and a
+`pass_reason` beginning with `CRITICAL ERRORS:`. Each weakness carries
+`affected_aspects` — the sub-skill aspects of the weak competency (from the ML engine's
+competency definitions), e.g. `"affected_aspects": ["select_correct_ppe", "proper_donning",
+"ppe_completeness", "ppe_inspection"]` for a weak `ppe_selection`. An assessment submitted
+without any `assessment_completed` event returns `passed: false` with `pass_reason`
+"Incomplete assessment: ..." (completion is mandatory).
+
 **Errors**
 
 - `404` — `{"detail": "Worker not found"}` or `{"detail": "Module not found"}`
-- `422` — validation error
+- `422` — validation error (e.g. empty `events`, unknown `scenario_type`)
 
 ---
 
@@ -251,9 +331,19 @@ Valid values for the `status` field: `in_progress`, `completed`.
       "worker_id": 1,
       "module_id": 1,
       "attempt_number": 2,
-      "score": 92.0,
+      "scenario_type": "fire",
+      "score": 90.0,
       "passed": true,
+      "pass_reason": "Assessment passed (overall score: 90.0)",
       "weaknesses": [],
+      "competency_scores": {
+        "hazard_identification": { "name": "hazard_identification", "score": 100.0, "passed": true, "pass_threshold": 75.0 },
+        "ppe_selection": { "name": "ppe_selection", "score": 100.0, "passed": true, "pass_threshold": 80.0 },
+        "procedure_compliance": { "name": "procedure_compliance", "score": 100.0, "passed": true, "pass_threshold": 75.0 },
+        "equipment_use": { "name": "equipment_use", "score": 100.0, "passed": true, "pass_threshold": 75.0 },
+        "decision_making": { "name": "decision_making", "score": 50.0, "passed": true, "pass_threshold": 45.0 }
+      },
+      "critical_errors": [],
       "created_at": "2026-09-01T11:30:00Z"
     },
     {
@@ -261,9 +351,24 @@ Valid values for the `status` field: `in_progress`, `completed`.
       "worker_id": 1,
       "module_id": 1,
       "attempt_number": 1,
-      "score": 60.0,
+      "scenario_type": "fire",
+      "score": 39.0,
       "passed": false,
-      "weaknesses": ["incorrect_extinguisher_selection"],
+      "pass_reason": "Insufficient overall competency (score: 39.0, required: 70.0)",
+      "weaknesses": [
+        {
+          "competency_name": "procedure_compliance",
+          "score": 20.0,
+          "threshold": 75.0,
+          "severity": "severe",
+          "reason": "Score 20.0 below pass threshold 75.0",
+          "affected_aspects": []
+        }
+      ],
+      "competency_scores": {
+        "procedure_compliance": { "name": "procedure_compliance", "score": 20.0, "passed": false, "pass_threshold": 75.0 }
+      },
+      "critical_errors": [],
       "created_at": "2026-09-01T11:10:00Z"
     }
   ]
@@ -288,9 +393,19 @@ Valid values for the `status` field: `in_progress`, `completed`.
   "worker_id": 1,
   "module_id": 1,
   "attempt_number": 2,
-  "score": 92.0,
+  "scenario_type": "fire",
+  "score": 90.0,
   "passed": true,
+  "pass_reason": "Assessment passed (overall score: 90.0)",
   "weaknesses": [],
+  "competency_scores": {
+    "hazard_identification": { "name": "hazard_identification", "score": 100.0, "passed": true, "pass_threshold": 75.0 },
+    "ppe_selection": { "name": "ppe_selection", "score": 100.0, "passed": true, "pass_threshold": 80.0 },
+    "procedure_compliance": { "name": "procedure_compliance", "score": 100.0, "passed": true, "pass_threshold": 75.0 },
+    "equipment_use": { "name": "equipment_use", "score": 100.0, "passed": true, "pass_threshold": 75.0 },
+    "decision_making": { "name": "decision_making", "score": 50.0, "passed": true, "pass_threshold": 45.0 }
+  },
+  "critical_errors": [],
   "created_at": "2026-09-01T11:30:00Z"
 }
 ```
@@ -306,24 +421,51 @@ Valid values for the `status` field: `in_progress`, `completed`.
 
 `POST /api/v1/sync`
 
+Offline assessment sessions that include raw behavioural `events` are **scored
+server-side** by the ML competency engine on sync and stored as real assessment records
+(`assessments_created`). This is the offline-first path: the device records events without
+connectivity, and the authoritative scoring happens when connectivity returns.
+
+Sessions **without** `events` are logged as-is (legacy clients that report their own scores
+are stored in the sync log only, and do not create assessment records).
+
 **Request body**
 
 ```json
 {
   "worker_id": 1,
   "device_id": "device-abc-123",
+  "batch_id": "batch-xyz-456",
   "sessions": [
     {
       "type": "assessment",
       "module_id": 1,
+      "occurred_at": "2026-09-01T10:00:00Z",
+      "client_session_id": "sess-001",
+      "events": [
+        { "event_type": "hazard_identified", "correct": true, "hazard_type": "electrical_fire" },
+        { "event_type": "ppe_selected", "correct": true, "items": ["helmet", "gloves", "jacket"] },
+        { "event_type": "equipment_selected", "correct": true, "action": "grab_extinguisher" },
+        { "event_type": "evacuation_started", "correct": true, "route": "north_exit" }
+      ]
+    },
+    {
+      "type": "assessment",
+      "module_id": 2,
       "score": 80.0,
       "passed": false,
       "weaknesses": ["wrong_evacuation_route"],
-      "occurred_at": "2026-09-01T10:00:00Z"
+      "occurred_at": "2026-09-01T10:30:00Z"
     }
   ]
 }
 ```
+
+`batch_id` (optional) makes the sync batch idempotent: re-sending the same `batch_id` for a
+worker returns the original sync result with `200 OK` and creates no new sync log or
+assessment rows. A per-session `client_session_id` (optional) skips an assessment already
+scored for the same worker + module + key, preventing duplicate assessment/event records
+when a device retries.
 
 **Response `201 Created`**
 
@@ -332,14 +474,15 @@ Valid values for the `status` field: `in_progress`, `completed`.
   "sync_id": 1,
   "worker_id": 1,
   "synced_at": "2026-09-01T11:15:00Z",
-  "sessions_synced": 1
+  "sessions_synced": 2,
+  "assessments_created": 1
 }
 ```
 
 **Errors**
 
-- `404` — `{"detail": "Worker not found"}`
-- `422` — validation error
+- `404` — `{"detail": "Worker not found"}` or `{"detail": "Module not found for synced session (module_id=…)"}` (an event session referencing an unknown module)
+- `422` — validation error (e.g. unsupported `scenario_type`)
 
 ---
 
@@ -392,8 +535,20 @@ Valid values for the `status` field: `in_progress`, `completed`.
 
 **Errors**
 
+Admin-only (`worker` tokens receive `403`). The request body accepts **only** `worker_id` and
+`module_id`: eligibility, status and the certificate number are decided server-side, and any
+extra client fields (score, passed, status, certificate number) are ignored.
+
+- `401` — `{"detail": "Not authenticated. Provide a valid Bearer token (see /api/v1/auth/login)."}`
+- `403` — `{"detail": "Admin privileges required"}` (worker token)
 - `404` — `{"detail": "Worker not found"}` or `{"detail": "Module not found"}`
 - `409` — `{"detail": "Certificate already issued for this worker and module"}`
+- `409` — `{"detail": "Certificate requires a passing assessment for this module"}`
+  (competency gate — certificates are issued only after a passing, engine-scored
+  assessment, so a certificate always reflects demonstrated competency)
+- `409` — `{"detail": "Certificate cannot be issued: critical errors present in the assessment"}`
+  (a server-scored critical action in the latest passing assessment blocks certification)
+- `422` — validation error (`worker_id` / `module_id` must be `>= 1`)
 
 ---
 
@@ -430,6 +585,13 @@ Valid values for the `status` field: `in_progress`, `completed`.
 
 `GET /api/v1/certificates/verify/{certificate_number}`
 
+Public (no token required) so a QR code printed on a certificate resolves when scanned without
+credentials. The response distinguishes **VALID** (`"valid": true`) from **INVALID**
+(`"valid": false`) — a certificate is VALID only while it is `active` **and** not past
+`valid_until`; revoked (`status: "revoked"`) or expired certificates still resolve with
+`200 OK` so the scanner can display why verification failed. Verification is read-only and
+never mutates the certificate.
+
 **Response `200 OK`**
 
 ```json
@@ -447,6 +609,8 @@ Valid values for the `status` field: `in_progress`, `completed`.
 **Errors**
 
 - `404` — `{"detail": "Certificate not found"}`
+- `422` — `{"detail": "Invalid certificate number format"}` (must match `SUR-YYYY-NNNN`,
+  e.g. `SUR-2026-0001`)
 
 ---
 
@@ -463,6 +627,10 @@ Valid values for the `status` field: `in_progress`, `completed`.
   "certified_workers": 4,
   "total_assessments": 25,
   "pass_rate": 80.0,
+  "common_weaknesses": [
+    { "competency_name": "procedure_compliance", "count": 12, "average_score": 45.3 },
+    { "competency_name": "ppe_selection", "count": 7, "average_score": 55.0 }
+  ],
   "module_stats": [
     {
       "module_id": 1,
@@ -544,10 +712,35 @@ Valid values for the `status` field: `in_progress`, `completed`.
       "worker_id": 1,
       "module_id": 1,
       "attempt_number": 2,
-      "score": 92.0,
+      "scenario_type": "fire",
+      "score": 90.0,
       "passed": true,
+      "pass_reason": "Assessment passed (overall score: 90.0)",
       "weaknesses": [],
+      "competency_scores": {
+        "hazard_identification": { "name": "hazard_identification", "score": 100.0, "passed": true, "pass_threshold": 75.0 },
+        "ppe_selection": { "name": "ppe_selection", "score": 100.0, "passed": true, "pass_threshold": 80.0 },
+        "procedure_compliance": { "name": "procedure_compliance", "score": 100.0, "passed": true, "pass_threshold": 75.0 },
+        "equipment_use": { "name": "equipment_use", "score": 100.0, "passed": true, "pass_threshold": 75.0 },
+        "decision_making": { "name": "decision_making", "score": 50.0, "passed": true, "pass_threshold": 45.0 }
+      },
+      "critical_errors": [],
       "created_at": "2026-09-01T11:30:00Z"
+    }
+  ],
+  "competency_profile": [
+    {
+      "module_id": 1,
+      "module_code": "fire",
+      "module_name": "Fire & Explosion Response",
+      "attempt_number": 2,
+      "overall_score": 90.0,
+      "passed": true,
+      "competencies": {
+        "hazard_identification": { "name": "hazard_identification", "score": 100.0, "passed": true, "pass_threshold": 75.0 },
+        "ppe_selection": { "name": "ppe_selection", "score": 100.0, "passed": true, "pass_threshold": 80.0 }
+      },
+      "weaknesses": []
     }
   ],
   "certificates": [
@@ -567,6 +760,238 @@ Valid values for the `status` field: `in_progress`, `completed`.
 **Errors**
 
 - `404` — `{"detail": "Worker not found"}`
+
+---
+
+### 17. Get Retraining Plan
+
+`GET /api/v1/assessments/{assessment_id}/retraining-plan`
+
+Recomputes the targeted retraining plan from the assessment's stored events using the ML
+weakness detector and retraining recommender. Use it after a failed assessment to launch
+focused practice on exactly the competencies that failed.
+
+**Response `200 OK`**
+
+```json
+{
+  "scenario_type": "fire",
+  "recommended_modules": [
+    {
+      "module_id": "fire_proc_001",
+      "name": "Fire Evacuation Procedures",
+      "description": "Step-by-step evacuation protocol and safe exit procedures",
+      "estimated_duration_minutes": 10,
+      "difficulty_level": "beginner",
+      "competencies_addressed": ["procedure_compliance"],
+      "reason": "Weakness in procedure_compliance: score 20.0 (severity: severe)"
+    }
+  ],
+  "total_estimated_duration_minutes": 43,
+  "time_limit_exceeded": false,
+  "weaknesses_addressed": 3,
+  "total_weaknesses": 5
+}
+```
+
+An assessment with no weaknesses returns an empty `recommended_modules` list.
+
+**Errors**
+
+- `404` — `{"detail": "Assessment not found"}`
+
+---
+
+### 18. PPE Detection Check (Vision / ML)
+
+`POST /api/v1/vision/ppe-check`
+
+Detects whether the worker is wearing the required PPE from a camera frame.
+Powered by `ml/vision`; follows the module's "AI is never on the critical path"
+rule — the response always carries a `status` (`ok` | `low_confidence` |
+`model_error` | `disabled`) so the Unity app can degrade to the manual
+tap-to-select checklist when AI is unavailable. With no model checkpoint
+deployed the deterministic mock fallback answers (demo/offline mode).
+
+**Request body**
+
+```json
+{
+  "image_base64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJ...",
+  "required_ppe": ["helmet", "safety_vest"],
+  "mode": "auto"
+}
+```
+
+| Field | Type | Description |
+|---|---|---|
+| `image_base64` | string | Base64-encoded image (PNG/JPEG). |
+| `required_ppe` | string[] | Optional; defaults to `["helmet", "safety_vest"]`. |
+| `mode` | string \| null | Optional; `auto` (default), `mock`, or `model`. `model` returns `model_error` until a real checkpoint is configured. |
+
+**Response `200 OK`**
+
+```json
+{
+  "status": "ok",
+  "ppe_ok": true,
+  "detections": [
+    { "item": "helmet", "confidence": 0.98 },
+    { "item": "safety_vest", "confidence": 0.97 }
+  ],
+  "missing_items": [],
+  "confidence": 0.975,
+  "fallback_used": true,
+  "message": "Mock PPE detector: helmet and safety vest detected (no model configured).",
+  "required_ppe": ["helmet", "safety_vest"]
+}
+```
+
+**Errors**
+
+- `422` — invalid `image_base64` (not valid base64/empty) or empty `required_ppe`
+
+Note: an *unrecognised image* is **not** an error — it returns `status: "model_error"`
+with `ppe_ok: false`, so the client triggers its documented fallback UI.
+
+---
+
+### 19. Vision Stack Status
+
+`GET /api/v1/vision/status`
+
+Reports how the vision stack is configured (used by the app's capability check
+at startup — the feature auto-disables when no model is loaded).
+
+**Response `200 OK`**
+
+```json
+{
+  "status": "ok",
+  "module": "ml.vision",
+  "version": "0.1.0",
+  "mode": "auto",
+  "model_path": null,
+  "model_loaded": false,
+  "fallback_enabled": true,
+  "supported_items": ["helmet", "safety_vest"]
+}
+```
+
+**Errors**
+
+- None
+
+---
+
+### 20. Get Worker Progress (workers-scoped)
+
+`GET /api/v1/workers/{worker_id}/progress`
+
+Returns the worker's per-module progress merged with the stored assessment data. For each
+module the worker has progress and/or assessments, the response carries the latest attempt
+number, overall score, pass/fail decision, the number of stored assessments, and — for
+modules without an explicit progress row — the latest assessment timestamp as `last_updated`.
+
+**Response `200 OK`**
+
+```json
+{
+  "worker_id": 1,
+  "progress": [
+    {
+      "module_id": 1,
+      "module_code": "fire",
+      "module_name": "Fire & Explosion Response",
+      "stage": "assess",
+      "status": "in_progress",
+      "last_updated": "2026-09-01T11:30:00Z",
+      "attempt_number": 2,
+      "overall_score": 90.0,
+      "passed": true,
+      "assessments_count": 2
+    }
+  ]
+}
+```
+
+**Errors**
+
+- `404` — `{"detail": "Worker not found"}`
+
+---
+
+### 21. Worker Retention Schedule (Day 1 / Day 7 / Day 30)
+
+`GET /api/v1/progress/{worker_id}/retention`
+
+Returns the worker's **retention checkpoints** per module, closing the
+`certify → retain` loop:
+
+- The retention clock is anchored on the worker's **active certificate issue date** for the
+  module (CERTIFY → RETAIN). If no certificate exists yet it falls back to the latest
+  **passing, server-scored assessment**, and then to any progress row for the module.
+- Three checkpoints are always produced per scheduled module: **Day 1**
+  (`Day 1 Immediate Retention Check`), **Day 7** (`Day 7 Refresher Check`) and **Day 30**
+  (`Day 30 Competency Audit`).
+- Each checkpoint has a bounded window (12 h grace before its due date up to 12 h before the
+  next checkpoint), so a late retention assessment satisfies only its own checkpoint.
+- `status` is computed server-side: `completed` (a server-scored assessment was recorded
+  inside the checkpoint window), `due` (the due date has passed with no assessment) or
+  `pending` (not due yet). Clients cannot set checkpoint values — the only writable stage /
+  status values are the workflow stages and `in_progress` / `completed` of `POST /api/v1/progress`.
+- Modules the worker has neither certified, passed nor progressed are omitted.
+  `worker` tokens may read only their own schedule (`403` otherwise); admins may read any worker.
+
+**Response `200 OK`**
+
+```json
+{
+  "worker_id": 1,
+  "retention_schedules": [
+    {
+      "worker_id": 1,
+      "module_id": 1,
+      "module_code": "fire",
+      "module_name": "Fire & Explosion Response",
+      "base_date": "2026-09-01T11:20:00Z",
+      "milestones": [
+        {
+          "day": 1,
+          "title": "Day 1 Immediate Retention Check",
+          "due_date": "2026-09-02T11:20:00Z",
+          "status": "completed",
+          "passed": true,
+          "score": 90.0
+        },
+        {
+          "day": 7,
+          "title": "Day 7 Refresher Check",
+          "due_date": "2026-09-08T11:20:00Z",
+          "status": "pending",
+          "passed": null,
+          "score": null
+        },
+        {
+          "day": 30,
+          "title": "Day 30 Competency Audit",
+          "due_date": "2026-10-01T11:20:00Z",
+          "status": "pending",
+          "passed": null,
+          "score": null
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Errors**
+
+- `401` — missing/invalid Bearer token
+- `403` — `{"detail": "Not authorized to access this worker's data"}` (worker token for another worker)
+- `404` — `{"detail": "Worker not found"}`
+- `422` — validation error (non-integer `worker_id`)
 
 ---
 
@@ -590,5 +1015,10 @@ Valid values for the `status` field: `in_progress`, `completed`.
 | 14 | GET | `/api/v1/dashboard/summary` | 200 |
 | 15 | GET | `/api/v1/dashboard/workers` | 200 |
 | 16 | GET | `/api/v1/dashboard/workers/{worker_id}` | 200 |
+| 17 | GET | `/api/v1/assessments/{assessment_id}/retraining-plan` | 200 |
+| 18 | POST | `/api/v1/vision/ppe-check` | 200 |
+| 19 | GET | `/api/v1/vision/status` | 200 |
+| 20 | GET | `/api/v1/workers/{worker_id}/progress` | 200 |
+| 21 | GET | `/api/v1/progress/{worker_id}/retention` | 200 |
 
-**5 POST + 11 GET = 16 endpoints.**
+**6 POST + 15 GET = 21 endpoints.**
