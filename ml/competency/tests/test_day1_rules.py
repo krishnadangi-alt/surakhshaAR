@@ -245,9 +245,8 @@ class TestAttemptsRule:
         """attempt_number stays an audit/progression field on the API payload;
         the engine applies no penalty based on previous failed attempts."""
         from backend.tests.events import BAD_FIRE_EVENTS, GOOD_FIRE_EVENTS  # noqa: F401
-        # Same events -> identical score, regardless of "attempt history".
-        scored_a = _run(GOOD_FIRE_EVENTS)
-        scored_b = _run(list(GOOD_FIRE_EVENTS))
+        scored_a = _run(GOOD_COMPLETED_FIRE)
+        scored_b = _run(list(GOOD_COMPLETED_FIRE))
         assert scored_a.overall_score == scored_b.overall_score
         assert scored_a.passed == scored_b.passed is True
 

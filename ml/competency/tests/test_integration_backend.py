@@ -19,6 +19,7 @@ class TestBackendEventFormatIntegration:
             {"event_type": "ppe_selected", "correct": True, "items": ["helmet", "gloves", "jacket"]},
             {"event_type": "equipment_selected", "correct": True, "action": "grab_extinguisher"},
             {"event_type": "evacuation_started", "correct": True, "route": "north_exit"},
+            {"event_type": "assessment_completed", "completion_status": "success"},
         ]
         result = assess(events, scenario_type="fire")
         assert result["passed"] is True
@@ -69,6 +70,7 @@ class TestBackendEventFormatIntegration:
             },
             {"event_type": "equipment_selected", "correct": True, "action": "grab_extinguisher"},
             {"event_type": "evacuation_started", "correct": True, "route": "north_exit"},
+            {"event_type": "assessment_completed", "completion_status": "success"},
         ]
         # Should not raise an exception; response_time is not scored by existing rules
         result = assess(events, scenario_type="fire")
@@ -117,6 +119,7 @@ class TestBackendEventFormatIntegration:
             {"event_type": "equipment_selected", "correct": True, "action": "grab_extinguisher"},
             {"event_type": "wrong_action", "severity": "minor", "action": "approached_at_wrong_angle"},
             {"event_type": "evacuation_started", "correct": True, "route": "north_exit"},
+            {"event_type": "assessment_completed", "completion_status": "success"},
         ]
         result = assess(events, scenario_type="fire")
         # Minor wrong action should still allow a pass

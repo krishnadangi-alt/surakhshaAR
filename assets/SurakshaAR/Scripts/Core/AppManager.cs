@@ -19,6 +19,7 @@ namespace SurakshaAR.Core
         public UIController UIController { get; private set; }
         public AppState AppState { get; private set; }
         public LocalizationManager Localization { get; private set; }
+        public FontManager FontManager { get; private set; }
         public ARModuleLauncher ARLauncher { get; private set; }
         public AudioManager Audio { get; private set; }
         public AssessmentTelemetryManager Telemetry { get; private set; }
@@ -52,7 +53,12 @@ namespace SurakshaAR.Core
             SyncManager = GetComponent<OfflineSyncManager>() ?? gameObject.AddComponent<OfflineSyncManager>();
             Telemetry = GetComponent<AssessmentTelemetryManager>() ?? gameObject.AddComponent<AssessmentTelemetryManager>();
 
+            FontManager = FontManager.Instance;
             Localization = new LocalizationManager();
+            Localization.OnLanguageChanged += (lang) =>
+            {
+                FontManager.EnsureFallbackChains();
+            };
 
             CurrentProfile = UserProfileData.Load();
             Modules = ModuleCatalog.BuildDefaultCatalog();

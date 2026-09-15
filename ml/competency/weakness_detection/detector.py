@@ -9,6 +9,22 @@ from typing import List, Dict
 from ..scoring.config import WEAKNESS_THRESHOLD, SEVERE_WEAKNESS_THRESHOLD
 
 
+def _aspects_for_competency(scoring_result, competency_name: str) -> List[str]:
+    """Return the sub-aspect list for a competency from its definition.
+
+    Day 1 (Rehan rule 6): ``affected_aspects`` must be populated from the
+    relevant competency sub-aspects when a competency is weak, never left
+    permanently empty. The scorer stores the live ``CompetencyDefinition``
+    objects (with ``aspects``) on ``scoring_result`` via
+    ``CompetencyScorer.get_result()``; fall back to ``[]`` only when the
+    definition is unavailable.
+    """
+    definitions = getattr(scoring_result, "competency_definitions", None) or {}
+    definition = definitions.get(competency_name)
+    aspects = getattr(definition, "aspects", None) if definition else None
+    return list(aspects) if aspects else []
+
+
 @dataclass
 class Weakness:
     """A detected performance weakness."""
@@ -56,7 +72,9 @@ class WeaknessDetector:
                     threshold=threshold,
                     severity=severity,
                     reason=f"Score {score:.1f} below pass threshold {threshold:.1f}",
-                    affected_aspects=[]  # Would be populated from competency config
+                    affected_aspects=_aspects_for_competency(
+                        scoring_result, competency_name
+                    ),
                 )
                 weaknesses.append(weakness)
         

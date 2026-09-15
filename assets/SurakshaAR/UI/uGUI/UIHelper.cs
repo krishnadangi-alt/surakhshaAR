@@ -295,16 +295,19 @@ namespace SurakshaAR.UI
             return GetDefaultFont();
         }
 
-        /// <summary>Returns the font asset corresponding to the given language (always the unified menu font with fallbacks).</summary>
+        /// <summary>Returns the font asset corresponding to the given language from centralized FontManager.</summary>
         public static TMP_FontAsset GetFontForLanguage(SurakshaAR.Data.AppLanguage lang)
         {
-            return GetDefaultFont();
+            return Core.FontManager.Instance.GetFontForLanguage(lang);
         }
 
-        /// <summary>Returns the active font asset based on current AppState / Localization selection (unified menu font).</summary>
+        /// <summary>Returns the active font asset based on current AppState / Localization selection.</summary>
         public static TMP_FontAsset GetCurrentFont()
         {
-            return GetDefaultFont();
+            var lang = Core.AppManager.Instance != null && Core.AppManager.Instance.Localization != null
+                ? Core.AppManager.Instance.Localization.CurrentLanguage
+                : SurakshaAR.Data.AppLanguage.English;
+            return Core.FontManager.Instance.GetFontForLanguage(lang);
         }
 
         /// <summary>Adds a TextMeshProUGUI component with language-aware font pre-assigned.</summary>
@@ -315,6 +318,51 @@ namespace SurakshaAR.UI
             if (tmp == null) return null;
             var font = GetCurrentFont();
             if (font != null) tmp.font = font;
+            return tmp;
+        }
+
+        /// <summary>Create a TextMeshProUGUI label enforcing centralized semantic typography.</summary>
+        public static TextMeshProUGUI MakeSemanticLabel(string name, Transform parent,
+            string text, Core.SemanticStyle style, Color color,
+            TextAlignmentOptions alignment = TextAlignmentOptions.Left,
+            string locKey = null)
+        {
+            var go = new GameObject(name);
+            go.transform.SetParent(parent, false);
+            var rt = go.AddComponent<RectTransform>();
+            var config = Core.TypographyManager.GetConfig(style);
+            float initialWidth = config.WordWrap ? 400f : 240f;
+            rt.sizeDelta = new Vector2(initialWidth, config.FontSize * 1.35f);
+
+            var le = go.AddComponent<LayoutElement>();
+            if (!config.WordWrap)
+            {
+                le.preferredHeight = config.FontSize * 1.35f;
+                le.minWidth = 20f;
+            }
+            else
+            {
+                le.flexibleWidth = 1f;
+            }
+
+            var tmp = AddTMP(go);
+            string cleanText = SanitizeText(text);
+            tmp.text = cleanText;
+            tmp.color = color;
+            tmp.alignment = alignment;
+
+            var lang = Core.AppManager.Instance != null && Core.AppManager.Instance.Localization != null
+                ? Core.AppManager.Instance.Localization.CurrentLanguage
+                : SurakshaAR.Data.AppLanguage.English;
+            Core.TypographyManager.ApplyStyle(tmp, style, lang);
+
+            if (!string.IsNullOrEmpty(locKey))
+            {
+                var sem = go.AddComponent<Core.SemanticText>();
+                sem.SetKeyAndStyle(locKey, style);
+            }
+
+            tmp.raycastTarget = false;
             return tmp;
         }
 

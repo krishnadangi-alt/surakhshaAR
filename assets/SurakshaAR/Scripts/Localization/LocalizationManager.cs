@@ -35,6 +35,8 @@ namespace SurakshaAR.Localization
         private readonly Dictionary<string, LocalizationEntry> _entries = new Dictionary<string, LocalizationEntry>();
         private bool _isJsonLoaded = false;
 
+        public event System.Action<AppLanguage> OnLanguageChanged;
+
         public LocalizationManager()
         {
             if (PlayerPrefs.HasKey(PrefsKey))
@@ -47,9 +49,11 @@ namespace SurakshaAR.Localization
 
         public void SetLanguage(AppLanguage language)
         {
+            if (CurrentLanguage == language) return;
             CurrentLanguage = language;
             PlayerPrefs.SetInt(PrefsKey, (int)language);
             PlayerPrefs.Save();
+            OnLanguageChanged?.Invoke(language);
         }
 
         private void LoadJsonLocalization()
@@ -101,15 +105,10 @@ namespace SurakshaAR.Localization
                     case AppLanguage.Hindi:
                         if (!string.IsNullOrEmpty(entry.hi))
                             return entry.hi;
-                        if (!string.IsNullOrEmpty(entry.hi_roman))
-                            return entry.hi_roman;
                         break;
 
                     case AppLanguage.Santali:
-                        if (UI.UIHelper.HasOlChikiSupport() && !string.IsNullOrEmpty(entry.sat))
-                            return entry.sat;
-                        if (!string.IsNullOrEmpty(entry.sat_roman))
-                            return entry.sat_roman;
+                        // Enforce authentic Ol Chiki (ᱚᱞ ᱪᱤᱠᱤ) script
                         if (!string.IsNullOrEmpty(entry.sat))
                             return entry.sat;
                         break;

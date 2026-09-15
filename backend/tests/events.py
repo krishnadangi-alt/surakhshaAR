@@ -32,6 +32,10 @@ GOOD_FIRE_EVENTS = [
         "correct": True,
         "route": "north_exit",
     },
+    {
+        "event_type": "assessment_completed",
+        "completion_status": "success",
+    },
 ]
 
 GOOD_GAS_EVENTS = [
@@ -59,6 +63,10 @@ GOOD_GAS_EVENTS = [
         "event_type": "emergency_procedure",
         "correct": True,
         "action": "alert_supervisor",
+    },
+    {
+        "event_type": "assessment_completed",
+        "completion_status": "success",
     },
 ]
 

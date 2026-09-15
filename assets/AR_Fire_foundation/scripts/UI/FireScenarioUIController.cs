@@ -518,7 +518,7 @@ public class FireScenarioUIController : MonoBehaviour
         titleStack.anchorMax = new Vector2(0, 0.5f);
         titleStack.pivot = new Vector2(0, 0.5f);
         titleStack.anchoredPosition = new Vector2(96, 6);
-        titleStack.sizeDelta = new Vector2(650, 68);
+        titleStack.sizeDelta = new Vector2(650, 78);
 
         var vlg = titleStack.gameObject.AddComponent<VerticalLayoutGroup>();
         vlg.spacing = 2;
@@ -528,13 +528,13 @@ public class FireScenarioUIController : MonoBehaviour
         vlg.childForceExpandWidth = true;
         vlg.childForceExpandHeight = false;
 
-        _moduleTitleText = UIHelper.MakeLabel("ModuleTitle", titleStack, "Fire & Explosion Response", 22, Color.white, bold: true, wrap: false);
+        _moduleTitleText = UIHelper.MakeLabel("ModuleTitle", titleStack, "Fire & Explosion Response", 32, Color.white, bold: true, wrap: false);
         _moduleTitleText.overflowMode = TextOverflowModes.Overflow;
-        UIHelper.SetLayout(_moduleTitleText.gameObject, preferredWidth: 640, minWidth: 500, preferredHeight: 32);
+        UIHelper.SetLayout(_moduleTitleText.gameObject, preferredWidth: 640, minWidth: 500, preferredHeight: 40);
 
-        _stepCounterText = UIHelper.MakeLabel("StepCounter", titleStack, "Step 1 of 6", 16, Hex("#94A3B8"), bold: false, wrap: false);
+        _stepCounterText = UIHelper.MakeLabel("StepCounter", titleStack, "Step 1 of 6", 26, Hex("#94A3B8"), bold: false, wrap: false);
         _stepCounterText.overflowMode = TextOverflowModes.Overflow;
-        UIHelper.SetLayout(_stepCounterText.gameObject, preferredWidth: 640, minWidth: 500, preferredHeight: 24);
+        UIHelper.SetLayout(_stepCounterText.gameObject, preferredWidth: 640, minWidth: 500, preferredHeight: 34);
 
         // C. Right Cluster (Stopwatch Timer + Score)
         var rightCluster = UIHelper.MakeRect("RightCluster", _topBar);
@@ -542,10 +542,10 @@ public class FireScenarioUIController : MonoBehaviour
         rightCluster.anchorMax = new Vector2(1, 0.5f);
         rightCluster.pivot = new Vector2(1, 0.5f);
         rightCluster.anchoredPosition = new Vector2(-24, 6);
-        rightCluster.sizeDelta = new Vector2(280, 48);
+        rightCluster.sizeDelta = new Vector2(340, 56);
 
         var hlg = rightCluster.gameObject.AddComponent<HorizontalLayoutGroup>();
-        hlg.spacing = 10;
+        hlg.spacing = 12;
         hlg.childAlignment = TextAnchor.MiddleRight;
         hlg.childControlWidth = true;
         hlg.childControlHeight = true;
@@ -553,39 +553,39 @@ public class FireScenarioUIController : MonoBehaviour
         hlg.childForceExpandHeight = false;
 
         // Score Label
-        _scoreText = UIHelper.MakeLabel("ScoreLbl", rightCluster, "Score: 70", 16, Hex("#CBD5E1"), TextAlignmentOptions.Right, bold: true, wrap: false);
+        _scoreText = UIHelper.MakeLabel("ScoreLbl", rightCluster, "Score: 70", 26, Hex("#CBD5E1"), TextAlignmentOptions.Right, bold: true, wrap: false);
         _scoreText.overflowMode = TextOverflowModes.Overflow;
-        UIHelper.SetLayout(_scoreText.gameObject, preferredWidth: 104, minWidth: 104, preferredHeight: 30);
+        UIHelper.SetLayout(_scoreText.gameObject, preferredWidth: 140, minWidth: 120, preferredHeight: 40);
 
-        _scoreDeltaText = UIHelper.MakeLabel("DeltaLbl", rightCluster, "+10", 16, Hex("#4ADE80"), bold: true, wrap: false);
+        _scoreDeltaText = UIHelper.MakeLabel("DeltaLbl", rightCluster, "+10", 26, Hex("#4ADE80"), bold: true, wrap: false);
         _scoreDeltaText.overflowMode = TextOverflowModes.Overflow;
-        UIHelper.SetLayout(_scoreDeltaText.gameObject, preferredWidth: 40, minWidth: 40, preferredHeight: 30);
+        UIHelper.SetLayout(_scoreDeltaText.gameObject, preferredWidth: 56, minWidth: 50, preferredHeight: 40);
         _scoreDeltaText.gameObject.SetActive(false);
 
         // Timer Pill (Stopwatch icon + time)
         _timerPill = UIHelper.MakeRect("TimerPill", rightCluster);
-        _timerPill.sizeDelta = new Vector2(116, 40);
-        UIHelper.SetLayout(_timerPill.gameObject, preferredWidth: 116, minWidth: 116, preferredHeight: 40);
+        _timerPill.sizeDelta = new Vector2(150, 48);
+        UIHelper.SetLayout(_timerPill.gameObject, preferredWidth: 150, minWidth: 140, preferredHeight: 48);
         var timerImg = _timerPill.gameObject.AddComponent<Image>();
         timerImg.color = new Color(0.06f, 0.10f, 0.18f, 0.65f);
         timerImg.sprite = UIHelper.GetWhiteSprite();
-        UIHelper.SetImageRoundedSprite(timerImg, 12);
+        UIHelper.SetImageRoundedSprite(timerImg, 14);
 
-        var timerRow = UIHelper.MakeHorizontal("Row", _timerPill, 4);
-        UIHelper.Stretch(timerRow, 6, 6, 0, 0);
+        var timerRow = UIHelper.MakeHorizontal("Row", _timerPill, 6);
+        UIHelper.Stretch(timerRow, 8, 8, 0, 0);
 
         var timerIconGO = UIHelper.MakeRect("TimerIcon", timerRow);
-        timerIconGO.sizeDelta = new Vector2(20, 20);
-        UIHelper.SetLayout(timerIconGO.gameObject, preferredWidth: 20, minWidth: 20, preferredHeight: 20);
+        timerIconGO.sizeDelta = new Vector2(26, 26);
+        UIHelper.SetLayout(timerIconGO.gameObject, preferredWidth: 26, minWidth: 26, preferredHeight: 26);
         var timerIconImg = timerIconGO.gameObject.AddComponent<Image>();
         timerIconImg.sprite = CreateProceduralIcon("timer");
         timerIconImg.color = Hex("#94A3B8");
         timerIconImg.type = Image.Type.Simple;
         timerIconImg.preserveAspect = true;
 
-        _timerText = UIHelper.MakeLabel("TimerText", timerRow, "06:58", 18, Color.white, bold: true, wrap: false);
+        _timerText = UIHelper.MakeLabel("TimerText", timerRow, "06:58", 34, Color.white, bold: true, wrap: false);
         _timerText.overflowMode = TextOverflowModes.Overflow;
-        UIHelper.SetLayout(_timerText.gameObject, preferredWidth: 74, minWidth: 74, preferredHeight: 24);
+        UIHelper.SetLayout(_timerText.gameObject, preferredWidth: 98, minWidth: 90, preferredHeight: 40);
 
         // D. Sleek Thin Progress Bar Line directly below TopBar
         _topProgressBarTrack = UIHelper.MakeRect("TopProgressTrack", _topBar);
@@ -939,13 +939,13 @@ public class FireScenarioUIController : MonoBehaviour
         vlg.childForceExpandWidth = true;
         vlg.childForceExpandHeight = false;
 
-        _normalCardTitle = UIHelper.MakeLabel("Title", textStack, "Identify the Hazard", 21, Hex("#0F172A"), bold: true, wrap: false);
+        _normalCardTitle = UIHelper.MakeLabel("Title", textStack, "Identify the Hazard", 36, Hex("#0F172A"), bold: true, wrap: false);
         _normalCardTitle.overflowMode = TextOverflowModes.Ellipsis;
-        UIHelper.SetLayout(_normalCardTitle.gameObject, preferredHeight: 28);
+        UIHelper.SetLayout(_normalCardTitle.gameObject, preferredHeight: 44);
 
-        _normalCardSubtitle = UIHelper.MakeLabel("Subtitle", textStack, "Find the electrical fire.", 15, Hex("#64748B"), wrap: false);
+        _normalCardSubtitle = UIHelper.MakeLabel("Subtitle", textStack, "Find the electrical fire.", 26, Hex("#64748B"), wrap: false);
         _normalCardSubtitle.overflowMode = TextOverflowModes.Ellipsis;
-        UIHelper.SetLayout(_normalCardSubtitle.gameObject, preferredHeight: 22);
+        UIHelper.SetLayout(_normalCardSubtitle.gameObject, preferredHeight: 34);
 
         // Right: Chevron Arrow >
         var arrow = UIHelper.MakeLabel("Arrow", _normalCard, "›", 32, Hex("#94A3B8"), TextAlignmentOptions.Center, bold: true, wrap: false);
@@ -1008,22 +1008,22 @@ public class FireScenarioUIController : MonoBehaviour
             statHlg.childForceExpandHeight = false;
         }
 
-        _sprayStatusText = UIHelper.MakeLabel("Status", statRow, "Spraying...", 18, Color.white, bold: true, wrap: false);
+        _sprayStatusText = UIHelper.MakeLabel("Status", statRow, "Spraying...", 28, Color.white, bold: true, wrap: false);
         _sprayStatusText.overflowMode = TextOverflowModes.Overflow;
-        UIHelper.SetLayout(_sprayStatusText.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 26);
+        UIHelper.SetLayout(_sprayStatusText.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 36);
 
-        _sprayTimerText = UIHelper.MakeLabel("Timer", statRow, "6.5 / 10.0 s", 18, Hex("#E2E8F0"), TextAlignmentOptions.Right, bold: true, wrap: false);
+        _sprayTimerText = UIHelper.MakeLabel("Timer", statRow, "6.5 / 10.0 s", 32, Hex("#E2E8F0"), TextAlignmentOptions.Right, bold: true, wrap: false);
         _sprayTimerText.overflowMode = TextOverflowModes.Overflow;
-        UIHelper.SetLayout(_sprayTimerText.gameObject, preferredWidth: 180, minWidth: 180, preferredHeight: 26);
+        UIHelper.SetLayout(_sprayTimerText.gameObject, preferredWidth: 260, minWidth: 240, preferredHeight: 36);
 
         // Progress Bar
         var progTrack = UIHelper.MakeRect("Track", topBox);
-        UIHelper.SetLayout(progTrack.gameObject, preferredHeight: 10);
+        UIHelper.SetLayout(progTrack.gameObject, preferredHeight: 12);
 
         var progTrackImg = progTrack.gameObject.AddComponent<Image>();
         progTrackImg.color = Hex("#334155");
         progTrackImg.sprite = UIHelper.GetWhiteSprite();
-        UIHelper.SetImageRoundedSprite(progTrackImg, 5);
+        UIHelper.SetImageRoundedSprite(progTrackImg, 6);
 
         var progFillGO = new GameObject("Fill");
         progFillGO.transform.SetParent(progTrack, false);
@@ -1036,12 +1036,12 @@ public class FireScenarioUIController : MonoBehaviour
         var progFillImg = progFillGO.AddComponent<Image>();
         progFillImg.color = Hex("#22C55E");
         progFillImg.sprite = UIHelper.GetWhiteSprite();
-        UIHelper.SetImageRoundedSprite(progFillImg, 5);
+        UIHelper.SetImageRoundedSprite(progFillImg, 6);
 
         // Bottom Tier: White Card
         var bottomCard = UIHelper.MakeRect("BottomCard", _sprayCardContainer);
-        bottomCard.sizeDelta = new Vector2(980, 76);
-        UIHelper.SetLayout(bottomCard.gameObject, preferredWidth: 980, minWidth: 980, preferredHeight: 76);
+        bottomCard.sizeDelta = new Vector2(980, 88);
+        UIHelper.SetLayout(bottomCard.gameObject, preferredWidth: 980, minWidth: 980, preferredHeight: 88);
 
         var bottomImg = bottomCard.gameObject.AddComponent<Image>();
         bottomImg.color = Color.white;
@@ -1061,12 +1061,12 @@ public class FireScenarioUIController : MonoBehaviour
         bRow.childForceExpandHeight = false;
 
         var sBadge = UIHelper.MakeRect("Badge", bottomCard);
-        sBadge.sizeDelta = new Vector2(48, 48);
-        UIHelper.SetLayout(sBadge.gameObject, preferredWidth: 48, minWidth: 48, preferredHeight: 48);
+        sBadge.sizeDelta = new Vector2(56, 56);
+        UIHelper.SetLayout(sBadge.gameObject, preferredWidth: 56, minWidth: 56, preferredHeight: 56);
         var sBadgeImg = sBadge.gameObject.AddComponent<Image>();
         sBadgeImg.color = Hex("#EF4444");
         sBadgeImg.sprite = UIHelper.GetWhiteSprite();
-        UIHelper.SetImageRoundedSprite(sBadgeImg, 12);
+        UIHelper.SetImageRoundedSprite(sBadgeImg, 14);
 
         var sInner = UIHelper.MakeRect("Inner", sBadge);
         UIHelper.Stretch(sInner, 8, 8, 8, 8);
@@ -1076,9 +1076,9 @@ public class FireScenarioUIController : MonoBehaviour
         _sprayBadgeIconImg.type = Image.Type.Simple;
         _sprayBadgeIconImg.preserveAspect = true;
 
-        _sprayCardBottomTitle = UIHelper.MakeLabel("Title", bottomCard, "Keep spraying at the base", 19, Hex("#0F172A"), bold: true, wrap: false);
+        _sprayCardBottomTitle = UIHelper.MakeLabel("Title", bottomCard, "Keep spraying at the base", 34, Hex("#0F172A"), bold: true, wrap: false);
         _sprayCardBottomTitle.overflowMode = TextOverflowModes.Ellipsis;
-        UIHelper.SetLayout(_sprayCardBottomTitle.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 30);
+        UIHelper.SetLayout(_sprayCardBottomTitle.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 42);
 
         var bArrow = UIHelper.MakeLabel("Arrow", bottomCard, "›", 30, Hex("#94A3B8"), TextAlignmentOptions.Center, bold: true, wrap: false);
         bArrow.overflowMode = TextOverflowModes.Overflow;

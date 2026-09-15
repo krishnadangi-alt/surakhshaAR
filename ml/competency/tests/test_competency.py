@@ -401,6 +401,7 @@ class TestGasScenario:
             {"event_type": "equipment_selected", "correct": True, "action": "gas_detector"},
             {"event_type": "evacuation_started", "correct": True, "direction": "upwind"},
             {"event_type": "emergency_procedure", "correct": True, "action": "alert_supervisor"},
+            {"event_type": "assessment_completed", "completion_status": "success"},
         ]
         scorer = CompetencyScorer(scenario_type="gas")
         for event in events:
