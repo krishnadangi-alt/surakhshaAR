@@ -29,8 +29,8 @@ export const CompetencyScreen: React.FC<CompetencyScreenProps> = ({ onNavigateTo
       sortable: true,
       render: (w) => (
         <div>
-          <h5 className="font-bold text-white hover:text-suraksha-amber transition">{w.name}</h5>
-          <p className="text-[10px] font-mono text-suraksha-subtext">{w.employeeId}</p>
+          <h5 className="font-bold text-suraksha-heading hover:text-suraksha-amber transition">{w.name}</h5>
+          <p className="text-[10px] font-mono text-suraksha-subtext font-medium">{w.employeeId}</p>
         </div>
       ),
     },
@@ -38,7 +38,7 @@ export const CompetencyScreen: React.FC<CompetencyScreenProps> = ({ onNavigateTo
       key: 'sector',
       header: 'Industrial Unit',
       sortable: true,
-      render: (w) => <span className="text-xs font-medium text-suraksha-text">{w.sector}</span>,
+      render: (w) => <span className="text-xs font-semibold text-suraksha-text">{w.sector}</span>,
     },
     {
       key: 'latestScore',
@@ -48,7 +48,7 @@ export const CompetencyScreen: React.FC<CompetencyScreenProps> = ({ onNavigateTo
       render: (w) => (
         <span
           className={`font-bold ${
-            w.latestScore >= 85 ? 'text-emerald-400' : w.latestScore >= 70 ? 'text-amber-400' : 'text-rose-400'
+            w.latestScore >= 85 ? 'text-emerald-700' : w.latestScore >= 70 ? 'text-amber-700' : 'text-rose-700'
           }`}
         >
           {w.latestScore}%
@@ -66,7 +66,7 @@ export const CompetencyScreen: React.FC<CompetencyScreenProps> = ({ onNavigateTo
       header: 'Flagged Weaknesses',
       align: 'center',
       render: (w) => (
-        <span className={`font-bold text-xs ${w.weakAreas.length > 0 ? 'text-rose-400' : 'text-emerald-400'}`}>
+        <span className={`font-bold text-xs ${w.weakAreas.length > 0 ? 'text-rose-700' : 'text-emerald-700'}`}>
           {w.weakAreas.length > 0 ? `${w.weakAreas.length}` : 'None'}
         </span>
       ),
@@ -91,21 +91,21 @@ export const CompetencyScreen: React.FC<CompetencyScreenProps> = ({ onNavigateTo
   ];
 
   const retrainingActions = [
-    { id: 'ra-1', weakness: 'SCBA Cylinder Pressure Verification', workers: 128, modules: 'Gas Safety', action: 'Batch SCBA practical drill & reassess' },
-    { id: 'ra-2', weakness: 'LOTO Lock Verification Before Entry', workers: 96, modules: 'Machinery / Gas', action: 'Assign Level-2 LOTO spatial scenario' },
-    { id: 'ra-3', weakness: 'CO2 Horn-Handle Frostbite Protocol', workers: 61, modules: 'Fire Safety', action: 'Micro-drill on CO2 extinguisher handling' },
-    { id: 'ra-4', weakness: 'Methane Sensor Span Calibration', workers: 47, modules: 'Gas Safety', action: 'Calibration bench simulation refresher' },
+    { id: 'ra-1', weakness: 'PPE Selection in Hazard Zone', workers: 128, modules: 'Gas Leak & Confined Space', action: 'Targeted PPE Training → PPE Practice → Reassess' },
+    { id: 'ra-2', weakness: 'Extinguisher Selection & Use', workers: 96, modules: 'Fire & Explosion Response', action: 'Extinguisher selection & PASS drill → Reassess' },
+    { id: 'ra-3', weakness: 'Evacuation Sequence', workers: 61, modules: 'Fire & Explosion Response', action: 'Evacuation route AR drill → Reassess' },
+    { id: 'ra-4', weakness: 'Hazard Zone Recognition', workers: 47, modules: 'Gas Leak & Confined Space', action: 'Hazard zone demarcation practice → Reassess' },
   ];
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h3 className="text-lg font-bold text-white uppercase tracking-wider">
-          Workforce Competency & Technical Skill Analytics
+        <h3 className="text-lg font-bold text-suraksha-heading uppercase tracking-wider">
+          Workforce Competency
         </h3>
-        <p className="text-xs text-suraksha-subtext">
-          Statewide safety competency assessment, skill dimension breakdown, and vulnerability mapping.
+        <p className="text-xs text-suraksha-subtext font-medium">
+          Workforce safety competency summary, skill breakdown, and weak area analysis.
         </p>
       </div>
 
@@ -114,22 +114,22 @@ export const CompetencyScreen: React.FC<CompetencyScreenProps> = ({ onNavigateTo
         <div className="p-4 rounded-xl border border-suraksha-border bg-suraksha-card">
           <p className="text-[10px] font-bold text-suraksha-subtext uppercase">Statewide Competency Index</p>
           <p className="text-2xl font-black text-suraksha-amber mt-1">84.6 / 100</p>
-          <span className="text-[10px] text-emerald-400 font-semibold">↑ +2.8 vs Target</span>
+          <span className="text-[10px] text-emerald-700 font-bold">↑ +2.8 vs Target</span>
         </div>
         <div className="p-4 rounded-xl border border-suraksha-border bg-suraksha-card">
-          <p className="text-[10px] font-bold text-suraksha-subtext uppercase">Strong Competency Ratio</p>
-          <p className="text-2xl font-black text-emerald-400 mt-1">68.0%</p>
-          <span className="text-[10px] text-suraksha-subtext font-medium">9,710 Certified Workers</span>
+          <p className="text-[10px] font-bold text-suraksha-subtext uppercase">Competent Ratio</p>
+          <p className="text-2xl font-black text-emerald-700 mt-1">76.0%</p>
+          <span className="text-[10px] text-suraksha-subtext font-medium">92 Passed &amp; Cleared</span>
         </div>
         <div className="p-4 rounded-xl border border-suraksha-border bg-suraksha-card">
-          <p className="text-[10px] font-bold text-suraksha-subtext uppercase">Developing Competency Ratio</p>
-          <p className="text-2xl font-black text-amber-400 mt-1">24.0%</p>
-          <span className="text-[10px] text-suraksha-subtext font-medium">3,427 Workers</span>
+          <p className="text-[10px] font-bold text-suraksha-subtext uppercase">Needs Retraining</p>
+          <p className="text-2xl font-black text-rose-700 mt-1">24.0%</p>
+          <span className="text-[10px] text-suraksha-subtext font-medium">28 Action Items</span>
         </div>
         <div className="p-4 rounded-xl border border-suraksha-border bg-suraksha-card">
-          <p className="text-[10px] font-bold text-suraksha-subtext uppercase">Retraining Required</p>
-          <p className="text-2xl font-black text-rose-400 mt-1">8.0%</p>
-          <span className="text-[10px] text-rose-300/80 font-medium">1,143 Action Items</span>
+          <p className="text-[10px] font-bold text-suraksha-subtext uppercase">Modules Monitored</p>
+          <p className="text-2xl font-black text-suraksha-blue mt-1">3 Modules</p>
+          <span className="text-[10px] text-suraksha-subtext font-medium">Fire / Gas / Machinery</span>
         </div>
       </div>
 
@@ -137,7 +137,7 @@ export const CompetencyScreen: React.FC<CompetencyScreenProps> = ({ onNavigateTo
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Radar Chart (2 cols wide) */}
         <ChartCard
-          title="6-Dimension Safety Skill Radar"
+          title="Competency Overview"
           subtitle="Workforce average vs state safety benchmark"
           className="lg:col-span-2"
         >
@@ -180,46 +180,46 @@ export const CompetencyScreen: React.FC<CompetencyScreenProps> = ({ onNavigateTo
         <div className="space-y-6">
           {/* Strongest Areas */}
           <div className="rounded-xl border border-suraksha-border bg-suraksha-card p-5 shadow-card">
-            <div className="flex items-center gap-2 pb-3 border-b border-suraksha-border text-emerald-400 mb-3">
+            <div className="flex items-center gap-2 pb-3 border-b border-suraksha-border text-emerald-700 mb-3">
               <CheckCircle2 className="w-5 h-5" />
-              <h4 className="text-xs font-bold uppercase tracking-wider text-white">Strongest Competency Areas</h4>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-suraksha-heading">Strongest Competency Areas</h4>
             </div>
 
             <div className="space-y-2 text-xs">
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                <span className="font-semibold text-white">Fire Suppression & PASS Method</span>
-                <span className="font-bold text-emerald-400">92.0%</span>
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-emerald-50 border border-emerald-200">
+                <span className="font-semibold text-suraksha-heading">Select & Use Extinguisher</span>
+                <span className="font-bold text-emerald-700">91.0%</span>
               </div>
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                <span className="font-semibold text-white">Emergency Evacuation Routing</span>
-                <span className="font-bold text-emerald-400">90.0%</span>
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-emerald-50 border border-emerald-200">
+                <span className="font-semibold text-suraksha-heading">Evacuation Sequence</span>
+                <span className="font-bold text-emerald-700">89.0%</span>
               </div>
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                <span className="font-semibold text-white">Hazard Spotting & Alarm Escalation</span>
-                <span className="font-bold text-emerald-400">88.0%</span>
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-emerald-50 border border-emerald-200">
+                <span className="font-semibold text-suraksha-heading">Hazard Recognition</span>
+                <span className="font-bold text-emerald-700">88.0%</span>
               </div>
             </div>
           </div>
 
           {/* Weakest Vulnerabilities */}
           <div className="rounded-xl border border-suraksha-border bg-suraksha-card p-5 shadow-card">
-            <div className="flex items-center gap-2 pb-3 border-b border-suraksha-border text-rose-400 mb-3">
+            <div className="flex items-center gap-2 pb-3 border-b border-suraksha-border text-rose-700 mb-3">
               <AlertOctagon className="w-5 h-5" />
-              <h4 className="text-xs font-bold uppercase tracking-wider text-white">Weakest Skill Vulnerabilities</h4>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-suraksha-heading">Weakest Skill Vulnerabilities</h4>
             </div>
 
             <div className="space-y-2 text-xs">
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-rose-500/10 border border-rose-500/20">
-                <span className="font-semibold text-white">SCBA Mask Pressure Verification</span>
-                <span className="font-bold text-rose-400">61.5%</span>
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-rose-50 border border-rose-200">
+                <span className="font-semibold text-suraksha-heading">PPE Selection in Hazard Zone</span>
+                <span className="font-bold text-rose-700">62.5%</span>
               </div>
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-rose-500/10 border border-rose-500/20">
-                <span className="font-semibold text-white">LOTO Lock Verification Sequence</span>
-                <span className="font-bold text-rose-400">68.2%</span>
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-rose-50 border border-rose-200">
+                <span className="font-semibold text-suraksha-heading">Hazard Zone Recognition</span>
+                <span className="font-bold text-rose-700">68.2%</span>
               </div>
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20">
-                <span className="font-semibold text-white">Wind Drift Foam Positioning</span>
-                <span className="font-bold text-amber-400">71.0%</span>
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-amber-50 border border-amber-200">
+                <span className="font-semibold text-suraksha-heading">Machinery Emergency Response</span>
+                <span className="font-bold text-amber-700">76.8%</span>
               </div>
             </div>
           </div>
@@ -228,38 +228,38 @@ export const CompetencyScreen: React.FC<CompetencyScreenProps> = ({ onNavigateTo
 
       {/* Industrial Sector Competency Heatmap Matrix */}
       <div className="rounded-xl border border-suraksha-border bg-suraksha-card p-5 shadow-card">
-        <h4 className="text-sm font-bold uppercase tracking-wider text-white mb-4">
-          Competency Matrix across Jharkhand Industrial Zones
+        <h4 className="text-sm font-bold uppercase tracking-wider text-suraksha-heading mb-4">
+          Competency Matrix across DGMS Jurisdictions
         </h4>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
               <tr className="border-b border-suraksha-border bg-suraksha-surface/60 uppercase font-bold text-suraksha-subtext">
-                <th className="px-4 py-3">Industrial Zone</th>
+                <th className="px-4 py-3">DGMS Jurisdiction Region</th>
                 <th className="px-4 py-3 text-center">Hazard ID</th>
-                <th className="px-4 py-3 text-center">SCBA &amp; Gas</th>
-                <th className="px-4 py-3 text-center">Fire Suppression</th>
-                <th className="px-4 py-3 text-center">LOTO Protocol</th>
+                <th className="px-4 py-3 text-center">PPE Selection</th>
+                <th className="px-4 py-3 text-center">Fire &amp; Extinguisher</th>
+                <th className="px-4 py-3 text-center">Evacuation</th>
                 <th className="px-4 py-3 text-center">Overall Index</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-suraksha-border/40">
               {[
-                { zone: 'Bokaro Steel Zone', hs: 90, gas: 84, fire: 94, loto: 88, overall: 89.0 },
-                { zone: 'Dhanbad Mining Circle', hs: 84, gas: 68, fire: 86, loto: 74, overall: 78.0 },
-                { zone: 'Jamshedpur Metallurgy', hs: 92, gas: 88, fire: 96, loto: 92, overall: 92.0 },
-                { zone: 'Ranchi Heavy Electricals', hs: 86, gas: 78, fire: 85, loto: 82, overall: 82.8 },
-                { zone: 'Ramgarh Chemical Works', hs: 88, gas: 82, fire: 90, loto: 80, overall: 85.0 },
+                { zone: 'Dhanbad Region-1', hs: 88, gas: 72, fire: 90, loto: 88, overall: 84.5 },
+                { zone: 'Dhanbad Region-2', hs: 84, gas: 68, fire: 86, loto: 74, overall: 78.0 },
+                { zone: 'Koderma Region', hs: 90, gas: 84, fire: 94, loto: 88, overall: 89.0 },
+                { zone: 'Ranchi Region', hs: 92, gas: 88, fire: 96, loto: 92, overall: 92.0 },
+                { zone: 'Chaibasa Region', hs: 86, gas: 78, fire: 85, loto: 82, overall: 82.8 },
               ].map((row, idx) => (
                 <tr key={idx} className="hover:bg-suraksha-surface/40">
-                  <td className="px-4 py-3 font-bold text-white">{row.zone}</td>
-                  <td className="px-4 py-3 text-center text-emerald-400 font-bold">{row.hs}%</td>
-                  <td className={`px-4 py-3 text-center font-bold ${row.gas < 75 ? 'text-rose-400' : 'text-emerald-400'}`}>
+                  <td className="px-4 py-3 font-bold text-suraksha-heading">{row.zone}</td>
+                  <td className="px-4 py-3 text-center text-emerald-700 font-bold">{row.hs}%</td>
+                  <td className={`px-4 py-3 text-center font-bold ${row.gas < 75 ? 'text-rose-700' : 'text-emerald-700'}`}>
                     {row.gas}%
                   </td>
-                  <td className="px-4 py-3 text-center text-emerald-400 font-bold">{row.fire}%</td>
-                  <td className={`px-4 py-3 text-center font-bold ${row.loto < 80 ? 'text-amber-400' : 'text-emerald-400'}`}>
+                  <td className="px-4 py-3 text-center text-emerald-700 font-bold">{row.fire}%</td>
+                  <td className={`px-4 py-3 text-center font-bold ${row.loto < 80 ? 'text-amber-700' : 'text-emerald-700'}`}>
                     {row.loto}%
                   </td>
                   <td className="px-4 py-3 text-center font-extrabold text-suraksha-amber">{row.overall}</td>
@@ -273,7 +273,7 @@ export const CompetencyScreen: React.FC<CompetencyScreenProps> = ({ onNavigateTo
       {/* Worker Competency Overview Table */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h4 className="text-sm font-bold uppercase tracking-wider text-white">
+          <h4 className="text-sm font-bold uppercase tracking-wider text-suraksha-heading">
             Worker Competency Overview
           </h4>
           {onNavigateToScreen && (
@@ -294,18 +294,18 @@ export const CompetencyScreen: React.FC<CompetencyScreenProps> = ({ onNavigateTo
         />
       </div>
 
-      {/* Targeted Retraining Action Center */}
+      {/* Targeted Retraining */}
       <div className="rounded-xl border border-suraksha-border bg-suraksha-card p-5 shadow-card">
         <div className="flex items-start gap-3 pb-3 border-b border-suraksha-border/60 mb-4">
           <div className="p-2 rounded-lg bg-amber-500/10 text-suraksha-amber border border-amber-500/30 shrink-0">
             <AlertOctagon className="w-5 h-5" />
           </div>
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-wider text-white">
-              Targeted Retraining Action Center
+            <h4 className="text-sm font-bold uppercase tracking-wider text-suraksha-heading">
+              Targeted Retraining
             </h4>
-            <p className="text-xs text-suraksha-subtext">
-              Prioritized remediation batches mapped to the weakest competency dimensions
+            <p className="text-xs text-suraksha-subtext font-medium">
+              Workers requiring targeted retraining based on weak areas.
             </p>
           </div>
         </div>
@@ -317,13 +317,13 @@ export const CompetencyScreen: React.FC<CompetencyScreenProps> = ({ onNavigateTo
               className="p-4 rounded-xl border border-suraksha-border bg-suraksha-surface/60 flex flex-col justify-between"
             >
               <div>
-                <h5 className="text-xs font-bold text-white">{ra.weakness}</h5>
-                <p className="text-[11px] text-suraksha-subtext mt-1">
+                <h5 className="text-xs font-bold text-suraksha-heading">{ra.weakness}</h5>
+                <p className="text-[11px] text-suraksha-subtext font-medium mt-1">
                   {ra.workers} workers · {ra.modules}
                 </p>
               </div>
               <div className="flex items-center justify-between mt-3 pt-3 border-t border-suraksha-border/40">
-                <span className="text-[11px] text-amber-300/90">{ra.action}</span>
+                <span className="text-[11px] text-amber-800 font-semibold">{ra.action}</span>
                 <button
                   onClick={() => onNavigateToScreen?.('retraining')}
                   className="shrink-0 ml-2 flex items-center gap-1 rounded-lg border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-[11px] font-bold text-suraksha-amber hover:bg-amber-500/20 transition"

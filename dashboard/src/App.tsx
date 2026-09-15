@@ -91,12 +91,12 @@ export function App() {
       case 'overview':
         return {
           title: 'Safety & Compliance Overview',
-          description: 'Monitor workforce training, assessments, competency and compliance.',
+          description: 'Monitor workforce training, assessments, competency, and compliance.',
         };
       case 'workers':
         return {
           title: 'Workers Directory',
-          description: 'Search, inspect dossiers, and manage AR training compliance for Jharkhand personnel.',
+          description: 'Inspect worker profiles, assessment scores, and AR training status.',
         };
       case 'worker-details':
         return {
@@ -105,38 +105,38 @@ export function App() {
         };
       case 'assessments':
         return {
-          title: 'Assessment Logs & Telemetry',
-          description: 'Audit AR simulation assessment runs, step telemetry, and critical safety error flags.',
+          title: 'Assessment Records',
+          description: 'Audit AR simulation assessment runs, step details, and critical safety error flags.',
         };
       case 'modules':
         return {
           title: 'Module Performance Analytics',
-          description: 'In-depth performance, completion rates, and critical error analysis for Fire, Gas & Machinery modules.',
+          description: 'Performance, completion rates, and error analysis for Fire, Gas & Machinery modules.',
         };
       case 'competency':
         return {
-          title: 'Workforce Competency & Technical Skill Analytics',
-          description: 'Statewide safety competency assessment, skill dimension breakdown, and vulnerability mapping.',
+          title: 'Workforce Competency',
+          description: 'Workforce safety competency summary, skill dimension breakdown, and weak area analysis.',
         };
       case 'retraining':
         return {
-          title: 'Safety Retraining & Mandatory Re-evaluation',
-          description: 'Operational queue for workers flagged for remedial AR training and score improvement tracking.',
+          title: 'Retraining & Reassessment',
+          description: 'Targeted AR retraining queue and reassessment score improvement tracking.',
         };
       case 'certificates':
         return {
-          title: 'Compliance Certificate Registry & Verification',
-          description: 'Simulated DEMO certificate registry for training compliance previews. Not an official government registry.',
+          title: 'Certificates & Verification',
+          description: 'Certificate registry and verification code lookup. Prototype / demo preview.',
         };
       case 'retention':
         return {
-          title: 'Knowledge Retention Monitoring (Ebbinghaus Protocol)',
-          description: 'Track post-training safety recall decay across Day 1, Day 7, and Day 30 workplace audits.',
+          title: 'Knowledge Retention Monitoring',
+          description: 'Track post-training safety recall across Day 1, Day 7, and Day 30 retention checks.',
         };
       case 'reports':
         return {
           title: 'Compliance Reports & Export Center',
-          description: 'Configure granular filters and generate CSV/PDF demo report previews for state administration.',
+          description: 'Configure filters and export training, assessment, retraining, and retention reports.',
         };
       default:
         return {

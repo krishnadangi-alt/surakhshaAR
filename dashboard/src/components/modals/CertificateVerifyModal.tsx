@@ -45,17 +45,17 @@ export const CertificateVerifyModal: React.FC<CertificateVerifyModalProps> = ({
                 <p className="text-[10px] uppercase font-bold tracking-widest text-suraksha-amber">
                   Government of Jharkhand (Branding)
                 </p>
-                <h4 className="text-base font-extrabold text-white tracking-wide">
+                <h4 className="text-base font-extrabold text-suraksha-heading tracking-wide">
                   SURAKSHAAR SAFETY COMPLIANCE CERTIFICATE
                 </h4>
-                <p className="text-xs text-suraksha-subtext">
+                <p className="text-xs text-suraksha-subtext font-medium">
                   Industrial Safety Training &amp; Compliance Platform — Simulated Record
                 </p>
               </div>
             </div>
 
             <div className="text-right">
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-300">
                 <CheckCircle className="w-3.5 h-3.5" /> DEMO — VERIFICATION PASSED
               </span>
             </div>
@@ -68,25 +68,25 @@ export const CertificateVerifyModal: React.FC<CertificateVerifyModalProps> = ({
           </div>
 
           <div className="py-6 space-y-4">
-            <p className="text-xs text-suraksha-subtext">This is to certify that industrial worker:</p>
+            <p className="text-xs font-medium text-suraksha-subtext">This is to certify that industrial worker:</p>
             <div className="pl-4 border-l-2 border-suraksha-amber">
-              <h3 className="text-xl font-bold text-white tracking-wide">{certificate.workerName}</h3>
+              <h3 className="text-xl font-bold text-suraksha-heading tracking-wide">{certificate.workerName}</h3>
               <p className="text-xs text-suraksha-subtext font-mono mt-0.5">
-                Employee ID: <span className="text-white font-semibold">{certificate.employeeId}</span> | Unit:{' '}
-                <span className="text-white font-semibold">{certificate.sector}</span>
+                Employee ID: <span className="text-suraksha-heading font-bold">{certificate.employeeId}</span> | Unit:{' '}
+                <span className="text-suraksha-heading font-bold">{certificate.sector}</span>
               </p>
             </div>
 
-            <p className="text-xs text-suraksha-subtext">
+            <p className="text-xs font-medium text-suraksha-subtext">
               Has successfully demonstrated full operational competence in the AR Simulation Assessment for:
             </p>
 
             <div className="p-4 rounded-xl bg-suraksha-bg border border-suraksha-border">
               <h5 className="text-sm font-bold text-suraksha-amber">{certificate.moduleName}</h5>
-              <div className="flex items-center gap-4 text-xs text-suraksha-subtext mt-2">
-                <span>Grade Achieved: <strong className="text-white">{certificate.resultGrade}</strong></span>
-                <span>Issue Date: <strong className="text-white">{certificate.issueDate}</strong></span>
-                <span>Valid Until: <strong className="text-white">{certificate.expiryDate}</strong></span>
+              <div className="flex items-center gap-4 text-xs text-suraksha-subtext mt-2 font-medium">
+                <span>Grade Achieved: <strong className="text-suraksha-heading font-bold">{certificate.resultGrade}</strong></span>
+                <span>Issue Date: <strong className="text-suraksha-heading font-bold">{certificate.issueDate}</strong></span>
+                <span>Valid Until: <strong className="text-suraksha-heading font-bold">{certificate.expiryDate}</strong></span>
               </div>
             </div>
           </div>
@@ -95,38 +95,38 @@ export const CertificateVerifyModal: React.FC<CertificateVerifyModalProps> = ({
           <div className="pt-6 border-t border-suraksha-border flex items-end justify-between">
             <div className="space-y-1">
               <p className="text-[10px] uppercase font-bold text-suraksha-subtext">Issuing Registry</p>
-              <p className="text-xs font-semibold text-white">{certificate.issuerDepartment}</p>
+              <p className="text-xs font-bold text-suraksha-heading">{certificate.issuerDepartment}</p>
               <p className="text-[10px] font-mono text-suraksha-subtext truncate max-w-xs">
                 {certificate.verificationCode}
               </p>
             </div>
 
             <div className="flex flex-col items-center">
-              <div className="p-2 rounded-lg bg-white text-black mb-1">
-                <QrCode className="w-12 h-12" />
+              <div className="p-2 rounded-lg bg-white border border-slate-200 text-black mb-1 shadow-sm">
+                <QrCode className="w-12 h-12 text-slate-900" />
               </div>
-              <span className="text-[9px] font-mono text-suraksha-subtext">Demo QR — Not Scannable</span>
+              <span className="text-[9px] font-mono text-suraksha-subtext font-semibold">Demo QR — Not Scannable</span>
             </div>
           </div>
         </div>
 
         {/* Modal Actions */}
         <div className="flex items-center justify-between no-print gap-3">
-          <span className="text-xs text-suraksha-subtext flex items-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-amber-400" />
+          <span className="text-xs text-suraksha-subtext font-medium flex items-center gap-1.5">
+            <ShieldCheck className="w-4 h-4 text-amber-600" />
             Simulated integrity code — not a cryptographic signature.
           </span>
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrint}
-              className="flex items-center gap-1.5 rounded-lg border border-suraksha-border bg-suraksha-surface px-4 py-2 text-xs font-semibold text-white hover:bg-suraksha-hover transition"
+              className="flex items-center gap-1.5 rounded-lg border border-suraksha-border bg-suraksha-surface px-4 py-2 text-xs font-semibold text-suraksha-text hover:bg-suraksha-hover transition"
             >
               <Printer className="w-3.5 h-3.5 text-suraksha-subtext" />
               <span>Print Preview</span>
             </button>
             <button
               onClick={() => alert(`Demo: PDF export of ${certificate.certificateId} is simulated in this phase.`)}
-              className="flex items-center gap-1.5 rounded-lg bg-suraksha-blue px-4 py-2 text-xs font-semibold text-white hover:bg-suraksha-blueHover transition shadow-subtle"
+              className="flex items-center gap-1.5 rounded-lg bg-suraksha-blue px-4 py-2 text-xs font-bold text-white hover:bg-suraksha-blueHover transition shadow-subtle"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Download PDF (Demo)</span>

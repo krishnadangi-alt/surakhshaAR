@@ -56,8 +56,8 @@ export const KpiCard: React.FC<KpiCardProps> = ({
     >
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-suraksha-subtext">{title}</p>
-          <h3 className="mt-2 text-2xl font-bold tracking-tight text-white">{value}</h3>
+          <p className="text-xs font-bold uppercase tracking-wider text-suraksha-subtext">{title}</p>
+          <h3 className="mt-2 text-2xl font-bold tracking-tight text-suraksha-heading">{value}</h3>
         </div>
         <div className={`p-2.5 rounded-lg border ${selectedColor.iconBg}`}>
           <Icon className="w-5 h-5" />
@@ -66,14 +66,14 @@ export const KpiCard: React.FC<KpiCardProps> = ({
 
       {(subtitle || change) && (
         <div className="mt-4 flex items-center justify-between text-xs text-suraksha-subtext pt-3 border-t border-suraksha-border/60">
-          {subtitle && <span>{subtitle}</span>}
+          {subtitle && <span className="font-medium text-suraksha-subtext">{subtitle}</span>}
           {change && (
             <span
-              className={`flex items-center gap-1 font-semibold ${
+              className={`flex items-center gap-1 font-bold ${
                 changeType === 'positive'
-                  ? 'text-emerald-400'
+                  ? 'text-emerald-700'
                   : changeType === 'negative'
-                  ? 'text-rose-400'
+                  ? 'text-rose-700'
                   : 'text-suraksha-subtext'
               }`}
             >

@@ -92,7 +92,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               className={`relative w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all duration-150 ${
                 isActive
                   ? 'bg-slate-800 text-white shadow-sm border border-slate-700'
-                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-white'
+                  : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
               }`}
             >
               {isActive && (
@@ -112,10 +112,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Bottom Profile & Actions */}
       <div className="p-3 border-t border-slate-800 space-y-1">
         {!isCollapsed && (
-          <div className="p-3 rounded-xl bg-slate-800/80 border border-slate-700/80 mb-2 space-y-0.5">
+          <div className="p-3 rounded-xl bg-slate-800/90 border border-slate-700 mb-2 space-y-0.5">
             <p className="text-[11px] uppercase font-bold text-slate-400">Admin Profile</p>
             <h6 className="text-[13.5px] font-bold text-white truncate">Administrator</h6>
-            <p className="text-[11px] text-slate-400 truncate">Role: Administrator</p>
+            <p className="text-[11px] text-slate-300 truncate">Role: Administrator</p>
             <p className="text-[11px] text-[#F59E0B] font-semibold truncate">Ministry of Labour &amp; Employment</p>
           </div>
         )}
@@ -123,7 +123,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <button
           onClick={() => alert('Settings configuration modal')}
           title={isCollapsed ? 'Settings' : undefined}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13.5px] font-semibold text-slate-400 hover:bg-slate-800 hover:text-white transition"
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13.5px] font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition"
         >
           <Settings className="w-4.5 h-4.5 text-slate-400 shrink-0" />
           {!isCollapsed && <span>Settings</span>}

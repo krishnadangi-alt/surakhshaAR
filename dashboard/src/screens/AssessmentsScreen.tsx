@@ -66,8 +66,8 @@ export const AssessmentsScreen: React.FC = () => {
       sortable: true,
       render: (a) => (
         <div>
-          <h5 className="font-bold text-white hover:text-suraksha-amber transition">{a.workerName}</h5>
-          <p className="text-[10px] font-mono text-suraksha-subtext">{a.employeeId}</p>
+          <h5 className="font-bold text-suraksha-heading hover:text-suraksha-amber transition">{a.workerName}</h5>
+          <p className="text-[10px] font-mono text-suraksha-subtext font-medium">{a.employeeId}</p>
         </div>
       ),
     },
@@ -81,7 +81,7 @@ export const AssessmentsScreen: React.FC = () => {
       key: 'scenarioName',
       header: 'AR Scenario',
       sortable: true,
-      render: (a) => <span className="text-xs font-medium text-white truncate max-w-[220px] block">{a.scenarioName}</span>,
+      render: (a) => <span className="text-xs font-semibold text-suraksha-heading truncate max-w-[220px] block">{a.scenarioName}</span>,
     },
     {
       key: 'score',
@@ -91,7 +91,7 @@ export const AssessmentsScreen: React.FC = () => {
       render: (a) => (
         <span
           className={`font-bold ${
-            a.score >= 85 ? 'text-emerald-400' : a.score >= 70 ? 'text-amber-400' : 'text-rose-400'
+            a.score >= 85 ? 'text-emerald-700' : a.score >= 70 ? 'text-amber-700' : 'text-rose-700'
           }`}
         >
           {a.score}%
@@ -103,9 +103,9 @@ export const AssessmentsScreen: React.FC = () => {
       header: 'Actions (C/W)',
       align: 'center',
       render: (a) => (
-        <span className="text-xs font-semibold">
-          <span className="text-emerald-400">{a.correctActions}</span> /{' '}
-          <span className="text-rose-400">{a.wrongActions}</span>
+        <span className="text-xs font-bold">
+          <span className="text-emerald-700">{a.correctActions}</span> /{' '}
+          <span className="text-rose-700">{a.wrongActions}</span>
         </span>
       ),
     },
@@ -115,11 +115,11 @@ export const AssessmentsScreen: React.FC = () => {
       align: 'center',
       render: (a) =>
         a.criticalErrors > 0 ? (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/30">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200">
             <AlertOctagon className="w-3 h-3" /> {a.criticalErrors} ERR
           </span>
         ) : (
-          <span className="text-[10px] text-suraksha-subtext">None</span>
+          <span className="text-[10px] text-suraksha-subtext font-medium">None</span>
         ),
     },
     {
@@ -131,13 +131,13 @@ export const AssessmentsScreen: React.FC = () => {
     {
       key: 'duration',
       header: 'Duration',
-      render: (a) => <span className="text-[11px] text-suraksha-subtext">{a.duration}</span>,
+      render: (a) => <span className="text-[11px] text-suraksha-subtext font-medium">{a.duration}</span>,
     },
     {
       key: 'dateTime',
       header: 'Date & Time',
       sortable: true,
-      render: (a) => <span className="text-[10px] text-suraksha-subtext">{a.dateTime}</span>,
+      render: (a) => <span className="text-[10px] text-suraksha-subtext font-medium">{a.dateTime}</span>,
     },
     {
       key: 'actions',
@@ -163,7 +163,7 @@ export const AssessmentsScreen: React.FC = () => {
       {/* Top Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h3 className="text-lg font-bold text-white uppercase tracking-wider">Assessment Logs & Telemetry</h3>
+          <h3 className="text-lg font-bold text-suraksha-heading uppercase tracking-wider">Assessment Logs & Telemetry</h3>
           <p className="text-xs text-suraksha-subtext">
             Audit AR simulation assessment runs, step telemetry, and critical safety error flags.
           </p>
@@ -178,7 +178,7 @@ export const AssessmentsScreen: React.FC = () => {
           />
           <button
             onClick={handleExportCsv}
-            className="flex items-center gap-1.5 rounded-lg border border-suraksha-border bg-suraksha-card px-3.5 py-2 text-xs font-semibold text-suraksha-subtext hover:bg-suraksha-hover hover:text-white transition"
+            className="flex items-center gap-1.5 rounded-lg border border-suraksha-border bg-suraksha-card px-3.5 py-2 text-xs font-semibold text-suraksha-text hover:bg-suraksha-hover transition"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Export CSV</span>
@@ -190,7 +190,7 @@ export const AssessmentsScreen: React.FC = () => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
         <div className="p-4 rounded-xl border border-suraksha-border bg-suraksha-card">
           <p className="text-[10px] font-bold text-suraksha-subtext uppercase">Pass Rate</p>
-          <p className="text-2xl font-black text-emerald-400 mt-1">87.4%</p>
+          <p className="text-2xl font-black text-emerald-700 mt-1">87.4%</p>
         </div>
         <div className="p-4 rounded-xl border border-suraksha-border bg-suraksha-card">
           <p className="text-[10px] font-bold text-suraksha-subtext uppercase">Average Score</p>
@@ -198,11 +198,11 @@ export const AssessmentsScreen: React.FC = () => {
         </div>
         <div className="p-4 rounded-xl border border-suraksha-border bg-suraksha-card">
           <p className="text-[10px] font-bold text-suraksha-subtext uppercase">Total Assessments</p>
-          <p className="text-2xl font-black text-white mt-1">38,420</p>
+          <p className="text-2xl font-black text-suraksha-heading mt-1">38,420</p>
         </div>
         <div className="p-4 rounded-xl border border-suraksha-border bg-suraksha-card">
           <p className="text-[10px] font-bold text-suraksha-subtext uppercase">Critical Errors Recorded</p>
-          <p className="text-2xl font-black text-rose-400 mt-1">322 Logs</p>
+          <p className="text-2xl font-black text-rose-700 mt-1">322 Logs</p>
         </div>
       </div>
 

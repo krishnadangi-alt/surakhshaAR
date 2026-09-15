@@ -44,12 +44,12 @@ export const Drawer: React.FC<DrawerProps> = ({
         <div className="w-screen max-w-xl border-l border-suraksha-border bg-suraksha-card shadow-elevated flex flex-col">
           <div className="flex items-center justify-between border-b border-suraksha-border px-6 py-4 bg-suraksha-surface/70">
             <div>
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider">{title}</h3>
+              <h3 className="text-sm font-bold text-suraksha-heading uppercase tracking-wider">{title}</h3>
               {subtitle && <p className="text-xs text-suraksha-subtext mt-0.5">{subtitle}</p>}
             </div>
             <button
               onClick={onClose}
-              className="rounded-lg p-1.5 text-suraksha-subtext hover:bg-suraksha-hover hover:text-white transition"
+              className="rounded-lg p-1.5 text-suraksha-subtext hover:bg-suraksha-hover hover:text-suraksha-text transition"
             >
               <X className="w-5 h-5" />
             </button>

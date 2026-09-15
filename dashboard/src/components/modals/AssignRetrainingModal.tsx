@@ -48,10 +48,10 @@ export const AssignRetrainingModal: React.FC<AssignRetrainingModalProps> = ({
     >
       {isSuccess ? (
         <div className="flex flex-col items-center justify-center py-8 text-center">
-          <div className="rounded-full bg-emerald-500/10 p-4 text-emerald-400 mb-3 border border-emerald-500/30">
+          <div className="rounded-full bg-emerald-500/10 p-4 text-emerald-600 mb-3 border border-emerald-500/30">
             <Check className="w-8 h-8" />
           </div>
-          <h4 className="text-base font-bold text-white mb-1">Retraining Order Logged</h4>
+          <h4 className="text-base font-bold text-suraksha-heading mb-1">Retraining Order Logged</h4>
           <p className="text-xs text-suraksha-subtext">
             Mandatory retraining session scheduled and notification dispatched to {worker.name}.
           </p>
@@ -60,8 +60,8 @@ export const AssignRetrainingModal: React.FC<AssignRetrainingModalProps> = ({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="p-3.5 rounded-xl bg-suraksha-surface border border-suraksha-border flex items-start gap-3">
             <ShieldAlert className="w-5 h-5 text-suraksha-amber shrink-0 mt-0.5" />
-            <div className="text-xs text-suraksha-subtext">
-              Assigning retraining overrides current compliance status to <strong className="text-white">Retraining Assigned</strong>. The worker will be re-assessed on AR simulation equipment upon completion.
+            <div className="text-xs text-suraksha-subtext font-medium">
+              Assigning retraining overrides current compliance status to <strong className="text-suraksha-heading font-bold">Retraining Assigned</strong>. The worker will be re-assessed on AR simulation equipment upon completion.
             </div>
           </div>
 
@@ -74,7 +74,7 @@ export const AssignRetrainingModal: React.FC<AssignRetrainingModalProps> = ({
               <select
                 value={selectedModule}
                 onChange={(e) => setSelectedModule(e.target.value)}
-                className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface pl-9 pr-4 py-2 text-xs font-semibold text-white focus:border-suraksha-blue focus:outline-none"
+                className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface pl-9 pr-4 py-2 text-xs font-semibold text-suraksha-text focus:border-suraksha-blue focus:outline-none"
               >
                 <option value="m-fire">Fire Safety — Extinguisher & Evacuation Drills</option>
                 <option value="m-gas">Gas Safety — SCBA & Methane Isolation</option>
@@ -91,7 +91,7 @@ export const AssignRetrainingModal: React.FC<AssignRetrainingModalProps> = ({
               type="text"
               value={weakArea}
               onChange={(e) => setWeakArea(e.target.value)}
-              className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface px-3 py-2 text-xs font-medium text-white focus:border-suraksha-blue focus:outline-none"
+              className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface px-3 py-2 text-xs font-semibold text-suraksha-text focus:border-suraksha-blue focus:outline-none"
             />
           </div>
 
@@ -105,7 +105,7 @@ export const AssignRetrainingModal: React.FC<AssignRetrainingModalProps> = ({
                 type="date"
                 value={targetDate}
                 onChange={(e) => setTargetDate(e.target.value)}
-                className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface pl-9 pr-4 py-2 text-xs font-medium text-white focus:border-suraksha-blue focus:outline-none"
+                className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface pl-9 pr-4 py-2 text-xs font-semibold text-suraksha-text focus:border-suraksha-blue focus:outline-none"
               />
             </div>
           </div>

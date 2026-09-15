@@ -66,12 +66,12 @@ export function DataTable<T extends Record<string, any>>({
                   onClick={() => col.sortable && handleSort(col.key)}
                   style={{ width: col.width }}
                   className={`px-4 py-3.5 ${col.align === 'right' ? 'text-right' : col.align === 'center' ? 'text-center' : 'text-left'} ${
-                    col.sortable ? 'cursor-pointer select-none hover:text-white' : ''
+                    col.sortable ? 'cursor-pointer select-none hover:text-suraksha-heading' : ''
                   }`}
                 >
                   <div className={`inline-flex items-center gap-1 ${col.align === 'right' ? 'justify-end' : col.align === 'center' ? 'justify-center' : 'justify-start'}`}>
                     {col.header}
-                    {col.sortable && <ArrowUpDown className="w-3 h-3 text-suraksha-subtext/60" />}
+                    {col.sortable && <ArrowUpDown className="w-3 h-3 text-suraksha-subtext" />}
                   </div>
                 </th>
               ))}
@@ -90,7 +90,7 @@ export function DataTable<T extends Record<string, any>>({
                   {columns.map((col) => (
                     <td
                       key={col.key}
-                      className={`px-4 py-3.5 text-suraksha-text ${
+                      className={`px-4 py-3.5 text-suraksha-text font-medium ${
                         col.align === 'right' ? 'text-right' : col.align === 'center' ? 'text-center' : 'text-left'
                       }`}
                     >
@@ -115,26 +115,26 @@ export function DataTable<T extends Record<string, any>>({
       {/* Pagination Footer */}
       <div className="flex items-center justify-between px-4 py-3 border-t border-suraksha-border bg-suraksha-surface/50 text-xs text-suraksha-subtext">
         <div>
-          Showing <span className="font-semibold text-white">{data.length > 0 ? (currentPage - 1) * pageSize + 1 : 0}</span> to{' '}
-          <span className="font-semibold text-white">{Math.min(currentPage * pageSize, data.length)}</span> of{' '}
-          <span className="font-semibold text-white">{data.length}</span> entries
+          Showing <span className="font-bold text-suraksha-heading">{data.length > 0 ? (currentPage - 1) * pageSize + 1 : 0}</span> to{' '}
+          <span className="font-bold text-suraksha-heading">{Math.min(currentPage * pageSize, data.length)}</span> of{' '}
+          <span className="font-bold text-suraksha-heading">{data.length}</span> entries
         </div>
 
         <div className="flex items-center gap-1.5">
           <button
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-            className="p-1.5 rounded-lg border border-suraksha-border text-suraksha-subtext hover:bg-suraksha-hover hover:text-white disabled:opacity-40 disabled:hover:bg-transparent"
+            className="p-1.5 rounded-lg border border-suraksha-border text-suraksha-subtext hover:bg-suraksha-hover hover:text-suraksha-heading disabled:opacity-40 disabled:hover:bg-transparent"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
-          <span className="px-2 font-medium text-white">
+          <span className="px-2 font-bold text-suraksha-heading">
             Page {currentPage} of {totalPages}
           </span>
           <button
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-            className="p-1.5 rounded-lg border border-suraksha-border text-suraksha-subtext hover:bg-suraksha-hover hover:text-white disabled:opacity-40 disabled:hover:bg-transparent"
+            className="p-1.5 rounded-lg border border-suraksha-border text-suraksha-subtext hover:bg-suraksha-hover hover:text-suraksha-heading disabled:opacity-40 disabled:hover:bg-transparent"
           >
             <ChevronRight className="w-4 h-4" />
           </button>

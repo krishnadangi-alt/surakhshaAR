@@ -9,64 +9,62 @@ export interface CompetencyRadarPoint {
 export const mockCompetencyWeaknesses: CompetencyWeakness[] = [
   {
     id: 'cw-1',
-    name: 'SCBA Cylinder Pressure Zeroing & Seal Check',
-    occurrenceCount: 248,
-    averageScore: 61.5,
+    name: 'PPE Selection in Hazard Zone',
+    occurrenceCount: 18,
+    averageScore: 62.5,
     severity: 'Critical',
-    affectedModules: ['Gas Safety'],
-    recommendedAction: 'Mandatory 15-min physical SCBA don/doff drill prior to AR simulation',
+    affectedModules: ['Gas Leak & Confined Space'],
+    recommendedAction: 'Targeted PPE Selection AR Practice & Reassessment',
   },
   {
     id: 'cw-2',
-    name: 'LOTO Lock Verification Before Pinch Point Entry',
-    occurrenceCount: 186,
-    averageScore: 68.2,
+    name: 'Extinguisher Selection & Use',
+    occurrenceCount: 14,
+    averageScore: 68.0,
     severity: 'Critical',
-    affectedModules: ['Machinery Safety', 'Gas Safety'],
-    recommendedAction: 'Re-assign Lockout/Tagout 3D spatial interactive scenario',
+    affectedModules: ['Fire & Explosion Response'],
+    recommendedAction: 'Extinguisher selection & use AR drill',
   },
   {
     id: 'cw-3',
-    name: 'Standing Downwind During Chemical/Foam Discharge',
-    occurrenceCount: 142,
-    averageScore: 71.0,
+    name: 'Hazard Zone Recognition',
+    occurrenceCount: 11,
+    averageScore: 71.5,
     severity: 'Warning',
-    affectedModules: ['Fire Safety'],
-    recommendedAction: 'Wind direction indicator awareness module review',
+    affectedModules: ['Gas Leak & Confined Space'],
+    recommendedAction: 'Hazard zone recognition practice',
   },
   {
     id: 'cw-4',
-    name: 'Methane Sensor Span Calibration Potentiometer Adjustment',
-    occurrenceCount: 119,
-    averageScore: 73.8,
+    name: 'Evacuation Sequence',
+    occurrenceCount: 9,
+    averageScore: 74.2,
     severity: 'Warning',
-    affectedModules: ['Gas Safety'],
-    recommendedAction: 'Calibration bench micro-drill simulation',
+    affectedModules: ['Fire & Explosion Response'],
+    recommendedAction: 'Evacuation route AR practice',
   },
   {
     id: 'cw-5',
-    name: 'Secondary Emergency Stop Button Confirmation',
-    occurrenceCount: 94,
-    averageScore: 76.4,
+    name: 'Machinery',
+    occurrenceCount: 7,
+    averageScore: 76.8,
     severity: 'Moderate',
-    affectedModules: ['Machinery Safety'],
-    recommendedAction: 'E-stop verification checklist refresher',
+    affectedModules: ['Machinery'],
+    recommendedAction: 'Machinery safety practice drill',
   }
 ];
 
 export const mockCompetencyRadarData: CompetencyRadarPoint[] = [
-  { dimension: 'Hazard Identification', score: 88, benchmark: 82 },
-  { dimension: 'SCBA & Gas Handling', score: 76, benchmark: 80 },
-  { dimension: 'Fire Suppression', score: 92, benchmark: 85 },
-  { dimension: 'LOTO Equipment Protocol', score: 81, benchmark: 84 },
-  { dimension: 'Emergency Evacuation', score: 90, benchmark: 86 },
-  { dimension: 'Incident Escalation', score: 87, benchmark: 83 },
+  { dimension: 'Hazard Recognition', score: 88, benchmark: 82 },
+  { dimension: 'PPE Selection', score: 78, benchmark: 80 },
+  { dimension: 'Extinguisher Operation', score: 91, benchmark: 85 },
+  { dimension: 'Evacuation Sequence', score: 89, benchmark: 86 },
+  { dimension: 'Machinery Interaction', score: 86, benchmark: 84 },
 ];
 
 export const mockCompetencyDistribution = {
-  strongCount: 9710,     // 68%
-  developingCount: 3427, // 24%
-  retrainingCount: 1143, // 8%
-  totalWorkers: 14280,
+  competentCount: 92,     // ~76% of 120 demo workers
+  retrainingCount: 28,    // ~24% of 120 demo workers
+  totalWorkers: 120,
   averageCompetencyScore: 84.6,
 };

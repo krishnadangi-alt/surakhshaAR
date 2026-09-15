@@ -80,7 +80,7 @@ const columns: Column<Worker>[] = [
             {w.name.split(' ').map((n) => n[0]).join('')}
           </div>
           <div>
-            <h5 className="font-bold text-white hover:text-suraksha-amber transition">{w.name}</h5>
+            <h5 className="font-bold text-suraksha-heading hover:text-suraksha-amber transition">{w.name}</h5>
             <p className="text-[10px] text-suraksha-subtext">{w.role}</p>
           </div>
         </div>
@@ -90,18 +90,7 @@ const columns: Column<Worker>[] = [
       key: 'employeeId',
       header: 'Employee ID',
       sortable: true,
-      render: (w) => <span className="font-mono text-xs text-suraksha-subtext">{w.employeeId}</span>,
-    },
-    {
-      key: 'sector',
-      header: 'Plant / Sector',
-      sortable: true,
-      render: (w) => (
-        <div>
-          <span className="text-xs text-suraksha-text font-medium">{w.sector}</span>
-          <p className="text-[10px] text-suraksha-subtext">{w.plant}</p>
-        </div>
-      ),
+      render: (w) => <span className="font-mono text-xs text-suraksha-subtext font-medium">{w.employeeId}</span>,
     },
     {
       key: 'modulesCompleted',
@@ -109,7 +98,7 @@ const columns: Column<Worker>[] = [
       align: 'center',
       sortable: true,
       render: (w) => (
-        <span className="font-bold text-white bg-suraksha-surface px-2.5 py-1 rounded-md border border-suraksha-border">
+        <span className="font-bold text-suraksha-heading bg-suraksha-surface px-2.5 py-1 rounded-md border border-suraksha-border">
           {w.modulesCompleted} / 3
         </span>
       ),
@@ -122,7 +111,7 @@ const columns: Column<Worker>[] = [
       render: (w) => (
         <span
           className={`font-bold ${
-            w.latestScore >= 85 ? 'text-emerald-400' : w.latestScore >= 70 ? 'text-amber-400' : 'text-rose-400'
+            w.latestScore >= 85 ? 'text-emerald-700' : w.latestScore >= 70 ? 'text-amber-700' : 'text-rose-700'
           }`}
         >
           {w.latestScore}%
@@ -157,7 +146,7 @@ const columns: Column<Worker>[] = [
       key: 'lastAssessmentDate',
       header: 'Last Assessment',
       sortable: true,
-      render: (w) => <span className="text-[11px] text-suraksha-subtext">{w.lastAssessmentDate}</span>,
+      render: (w) => <span className="text-[11px] text-suraksha-subtext font-medium">{w.lastAssessmentDate}</span>,
     },
     {
       key: 'actions',
@@ -190,12 +179,13 @@ const columns: Column<Worker>[] = [
       ),
     },
   ];
-return (
+
+  return (
     <div className="space-y-6">
       {/* Page Header & Actions */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h3 className="text-lg font-bold text-white uppercase tracking-wider">Industrial Workers Directory</h3>
+          <h3 className="text-lg font-bold text-suraksha-heading uppercase tracking-wider">Industrial Workers Directory</h3>
           <p className="text-xs text-suraksha-subtext">
             Search, inspect dossiers, and manage AR training compliance for Jharkhand personnel.
           </p>
@@ -204,7 +194,7 @@ return (
         <div className="flex items-center gap-2">
           <button
             onClick={handleExportCsv}
-            className="flex items-center gap-1.5 rounded-lg border border-suraksha-border bg-suraksha-card px-3.5 py-2 text-xs font-semibold text-suraksha-subtext hover:bg-suraksha-hover hover:text-white transition"
+            className="flex items-center gap-1.5 rounded-lg border border-suraksha-border bg-suraksha-card px-3.5 py-2 text-xs font-semibold text-suraksha-text hover:bg-suraksha-hover transition"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Export CSV</span>

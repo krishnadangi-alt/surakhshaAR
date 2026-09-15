@@ -6,9 +6,9 @@ interface LoginScreenProps {
 }
 
 export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
-  const [email, setEmail] = useState('admin.safety@jharkhand.gov.in');
+  const [email, setEmail] = useState('admin@surakshaar.demo');
   const [password, setPassword] = useState('••••••••••••');
-  const [sector, setSector] = useState('Jharkhand Industrial Safety Command');
+  const [sector, setSector] = useState('Central Zone (CZ) — HQ Dhanbad');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -50,7 +50,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-800/90 border border-slate-700 text-[#F59E0B] mb-4 shadow-lg">
               <Shield className="w-7 h-7 fill-[#F59E0B]/20" />
             </div>
-            <h1 className="text-2xl font-extrabold tracking-wider text-white uppercase">SURAKSHAAR</h1>
+            <div className="flex items-center justify-center gap-2">
+              <h1 className="text-2xl font-extrabold tracking-wider text-white uppercase">SURAKSHAAR</h1>
+              <span className="px-2 py-0.5 rounded bg-amber-500/20 text-[#F59E0B] text-[10px] font-bold tracking-wider border border-amber-500/30 uppercase">
+                PROTOTYPE / DEMO
+              </span>
+            </div>
             <p className="text-xs font-bold text-[#F59E0B] uppercase tracking-widest mt-1">
               Industrial Safety Training & Compliance
             </p>
@@ -63,7 +68,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-300 mb-1.5">
-                Official Government Email / Admin ID
+                ADMIN ID / EMAIL
               </label>
               <div className="relative">
                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -72,7 +77,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin.safety@jharkhand.gov.in"
+                  placeholder="admin@surakshaar.demo"
                   className="w-full rounded-xl border border-slate-700 bg-slate-800/80 pl-10 pr-4 py-2.5 text-xs font-semibold text-white placeholder-slate-400 focus:border-[#1D6BF3] focus:outline-none focus:ring-1 focus:ring-[#1D6BF3]"
                 />
               </div>
@@ -80,7 +85,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
 
             <div>
               <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-300 mb-1.5">
-                Security Passcode
+                Password / Passcode
               </label>
               <div className="relative">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -104,12 +109,22 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                 <select
                   value={sector}
                   onChange={(e) => setSector(e.target.value)}
-                  className="w-full rounded-xl border border-slate-700 bg-slate-800/80 pl-10 pr-4 py-2.5 text-xs font-semibold text-white focus:border-[#1D6BF3] focus:outline-none"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-900/90 pl-10 pr-4 py-2.5 text-xs font-semibold text-white focus:border-[#1D6BF3] focus:outline-none"
                 >
-                  <option value="Jharkhand Industrial Safety Command">State Command HQ (Ranchi)</option>
-                  <option value="Dhanbad Mining Circle">Dhanbad Mining Circle</option>
-                  <option value="Bokaro Steel Zone">Bokaro Steel Industrial Zone</option>
-                  <option value="Jamshedpur Metallurgy Belt">Jamshedpur Metallurgy Belt</option>
+                  <optgroup label="Central Zone (CZ) — HQ Dhanbad" className="bg-slate-900 text-[#F59E0B] font-bold">
+                    <option value="Central Zone (CZ) — HQ Dhanbad" className="bg-slate-900 text-white font-semibold">Central Zone (CZ) — HQ Dhanbad</option>
+                    <option value="Dhanbad Region-1" className="bg-slate-900 text-slate-200">├── Dhanbad Region-1</option>
+                    <option value="Dhanbad Region-2" className="bg-slate-900 text-slate-200">├── Dhanbad Region-2</option>
+                    <option value="Dhanbad Region-3" className="bg-slate-900 text-slate-200">├── Dhanbad Region-3</option>
+                    <option value="Koderma Region" className="bg-slate-900 text-slate-200">└── Koderma Region</option>
+                  </optgroup>
+                  <optgroup label="South Eastern Zone (SEZ) — HQ Ranchi" className="bg-slate-900 text-[#F59E0B] font-bold">
+                    <option value="South Eastern Zone (SEZ) — HQ Ranchi" className="bg-slate-900 text-white font-semibold">South Eastern Zone (SEZ) — HQ Ranchi</option>
+                    <option value="Ranchi Region" className="bg-slate-900 text-slate-200">├── Ranchi Region</option>
+                    <option value="Chaibasa Region" className="bg-slate-900 text-slate-200">├── Chaibasa Region</option>
+                    <option value="Bhubaneswar Region-1" className="bg-slate-900 text-slate-200">├── Bhubaneswar Region-1</option>
+                    <option value="Bhubaneswar Region-2" className="bg-slate-900 text-slate-200">└── Bhubaneswar Region-2</option>
+                  </optgroup>
                 </select>
               </div>
             </div>
@@ -134,22 +149,22 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
           <div className="mt-5 pt-4 border-t border-slate-700/80 text-center">
             <button
               type="button"
-              onClick={() => onLogin('Jharkhand Industrial Safety Command')}
+              onClick={() => onLogin('Central Zone (CZ) — HQ Dhanbad')}
               className="text-xs font-semibold text-[#F59E0B] hover:underline"
             >
-              ⚡ Instant Demo Access (Bypass Auth)
+              ⚡ Instant Demo Access (Demo Mode)
             </button>
           </div>
         </div>
 
         <p className="text-[11px] text-center text-slate-300 font-medium mt-5 drop-shadow">
-          Authorized personnel only. All access attempts are logged under the Jharkhand Industrial Safety Act.
+          SURAKSHAAR Prototype Console — Simulated authentication for preview purposes.
         </p>
       </div>
 
       {/* Footer */}
       <footer className="w-full text-center pb-3 text-[11px] text-slate-300 font-medium z-10 drop-shadow">
-        © 2026 SURAKSHAAR Portal — Directorate of Industrial Safety & Health (DISH), Jharkhand.
+        © 2026 SURAKSHAAR Portal Prototype — Directorate of Industrial Safety & Health (DISH), Jharkhand.
       </footer>
     </div>
   );

@@ -35,7 +35,7 @@ export const ModuleAnalyticsScreen: React.FC = () => {
       {/* Top Header & Module Filter Tabs */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h3 className="text-lg font-bold text-white uppercase tracking-wider">Module Performance Analytics</h3>
+          <h3 className="text-lg font-bold text-suraksha-heading uppercase tracking-wider">Module Performance Analytics</h3>
           <p className="text-xs text-suraksha-subtext">
             In-depth performance, completion rates, and critical error heatmaps for Fire, Gas & Machinery AR modules.
           </p>
@@ -47,7 +47,7 @@ export const ModuleAnalyticsScreen: React.FC = () => {
             className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition ${
               selectedModuleId === 'ALL'
                 ? 'bg-suraksha-blue text-white shadow-subtle'
-                : 'text-suraksha-subtext hover:text-white'
+                : 'text-suraksha-subtext hover:text-suraksha-heading'
             }`}
           >
             All Modules
@@ -59,7 +59,7 @@ export const ModuleAnalyticsScreen: React.FC = () => {
               className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition ${
                 selectedModuleId === m.moduleId
                   ? 'bg-suraksha-blue text-white shadow-subtle'
-                  : 'text-suraksha-subtext hover:text-white'
+                  : 'text-suraksha-subtext hover:text-suraksha-heading'
               }`}
             >
               {m.moduleName}
@@ -90,17 +90,17 @@ export const ModuleAnalyticsScreen: React.FC = () => {
                     {m.moduleId === 'm-mach' && <Cog className="w-5 h-5" />}
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-white">{m.moduleName}</h4>
-                    <p className="text-[10px] text-suraksha-subtext">{m.totalEnrolled.toLocaleString()} Workers Enrolled</p>
+                    <h4 className="text-sm font-bold text-suraksha-heading">{m.moduleName}</h4>
+                    <p className="text-[10px] text-suraksha-subtext font-medium">{m.totalEnrolled.toLocaleString()} Workers Enrolled</p>
                   </div>
                 </div>
-                <span className="text-sm font-bold text-emerald-400">{m.passRate}% Pass</span>
+                <span className="text-sm font-bold text-emerald-700">{m.passRate}% Pass</span>
               </div>
 
               <div className="grid grid-cols-2 gap-3 pt-4 text-xs">
                 <div>
                   <span className="text-[10px] text-suraksha-subtext uppercase font-bold block">Avg Score</span>
-                  <span className="font-bold text-white">{m.averageScore} / 100</span>
+                  <span className="font-bold text-suraksha-heading">{m.averageScore} / 100</span>
                 </div>
                 <div>
                   <span className="text-[10px] text-suraksha-subtext uppercase font-bold block">Certified</span>
@@ -193,11 +193,11 @@ export const ModuleAnalyticsScreen: React.FC = () => {
           <div className="h-72 w-full pt-2">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={[
-                { sector: 'Bokaro Steel', Fire: 88, Gas: 84, Machinery: 87 },
-                { sector: 'Dhanbad Coal', Fire: 82, Gas: 71, Machinery: 76 },
-                { sector: 'Jamshedpur', Fire: 92, Gas: 86, Machinery: 91 },
-                { sector: 'Ranchi H.E.', Fire: 84, Gas: 77, Machinery: 80 },
-                { sector: 'Ramgarh Chem', Fire: 87, Gas: 82, Machinery: 78 },
+                { sector: 'Dhanbad Region-1', Fire: 88, Gas: 84, Machinery: 87 },
+                { sector: 'Dhanbad Region-2', Fire: 82, Gas: 71, Machinery: 76 },
+                { sector: 'Koderma Region', Fire: 92, Gas: 86, Machinery: 91 },
+                { sector: 'Ranchi Region', Fire: 84, Gas: 77, Machinery: 80 },
+                { sector: 'Chaibasa Region', Fire: 87, Gas: 82, Machinery: 78 },
               ]} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1E3A5F" opacity={0.5} />
                 <XAxis dataKey="sector" stroke="#94A3B8" fontSize={10} tickLine={false} />
@@ -256,7 +256,7 @@ export const ModuleAnalyticsScreen: React.FC = () => {
 
       {/* Scenario Telemetry Detail List */}
       <div className="rounded-xl border border-suraksha-border bg-suraksha-card p-5 shadow-card">
-        <h4 className="text-sm font-bold uppercase tracking-wider text-white mb-4">
+        <h4 className="text-sm font-bold uppercase tracking-wider text-suraksha-heading mb-4">
           AR Scenario Breakdown & Attempt Metrics
         </h4>
 
@@ -272,8 +272,8 @@ export const ModuleAnalyticsScreen: React.FC = () => {
                     #{idx + 1}
                   </div>
                   <div>
-                    <h5 className="text-xs font-bold text-white">{sc.name}</h5>
-                    <p className="text-[11px] text-suraksha-subtext mt-0.5">
+                    <h5 className="text-xs font-bold text-suraksha-heading">{sc.name}</h5>
+                    <p className="text-[11px] text-suraksha-subtext font-medium mt-0.5">
                       {sc.attempts.toLocaleString()} total simulation runs conducted
                     </p>
                   </div>
@@ -282,15 +282,15 @@ export const ModuleAnalyticsScreen: React.FC = () => {
                 <div className="flex items-center gap-6 text-xs">
                   <div className="text-right">
                     <span className="text-[10px] text-suraksha-subtext uppercase font-bold block">Pass Rate</span>
-                    <span className="font-bold text-emerald-400">{sc.passRate}%</span>
+                    <span className="font-bold text-emerald-700">{sc.passRate}%</span>
                   </div>
                   <div className="text-right">
                     <span className="text-[10px] text-suraksha-subtext uppercase font-bold block">Avg Score</span>
-                    <span className="font-bold text-white">{sc.avgScore} / 100</span>
+                    <span className="font-bold text-suraksha-heading">{sc.avgScore} / 100</span>
                   </div>
                   <div className="text-right">
                     <span className="text-[10px] text-suraksha-subtext uppercase font-bold block">Critical Errors</span>
-                    <span className="font-bold text-rose-400">{sc.criticalErrors} logs</span>
+                    <span className="font-bold text-rose-700">{sc.criticalErrors} logs</span>
                   </div>
                 </div>
               </div>

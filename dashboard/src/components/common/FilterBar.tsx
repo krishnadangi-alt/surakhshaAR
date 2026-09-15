@@ -37,7 +37,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               value={searchQuery || ''}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder={searchPlaceholder}
-              className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface pl-9 pr-4 py-1.5 text-xs font-medium text-white placeholder-suraksha-subtext focus:border-suraksha-blue focus:outline-none focus:ring-1 focus:ring-suraksha-blue"
+              className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface pl-9 pr-4 py-1.5 text-xs font-semibold text-suraksha-text placeholder-suraksha-subtext focus:border-suraksha-blue focus:outline-none focus:ring-1 focus:ring-suraksha-blue"
             />
           </div>
         )}
@@ -64,7 +64,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
       {onReset && (
         <button
           onClick={onReset}
-          className="flex items-center gap-1.5 rounded-lg border border-suraksha-border px-3 py-1.5 text-xs font-semibold text-suraksha-subtext hover:bg-suraksha-hover hover:text-white transition"
+          className="flex items-center gap-1.5 rounded-lg border border-suraksha-border px-3 py-1.5 text-xs font-semibold text-suraksha-subtext hover:bg-suraksha-hover hover:text-suraksha-text transition"
         >
           <RotateCcw className="w-3.5 h-3.5" />
           <span>Reset Filters</span>

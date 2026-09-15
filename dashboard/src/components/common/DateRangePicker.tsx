@@ -46,10 +46,10 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
                   onChange(option);
                   if (option !== 'Custom Range') setIsOpen(false);
                 }}
-                className={`w-full text-left px-3 py-2 text-xs font-medium rounded-md transition ${
+                className={`w-full text-left px-3 py-2 text-xs font-semibold rounded-md transition ${
                   selected === option
-                    ? 'bg-suraksha-blue/20 text-suraksha-blue font-bold'
-                    : 'text-suraksha-subtext hover:bg-suraksha-hover hover:text-white'
+                    ? 'bg-suraksha-blue/15 text-suraksha-blue font-bold'
+                    : 'text-suraksha-text hover:bg-suraksha-hover hover:text-suraksha-blue'
                 }`}
               >
                 {option}
@@ -69,7 +69,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
                     if (!e.target.value) return;
                     onCustomRangeChange({ from: e.target.value, to: activeRange.to });
                   }}
-                  className="w-full rounded-md border border-suraksha-border bg-suraksha-surface px-2.5 py-1.5 text-xs font-medium text-white focus:border-suraksha-blue focus:outline-none [color-scheme:dark]"
+                  className="w-full rounded-md border border-suraksha-border bg-suraksha-surface px-2.5 py-1.5 text-xs font-semibold text-suraksha-text focus:border-suraksha-blue focus:outline-none"
                 />
                 <label className="block text-[10px] uppercase font-bold tracking-wider text-suraksha-subtext">
                   To Date
@@ -82,7 +82,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
                     if (!e.target.value) return;
                     onCustomRangeChange({ from: activeRange.from, to: e.target.value });
                   }}
-                  className="w-full rounded-md border border-suraksha-border bg-suraksha-surface px-2.5 py-1.5 text-xs font-medium text-white focus:border-suraksha-blue focus:outline-none [color-scheme:dark]"
+                  className="w-full rounded-md border border-suraksha-border bg-suraksha-surface px-2.5 py-1.5 text-xs font-semibold text-suraksha-text focus:border-suraksha-blue focus:outline-none"
                 />
                 <button
                   onClick={() => setIsOpen(false)}

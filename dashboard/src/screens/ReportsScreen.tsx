@@ -137,10 +137,10 @@ return (
     <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h3 className="text-lg font-bold text-white uppercase tracking-wider">
+        <h3 className="text-lg font-bold text-suraksha-heading uppercase tracking-wider">
           Compliance Reports & Export Center
         </h3>
-        <p className="text-xs text-suraksha-subtext">
+        <p className="text-xs text-suraksha-subtext font-medium">
           Configure granular filters and generate CSV/PDF demo report previews for state administration.
         </p>
       </div>
@@ -151,12 +151,12 @@ return (
         <div className="lg:col-span-2 rounded-2xl border border-suraksha-border bg-suraksha-card p-6 shadow-card">
           <div className="flex items-center justify-between pb-4 border-b border-suraksha-border mb-6">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-xl bg-blue-500/10 text-suraksha-blue border border-blue-500/20">
+              <div className="p-2.5 rounded-xl bg-blue-50 text-suraksha-blue border border-blue-200">
                 <FileSpreadsheet className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-white uppercase tracking-wider">Report Configurator</h4>
-                <p className="text-xs text-suraksha-subtext">Select report category & dataset scope</p>
+                <h4 className="text-sm font-bold text-suraksha-heading uppercase tracking-wider">Report Configurator</h4>
+                <p className="text-xs text-suraksha-subtext font-medium">Select report category & dataset scope</p>
               </div>
             </div>
             <DateRangePicker
@@ -182,7 +182,7 @@ return (
                     className={`p-3 rounded-xl border text-xs font-bold transition text-left ${
                       reportType === type
                         ? 'border-suraksha-amber bg-amber-500/10 text-suraksha-amber shadow-subtle'
-                        : 'border-suraksha-border bg-suraksha-surface/60 text-suraksha-subtext hover:bg-suraksha-hover hover:text-white'
+                        : 'border-suraksha-border bg-suraksha-surface/60 text-suraksha-subtext hover:bg-suraksha-hover hover:text-suraksha-heading'
                     }`}
                   >
                     {type}
@@ -220,11 +220,14 @@ return (
                     className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface px-3 py-2 text-xs font-medium text-white focus:border-suraksha-blue focus:outline-none"
                   >
                     <option value="ALL">All Industrial Units</option>
-                    <option value="Bokaro Steel Plant">Bokaro Steel Plant</option>
-                    <option value="Dhanbad Coal Fields">Dhanbad Coal Fields</option>
-                    <option value="Jamshedpur Metallurgy">Jamshedpur Metallurgy</option>
-                    <option value="Ranchi Heavy Electricals">Ranchi Heavy Electricals</option>
-                    <option value="Ramgarh Chemical Works">Ramgarh Chemical Works</option>
+                    <option value="Dhanbad Region-1">Dhanbad Region-1</option>
+                    <option value="Dhanbad Region-2">Dhanbad Region-2</option>
+                    <option value="Dhanbad Region-3">Dhanbad Region-3</option>
+                    <option value="Koderma Region">Koderma Region</option>
+                    <option value="Ranchi Region">Ranchi Region</option>
+                    <option value="Chaibasa Region">Chaibasa Region</option>
+                    <option value="Bhubaneswar Region-1">Bhubaneswar Region-1</option>
+                    <option value="Bhubaneswar Region-2">Bhubaneswar Region-2</option>
                   </select>
                 </div>
 
@@ -236,9 +239,9 @@ return (
                     className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface px-3 py-2 text-xs font-medium text-white focus:border-suraksha-blue focus:outline-none"
                   >
                     <option value="ALL">All Modules</option>
-                    <option value="m-fire">Fire Safety</option>
-                    <option value="m-gas">Gas Safety</option>
-                    <option value="m-mach">Machinery Safety</option>
+                    <option value="m-fire">Fire &amp; Explosion Response</option>
+                    <option value="m-gas">Gas Leak &amp; Confined Space</option>
+                    <option value="m-mach">Machinery</option>
                   </select>
                 </div>
 
@@ -262,8 +265,7 @@ return (
                     className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface px-3 py-2 text-xs font-medium text-white focus:border-suraksha-blue focus:outline-none"
                   >
                     <option value="ALL">All Competency</option>
-                    <option value="Strong">Strong</option>
-                    <option value="Developing">Developing</option>
+                    <option value="Competent">Competent</option>
                     <option value="Needs Retraining">Needs Retraining</option>
                   </select>
                 </div>
@@ -273,7 +275,7 @@ return (
                   <select
                     value={retrainingFilter}
                     onChange={(e) => setRetrainingFilter(e.target.value)}
-                    className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface px-3 py-2 text-xs font-medium text-white focus:border-suraksha-blue focus:outline-none"
+                    className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface px-3 py-2 text-xs font-semibold text-suraksha-text focus:border-suraksha-blue focus:outline-none"
                   >
                     <option value="ALL">All States</option>
                     <option value="Recommended">Recommended</option>
@@ -289,7 +291,7 @@ return (
                   <select
                     value={certFilter}
                     onChange={(e) => setCertFilter(e.target.value)}
-                    className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface px-3 py-2 text-xs font-medium text-white focus:border-suraksha-blue focus:outline-none"
+                    className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface px-3 py-2 text-xs font-semibold text-suraksha-text focus:border-suraksha-blue focus:outline-none"
                   >
                     <option value="ALL">All Statuses</option>
                     <option value="Active">Active</option>
@@ -304,7 +306,7 @@ return (
                   <select
                     value={retentionFilter}
                     onChange={(e) => setRetentionFilter(e.target.value)}
-                    className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface px-3 py-2 text-xs font-medium text-white focus:border-suraksha-blue focus:outline-none"
+                    className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface px-3 py-2 text-xs font-semibold text-suraksha-text focus:border-suraksha-blue focus:outline-none"
                   >
                     <option value="ALL">All Stages</option>
                     <option value="Completed">Cleared</option>
@@ -317,7 +319,7 @@ return (
                   <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface px-3 py-2 text-xs font-medium text-white focus:border-suraksha-blue focus:outline-none"
+                    className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface px-3 py-2 text-xs font-semibold text-suraksha-text focus:border-suraksha-blue focus:outline-none"
                   >
                     <option value="ALL">All Statuses</option>
                     <option value="Certified">Certified</option>
@@ -331,16 +333,16 @@ return (
             </div>
 {/* Active Parameters Banner */}
             <div className="p-3.5 rounded-xl bg-suraksha-surface/80 border border-suraksha-border flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2 text-suraksha-subtext">
+              <div className="flex items-center gap-2 text-suraksha-subtext font-medium">
                 <Filter className="w-4 h-4 text-suraksha-amber" />
                 <span>
-                  Scope: <strong className="text-white">{reportType}</strong> | Date:{' '}
-                  <strong className="text-white">{selectedDateRange}</strong> | Records:{' '}
-                  <strong className="text-white">{getRecordCount()}</strong>
+                  Scope: <strong className="text-suraksha-heading font-bold">{reportType}</strong> | Date:{' '}
+                  <strong className="text-suraksha-heading font-bold">{selectedDateRange}</strong> | Records:{' '}
+                  <strong className="text-suraksha-heading font-bold">{getRecordCount()}</strong>
                 </span>
               </div>
               {generatedSuccess && (
-                <span className="flex items-center gap-1 font-bold text-emerald-400">
+                <span className="flex items-center gap-1 font-bold text-emerald-700">
                   <CheckCircle2 className="w-4 h-4" /> Generated &amp; Ready
                 </span>
               )}
@@ -351,7 +353,7 @@ return (
               <button
                 type="submit"
                 disabled={isGenerating}
-                className="flex items-center gap-2 rounded-xl border border-suraksha-border bg-suraksha-card px-5 py-2.5 text-xs font-bold text-white hover:bg-suraksha-hover transition disabled:opacity-50"
+                className="flex items-center gap-2 rounded-xl border border-suraksha-border bg-suraksha-card px-5 py-2.5 text-xs font-bold text-suraksha-text hover:bg-suraksha-hover transition disabled:opacity-50"
               >
                 <RefreshCw className="w-4 h-4 text-suraksha-amber" />
                 <span>{isGenerating ? 'Generating...' : 'Generate Report'}</span>
@@ -360,7 +362,7 @@ return (
               <button
                 type="button"
                 onClick={handleExportCsv}
-                className="flex items-center gap-2 rounded-xl bg-suraksha-surface border border-suraksha-border px-5 py-2.5 text-xs font-bold text-white hover:bg-suraksha-hover transition"
+                className="flex items-center gap-2 rounded-xl bg-suraksha-surface border border-suraksha-border px-5 py-2.5 text-xs font-bold text-suraksha-heading hover:bg-suraksha-hover transition"
               >
                 <Download className="w-4 h-4 text-suraksha-blue" />
                 <span>Export CSV</span>
@@ -375,13 +377,10 @@ return (
                 <span>PDF Preview (Simulated)</span>
               </button>
             </div>
-
-
-          {/* End action buttons */}
-        </form>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
 };
 export default ReportsScreen;

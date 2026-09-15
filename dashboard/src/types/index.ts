@@ -1,9 +1,17 @@
-export type WorkerStatus = 'Passed' | 'Failed' | 'In Training' | 'Certified' | 'Retraining Required';
-export type CompetencyGrade = 'Strong' | 'Developing' | 'Needs Retraining';
+export type WorkerStatus = 'Passed' | 'Failed' | 'In Training' | 'Certified' | 'Needs Retraining';
+export type CompetencyGrade = 'Competent' | 'Needs Retraining';
 export type RetrainingStatus = 'Recommended' | 'Assigned' | 'In Progress' | 'Completed' | 'Reassessment Pending';
 export type CertificateStatus = 'Active' | 'Expiring Soon' | 'Expired' | 'Pending';
 export type RetentionStatus = 'Scheduled' | 'Completed' | 'Pending' | 'Overdue';
-export type SectorName = 'Bokaro Steel Plant' | 'Dhanbad Coal Fields' | 'Jamshedpur Metallurgy' | 'Ranchi Heavy Electricals' | 'Ramgarh Chemical Works';
+export type SectorName = 
+  | 'Dhanbad Region-1'
+  | 'Dhanbad Region-2'
+  | 'Dhanbad Region-3'
+  | 'Koderma Region'
+  | 'Ranchi Region'
+  | 'Chaibasa Region'
+  | 'Bhubaneswar Region-1'
+  | 'Bhubaneswar Region-2';
 
 export interface ModuleProgress {
   moduleId: string;

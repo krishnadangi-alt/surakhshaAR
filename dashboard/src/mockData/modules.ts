@@ -15,7 +15,7 @@ export interface ModuleAnalyticsData {
 export const mockModules: ModuleAnalyticsData[] = [
   {
     moduleId: 'm-fire',
-    moduleName: 'Fire Safety',
+    moduleName: 'Fire & Explosion Response',
     iconName: 'Flame',
     totalEnrolled: 5420,
     completedCount: 4890,
@@ -32,15 +32,18 @@ export const mockModules: ModuleAnalyticsData[] = [
       { month: 'Sep', pass: 800, fail: 48, avgScore: 92 },
     ],
     scenarios: [
-      { name: 'Class A/B Portable Extinguisher PASS Method', attempts: 1840, passRate: 94.5, avgScore: 92.1, criticalErrors: 18 },
-      { name: 'Electrical Panel Flashover CO2 Extinction', attempts: 1520, passRate: 88.2, avgScore: 86.8, criticalErrors: 32 },
-      { name: 'Heavy Dumper Engine Compartment Foam Drill', attempts: 1120, passRate: 85.0, avgScore: 84.2, criticalErrors: 24 },
-      { name: 'Chemical Fire & Foam System Operation', attempts: 940, passRate: 90.1, avgScore: 89.0, criticalErrors: 10 },
+      { name: 'AR Surface Detection', attempts: 1840, passRate: 98.5, avgScore: 96.1, criticalErrors: 2 },
+      { name: 'Industrial Fire Scenario', attempts: 1720, passRate: 92.2, avgScore: 90.8, criticalErrors: 12 },
+      { name: 'Identify Hazard', attempts: 1650, passRate: 94.0, avgScore: 92.5, criticalErrors: 8 },
+      { name: 'Identify Exit', attempts: 1610, passRate: 96.1, avgScore: 94.0, criticalErrors: 4 },
+      { name: 'Select Extinguisher', attempts: 1540, passRate: 88.5, avgScore: 86.2, criticalErrors: 22 },
+      { name: 'Use Extinguisher', attempts: 1490, passRate: 86.0, avgScore: 84.8, criticalErrors: 28 },
+      { name: 'Evacuation Sequence', attempts: 1420, passRate: 90.4, avgScore: 89.0, criticalErrors: 8 },
     ]
   },
   {
     moduleId: 'm-gas',
-    moduleName: 'Gas Safety',
+    moduleName: 'Gas Leak & Confined Space',
     iconName: 'Wind',
     totalEnrolled: 4850,
     completedCount: 4120,
@@ -57,15 +60,18 @@ export const mockModules: ModuleAnalyticsData[] = [
       { month: 'Sep', pass: 680, fail: 68, avgScore: 86 },
     ],
     scenarios: [
-      { name: 'Blast Furnace CO Gas Isolation & LOTO', attempts: 1650, passRate: 86.4, avgScore: 85.2, criticalErrors: 42 },
-      { name: 'Methane CH4 Sensor Calibration & Evacuation', attempts: 1420, passRate: 79.2, avgScore: 78.6, criticalErrors: 64 },
-      { name: 'SCBA Mask Donning & Positive Pressure Check', attempts: 1180, passRate: 92.0, avgScore: 91.0, criticalErrors: 12 },
-      { name: 'SO2 Acid Plant Scrubber Emergency Shutdown', attempts: 600, passRate: 84.0, avgScore: 82.5, criticalErrors: 24 },
+      { name: 'Gas Leak Scenario', attempts: 1650, passRate: 89.4, avgScore: 88.2, criticalErrors: 18 },
+      { name: 'Hazard Recognition', attempts: 1580, passRate: 91.2, avgScore: 89.5, criticalErrors: 14 },
+      { name: 'Hazard Zone Recognition', attempts: 1510, passRate: 82.5, avgScore: 81.0, criticalErrors: 36 },
+      { name: 'PPE Selection', attempts: 1440, passRate: 79.2, avgScore: 78.6, criticalErrors: 48 },
+      { name: 'Buddy System', attempts: 1380, passRate: 88.0, avgScore: 86.4, criticalErrors: 12 },
+      { name: 'Safe Response', attempts: 1320, passRate: 84.0, avgScore: 82.5, criticalErrors: 20 },
+      { name: 'Confined Space Entry', attempts: 1250, passRate: 81.5, avgScore: 80.2, criticalErrors: 24 },
     ]
   },
   {
     moduleId: 'm-mach',
-    moduleName: 'Machinery Safety',
+    moduleName: 'Machinery',
     iconName: 'Cog',
     totalEnrolled: 4010,
     completedCount: 3510,
@@ -82,10 +88,9 @@ export const mockModules: ModuleAnalyticsData[] = [
       { month: 'Sep', pass: 520, fail: 40, avgScore: 90 },
     ],
     scenarios: [
-      { name: 'Overhead Gantry Crane Interlock & E-Stop', attempts: 1410, passRate: 92.1, avgScore: 91.4, criticalErrors: 16 },
-      { name: 'Power Press Light Curtain Guard Verification', attempts: 1150, passRate: 86.8, avgScore: 85.0, criticalErrors: 38 },
-      { name: 'Conveyor Belt Pinch Point Protection & LOTO', attempts: 980, passRate: 87.5, avgScore: 86.2, criticalErrors: 28 },
-      { name: 'Hydraulic Crusher Maintenance Isolation', attempts: 470, passRate: 84.2, avgScore: 83.1, criticalErrors: 14 },
+      { name: 'Machinery Operational Readiness', attempts: 1410, passRate: 92.1, avgScore: 91.4, criticalErrors: 16 },
+      { name: 'Interactions & Guard Safety', attempts: 1150, passRate: 86.8, avgScore: 85.0, criticalErrors: 38 },
+      { name: 'Hazard Detection & Emergency Response', attempts: 980, passRate: 87.5, avgScore: 86.2, criticalErrors: 28 },
     ]
   }
 ];
