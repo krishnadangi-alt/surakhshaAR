@@ -15,9 +15,15 @@ namespace SurakshaAR.Data
     ///   - Zero-tolerance critical error on downwind entry or solitary confined space entry.
     ///   - Response time tracking for toxic gas detection and isolation.
     /// </summary>
-    public class GasScenarioAssessmentBridge : MonoBehaviour
+    public class GasScenarioAssessmentBridge : MonoBehaviour, IModuleAssessmentAdapter
     {
         public static GasScenarioAssessmentBridge Instance { get; private set; }
+
+        public string ModuleId => "2";
+        public string ScenarioType => "gas";
+        public string ActiveScenarioId => activeScenarioId;
+        public Dictionary<string, CompetencyEngine.CompetencyDef> SkillTaxonomy =>
+            CompetencyEngine.GetDefinitions("gas");
 
         [Header("Scenario State")]
         public string activeScenarioId = "gas_leak_drill_01";
@@ -42,6 +48,71 @@ namespace SurakshaAR.Data
             float delta = _lastActionTimestamp > 0f ? (now - _lastActionTimestamp) : (now - scenarioStartTime);
             _lastActionTimestamp = now;
             return Mathf.Max(0.1f, delta);
+        }
+
+        public void StartScenario(string scenarioId = "gas_leak_drill_01")
+        {
+            StartGasScenario(scenarioId);
+        }
+
+        public void CompleteScenario(float finalScore, bool passed)
+        {
+            CompleteGasScenario(finalScore, passed);
+        }
+
+        public void AbortScenario(string reason)
+        {
+            isSessionActive = false;
+            TrainingEventManager.RaiseCriticalAction("abort_scenario", reason);
+        }
+
+        public void RecordHazardIdentified(string hazardType, bool correct, float responseTime = 0f)
+        {
+            float rt = responseTime > 0f ? responseTime : GetDeltaTime();
+            TrainingEventManager.RaiseHazardIdentified(hazardType, rt);
+        }
+
+        public void RecordPpeSelected(string ppeType, bool correct, float responseTime = 0f)
+        {
+            float rt = responseTime > 0f ? responseTime : GetDeltaTime();
+            OnPpeSelected(ppeType, correct);
+        }
+
+        public void RecordEquipmentSelected(string equipmentType, bool correct, float responseTime = 0f)
+        {
+            float rt = responseTime > 0f ? responseTime : GetDeltaTime();
+            TrainingEventManager.RaiseEquipmentSelected(equipmentType, correct, rt);
+        }
+
+        public void RecordCorrectAction(string action, float responseTime = 0f)
+        {
+            float rt = responseTime > 0f ? responseTime : GetDeltaTime();
+            TrainingEventManager.RaiseCorrectAction(action, rt);
+        }
+
+        public void RecordWrongAction(string action, string reason, string severity = "minor")
+        {
+            TrainingEventManager.RaiseWrongAction(action, severity, reason);
+        }
+
+        public void RecordUnsafeAction(string action, string reason)
+        {
+            TrainingEventManager.RaiseUnsafeAction(action, reason);
+        }
+
+        public void RecordCriticalAction(string action, string reason)
+        {
+            TrainingEventManager.RaiseCriticalAction(action, reason);
+        }
+
+        public void RecordSequenceError(string expectedAction, string actualAction)
+        {
+            TrainingEventManager.RaiseSequenceError(expectedAction, actualAction);
+        }
+
+        public void RecordEvacuation(bool safe, string route = "")
+        {
+            TrainingEventManager.RaiseEvacuationStarted(route, safe);
         }
 
         public void StartGasScenario(string scenarioId = "gas_leak_drill_01")
