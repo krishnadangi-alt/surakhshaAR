@@ -1,4 +1,4 @@
-from app.schemas.worker import WorkerCreate, WorkerOut
+﻿from app.schemas.worker import WorkerCreate, WorkerOut
 from app.schemas.module import ModuleOut, ModuleListOut
 from app.schemas.progress import (
     ProgressCreate,
@@ -35,7 +35,6 @@ from app.schemas.dashboard import (
     DashboardWorkerListOut,
     DashboardWorkerDetailOut,
 )
-
 from app.schemas.event import (
     EventBatchCreate,
     EventBatchOut,
@@ -43,6 +42,7 @@ from app.schemas.event import (
     EventOut,
     EventStatsOut,
 )
+from app.schemas.auth import LoginRequest, TokenOut
 
 __all__ = [
     "WorkerCreate",
@@ -84,4 +84,6 @@ __all__ = [
     "EventOut",
     "EventBatchOut",
     "EventStatsOut",
+    "LoginRequest",
+    "TokenOut",
 ]

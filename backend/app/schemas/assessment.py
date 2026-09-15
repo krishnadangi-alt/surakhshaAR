@@ -1,4 +1,4 @@
-"""Assessment request/response schemas.
+﻿"""Assessment request/response schemas.
 
 Assessments are behaviour-based: the client submits the raw VR session events
 and the backend scores them with the ML competency engine (see
@@ -7,7 +7,9 @@ and the backend scores them with the ML competency engine (see
 
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+
+VALID_WRONG_ACTION_SEVERITIES = {"minor", "major"}
 
 
 class AssessmentEvent(BaseModel):
@@ -23,6 +25,8 @@ class AssessmentEvent(BaseModel):
 
     event_type: str = Field(
         ...,
+        min_length=1,
+        max_length=64,
         description=(
             "hazard_identified | ppe_selected | equipment_selected | "
             "wrong_action | critical_action | evacuation_started | "
@@ -30,18 +34,37 @@ class AssessmentEvent(BaseModel):
             "assessment_completed"
         ),
     )
-    timestamp: str | None = None
+    timestamp: str | None = Field(None, max_length=64)
+
+    @field_validator("event_type")
+    @classmethod
+    def _event_type_not_blank(cls, v: str) -> str:
+        v = v.strip()
+        if not v:
+            raise ValueError("event_type must not be blank")
+        return v
+
+    @model_validator(mode="after")
+    def _validate_severity_field(self):
+        """wrong_action/sequence_error severity must be minor or major when present."""
+        if self.event_type.lower() in {"wrong_action", "sequence_error"}:
+            severity = getattr(self, "severity", None)
+            if severity is not None and str(severity).lower() not in VALID_WRONG_ACTION_SEVERITIES:
+                raise ValueError("severity must be 'minor' or 'major' for wrong_action events")
+        return self
 
 
 class AssessmentCreate(BaseModel):
-    worker_id: int
-    module_id: int
+    worker_id: int = Field(..., ge=1)
+    module_id: int = Field(..., ge=1)
     scenario_type: str | None = Field(
         None,
+        max_length=32,
         description="Optional override; defaults to the module code (fire/gas).",
     )
     attempt_number: int | None = Field(
         None,
+        ge=1,
         description="Optional; auto-incremented per worker+module when omitted.",
     )
     client_session_id: str | None = Field(
@@ -53,7 +76,7 @@ class AssessmentCreate(BaseModel):
             "creates no duplicate record."
         ),
     )
-    events: list[AssessmentEvent] = Field(..., min_length=1)
+    events: list[AssessmentEvent] = Field(..., min_length=1, max_length=2000)
 
 
 class CompetencyScoreOut(BaseModel):

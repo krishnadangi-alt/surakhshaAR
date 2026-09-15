@@ -1,7 +1,11 @@
+using System;
+using System.Collections;
+using System.Text;
 using SurakshaAR.Core;
 using SurakshaAR.UI;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace SurakshaAR.Screens
@@ -141,15 +145,102 @@ namespace SurakshaAR.Screens
         // ─────────────────────────────────────────────────────────────────
         private void OnLogin()
         {
-            string empId = _fieldEmployeeId != null && !string.IsNullOrWhiteSpace(_fieldEmployeeId.text)
+            string username = _fieldEmployeeId != null && !string.IsNullOrWhiteSpace(_fieldEmployeeId.text)
                 ? _fieldEmployeeId.text.Trim()
                 : "JH-MN-004821";
-            string name = _isGuestMode ? "Guest Worker" : "Ramesh Kumar";
+            string password = _fieldPassword != null ? _fieldPassword.text : "";
 
+            if (_isGuestMode || string.IsNullOrEmpty(password))
+            {
+                // Day 6: guest mode and offline play keep working without a
+                // backend account — local-only session, no Bearer token.
+                EnterLocalSession(username, _isGuestMode ? "Guest Worker" : "Ramesh Kumar");
+                return;
+            }
+
+            if (_btnLogin != null) _btnLogin.interactable = false;
+            CoroutineRunner.Run(LoginRoutine(username, password));
+        }
+
+        private void EnterLocalSession(string empId, string name)
+        {
             if (AppState.Instance != null)
                 AppState.Instance.SetUser(empId, name, _isGuestMode);
 
             UIManager.Instance?.ShowScreen(ScreenId.HomeDashboard);
+        }
+
+        /// <summary>
+        /// Day 6: authenticate against POST /api/v1/auth/login and store the
+        /// Bearer token + worker id in AuthSession for every later API call.
+        /// Falls back to the local session when the backend is unreachable.
+        /// </summary>
+        private IEnumerator LoginRoutine(string username, string password)
+        {
+            string baseUrl = OfflineSyncManager.Instance != null
+                ? OfflineSyncManager.Instance.BackendBaseUrl
+                : "http://127.0.0.1:8000";
+            string url = baseUrl.TrimEnd('/') + "/api/v1/auth/login";
+            string json = JsonUtility.ToJson(new LoginRequest { username = username, password = password });
+
+            using (UnityWebRequest req = new UnityWebRequest(url, "POST"))
+            {
+                byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
+                req.uploadHandler = new UploadHandlerRaw(bodyRaw);
+                req.downloadHandler = new DownloadHandlerBuffer();
+                req.SetRequestHeader("Content-Type", "application/json");
+                req.timeout = 10;
+
+                yield return req.SendWebRequest();
+
+                if (_btnLogin != null) _btnLogin.interactable = true;
+
+                if (req.result == UnityWebRequest.Result.Success)
+                {
+                    var token = JsonUtility.FromJson<LoginResponse>(req.downloadHandler.text);
+                    AuthSession session = EnsureAuthSession();
+                    if (session != null && token != null)
+                        session.SetSession(token.access_token, token.role, token.username, token.worker_id);
+                    if (AppState.Instance != null)
+                        AppState.Instance.SetUser(username, token != null ? token.username : username, false);
+                    UIManager.Instance?.ShowScreen(ScreenId.HomeDashboard);
+                }
+                else if (req.responseCode == 401)
+                {
+                    Debug.LogWarning("[LOGIN] Invalid credentials. Check username/password.");
+                }
+                else
+                {
+                    // Backend unreachable — keep the offline-first promise.
+                    Debug.LogWarning("[LOGIN] Backend unavailable (" + req.error + "). Continuing offline.");
+                    EnterLocalSession(username, "Ramesh Kumar");
+                }
+            }
+        }
+
+        private static AuthSession EnsureAuthSession()
+        {
+            if (AuthSession.Instance != null) return AuthSession.Instance;
+            var go = new GameObject("AuthSession");
+            UnityEngine.Object.DontDestroyOnLoad(go);
+            return go.AddComponent<AuthSession>();
+        }
+
+        [Serializable]
+        private class LoginRequest
+        {
+            public string username;
+            public string password;
+        }
+
+        [Serializable]
+        private class LoginResponse
+        {
+            public string access_token;
+            public string token_type;
+            public string role;
+            public string username;
+            public int worker_id = -1;
         }
 
         // ─────────────────────────────────────────────────────────────────

@@ -3,8 +3,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_db
+from app.api.deps import get_db, require_admin
 from app.models.assessment import Assessment
+from app.models.auth_user import AuthUser
 from app.models.certificate import Certificate
 from app.models.module import Module
 from app.models.progress import WorkerProgress
@@ -138,7 +139,10 @@ def _competency_profile(
 
 
 @router.get("/summary", response_model=DashboardSummaryOut)
-def dashboard_summary(db: Session = Depends(get_db)):
+def dashboard_summary(
+    admin: AuthUser = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
     total_workers = db.query(Worker).count()
     total_assessments = db.query(Assessment).count()
 
@@ -184,7 +188,10 @@ def dashboard_summary(db: Session = Depends(get_db)):
 
 
 @router.get("/workers", response_model=DashboardWorkerListOut)
-def dashboard_worker_list(db: Session = Depends(get_db)):
+def dashboard_worker_list(
+    admin: AuthUser = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
     workers = db.query(Worker).order_by(Worker.id).all()
     result = [
         DashboardWorkerOut(
@@ -201,7 +208,11 @@ def dashboard_worker_list(db: Session = Depends(get_db)):
 
 
 @router.get("/workers/{worker_id}", response_model=DashboardWorkerDetailOut)
-def dashboard_worker_detail(worker_id: int, db: Session = Depends(get_db)):
+def dashboard_worker_detail(
+    worker_id: int,
+    admin: AuthUser = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
     worker = _get_worker_or_404(db, worker_id)
     assessments = (
         db.query(Assessment)

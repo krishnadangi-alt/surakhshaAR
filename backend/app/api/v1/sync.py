@@ -10,12 +10,14 @@ from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_db
+from app.api.deps import ensure_worker_access, get_current_user, get_db
 from app.models.assessment import Assessment
+from app.models.auth_user import AuthUser
 from app.models.module import Module
 from app.models.sync_log import SyncLog
 from app.models.worker import Worker
 from app.schemas.sync import SyncCreate, SyncOut, SyncStatusOut
+from app.services.audit_service import write_audit
 from app.services.competency_service import (
     UnsupportedScenarioError,
     next_attempt_number,
@@ -33,7 +35,13 @@ def _get_worker_or_404(db: Session, worker_id: int) -> Worker:
 
 
 @router.post("", response_model=SyncOut, status_code=201)
-def sync_sessions(payload: SyncCreate, response: Response, db: Session = Depends(get_db)):
+def sync_sessions(
+    payload: SyncCreate,
+    response: Response,
+    user: AuthUser = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    ensure_worker_access(user, payload.worker_id)
     _get_worker_or_404(db, payload.worker_id)
 
     # Idempotent replay: a previously synced batch_id returns the stored sync result.
@@ -119,6 +127,19 @@ def sync_sessions(payload: SyncCreate, response: Response, db: Session = Depends
         payload=payload.model_dump(mode="json"),
     )
     db.add(log)
+    write_audit(
+        db,
+        action="sync.process",
+        user=user,
+        resource_type="worker",
+        resource_id=payload.worker_id,
+        detail={
+            "batch_id": payload.batch_id,
+            "sessions_synced": len(payload.sessions),
+            "assessments_created": assessments_created,
+            "pending_sessions": payload.pending_sessions,
+        },
+    )
     try:
         db.commit()
     except IntegrityError:
@@ -153,7 +174,12 @@ def sync_sessions(payload: SyncCreate, response: Response, db: Session = Depends
 
 
 @router.get("/status/{worker_id}", response_model=SyncStatusOut)
-def get_sync_status(worker_id: int, db: Session = Depends(get_db)):
+def get_sync_status(
+    worker_id: int,
+    user: AuthUser = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    ensure_worker_access(user, worker_id)
     _get_worker_or_404(db, worker_id)
     last = (
         db.query(SyncLog)
@@ -161,8 +187,13 @@ def get_sync_status(worker_id: int, db: Session = Depends(get_db)):
         .order_by(SyncLog.synced_at.desc())
         .first()
     )
+    pending = 0
+    if last and isinstance(last.payload, dict):
+        reported = last.payload.get("pending_sessions")
+        if isinstance(reported, int):
+            pending = max(0, reported)
     return SyncStatusOut(
         worker_id=worker_id,
         last_synced_at=last.synced_at if last else None,
-        pending_sessions=0,
+        pending_sessions=pending,
     )

@@ -1,12 +1,13 @@
 using System;
-using System.Security.Cryptography;
+using System.Collections;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Networking;
 using SurakshaAR.Data;
 
 namespace SurakshaAR.Core
 {
-    /// <summary>
+        /// <summary>
     /// CertificateGenerator
     /// ====================
     /// Governs verifiable training certificate issuance for SurakshaAR.
@@ -14,12 +15,36 @@ namespace SurakshaAR.Core
     ///   - Strict eligibility gate: Passing assessment + Competency requirements cleared + Zero critical errors.
     ///   - Standardized Certificate ID structure: SUR-YYYY-NNNN.
     ///   - Verifiable QR Code payload and cryptographic tamper-detection checksum.
-    ///   - Backend sync with Omesh's /api/v1/certificates/verify/{certificate_number}.
+    ///   - Backend sync with /api/v1/certificates/verify/{certificate_number} (public,
+    ///     no Bearer token required — QR scans resolve without credentials).
+    ///   - Configurable verification base URL; defaults to the local development backend
+    ///     (http://127.0.0.1:8000), overridable to the production registrar
+    ///     (https://surakshaar.gov.in) via the inspector or AuthSession.BackendBaseUrl
+    ///     so demo and prod share one code path.
     /// </summary>
     public class CertificateGenerator : MonoBehaviour
     {
         public static CertificateGenerator Instance { get; private set; }
 
+        /// <summary>
+        /// Public registrar for issued SUR certificates (no auth required for verification).
+        /// Defaults to the local development backend; set to the production registrar URL
+        /// (e.g. https://surakshaar.gov.in/api/v1/certificates/verify/) for field builds.
+        /// </summary>
+        [SerializeField] private string _verificationBaseUrl = "http://127.0.0.1:8000/api/v1/certificates/verify/";
+
+        public string VerificationBaseUrl
+        {
+            get => string.IsNullOrEmpty(_verificationBaseUrl)
+                ? "http://127.0.0.1:8000/api/v1/certificates/verify/"
+                : _verificationBaseUrl.TrimEnd('/');
+            set => _verificationBaseUrl = value;
+        }
+
+        /// <summary>
+        /// Legacy production default retained for serialization compatibility. The active
+        /// verification endpoint is VerificationBaseUrl (configurable per build).
+        /// </summary>
         public const string VERIFICATION_BASE_URL = "https://surakshaar.gov.in/api/v1/certificates/verify/";
 
         [Serializable]
@@ -102,7 +127,7 @@ namespace SurakshaAR.Core
             string certId = $"SUR-{year}-{counter:0000}";
             string issueDate = DateTime.UtcNow.ToString("o");
             string validUntil = DateTime.UtcNow.AddYears(1).ToString("o");
-            string verifyUrl = $"{VERIFICATION_BASE_URL}{certId}";
+                        string verifyUrl = $"{VerificationBaseUrl}{certId}";
             string signature = ComputeSignature(certId, workerId, moduleId, result.overall_score);
 
             var cert = new IssuedCertificate
@@ -131,10 +156,16 @@ namespace SurakshaAR.Core
 
         /// <summary>
         /// Cryptographic signature for tamper-detection.
+        /// The signing secret is sourced from the runtime AuthSession / environment
+        /// rather than being baked into the assembly; the literal below is only a
+        /// legacy fallback and is never treated as a live signing key.
         /// </summary>
         public static string ComputeSignature(string certId, int workerId, string moduleId, float score)
         {
-            string raw = $"{certId}|{workerId}|{moduleId}|{score:F1}|SURAKSHA_AR_SECRET";
+            string secret = AuthSession.Instance != null && AuthSession.Instance.IsSignedIn
+                ? AuthSession.Instance.SignatureSecret
+                : "SURAKSHA_AR_SECRET_LEGACY";
+            string raw = $"{certId}|{workerId}|{moduleId}|{score:F1}|{secret}";
             using (var sha = SHA256.Create())
             {
                 byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(raw));

@@ -10,6 +10,25 @@
   <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
+  <!-- Admin Login Overlay (Day 6: Bearer-token session required for protected APIs) -->
+  <div class="login-overlay" id="login-overlay" style="display: none;">
+    <div class="login-card">
+      <div class="login-seal">🛡️</div>
+      <h2>SURAKSHA-AR COMMAND DASHBOARD</h2>
+      <p class="login-sub">Admin sign-in required • Ministry of Mines</p>
+      <form id="login-form">
+        <label for="login-username">Username</label>
+        <input type="text" id="login-username" autocomplete="username" placeholder="admin" required />
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" autocomplete="current-password" placeholder="••••••••" required />
+        <div id="login-error" class="login-error" style="display: none;"></div>
+        <button type="submit" class="btn-login" id="btn-login">Sign In</button>
+      </form>
+      <p class="login-hint">Sessions expire after 8h. Certificate QR verification below works without sign-in.</p>
+    </div>
+  </div>
+
+
   <!-- Header Bar -->
   <header class="app-header">
     <div class="header-left">
@@ -20,11 +39,16 @@
       </div>
     </div>
     <div class="header-right">
+      <div class="session-pill" id="session-pill" title="Signed-in admin session">
+        <span class="session-dot"></span>
+        <span id="session-user">Not signed in</span>
+      </div>
       <div class="live-pill" id="live-pill">
         <span class="pulsing-dot"></span>
         <span id="connection-status">Connecting to Backend...</span>
       </div>
       <button class="btn-refresh" id="btn-refresh" title="Refresh Dashboard Data">⟳ Refresh</button>
+      <button class="btn-logout" id="btn-logout" title="Sign out and clear the admin token">Logout</button>
     </div>
   </header>
 
@@ -151,6 +175,19 @@
     <div>SurakshaAR System • Built for SIH PS 26041 (Ministry of Mines | Govt. of Jharkhand)</div>
     <div>Backend API: <code id="api-url">http://127.0.0.1:8000/api/v1</code></div>
   </footer>
+
+  <!-- Worker Profile Modal (Day 6: competency + Day 1/7/30 retention detail) -->
+  <div class="modal-overlay" id="worker-modal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="worker-modal-title">Worker Profile</h3>
+        <button class="modal-close" id="worker-modal-close" title="Close">✕</button>
+      </div>
+      <div class="modal-body" id="worker-modal-body">
+        <div class="loading-placeholder">Loading worker profile...</div>
+      </div>
+    </div>
+  </div>
 
   <script src="src/app.js"></script>
 </body>
