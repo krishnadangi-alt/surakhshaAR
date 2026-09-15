@@ -4,61 +4,66 @@
   --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Dusky, human, warm charcoal-brown color palette inspired by reference */
-  --color-suraksha-bg: #14100E;
-  --color-suraksha-dark: #181310;
-  --color-suraksha-card: #1E1814;
-  --color-suraksha-surface: #261E19;
-  --color-suraksha-border: #342821;
-  --color-suraksha-borderLight: #46362D;
-  --color-suraksha-hover: #2A211B;
-  --color-suraksha-muted: #7A6C62;
-  --color-suraksha-subtext: #A8998C;
-  --color-suraksha-text: #F5EFEA;
-  --color-suraksha-heading: #FFFFFF;
+  /* Executive White Theme Color Tokens */
+  --color-suraksha-bg: #F8FAFC;
+  --color-suraksha-dark: #0F172A;
+  --color-suraksha-card: #FFFFFF;
+  --color-suraksha-surface: #F1F5F9;
+  --color-suraksha-border: #E2E8F0;
+  --color-suraksha-borderLight: #CBD5E1;
+  --color-suraksha-hover: #F8FAFC;
+  --color-suraksha-muted: #94A3B8;
+  --color-suraksha-subtext: #64748B;
+  --color-suraksha-text: #0F172A;
+  --color-suraksha-heading: #0F172A;
 
-  /* Warm dusky burnt amber & emerald accents */
-  --color-suraksha-blue: #E87722;
-  --color-suraksha-blueHover: #C96316;
-  --color-suraksha-amber: #E88024;
-  --color-suraksha-amberDark: #B85B12;
-  --color-suraksha-green: #2DC870;
-  --color-suraksha-red: #E5484D;
+  /* Clean Semantic Accent Colors */
+  --color-suraksha-blue: #1D6BF3;
+  --color-suraksha-blueHover: #1556C7;
+  --color-suraksha-amber: #D97706;
+  --color-suraksha-amberDark: #B45309;
+  --color-suraksha-green: #059669;
+  --color-suraksha-red: #DC2626;
 
-  /* Warm dusky shadows */
-  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.6);
-  --shadow-subtle: 0 2px 8px 0 rgba(0, 0, 0, 0.4);
-  --shadow-elevated: 0 8px 30px rgba(0, 0, 0, 0.7);
+  /* Soft Light Shadows */
+  --shadow-card: 0 1px 3px 0 rgba(15, 23, 42, 0.08), 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+  --shadow-subtle: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-elevated: 0 10px 25px -5px rgba(15, 23, 42, 0.12), 0 8px 10px -6px rgba(15, 23, 42, 0.08);
 }
 
 @layer base {
+  html {
+    font-size: 15.5px;
+  }
   * {
-    border-color: #342821;
+    border-color: #E2E8F0;
   }
   body {
-    background-color: #14100E;
-    color: #F5EFEA;
+    background-color: #F8FAFC;
+    color: #0F172A;
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
   }
 }
 
-/* Custom scrollbar matching warm dusky palette */
+/* Custom crisp scrollbar for light administrative density tables */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #181310;
+  background: #F1F5F9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #342821;
+  background: #CBD5E1;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #46362D;
+  background: #94A3B8;
 }
 
 /* Print styling for official certificates */
