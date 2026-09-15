@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FilterBar } from '../components/common/FilterBar';
 import { DataTable } from '../components/common/DataTable';
 import type { Column } from '../components/common/DataTable';
 import { StatusBadge } from '../components/common/StatusBadge';
 import { AssignRetrainingModal } from '../components/modals/AssignRetrainingModal';
 import { mockWorkers, getWorkerCertificateStatus } from '../mockData';
+import { fetchDashboardWorkers } from '../services/api';
 import type { Worker } from '../types';
 import { UserPlus, Download, Eye, RotateCcw } from 'lucide-react';
 import { downloadCsv } from '../utils/export';
@@ -24,9 +25,52 @@ export const WorkersScreen: React.FC<WorkersScreenProps> = ({ onSelectWorker }) 
   const [certFilter, setCertFilter] = useState('ALL');
   const [selectedWorker, setSelectedWorker] = useState<Worker | null>(null);
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
+  const [liveWorkers, setLiveWorkers] = useState<Worker[]>([]);
+
+  useEffect(() => {
+    fetchDashboardWorkers().then((items) => {
+      if (items && items.length > 0) {
+        const mapped: Worker[] = items.map((w) => ({
+          id: `w-${w.id}`,
+          employeeId: w.employee_id,
+          name: w.name,
+          sector: 'Dhanbad Region-1',
+          plant: 'Jharia Deep Shaft Mine #4',
+          role: w.role,
+          email: `${w.name.toLowerCase().replace(/\s+/g, '.')}@mining.jh.gov.in`,
+          phone: '+91 98765 43210',
+          joinedDate: '2026-01-15',
+          safetyOfficer: 'Inspector R. K. Soren',
+          overallStatus: w.certified_modules.length > 0 ? 'Certified' : 'In Training',
+          modulesCompleted: w.certified_modules.length,
+          latestScore: 85,
+          overallCompetency: w.certified_modules.length > 0 ? 'Competent' : 'Needs Retraining',
+          lastAssessmentDate: '2026-09-16',
+          certificatesCount: w.certified_modules.length,
+          retrainingStatus: 'Completed',
+          moduleProgressList: w.progress.map((p) => ({
+            moduleId: p.module_code,
+            moduleName: p.module_name,
+            stage: p.stage,
+            status: p.status === 'completed' ? 'Completed' : 'In Progress',
+            completionPercentage: p.status === 'completed' ? 100 : 50,
+            score: 85,
+            lastUpdated: p.last_updated || '2026-09-16',
+          })),
+          weakAreas: [],
+          retentionDay1: 'Completed',
+          retentionDay7: 'Scheduled',
+          retentionDay30: 'Scheduled',
+        }));
+        setLiveWorkers(mapped);
+      }
+    });
+  }, []);
+
+  const workersSource = liveWorkers.length > 0 ? liveWorkers : mockWorkers;
 
   // Filter logic
-  const filteredWorkers = mockWorkers.filter((w) => {
+  const filteredWorkers = workersSource.filter((w) => {
     const matchesSearch =
       w.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       w.employeeId.toLowerCase().includes(searchQuery.toLowerCase());

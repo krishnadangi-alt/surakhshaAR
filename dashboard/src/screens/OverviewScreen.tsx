@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { KpiCard } from '../components/common/KpiCard';
 import { ChartCard } from '../components/common/ChartCard';
 import { DataTable } from '../components/common/DataTable';
@@ -11,6 +11,7 @@ import {
   mockCompetencyWeaknesses,
   mockCompetencyDistribution,
 } from '../mockData';
+import { fetchDashboardSummary, type DashboardSummary } from '../services/api';
 import type { DateRange, DateRangePreset } from '../types';
 import { Users, ShieldCheck, Dumbbell, Award, AlertOctagon, TrendingUp } from 'lucide-react';
 import {
@@ -63,20 +64,35 @@ export const OverviewScreen: React.FC<OverviewScreenProps> = ({
   onNavigateToWorker,
   onNavigateToScreen,
 }) => {
+  const [liveSummary, setLiveSummary] = useState<DashboardSummary | null>(null);
+
+  useEffect(() => {
+    fetchDashboardSummary().then((data) => {
+      if (data) setLiveSummary(data);
+    });
+  }, []);
+
   const kpi = {
-    totalWorkers: '120',
-    certified: '85',
-    inTraining: '20',
-    passRate: '82%',
-    assessments: '185',
+    totalWorkers: liveSummary ? liveSummary.total_workers.toString() : '120',
+    certified: liveSummary ? liveSummary.certified_workers.toString() : '85',
+    inTraining: liveSummary ? liveSummary.workers_in_training.toString() : '20',
+    passRate: liveSummary ? `${liveSummary.pass_rate}%` : '82%',
+    assessments: liveSummary ? liveSummary.total_assessments.toString() : '185',
   };
 
-  const modulePerformanceData = mockModules.map((m) => ({
-    name: m.moduleName,
-    Enrolled: m.totalEnrolled,
-    Completed: m.completedCount,
-    Certified: m.certifiedCount,
-  }));
+  const modulePerformanceData = liveSummary && liveSummary.module_stats.length > 0
+    ? liveSummary.module_stats.map((m) => ({
+        name: m.module_name,
+        Enrolled: m.workers_enrolled,
+        Completed: m.certified,
+        Certified: m.certified,
+      }))
+    : mockModules.map((m) => ({
+        name: m.moduleName,
+        Enrolled: m.totalEnrolled,
+        Completed: m.completedCount,
+        Certified: m.certifiedCount,
+      }));
 
   const assessmentOverviewData = [
     { name: 'Passed', value: 151, color: '#10B981' },
