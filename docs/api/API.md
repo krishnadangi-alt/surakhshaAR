@@ -13,11 +13,17 @@
 - **Content-Type:** `application/json` for all requests and responses.
 - **Timestamps:** ISO 8601 UTC strings, e.g. `2026-09-01T11:00:00Z`.
 - **Errors:** All application errors use the JSON shape `{"detail": "<message>"}`.
+  - `401 Unauthorized` — missing, malformed or expired Bearer token
+  - `403 Forbidden` — authenticated but not permitted (wrong role, or another worker's data)
   - `404 Not Found` — resource does not exist
-  - `409 Conflict` — duplicate resource (e.g. duplicate `employee_id` or certificate)
+  - `409 Conflict` — duplicate resource or unmet prerequisite (duplicate `employee_id` /
+    certificate, ineligible certification)
   - `422 Unprocessable Entity` — request validation failure (FastAPI standard shape)
-- **Authentication:** Not implemented in this MVP. The `worker_id` is passed in the path or body.
-  The backend structure is ready for the security team to integrate authentication later.
+- **Authentication:** Every route requires `Authorization: Bearer <token>` obtained from
+  `POST /api/v1/auth/login`, **except** two public routes: `POST /api/v1/auth/login` itself and
+  the read-only QR verification route `GET /api/v1/certificates/verify/{certificate_number}`.
+  Roles (`admin` / `worker`) and worker ownership are enforced server-side from the token claims;
+  a client-supplied role or `worker_id` is never trusted. See `backend/DAY4_AUTH_HANDOFF.md`.
 - **Assessment scoring:** All assessments are scored **server-side** by the ML competency engine
   (`ml/competency`). Clients submit raw behavioural events; scores, pass/fail decisions and
   weaknesses returned by the API are authoritative. Client-computed scores are never trusted.
@@ -516,11 +522,20 @@ when a device retries.
 
 **Errors**
 
+Admin-only (`worker` tokens receive `403`). The request body accepts **only** `worker_id` and
+`module_id`: eligibility, status and the certificate number are decided server-side, and any
+extra client fields (score, passed, status, certificate number) are ignored.
+
+- `401` — `{"detail": "Not authenticated. Provide a valid Bearer token (see /api/v1/auth/login)."}`
+- `403` — `{"detail": "Admin privileges required"}` (worker token)
 - `404` — `{"detail": "Worker not found"}` or `{"detail": "Module not found"}`
 - `409` — `{"detail": "Certificate already issued for this worker and module"}`
 - `409` — `{"detail": "Certificate requires a passing assessment for this module"}`
   (competency gate — certificates are issued only after a passing, engine-scored
   assessment, so a certificate always reflects demonstrated competency)
+- `409` — `{"detail": "Certificate cannot be issued: critical errors present in the assessment"}`
+  (a server-scored critical action in the latest passing assessment blocks certification)
+- `422` — validation error (`worker_id` / `module_id` must be `>= 1`)
 
 ---
 
@@ -557,6 +572,13 @@ when a device retries.
 
 `GET /api/v1/certificates/verify/{certificate_number}`
 
+Public (no token required) so a QR code printed on a certificate resolves when scanned without
+credentials. The response distinguishes **VALID** (`"valid": true`) from **INVALID**
+(`"valid": false`) — a certificate is VALID only while it is `active` **and** not past
+`valid_until`; revoked (`status: "revoked"`) or expired certificates still resolve with
+`200 OK` so the scanner can display why verification failed. Verification is read-only and
+never mutates the certificate.
+
 **Response `200 OK`**
 
 ```json
@@ -574,6 +596,8 @@ when a device retries.
 **Errors**
 
 - `404` — `{"detail": "Certificate not found"}`
+- `422` — `{"detail": "Invalid certificate number format"}` (must match `SUR-YYYY-NNNN`,
+  e.g. `SUR-2026-0001`)
 
 ---
 
@@ -884,6 +908,80 @@ modules without an explicit progress row — the latest assessment timestamp as 
 
 ---
 
+### 21. Worker Retention Schedule (Day 1 / Day 7 / Day 30)
+
+`GET /api/v1/progress/{worker_id}/retention`
+
+Returns the worker's **retention checkpoints** per module, closing the
+`certify → retain` loop:
+
+- The retention clock is anchored on the worker's **active certificate issue date** for the
+  module (CERTIFY → RETAIN). If no certificate exists yet it falls back to the latest
+  **passing, server-scored assessment**, and then to any progress row for the module.
+- Three checkpoints are always produced per scheduled module: **Day 1**
+  (`Day 1 Immediate Retention Check`), **Day 7** (`Day 7 Refresher Check`) and **Day 30**
+  (`Day 30 Competency Audit`).
+- Each checkpoint has a bounded window (12 h grace before its due date up to 12 h before the
+  next checkpoint), so a late retention assessment satisfies only its own checkpoint.
+- `status` is computed server-side: `completed` (a server-scored assessment was recorded
+  inside the checkpoint window), `due` (the due date has passed with no assessment) or
+  `pending` (not due yet). Clients cannot set checkpoint values — the only writable stage /
+  status values are the workflow stages and `in_progress` / `completed` of `POST /api/v1/progress`.
+- Modules the worker has neither certified, passed nor progressed are omitted.
+  `worker` tokens may read only their own schedule (`403` otherwise); admins may read any worker.
+
+**Response `200 OK`**
+
+```json
+{
+  "worker_id": 1,
+  "retention_schedules": [
+    {
+      "worker_id": 1,
+      "module_id": 1,
+      "module_code": "fire",
+      "module_name": "Fire & Explosion Response",
+      "base_date": "2026-09-01T11:20:00Z",
+      "milestones": [
+        {
+          "day": 1,
+          "title": "Day 1 Immediate Retention Check",
+          "due_date": "2026-09-02T11:20:00Z",
+          "status": "completed",
+          "passed": true,
+          "score": 90.0
+        },
+        {
+          "day": 7,
+          "title": "Day 7 Refresher Check",
+          "due_date": "2026-09-08T11:20:00Z",
+          "status": "pending",
+          "passed": null,
+          "score": null
+        },
+        {
+          "day": 30,
+          "title": "Day 30 Competency Audit",
+          "due_date": "2026-10-01T11:20:00Z",
+          "status": "pending",
+          "passed": null,
+          "score": null
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Errors**
+
+- `401` — missing/invalid Bearer token
+- `403` — `{"detail": "Not authorized to access this worker's data"}` (worker token for another worker)
+- `404` — `{"detail": "Worker not found"}`
+- `422` — validation error (non-integer `worker_id`)
+
+---
+
 ## Endpoint Summary
 
 | # | Method | Path | Status |
@@ -908,5 +1006,6 @@ modules without an explicit progress row — the latest assessment timestamp as 
 | 18 | POST | `/api/v1/vision/ppe-check` | 200 |
 | 19 | GET | `/api/v1/vision/status` | 200 |
 | 20 | GET | `/api/v1/workers/{worker_id}/progress` | 200 |
+| 21 | GET | `/api/v1/progress/{worker_id}/retention` | 200 |
 
-**6 POST + 14 GET = 20 endpoints.**
+**6 POST + 15 GET = 21 endpoints.**

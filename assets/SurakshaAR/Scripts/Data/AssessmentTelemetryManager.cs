@@ -153,6 +153,15 @@ namespace SurakshaAR.Data
                 req.uploadHandler = new UploadHandlerRaw(bodyRaw);
                 req.downloadHandler = new DownloadHandlerBuffer();
                 req.SetRequestHeader("Content-Type", "application/json");
+                // Day 6: Bearer-token authentication. Offline (guest) play skips the
+                // network call entirely: local-only until login.
+                if (AuthSession.Instance != null && AuthSession.Instance.IsSignedIn)
+                    AuthSession.Instance.ApplyAuthHeader(req);
+                else
+                {
+                    Debug.Log("[TELEMETRY] No signed-in session. Event kept local until login.");
+                    yield break;
+                }
                 req.timeout = 5;
 
                 yield return req.SendWebRequest();
@@ -170,7 +179,9 @@ namespace SurakshaAR.Data
 
         private string BuildEventJson(AssessmentEvent ev)
         {
-            int workerId = 1;
+            // Day 6: real ids from the login session — never hardcoded.
+            // workerId -1 while signed out; module derived from scenario.
+            int workerId = GetCurrentWorkerId();
             int moduleId = CurrentScenarioType == "fire" ? 1 : CurrentScenarioType == "gas" ? 2 : 3;
 
             string actionStr = ev.action ?? "";
@@ -334,11 +345,17 @@ namespace SurakshaAR.Data
         }
 
         // ── Day 1 Common Assessment Event Handlers ───────────────────────
+        /// <summary>
+        /// Day 6: worker id comes from the authenticated login session
+        /// (AuthSession.WorkerId, sourced from TokenOut.worker_id).
+        /// Returns -1 while signed out so callers never attribute events
+        /// to a wrong worker.
+        /// </summary>
         private int GetCurrentWorkerId()
         {
-            return (AppState.Instance != null && AppState.Instance.CurrentUser != null)
-                ? AppState.Instance.CurrentUser.id
-                : 1;
+            if (AuthSession.Instance != null && AuthSession.Instance.IsSignedIn)
+                return AuthSession.Instance.WorkerId;
+            return -1;
         }
 
         private void HandleCommonScenarioStarted(string module, string scenario)

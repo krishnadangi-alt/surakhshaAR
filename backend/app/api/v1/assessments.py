@@ -10,8 +10,9 @@ from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_db
+from app.api.deps import ensure_worker_access, get_current_user, get_db
 from app.models.assessment import Assessment
+from app.models.auth_user import AuthUser
 from app.models.module import Module
 from app.models.worker import Worker
 from app.schemas.assessment import (
@@ -20,6 +21,7 @@ from app.schemas.assessment import (
     AssessmentOut,
     RetrainingPlanOut,
 )
+from app.services.audit_service import write_audit
 from app.services.competency_service import (
     UnsupportedScenarioError,
     next_attempt_number,
@@ -45,15 +47,19 @@ def _get_module_or_404(db: Session, module_id: int) -> Module:
 
 @router.post("", response_model=AssessmentOut, status_code=201)
 def submit_assessment(
-    payload: AssessmentCreate, response: Response, db: Session = Depends(get_db)
+    payload: AssessmentCreate,
+    response: Response,
+    user: AuthUser = Depends(get_current_user),
+    db: Session = Depends(get_db),
 ):
     """Score the submitted behavioural events server-side and store the result."""
+    ensure_worker_access(user, payload.worker_id)
     _get_worker_or_404(db, payload.worker_id)
     module = _get_module_or_404(db, payload.module_id)
 
     # Idempotent replay: if the client key (worker+module+client_session_id) has
     # already been stored, return the existing assessment instead of creating a duplicate.
-    
+
     if payload.client_session_id:
         existing = (
             db.query(Assessment)
@@ -114,11 +120,32 @@ def submit_assessment(
                 return existing
         raise
     db.refresh(assessment)
+    write_audit(
+        db,
+        action="assessment.create",
+        user=user,
+        resource_type="assessment",
+        resource_id=assessment.id,
+        detail={
+            "worker_id": assessment.worker_id,
+            "module_id": assessment.module_id,
+            "attempt_number": assessment.attempt_number,
+            "scenario_type": assessment.scenario_type,
+            "score": assessment.score,
+            "passed": assessment.passed,
+        },
+    )
+    db.commit()
     return assessment
 
 
 @router.get("/{worker_id}", response_model=AssessmentHistoryOut)
-def get_assessment_history(worker_id: int, db: Session = Depends(get_db)):
+def get_assessment_history(
+    worker_id: int,
+    user: AuthUser = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    ensure_worker_access(user, worker_id)
     _get_worker_or_404(db, worker_id)
     assessments = (
         db.query(Assessment)
@@ -130,7 +157,12 @@ def get_assessment_history(worker_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/{worker_id}/latest", response_model=AssessmentOut)
-def get_latest_assessment(worker_id: int, db: Session = Depends(get_db)):
+def get_latest_assessment(
+    worker_id: int,
+    user: AuthUser = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    ensure_worker_access(user, worker_id)
     _get_worker_or_404(db, worker_id)
     assessment = (
         db.query(Assessment)
@@ -144,11 +176,16 @@ def get_latest_assessment(worker_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/{assessment_id}/retraining-plan", response_model=RetrainingPlanOut)
-def get_retraining_plan(assessment_id: int, db: Session = Depends(get_db)):
+def get_retraining_plan(
+    assessment_id: int,
+    user: AuthUser = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
     """Recompute the targeted retraining plan from the stored assessment events."""
     assessment = db.query(Assessment).filter(Assessment.id == assessment_id).first()
     if not assessment:
         raise HTTPException(status_code=404, detail="Assessment not found")
+    ensure_worker_access(user, assessment.worker_id)
     try:
         scored = score_events(assessment.scenario_type, list(assessment.events or []))
     except UnsupportedScenarioError as exc:

@@ -141,7 +141,10 @@ namespace SurakshaAR.Core
 
             var payload = new SyncCreatePayload
             {
-                worker_id = 1,
+                // Day 6: real worker id from the login session. -1 means the
+                // account has no linked worker (admin) or we are offline-only;
+                // such batches must NOT be posted as another worker's data.
+                worker_id = AuthSession.Instance != null ? AuthSession.Instance.WorkerId : -1,
                 device_id = store.Data.device_id,
                 batch_id = $"batch_{Guid.NewGuid():N}".Substring(0, 16),
                 sessions = pendingList
@@ -150,12 +153,27 @@ namespace SurakshaAR.Core
             string json = JsonUtility.ToJson(payload);
             string url = $"{_backendBaseUrl.TrimEnd('/')}/api/v1/sync";
 
+            if (payload.worker_id < 0)
+            {
+                // Day 6: refuse to attribute offline sessions to a worker we
+                // have not authenticated as. Keep them queued locally.
+                CurrentState = SyncState.Offline;
+                StatusMessage = $"Offline ({store.PendingSyncCount} stored locally - sign in to sync)";
+                Debug.Log("[SYNC] No authenticated worker session. Keeping queue local until login.");
+                _isSyncing = false;
+                OnSyncStatusChanged?.Invoke(CurrentState, StatusMessage, store.PendingSyncCount);
+                yield break;
+            }
+
             using (UnityWebRequest req = new UnityWebRequest(url, "POST"))
             {
                 byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
                 req.uploadHandler = new UploadHandlerRaw(bodyRaw);
                 req.downloadHandler = new DownloadHandlerBuffer();
                 req.SetRequestHeader("Content-Type", "application/json");
+                // Day 6: Bearer-token authentication (wired in Phase 2).
+                if (AuthSession.Instance != null)
+                    AuthSession.Instance.ApplyAuthHeader(req);
                 req.timeout = 10;
 
                 yield return req.SendWebRequest();
@@ -166,6 +184,14 @@ namespace SurakshaAR.Core
                     CurrentState = SyncState.Synced;
                     StatusMessage = "Cloud Synced ✓";
                     Debug.Log($"[SYNC] Successfully synced {batchCount} sessions to FastAPI backend!");
+                }
+                else if (req.responseCode == 401 || req.responseCode == 403)
+                {
+                    // Day 6: auth failure is NOT a network failure — keep the
+                    // queue intact and surface re-login instead of retrying.
+                    CurrentState = SyncState.Error;
+                    StatusMessage = "Sync blocked: session expired - please sign in again";
+                    Debug.LogWarning($"[SYNC] Auth rejected ({req.responseCode}). Queue preserved; re-login required.");
                 }
                 else
                 {
