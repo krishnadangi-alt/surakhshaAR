@@ -107,29 +107,33 @@ class CompetencyScorer:
             event: Event dict with 'event_type', 'timestamp', and event-specific data
         """
         self.event_log.append(event)
-        event_type = event.get("event_type", "")
+        raw_type = event.get("event_type", "")
+        event_type = raw_type.lower().strip()
         
         # Route event to appropriate scoring logic
         if event_type == "hazard_identified":
             self._score_hazard_identification(event)
         elif event_type == "ppe_selected":
             self._score_ppe_selection(event)
-        elif event_type == "equipment_selected":
+        elif event_type in ("equipment_selected", "object_interaction"):
             self._score_equipment_use(event)
-        elif event_type == "wrong_action":
+        elif event_type in ("wrong_action", "sequence_error"):
             self._score_wrong_action(event)
-        elif event_type == "critical_action":
-            self._score_critical_action(event)
+        elif event_type in ("critical_action", "unsafe_action"):
+            if event_type == "critical_action" or event.get("critical", False):
+                self._score_critical_action(event)
+            else:
+                self._score_wrong_action(event)
         elif event_type == "evacuation_started":
             self._score_evacuation(event)
-        elif event_type == "emergency_procedure":
+        elif event_type in ("emergency_procedure", "correct_action"):
             self._score_emergency_procedure(event)
         elif event_type == "assessment_completed":
             pass  # Finalize in get_result()
     
     def _score_hazard_identification(self, event: Dict) -> None:
         """Score hazard identification competency."""
-        correct = event.get("correct", False)
+        correct = event.get("correct", True)
         hazard_type = event.get("hazard_type", "")
         
         if correct:
@@ -149,8 +153,10 @@ class CompetencyScorer:
         """Score PPE selection competency."""
         correct_ppe = event.get("correct", False)
         ppe_items = event.get("items", [])
+        ppe_type = event.get("ppe_type")
+        has_items = (len(ppe_items) > 0) or (ppe_type is not None and len(str(ppe_type).strip()) > 0)
         
-        if correct_ppe and len(ppe_items) > 0:
+        if correct_ppe and has_items:
             self.competency_scores["ppe_selection"] = min(
                 100.0,
                 self.competency_scores["ppe_selection"] + 60.0
@@ -232,9 +238,11 @@ class CompetencyScorer:
         """Score evacuation behavior."""
         correct = event.get("correct", False)
         
+        correct = event.get("correct", event.get("safe", False))
+        
         if self.scenario_type == "gas":
             competency = "evacuation"
-        else:  # fire
+        else:  # fire / machinery
             competency = "procedure_compliance"
         
         if correct:
@@ -251,29 +259,38 @@ class CompetencyScorer:
                 )
     
     def _score_emergency_procedure(self, event: Dict) -> None:
-        """Score emergency response procedures (alerting, rescue coordination).
+        """Score emergency response procedures, correct actions, and LOTO steps."""
+        correct = event.get("correct", True)
+        action = str(event.get("action", "")).lower()
         
-        Gas scenarios map these actions onto the emergency_response competency,
-        whose aspects are alert_procedures, rescue_coordination, first_aid and
-        incident_reporting. Fire scenarios have no emergency_response
-        competency, so the event is ignored there.
-        """
-        correct = event.get("correct", False)
-        competency = "emergency_response"
+        # 1. Fire: procedure compliance
+        if "procedure_compliance" in self.competency_scores:
+            if correct:
+                self.competency_scores["procedure_compliance"] = min(
+                    100.0,
+                    self.competency_scores["procedure_compliance"] + 25.0
+                )
         
-        if competency not in self.competency_scores:
-            return  # Scenario does not track emergency_response (e.g. fire)
+        # 2. Gas / Machinery: emergency response
+        if "emergency_response" in self.competency_scores:
+            if correct:
+                self.competency_scores["emergency_response"] = min(
+                    100.0,
+                    self.competency_scores["emergency_response"] + 50.0
+                )
+            else:
+                self.competency_scores["emergency_response"] = max(
+                    0.0,
+                    self.competency_scores["emergency_response"] - 25.0
+                )
         
-        if correct:
-            self.competency_scores[competency] = min(
-                100.0,
-                self.competency_scores[competency] + 50.0
-            )
-        else:
-            self.competency_scores[competency] = max(
-                0.0,
-                self.competency_scores[competency] - 25.0
-            )
+        # 3. Machinery: LOTO procedure
+        if "loto_procedure" in self.competency_scores:
+            if "loto" in action and correct:
+                self.competency_scores["loto_procedure"] = min(
+                    100.0,
+                    self.competency_scores["loto_procedure"] + 25.0
+                )
     
     def get_result(self) -> ScoringResult:
         """

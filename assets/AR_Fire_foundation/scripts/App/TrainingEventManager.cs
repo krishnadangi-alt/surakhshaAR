@@ -62,10 +62,20 @@ public static class TrainingEventManager
     /// <summary>Raised when the training flow is fully completed.</summary>
     public static event Action OnTrainingCompleted;
 
-    // Backend Telemetry Events
+    // ── Backend Telemetry & 12 Common Assessment Events (Day 1 Specification) ──
     public static event Action<string> OnAssessmentStarted;
+    public static event Action<string, string> OnScenarioStartedCommon; // module, scenario
+    public static event Action<string, float> OnHazardIdentifiedCommon; // hazardType, responseTime
+    public static event Action<string, bool, float> OnPpeSelectedCommon; // ppeType, correct, responseTime
+    public static event Action<string, bool, float> OnEquipmentSelectedCommon; // equipmentType, correct, responseTime
+    public static event Action<string, string, float> OnObjectInteractionCommon; // objectId, interactionType, responseTime
+    public static event Action<string, float> OnCorrectActionCommon; // action, responseTime
     public static event Action<string, string, string> OnWrongAction; // action, severity, reason
+    public static event Action<string, string> OnUnsafeActionCommon; // action, reason
     public static event Action<string, string> OnCriticalAction; // action, reason
+    public static event Action<string, string> OnSequenceErrorCommon; // expectedAction, actualAction
+    public static event Action<string, float> OnResponseTimeCommon; // action, seconds
+    public static event Action<string, float, bool> OnScenarioCompletedCommon; // module, score, passed
     public static event Action<string, bool> OnEvacuationStarted; // route, safe
     public static event Action<string, bool> OnPpeSelected; // ppeType, correct
     public static event Action<string, bool> OnEquipmentSelected; // equipmentType, correct
@@ -187,6 +197,71 @@ public static class TrainingEventManager
     {
         Log($"AssessmentCompleted: duration={durationSeconds}s");
         OnAssessmentCompleted?.Invoke(durationSeconds);
+    }
+
+    // ── 12 Common Assessment Event Raise Methods (Day 1 Standard) ─────────
+
+    public static void RaiseScenarioStarted(string module, string scenario)
+    {
+        Log($"[COMMON EVENT] SCENARIO_STARTED: module={module}, scenario={scenario}");
+        OnScenarioStartedCommon?.Invoke(module, scenario);
+    }
+
+    public static void RaiseHazardIdentified(string hazardType, float responseTime = 0f)
+    {
+        Log($"[COMMON EVENT] HAZARD_IDENTIFIED: type={hazardType}, responseTime={responseTime:F2}s");
+        OnHazardIdentifiedCommon?.Invoke(hazardType, responseTime);
+        OnHazardIdentified?.Invoke();
+    }
+
+    public static void RaisePpeSelected(string ppeType, bool correct, float responseTime = 0f)
+    {
+        Log($"[COMMON EVENT] PPE_SELECTED: ppe={ppeType}, correct={correct}, responseTime={responseTime:F2}s");
+        OnPpeSelectedCommon?.Invoke(ppeType, correct, responseTime);
+        OnPpeSelected?.Invoke(ppeType, correct);
+    }
+
+    public static void RaiseEquipmentSelected(string equipmentType, bool correct, float responseTime = 0f)
+    {
+        Log($"[COMMON EVENT] EQUIPMENT_SELECTED: equip={equipmentType}, correct={correct}, responseTime={responseTime:F2}s");
+        OnEquipmentSelectedCommon?.Invoke(equipmentType, correct, responseTime);
+        OnEquipmentSelected?.Invoke(equipmentType, correct);
+    }
+
+    public static void RaiseObjectInteraction(string objectId, string interactionType, float responseTime = 0f)
+    {
+        Log($"[COMMON EVENT] OBJECT_INTERACTION: obj={objectId}, type={interactionType}, responseTime={responseTime:F2}s");
+        OnObjectInteractionCommon?.Invoke(objectId, interactionType, responseTime);
+    }
+
+    public static void RaiseCorrectAction(string action, float responseTime = 0f)
+    {
+        Log($"[COMMON EVENT] CORRECT_ACTION: {action}, responseTime={responseTime:F2}s");
+        OnCorrectActionCommon?.Invoke(action, responseTime);
+    }
+
+    public static void RaiseUnsafeAction(string action, string reason)
+    {
+        Log($"[COMMON EVENT] UNSAFE_ACTION: {action} - {reason}");
+        OnUnsafeActionCommon?.Invoke(action, reason);
+    }
+
+    public static void RaiseSequenceError(string expectedAction, string actualAction)
+    {
+        Log($"[COMMON EVENT] SEQUENCE_ERROR: Expected '{expectedAction}', performed '{actualAction}'");
+        OnSequenceErrorCommon?.Invoke(expectedAction, actualAction);
+    }
+
+    public static void RaiseResponseTime(string action, float seconds)
+    {
+        Log($"[COMMON EVENT] RESPONSE_TIME: {action} took {seconds:F2}s");
+        OnResponseTimeCommon?.Invoke(action, seconds);
+    }
+
+    public static void RaiseScenarioCompleted(string module, float score, bool passed)
+    {
+        Log($"[COMMON EVENT] SCENARIO_COMPLETED: module={module}, score={score:F1}, passed={passed}");
+        OnScenarioCompletedCommon?.Invoke(module, score, passed);
     }
 
     private static void Log(string message)

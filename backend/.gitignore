@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+
+# SQLite
+*.db
+*.sqlite
+*.sqlite3
+
+# pytest
+.pytest_cache/
+pytest_results.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+__tmp_read.txt
+**/__tmp_read.txt

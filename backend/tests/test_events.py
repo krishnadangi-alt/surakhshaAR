@@ -139,9 +139,56 @@ def test_event_stats_summary(client):
     assert "hazard_identified" in stats["events_by_type"]
 
 
+def test_websocket_live_feed_requires_admin_token(client, anonymous_client):
+    """The admin-only live feed refuses anonymous and non-admin handshakes."""
+    from fastapi.testclient import TestClient
+
+    from conftest import _auth_headers
+
+    try:
+        with anonymous_client.websocket_connect("/api/v1/events/live"):
+            refused = False
+    except Exception:
+        refused = True
+    assert refused is True
+
+    worker_login = client.post(
+        "/api/v1/workers",
+        json={
+            "name": "WS Worker",
+            "employee_id": "EMP-WS-1",
+            "role": "Fire Safety Worker",
+            "username": "ws_worker1",
+            "password": "workerpass123",
+        },
+    )
+    assert worker_login.status_code == 201
+    worker_token = client.post(
+        "/api/v1/auth/login",
+        json={"username": "ws_worker1", "password": "workerpass123"},
+    ).json()["access_token"]
+    try:
+        with TestClient(
+            anonymous_client.app, headers=_auth_headers(worker_token)
+        ).websocket_connect("/api/v1/events/live"):
+            refused_worker = False
+    except Exception:
+        refused_worker = True
+    assert refused_worker is True
+
+
 def test_websocket_live_feed(client):
     worker = _create_worker(client)
-    with client.websocket_connect("/api/v1/events/live") as websocket:
+    from fastapi.testclient import TestClient
+
+    from app.auth.security import create_access_token
+    from conftest import _auth_headers
+
+    admin_token = create_access_token("admin", "admin")
+    admin_client = TestClient(client.app, headers=_auth_headers(admin_token))
+    with admin_client.websocket_connect(
+        f"/api/v1/events/live?token={admin_token}"
+    ) as websocket:
         # Ingest an event while the websocket client is connected
         client.post(
             "/api/v1/events",

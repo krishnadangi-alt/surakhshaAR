@@ -151,6 +151,69 @@ GAS_COMPETENCIES = {
 
 
 # ============================================================================
+# MACHINERY HAZARD & LOTO RESPONSE COMPETENCY DEFINITIONS
+# ============================================================================
+
+MACHINERY_COMPETENCIES = {
+    "hazard_identification": CompetencyDefinition(
+        name="hazard_identification",
+        description="Ability to detect industrial machine pinch points, exposed drives, and mechanical hazards",
+        pass_threshold=75.0,
+        aspects=[
+            "identify_pinch_points",
+            "spot_unshielded_gears",
+            "detect_jam_hazards",
+            "recognize_electrical_isolation_state"
+        ]
+    ),
+    "ppe_selection": CompetencyDefinition(
+        name="ppe_selection",
+        description="Correct selection of mechanical safety PPE and restraint of loose articles",
+        pass_threshold=80.0,
+        aspects=[
+            "select_impact_eyewear",
+            "ear_protection",
+            "steel_toe_boots",
+            "hair_clothing_restraint"
+        ]
+    ),
+    "loto_procedure": CompetencyDefinition(
+        name="loto_procedure",
+        description="Execution of standard Lockout/Tagout energy isolation procedures",
+        pass_threshold=80.0,
+        aspects=[
+            "isolate_power_switch",
+            "apply_lockout_hasp",
+            "affix_danger_tag",
+            "verify_zero_energy_state"
+        ]
+    ),
+    "equipment_use": CompetencyDefinition(
+        name="equipment_use",
+        description="Proper operation of machine guards, interlocks, and safety feeding tools",
+        pass_threshold=75.0,
+        aspects=[
+            "inspect_safety_guard",
+            "interlock_verification",
+            "push_stick_operation",
+            "tool_maintenance"
+        ]
+    ),
+    "emergency_response": CompetencyDefinition(
+        name="emergency_response",
+        description="Immediate emergency response and emergency stop reaction",
+        pass_threshold=70.0,
+        aspects=[
+            "e_stop_operation",
+            "immediate_alert",
+            "first_aid_entrapment",
+            "incident_isolation"
+        ]
+    ),
+}
+
+
+# ============================================================================
 # SCORING THRESHOLDS
 # ============================================================================
 
@@ -175,9 +238,12 @@ RETRAINING_SEVERITY_THRESHOLDS = {
 
 def get_competencies(scenario_type: str) -> Dict[str, CompetencyDefinition]:
     """Get competency definitions for a scenario type."""
-    if scenario_type.lower() == "fire":
+    st = scenario_type.lower()
+    if st == "fire":
         return FIRE_COMPETENCIES
-    elif scenario_type.lower() == "gas":
+    elif st == "gas":
         return GAS_COMPETENCIES
+    elif st == "machinery":
+        return MACHINERY_COMPETENCIES
     else:
         raise ValueError(f"Unknown scenario type: {scenario_type}")
