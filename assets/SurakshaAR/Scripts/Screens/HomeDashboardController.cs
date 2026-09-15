@@ -25,8 +25,10 @@ namespace SurakshaAR.Screens
             var loc   = AppManager.Instance?.Localization;
             var state = AppState.Instance;
 
-            string workerName = state != null && !string.IsNullOrEmpty(state.WorkerName) ? state.WorkerName : "Ramesh Kumar";
-            string workerId   = state != null && !string.IsNullOrEmpty(state.EmployeeId) ? state.EmployeeId : "JH-MN-004821";
+            string workerName = state != null && !string.IsNullOrEmpty(state.WorkerName)
+                ? state.WorkerName
+                : (state != null && !string.IsNullOrEmpty(state.EmployeeId) ? state.EmployeeId : "Worker");
+            string workerId   = state != null && !string.IsNullOrEmpty(state.EmployeeId) ? state.EmployeeId : "Trainee";
 
             // ── Greeting & worker info ─────────────────────────────────────
             var labelGreeting = UIHelper.FindTMP(root, "label-greeting");
@@ -41,7 +43,9 @@ namespace SurakshaAR.Screens
 
             var labelRole = UIHelper.FindTMP(root, "label-role");
             if (labelRole != null)
-                labelRole.text = "Jharia Mine";
+                labelRole.text = state != null && !string.IsNullOrEmpty(state.MineSite)
+                    ? state.MineSite
+                    : (state != null ? state.WorkerRole : "Mine Safety Trainee");
 
             // ── Localize static labels ─────────────────────────────────────
             if (loc != null)

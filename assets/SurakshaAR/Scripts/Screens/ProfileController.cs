@@ -27,9 +27,11 @@ namespace SurakshaAR.Screens
             ApplyLanguageFonts(root, currentLang);
 
             // 1. Worker Profile Details from Real State
-            string workerName = !string.IsNullOrWhiteSpace(state?.WorkerName) ? state.WorkerName : "Ramesh Kumar";
-            string workerId   = !string.IsNullOrWhiteSpace(state?.EmployeeId) ? state.EmployeeId : "JH-MN-004821";
-            string workerRole = !string.IsNullOrWhiteSpace(state?.WorkerRole) ? state.WorkerRole : "Mine Worker";
+            string workerName = !string.IsNullOrWhiteSpace(state?.WorkerName)
+                ? state.WorkerName
+                : (!string.IsNullOrWhiteSpace(state?.EmployeeId) ? state.EmployeeId : "Worker");
+            string workerId   = !string.IsNullOrWhiteSpace(state?.EmployeeId) ? state.EmployeeId : "Unassigned";
+            string workerRole = !string.IsNullOrWhiteSpace(state?.WorkerRole) ? state.WorkerRole : "Mine Safety Worker";
 
             var nameLbl = UIHelper.FindTMP(root, "label-worker-name");
             if (nameLbl != null) SetText(nameLbl, workerName);
@@ -46,14 +48,14 @@ namespace SurakshaAR.Screens
             if (roleLbl != null) SetText(roleLbl, workerRole);
 
             var siteLbl = UIHelper.FindTMP(root, "label-site");
-            if (siteLbl != null) SetText(siteLbl, "Jharia Mine, Dhanbad");
+            if (siteLbl != null) SetText(siteLbl, !string.IsNullOrWhiteSpace(state?.MineSite) ? state.MineSite : "Industrial Mine Site");
 
             var deptLbl = UIHelper.FindTMP(root, "label-department");
             if (deptLbl != null) SetText(deptLbl, "Department of Mines, Jharkhand");
 
             // 2. Training & Assessment Statistics from Real State (Zero Hardcoded Mock)
-            int completedModules = state != null ? state.CompletedModulesCount : 3;
-            int earnedCerts = (state != null && state.IsPassed) ? Mathf.Max(1, completedModules - 1) : 0;
+            int completedModules = state != null ? state.CompletedModulesCount : 0;
+            int earnedCerts = (state != null && state.IsPassed && !string.IsNullOrEmpty(state.CertificateId)) ? 1 : 0;
             float totalHours = completedModules * 1.5f;
 
             var trainLbl = UIHelper.FindTMP(root, "label-stat-train");

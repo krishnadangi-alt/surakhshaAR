@@ -151,11 +151,11 @@ namespace SurakshaAR.UI.Builders
             UIHelper.SetLayout(certSub.gameObject, preferredHeight: 20);
 
             // Worker Name
-            var nameLbl = UIHelper.MakeLabel("label-worker-name", inner, "Ramesh Kumar", 28, UIColors.PrimaryDark, TextAlignmentOptions.Center, bold: true);
+            var nameLbl = UIHelper.MakeLabel("label-worker-name", inner, "Trainee Worker", 28, UIColors.PrimaryDark, TextAlignmentOptions.Center, bold: true);
             UIHelper.SetLayout(nameLbl.gameObject, preferredHeight: 36);
 
             // Worker ID
-            var idLbl = UIHelper.MakeLabel("label-worker-id", inner, "Mine Worker | ID: M10234", 16, UIColors.TextSecondary, TextAlignmentOptions.Center);
+            var idLbl = UIHelper.MakeLabel("label-worker-id", inner, "Mine Worker | ID: Unassigned", 16, UIColors.TextSecondary, TextAlignmentOptions.Center);
             UIHelper.SetLayout(idLbl.gameObject, preferredHeight: 22);
 
             var descLbl = UIHelper.MakeLabel("DescLbl", inner,

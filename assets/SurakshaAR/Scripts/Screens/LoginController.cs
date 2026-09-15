@@ -160,9 +160,9 @@ namespace SurakshaAR.Screens
 
             if (_isGuestMode || string.IsNullOrEmpty(password))
             {
-                // Day 6: guest mode and offline play keep working without a
+                // Guest mode and offline play keep working without a
                 // backend account — local-only session, no Bearer token.
-                EnterLocalSession(username, _isGuestMode ? "Guest Worker" : "Ramesh Kumar");
+                EnterLocalSession(username, _isGuestMode ? "Guest Worker" : (string.IsNullOrWhiteSpace(username) ? "Trainee" : username));
                 return;
             }
 
@@ -179,16 +179,16 @@ namespace SurakshaAR.Screens
         }
 
         /// <summary>
-        /// Day 6: authenticate against POST /api/v1/auth/login and store the
+        /// Authenticate against POST /api/v1/auth/login and store the
         /// Bearer token + worker id in AuthSession for every later API call.
         /// Falls back to the local session when the backend is unreachable.
         /// </summary>
         private IEnumerator LoginRoutine(string username, string password)
         {
-            string baseUrl = OfflineSyncManager.Instance != null
-                ? OfflineSyncManager.Instance.BackendBaseUrl
-                : "http://127.0.0.1:8000";
-            string url = baseUrl.TrimEnd('/') + "/api/v1/auth/login";
+            string baseUrl = SurakshaApiClient.Instance != null
+                ? SurakshaApiClient.Instance.BaseUrl
+                : "http://127.0.0.1:8000/api/v1";
+            string url = baseUrl.TrimEnd('/') + "/auth/login";
             string json = JsonUtility.ToJson(new LoginRequest { username = username, password = password });
 
             using (UnityWebRequest req = new UnityWebRequest(url, "POST"))
@@ -210,7 +210,7 @@ namespace SurakshaAR.Screens
                     if (session != null && token != null)
                         session.SetSession(token.access_token, token.role, token.username, token.worker_id);
                     if (AppState.Instance != null)
-                        AppState.Instance.SetUser(username, token != null ? token.username : username, false);
+                        AppState.Instance.SetUser(username, token != null ? token.username : username, false, token != null ? token.role : "worker");
                     UIManager.Instance?.ShowScreen(ScreenId.HomeDashboard);
                 }
                 else if (req.responseCode == 401)
@@ -221,7 +221,7 @@ namespace SurakshaAR.Screens
                 {
                     // Backend unreachable — keep the offline-first promise.
                     Debug.LogWarning("[LOGIN] Backend unavailable (" + req.error + "). Continuing offline.");
-                    EnterLocalSession(username, "Ramesh Kumar");
+                    EnterLocalSession(username, string.IsNullOrWhiteSpace(username) ? "Offline Worker" : username);
                 }
             }
         }

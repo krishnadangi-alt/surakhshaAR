@@ -9,8 +9,8 @@ namespace SurakshaAR.Data
     [Serializable]
     public class OfflineStorageContainer
     {
-        public string worker_id = "JH-MN-004821";
-        public string worker_name = "Ramesh Kumar";
+        public string worker_id = "";
+        public string worker_name = "";
         public string device_id = "";
         public string last_synced_at = "";
         public List<AssessmentResultData> assessments = new List<AssessmentResultData>();
@@ -113,6 +113,31 @@ namespace SurakshaAR.Data
             Data.pending_sync_queue.Add(syncSession);
             Save();
 
+            // Persist structured relational records to LocalDatabaseService
+            if (LocalDatabaseService.Instance != null)
+            {
+                var attemptRecord = new LocalDatabaseService.TrainingAttemptRecord
+                {
+                    attempt_id = $"att_{Guid.NewGuid():N}".Substring(0, 16),
+                    worker_id = !string.IsNullOrEmpty(AppState.Instance?.EmployeeId) ? AppState.Instance.EmployeeId : "Trainee",
+                    module_id = moduleId,
+                    scenario_type = scenarioType,
+                    client_session_id = syncSession.client_session_id,
+                    attempt_number = Data.assessments.Count,
+                    started_at = DateTime.UtcNow.AddSeconds(-result.time_taken_seconds).ToString("o"),
+                    completed_at = DateTime.UtcNow.ToString("o"),
+                    elapsed_seconds = result.time_taken_seconds,
+                    provisional_score = result.overall_score,
+                    passed = result.passed,
+                    pass_reason = result.passed ? "Passed all competency criteria" : "Failed requirements",
+                    timed_out = AppState.Instance != null && AppState.Instance.LastAttemptTimedOut,
+                    critical_error_count = result.critical_errors != null ? result.critical_errors.Count : 0,
+                    sync_status = "Pending"
+                };
+                LocalDatabaseService.Instance.RecordAttempt(attemptRecord);
+                LocalDatabaseService.Instance.EnqueueSync("assessment", attemptRecord.attempt_id, JsonUtility.ToJson(syncSession));
+            }
+
             Debug.Log($"[OFFLINE STORE] Saved session. Pending queue size: {Data.pending_sync_queue.Count}");
 
             // Opportunistically trigger sync if internet is available
@@ -132,6 +157,7 @@ namespace SurakshaAR.Data
 
             Data.last_synced_at = DateTime.UtcNow.ToString("o");
             Save();
+            LocalDatabaseService.Instance?.PurgeSyncedQueue();
             Debug.Log($"[OFFLINE STORE] Marked {count} sessions synced. Remaining pending: {Data.pending_sync_queue.Count}");
         }
     }

@@ -513,7 +513,7 @@ namespace SurakshaAR.Editor
             var liveStateGO = new GameObject("LiveAppState");
             var liveState = liveStateGO.AddComponent<AppState>();
             AppState.Instance = liveState;
-            liveState.SetUser("JH-MN-004821", "Ramesh Kumar", false);
+            liveState.SetUser("JH-MN-004821", "Amit Soren", false);
             liveState.WorkerRole = "Mine Worker";
             liveState.RecordAssessmentResult(95, 4);
             liveState.CompletedModulesCount = 3;

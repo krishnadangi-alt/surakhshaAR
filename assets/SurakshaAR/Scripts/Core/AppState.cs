@@ -14,33 +14,34 @@ namespace SurakshaAR.Core
         public static AppState Instance { get; set; }
 
         public AppLanguage CurrentLanguage { get; set; } = AppLanguage.English;
-        public string EmployeeId { get; set; } = "M10234";
-        public string WorkerName { get; set; } = "Ramesh Kumar";
+        public string EmployeeId { get; set; } = "";
+        public string WorkerName { get; set; } = "";
         public string WorkerRole { get; set; } = "Mine Worker";
+        public string MineSite { get; set; } = "";
         public bool IsGuestMode { get; set; } = false;
 
         public ModuleData SelectedModule { get; set; }
         public int SelectedScenarioIndex { get; set; } = 1;
         public string SelectedScenarioTitle { get; set; } = "Electrical Panel Fire";
 
-        public int AssessmentScore { get; set; } = 95;
+        public int AssessmentScore { get; set; } = 0;
         public int AssessmentTotalQuestions { get; set; } = 6;
-        public int CompletedModulesCount { get; set; } = 3;
-        public int TotalModulesCount { get; set; } = 5;
+        public int CompletedModulesCount { get; set; } = 0;
+        public int TotalModulesCount { get; set; } = 3;
 
         // Rich Competency & Attempt Tracking
-        public float LastARTimerSeconds { get; set; } = 48f;
-        public int CorrectActionsCount { get; set; } = 6;
+        public float LastARTimerSeconds { get; set; } = 0f;
+        public int CorrectActionsCount { get; set; } = 0;
         public int WrongActionsCount { get; set; } = 0;
         public int UnsafeActionsCount { get; set; } = 0;
         public int CriticalErrorsCount { get; set; } = 0;
         public bool LastAttemptTimedOut { get; set; } = false;
-        public bool FireExtinguishedSuccess { get; set; } = true;
+        public bool FireExtinguishedSuccess { get; set; } = false;
         public bool IsPassed => AssessmentScore >= 75 && CriticalErrorsCount == 0 && !LastAttemptTimedOut;
         public bool IsRetrainingMode { get; set; } = false;
-        public int PreviousAttemptScore { get; set; } = 65;
-        public string CertificateId { get; set; } = "IND-SAR-2026-0941";
-        public string CertificationDate { get; set; } = "12 Sept 2026";
+        public int PreviousAttemptScore { get; set; } = 0;
+        public string CertificateId { get; set; } = "";
+        public string CertificationDate { get; set; } = "";
 
         public event Action OnStateChanged;
 
@@ -61,11 +62,13 @@ namespace SurakshaAR.Core
             NotifyChange();
         }
 
-        public void SetUser(string employeeId, string workerName, bool isGuest = false)
+        public void SetUser(string employeeId, string workerName, bool isGuest = false, string role = "Mine Worker", string site = "")
         {
-            EmployeeId = string.IsNullOrWhiteSpace(employeeId) ? "M10234" : employeeId;
-            WorkerName = string.IsNullOrWhiteSpace(workerName) ? "Ramesh Kumar" : workerName;
+            EmployeeId = employeeId ?? "";
+            WorkerName = !string.IsNullOrWhiteSpace(workerName) ? workerName : (isGuest ? "Guest Worker" : (string.IsNullOrWhiteSpace(employeeId) ? "Worker" : employeeId));
             IsGuestMode = isGuest;
+            if (!string.IsNullOrEmpty(role)) WorkerRole = role;
+            if (!string.IsNullOrEmpty(site)) MineSite = site;
             NotifyChange();
         }
 
@@ -83,6 +86,11 @@ namespace SurakshaAR.Core
             if (CompletedModulesCount < TotalModulesCount)
             {
                 CompletedModulesCount = Mathf.Min(CompletedModulesCount + 1, TotalModulesCount);
+            }
+            if (IsPassed && string.IsNullOrEmpty(CertificateId))
+            {
+                CertificateId = $"IND-SAR-{DateTime.UtcNow:yyyyMMdd}-{Mathf.Abs(EmployeeId.GetHashCode()) % 10000:D4}";
+                CertificationDate = DateTime.UtcNow.ToString("dd MMM yyyy");
             }
             NotifyChange();
         }

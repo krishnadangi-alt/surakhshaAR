@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using SurakshaAR.Core;
 using SurakshaAR.UI;
+using SurakshaAR.Data;
 
 /// <summary>
 /// FireScenarioFlowManager
@@ -87,6 +88,13 @@ public class FireScenarioFlowManager : MonoBehaviour
     private float aimBaseLookTimer = 0f;
     private bool _wasSprayingOffTarget = false;
 
+    private FireAssessmentAdapter EnsureFireAdapter()
+    {
+        if (FireAssessmentAdapter.Instance != null) return FireAssessmentAdapter.Instance;
+        var go = new GameObject("FireAssessmentAdapter");
+        return go.AddComponent<FireAssessmentAdapter>();
+    }
+
     // =====================================================
     // LIFECYCLE
     // =====================================================
@@ -166,9 +174,15 @@ public class FireScenarioFlowManager : MonoBehaviour
     {
         currentScore = Mathf.Clamp(currentScore - points, 0, 100);
         if (isUnsafe)
+        {
             unsafeActions++;
+            EnsureFireAdapter().RecordUnsafeAction("unsafe_action", reason);
+        }
         else
+        {
             wrongActions++;
+            EnsureFireAdapter().RecordWrongAction("wrong_action", reason, "minor");
+        }
 
         if (ui != null)
         {
@@ -620,6 +634,16 @@ public class FireScenarioFlowManager : MonoBehaviour
     {
         stage = Stage.Step1_IdentifyHazard;
         hazardLookTimer = 0f;
+        EnsureFireAdapter().StartScenario("fire_drill_01");
+        if (fire != null)
+        {
+            if (MovementTelemetryCollector.Instance == null)
+            {
+                var mgo = new GameObject("MovementTelemetryCollector");
+                mgo.AddComponent<MovementTelemetryCollector>();
+            }
+            MovementTelemetryCollector.Instance?.StartCollection(fire.transform);
+        }
         if (ui == null) return;
 
         ui.SetModuleInfo("Fire & Explosion Response", 1, 6);
@@ -640,6 +664,7 @@ public class FireScenarioFlowManager : MonoBehaviour
         if (stage != Stage.Step1_IdentifyHazard) return;
 
         AddScore(10, "Fire Hazard Identified");
+        EnsureFireAdapter().RecordHazardIdentified("electrical_fire", true);
         TrainingEventManager.RaiseHazardIdentified();
 
         if (ui != null)
@@ -690,6 +715,7 @@ public class FireScenarioFlowManager : MonoBehaviour
         if (stage != Stage.Step2_ActivateAlarm) return;
 
         AddScore(10, "Fire Alarm Activated");
+        EnsureFireAdapter().RecordAlarmActivated();
 
         if (ui != null)
         {
@@ -743,6 +769,7 @@ public class FireScenarioFlowManager : MonoBehaviour
         if (stage != Stage.Step3_SelectExtinguisher) return;
 
         AddScore(10, "CO2 Extinguisher Selected");
+        EnsureFireAdapter().RecordEquipmentSelected("co2_extinguisher", true);
         TrainingEventManager.RaiseExtinguisherPickedUp();
 
         // Dynamically re-bind components to the active functional extinguisher
@@ -807,6 +834,7 @@ public class FireScenarioFlowManager : MonoBehaviour
         if (stage != Stage.Step4_RemovePin) return;
 
         AddScore(10, "Safety Pin Removed");
+        EnsureFireAdapter().RecordPinRemoved();
         TrainingEventManager.RaisePinRemoved();
 
         if (ui != null)
@@ -830,6 +858,7 @@ public class FireScenarioFlowManager : MonoBehaviour
     private void HandlePinRemovalRequired()
     {
         DeductScore(5, "Safety pin must be removed before operating the lever!", isUnsafe: false);
+        EnsureFireAdapter().RecordWrongAction("lever_squeezed_before_pin", "Safety pin must be removed before operating the lever", "minor");
     }
 
     // --- STEP 5: AIM AT BASE OF FIRE ---
@@ -859,6 +888,7 @@ public class FireScenarioFlowManager : MonoBehaviour
         if (stage != Stage.Step5_AimBase) return;
 
         AddScore(10, "Aimed at Base");
+        EnsureFireAdapter().RecordAimAtBase(true);
 
         if (ui != null)
         {
@@ -911,6 +941,7 @@ public class FireScenarioFlowManager : MonoBehaviour
     {
         if (stage == Stage.Step6_Extinguish)
         {
+            EnsureFireAdapter().RecordSprayAction(true, 0f);
             TrainingEventManager.RaiseExtinguisherUsed();
             if (ui != null)
             {
@@ -994,6 +1025,7 @@ public class FireScenarioFlowManager : MonoBehaviour
         }
 
         AddScore(10, "Fire Fully Extinguished!");
+        EnsureFireAdapter().RecordFireExtinguished(scenarioTimer);
         TrainingEventManager.RaiseFireExtinguished();
 
         if (ui != null) ui.HideProgress();
@@ -1049,6 +1081,7 @@ public class FireScenarioFlowManager : MonoBehaviour
 
         stage = Stage.Timeout;
         isTimerRunning = false;
+        EnsureFireAdapter().RecordCriticalAction("scenario_timeout", "7-minute time limit expired before fire was extinguished");
 
         if (ui != null)
         {
@@ -1093,6 +1126,10 @@ public class FireScenarioFlowManager : MonoBehaviour
     {
         stage = isSuccess ? Stage.Complete : Stage.Timeout;
         isTimerRunning = false;
+        MovementTelemetryCollector.Instance?.StopCollection();
+
+        EnsureFireAdapter().RecordEvacuation(isSuccess, isSuccess ? "emergency_exit_A" : "emergency_exit_timeout");
+        EnsureFireAdapter().CompleteScenario(currentScore, isSuccess);
 
         // Record metrics into AppState for Result and Certificate screens
         if (AppState.Instance != null)

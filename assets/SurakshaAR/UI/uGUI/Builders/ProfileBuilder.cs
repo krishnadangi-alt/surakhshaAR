@@ -173,7 +173,7 @@ namespace SurakshaAR.UI.Builders
             UIHelper.SetLayout(topRow.gameObject, preferredHeight: 52, minHeight: 52);
             topRow.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
-            var nameLbl = UIHelper.MakeLabel("label-worker-name", topRow, "Ramesh Kumar", 42, Hex("#0F172A"), TextAlignmentOptions.Left, bold: true);
+            var nameLbl = UIHelper.MakeLabel("label-worker-name", topRow, "Trainee Worker", 42, Hex("#0F172A"), TextAlignmentOptions.Left, bold: true);
             UIHelper.SetLayout(nameLbl.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 52, minHeight: 52);
 
             // Edit button (pill)
@@ -210,8 +210,8 @@ namespace SurakshaAR.UI.Builders
 
             // Details metadata rows
             var detailsList = UIHelper.MakeVertical("DetailsList", infoCol, 6, childForceWidth: false, childForceHeight: false);
-            MakeIconRow(detailsList, "label-worker-id", UIHelper.GetIdCardSprite(), "Employee ID: JH-MN-004821");
-            MakeIconRow(detailsList, "label-site", UIHelper.GetPinSprite(), "Jharia Mine, Dhanbad");
+            MakeIconRow(detailsList, "label-worker-id", UIHelper.GetIdCardSprite(), "Employee ID: Unassigned");
+            MakeIconRow(detailsList, "label-site", UIHelper.GetPinSprite(), "Site: Industrial Facility");
             MakeIconRow(detailsList, "label-department", UIHelper.GetWorkforceSprite(), "Department of Mines, Jharkhand");
         }
 

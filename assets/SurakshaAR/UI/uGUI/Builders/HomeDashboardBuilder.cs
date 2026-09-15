@@ -281,14 +281,14 @@ namespace SurakshaAR.UI.Builders
             var greeting = UIHelper.MakeLabel("label-greeting", info, "Welcome,", 26, Hex("#64748B"));
             UIHelper.SetLayout(greeting.gameObject, preferredHeight: 32, minHeight: 32);
 
-            var wName = UIHelper.MakeLabel("label-worker-name", info, "Ramesh Kumar", 52, Hex("#0F172A"), TextAlignmentOptions.Left, bold: true);
+            var wName = UIHelper.MakeLabel("label-worker-name", info, "Worker", 52, Hex("#0F172A"), TextAlignmentOptions.Left, bold: true);
             UIHelper.SetLayout(wName.gameObject, preferredHeight: 60, minHeight: 60);
 
             var idRow = UIHelper.MakeHorizontal("IdRow", info, 8, childForceWidth: false, childForceHeight: false);
             UIHelper.SetLayout(idRow.gameObject, preferredHeight: 32, minHeight: 32);
             idRow.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
-            var idLbl = UIHelper.MakeLabel("label-worker-id", idRow, "ID: JH-MN-004821", 24, Hex("#475569"));
+            var idLbl = UIHelper.MakeLabel("label-worker-id", idRow, "ID: Unassigned", 24, Hex("#475569"));
             UIHelper.SetLayout(idLbl.gameObject, preferredHeight: 32, minHeight: 32);
 
             var dot = UIHelper.MakeLabel("Dot", idRow, "|", 24, Hex("#CBD5E1"));
@@ -300,7 +300,7 @@ namespace SurakshaAR.UI.Builders
             pinImg.sprite = UIHelper.GetPinSprite();
             pinImg.color  = Hex("#10B981");
 
-            var mineLbl = UIHelper.MakeLabel("label-role", idRow, "Jharia Mine", 24, Hex("#0F172A"), TextAlignmentOptions.Left, bold: false);
+            var mineLbl = UIHelper.MakeLabel("label-role", idRow, "Mine Facility", 24, Hex("#0F172A"), TextAlignmentOptions.Left, bold: false);
             UIHelper.SetLayout(mineLbl.gameObject, preferredHeight: 32, minHeight: 32);
 
             var tagGO = UIHelper.MakeRect("TagGO", info);

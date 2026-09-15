@@ -4,6 +4,8 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
+using SurakshaAR.Core;
+
 namespace SurakshaAR.Networking
 {
     /// <summary>Result of a request to the SurakshaAR backend.</summary>
@@ -67,6 +69,10 @@ namespace SurakshaAR.Networking
             using (UnityWebRequest request = UnityWebRequest.Get(BuildUrl(path)))
             {
                 request.timeout = timeoutSeconds;
+                if (AuthSession.Instance != null && AuthSession.Instance.HasValidToken)
+                {
+                    request.SetRequestHeader("Authorization", "Bearer " + AuthSession.Instance.AccessToken);
+                }
                 yield return request.SendWebRequest();
                 Finish(request, onDone);
             }
@@ -82,6 +88,10 @@ namespace SurakshaAR.Networking
                 request.uploadHandler = new UploadHandlerRaw(bodyRaw);
                 request.downloadHandler = new DownloadHandlerBuffer();
                 request.SetRequestHeader("Content-Type", "application/json");
+                if (AuthSession.Instance != null && AuthSession.Instance.HasValidToken)
+                {
+                    request.SetRequestHeader("Authorization", "Bearer " + AuthSession.Instance.AccessToken);
+                }
                 request.timeout = timeoutSeconds;
                 yield return request.SendWebRequest();
                 Finish(request, onDone);

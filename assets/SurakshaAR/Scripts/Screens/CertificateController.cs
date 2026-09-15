@@ -16,8 +16,10 @@ namespace SurakshaAR.Screens
             var loc = AppManager.Instance?.Localization;
             var state = AppState.Instance;
 
-            string workerName = state != null ? state.WorkerName : "Ramesh Kumar";
-            string workerId = state != null ? state.EmployeeId : "M10234";
+            string workerName = state != null && !string.IsNullOrEmpty(state.WorkerName)
+                ? state.WorkerName
+                : (state != null && !string.IsNullOrEmpty(state.EmployeeId) ? state.EmployeeId : "Worker");
+            string workerId = state != null && !string.IsNullOrEmpty(state.EmployeeId) ? state.EmployeeId : "Trainee";
             bool isGuest = state != null && state.IsGuestMode;
 
             var labelWorkerName = UIHelper.FindTMP(root, "label-worker-name");
@@ -48,22 +50,26 @@ namespace SurakshaAR.Screens
                 }
             }
 
+            bool hasOfficialCert = state != null && state.IsPassed && !string.IsNullOrEmpty(state.CertificateId);
+
             var scoreGrade = UIHelper.FindTMP(root, "label-score-grade");
             if (scoreGrade != null && state != null)
             {
-                scoreGrade.text = $"Competency Grade: Level 1 ({state.AssessmentScore}% Score • {state.CriticalErrorsCount} Critical Errors)";
+                scoreGrade.text = hasOfficialCert
+                    ? $"Competency Grade: Qualified ({state.AssessmentScore}% Score • {state.CriticalErrorsCount} Critical Errors)"
+                    : $"Assessment Status: {(state.AssessmentScore > 0 ? (state.IsPassed ? "Awaiting Issuance" : "Retraining Required") : "Not Attempted")}";
             }
 
             var certId = UIHelper.FindTMP(root, "label-cert-id");
             if (certId != null && state != null)
             {
-                certId.text = $"Cert ID: {state.CertificateId}";
+                certId.text = hasOfficialCert ? $"Cert ID: {state.CertificateId}" : "Cert ID: Pending Official Decision";
             }
 
             var certDate = UIHelper.FindTMP(root, "label-cert-date");
             if (certDate != null && state != null)
             {
-                certDate.text = $"Date Issued: {state.CertificationDate}";
+                certDate.text = hasOfficialCert ? $"Date Issued: {state.CertificationDate}" : "Verification: In Progress";
             }
 
             var labelTitle = UIHelper.FindTMP(root, "label-title");
