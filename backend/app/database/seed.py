@@ -1,7 +1,10 @@
-"""Seed the two MVP training modules."""
+﻿"""Seed the two MVP training modules and the bootstrap admin account."""
 
 from sqlalchemy.orm import Session
 
+from app.auth.security import hash_password
+from app.config import ADMIN_PASSWORD, ADMIN_USERNAME
+from app.models.auth_user import AuthUser
 from app.models.module import Module
 
 MODULES = [
@@ -25,3 +28,23 @@ def seed_modules(db: Session) -> None:
         if not exists:
             db.add(Module(**data))
     db.commit()
+
+
+def seed_admin(db: Session) -> None:
+    """Seed the bootstrap admin account from the environment (Day 4).
+
+    No-op when ``SURAKHSHAAR_ADMIN_PASSWORD`` is not configured, so default
+    deployments never receive a default/hardcoded password.
+    """
+    if not ADMIN_PASSWORD:
+        return
+    exists = db.query(AuthUser).filter(AuthUser.username == ADMIN_USERNAME).first()
+    if not exists:
+        db.add(
+            AuthUser(
+                username=ADMIN_USERNAME,
+                password_hash=hash_password(ADMIN_PASSWORD),
+                role="admin",
+            )
+        )
+        db.commit()

@@ -1,10 +1,25 @@
-from app.schemas.worker import WorkerCreate, WorkerOut
+﻿from app.schemas.worker import WorkerCreate, WorkerOut
 from app.schemas.module import ModuleOut, ModuleListOut
-from app.schemas.progress import ProgressCreate, ProgressOut, ProgressItemOut, ProgressListOut
+from app.schemas.progress import (
+    ProgressCreate,
+    ProgressOut,
+    ProgressItemOut,
+    ProgressListOut,
+    WorkerProgressItemOut,
+    WorkerProgressListOut,
+    RetentionMilestoneOut,
+    WorkerRetentionOut,
+    WorkerRetentionListOut,
+)
 from app.schemas.assessment import (
     AssessmentCreate,
-    AssessmentOut,
+    AssessmentEvent,
     AssessmentHistoryOut,
+    AssessmentOut,
+    CompetencyScoreOut,
+    RetrainingModuleOut,
+    RetrainingPlanOut,
+    WeaknessOut,
 )
 from app.schemas.sync import SyncSession, SyncCreate, SyncOut, SyncStatusOut
 from app.schemas.certificate import (
@@ -20,6 +35,14 @@ from app.schemas.dashboard import (
     DashboardWorkerListOut,
     DashboardWorkerDetailOut,
 )
+from app.schemas.event import (
+    EventBatchCreate,
+    EventBatchOut,
+    EventItemCreate,
+    EventOut,
+    EventStatsOut,
+)
+from app.schemas.auth import LoginRequest, TokenOut
 
 __all__ = [
     "WorkerCreate",
@@ -30,9 +53,19 @@ __all__ = [
     "ProgressOut",
     "ProgressItemOut",
     "ProgressListOut",
+    "WorkerProgressItemOut",
+    "WorkerProgressListOut",
+    "RetentionMilestoneOut",
+    "WorkerRetentionOut",
+    "WorkerRetentionListOut",
     "AssessmentCreate",
+    "AssessmentEvent",
     "AssessmentOut",
     "AssessmentHistoryOut",
+    "CompetencyScoreOut",
+    "RetrainingModuleOut",
+    "RetrainingPlanOut",
+    "WeaknessOut",
     "SyncSession",
     "SyncCreate",
     "SyncOut",
@@ -46,4 +79,11 @@ __all__ = [
     "DashboardWorkerOut",
     "DashboardWorkerListOut",
     "DashboardWorkerDetailOut",
+    "EventItemCreate",
+    "EventBatchCreate",
+    "EventOut",
+    "EventBatchOut",
+    "EventStatsOut",
+    "LoginRequest",
+    "TokenOut",
 ]

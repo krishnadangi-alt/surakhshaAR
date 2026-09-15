@@ -2,12 +2,12 @@
 
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class CertificateCreate(BaseModel):
-    worker_id: int
-    module_id: int
+    worker_id: int = Field(..., ge=1)
+    module_id: int = Field(..., ge=1)
 
 
 class CertificateOut(BaseModel):

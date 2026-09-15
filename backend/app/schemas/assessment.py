@@ -1,17 +1,117 @@
-"""Assessment request/response schemas."""
+﻿"""Assessment request/response schemas.
+
+Assessments are behaviour-based: the client submits the raw VR session events
+and the backend scores them with the ML competency engine (see
+``app.services.competency_service``). Client-supplied scores are never trusted.
+"""
 
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+
+VALID_WRONG_ACTION_SEVERITIES = {"minor", "major"}
+
+
+class AssessmentEvent(BaseModel):
+    """A single behavioural event from the VR session.
+
+    Only ``event_type`` is required; each event type carries its own fields
+    (e.g. ``action``/``correct`` for action events, ``severity`` for
+    wrong_action events). Unknown extra fields are preserved and forwarded to
+    the scoring engine unchanged.
+    """
+
+    model_config = ConfigDict(extra="allow")
+
+    event_type: str = Field(
+        ...,
+        min_length=1,
+        max_length=64,
+        description=(
+            "hazard_identified | ppe_selected | equipment_selected | "
+            "wrong_action | critical_action | evacuation_started | "
+            "emergency_procedure | training_started | assessment_started | "
+            "assessment_completed"
+        ),
+    )
+    timestamp: str | None = Field(None, max_length=64)
+
+    @field_validator("event_type")
+    @classmethod
+    def _event_type_not_blank(cls, v: str) -> str:
+        v = v.strip()
+        if not v:
+            raise ValueError("event_type must not be blank")
+        return v
+
+    @model_validator(mode="after")
+    def _validate_severity_field(self):
+        """wrong_action/sequence_error severity must be minor or major when present."""
+        if self.event_type.lower() in {"wrong_action", "sequence_error"}:
+            severity = getattr(self, "severity", None)
+            if severity is not None and str(severity).lower() not in VALID_WRONG_ACTION_SEVERITIES:
+                raise ValueError("severity must be 'minor' or 'major' for wrong_action events")
+        return self
 
 
 class AssessmentCreate(BaseModel):
-    worker_id: int
-    module_id: int
-    attempt_number: int
+    worker_id: int = Field(..., ge=1)
+    module_id: int = Field(..., ge=1)
+    scenario_type: str | None = Field(
+        None,
+        max_length=32,
+        description="Optional override; defaults to the module code (fire/gas).",
+    )
+    attempt_number: int | None = Field(
+        None,
+        ge=1,
+        description="Optional; auto-incremented per worker+module when omitted.",
+    )
+    client_session_id: str | None = Field(
+        None,
+        max_length=64,
+        description=(
+            "Optional client-generated idempotency key; re-submitting the same key "
+            "for the same worker+module returns the stored assessment (200) and "
+            "creates no duplicate record."
+        ),
+    )
+    events: list[AssessmentEvent] = Field(..., min_length=1, max_length=2000)
+
+
+class CompetencyScoreOut(BaseModel):
+    name: str
     score: float
     passed: bool
-    weaknesses: list[str] = []
+    pass_threshold: float
+
+
+class WeaknessOut(BaseModel):
+    competency_name: str
+    score: float
+    threshold: float
+    severity: str
+    reason: str
+    affected_aspects: list[str] = []
+
+
+class RetrainingModuleOut(BaseModel):
+    module_id: str
+    name: str
+    description: str
+    estimated_duration_minutes: int
+    difficulty_level: str
+    competencies_addressed: list[str]
+    reason: str
+
+
+class RetrainingPlanOut(BaseModel):
+    scenario_type: str
+    recommended_modules: list[RetrainingModuleOut]
+    total_estimated_duration_minutes: int
+    time_limit_exceeded: bool
+    weaknesses_addressed: int
+    total_weaknesses: int
 
 
 class AssessmentOut(BaseModel):
@@ -21,9 +121,13 @@ class AssessmentOut(BaseModel):
     worker_id: int
     module_id: int
     attempt_number: int
+    scenario_type: str
     score: float
     passed: bool
-    weaknesses: list[str]
+    pass_reason: str
+    weaknesses: list[WeaknessOut]
+    competency_scores: dict[str, CompetencyScoreOut]
+    critical_errors: list[str]
     created_at: datetime
 
 
