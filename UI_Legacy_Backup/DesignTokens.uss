@@ -1,0 +1,56 @@
+/* =========================================================
+   SURAKSHAAR - DESIGN TOKENS
+   Unity UI Toolkit USS
+   Mobile Industrial Safety Design System
+   ========================================================= */
+
+:root {
+    /* ----- BRAND: NAVY (SurakshaAR government/industrial palette) ----- */
+    --color-primary: rgb(18, 63, 102);        /* #123F66 Navy primary */
+    --color-primary-dark: rgb(13, 47, 74);    /* #0D2F4A Dark navy */
+    --color-primary-light: rgb(234, 243, 249);/* #EAF3F9 Light navy tint */
+    --color-primary-hover: rgb(22, 77, 120);  /* #164D78 Mid navy hover */
+
+    /* ----- SAFETY DOMAIN ACCENTS (controlled status palette) ----- */
+    --color-accent-fire: rgb(198, 40, 40);          /* #C62828 danger */
+    --color-accent-fire-bg: rgb(253, 236, 236);     /* #FDECEC */
+    --color-accent-fire-border: rgb(245, 198, 198);
+
+    --color-accent-gas: rgb(37, 99, 166);           /* #2563A6 info */
+    --color-accent-gas-bg: rgb(234, 242, 251);      /* #EAF2FB */
+    --color-accent-gas-border: rgb(199, 218, 240);
+
+    --color-accent-machinery: rgb(35, 134, 54);     /* #238636 safety green */
+    --color-accent-machinery-bg: rgb(230, 244, 236);/* #E6F4EC */
+    --color-accent-machinery-border: rgb(198, 229, 206);
+
+    --color-accent-electrical: rgb(217, 119, 6);    /* #D97706 warning */
+    --color-accent-electrical-bg: rgb(254, 243, 199);/* #FEF3C7 */
+    --color-accent-electrical-border: rgb(243, 223, 166);
+
+    --color-accent-tip-bg: rgb(254, 243, 199);
+    --color-accent-tip-border: rgb(243, 223, 166);
+
+    /* ----- SURFACES / TEXT / BORDERS ----- */
+    --color-bg-main: rgb(246, 248, 250);      /* #F6F8FA page background */
+    --color-bg-card: rgb(255, 255, 255);
+    --color-bg-muted: rgb(240, 243, 246);
+
+    --color-text-main: rgb(23, 33, 43);       /* #17212B primary text */
+    --color-text-secondary: rgb(82, 96, 109); /* #52606D secondary text */
+    --color-text-muted: rgb(123, 135, 148);   /* #7B8794 muted text */
+    --color-text-inverse: rgb(255, 255, 255);
+
+    --color-border-subtle: rgb(217, 225, 231);/* #D9E1E7 border */
+    --color-border-focus: rgb(18, 63, 102);   /* #123F66 */
+
+    --font-heading: resource("DefaultControlsFont");
+    --font-body: resource("DefaultControlsFont");
+
+    /* ----- RADII (cards 12-16, buttons 10-14 - restrained) ----- */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 16px;
+    --radius-round: 999px;
+}

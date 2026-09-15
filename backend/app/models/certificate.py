@@ -2,7 +2,7 @@
 
 from datetime import datetime, timedelta, timezone
 
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, UniqueConstraint
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 
 from app.database.connection import Base
 
@@ -17,9 +17,6 @@ def default_valid_until():
 
 class Certificate(Base):
     __tablename__ = "certificates"
-    __table_args__ = (
-        UniqueConstraint("worker_id", "module_id", name="uq_certificate_worker_module"),
-    )
 
     id = Column(Integer, primary_key=True, index=True)
     certificate_number = Column(String, unique=True, nullable=False, index=True)

@@ -1,23 +1,32 @@
-# Dashboard
+# React + TypeScript + Vite
 
-Web dashboard for administrators and trainers to monitor training progress, assessment results, competency
-scores, and certificate issuance.
+This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
-> **Status:** Production-ready. Implements Day 6 full-integration dashboard with admin Bearer authentication, live WebSocket
-> telemetry, certificate verification, and real retention/milestone status from the backend. Backend runs as a static asset
-> server serving `index.html` + `src/` under `/dashboard`; the app is also runnable directly from the file system when the
-> backend is live.
->
-> The dashboard lives under `/dashboard` in the backend (or at `http://localhost:8000/dashboard/index.html` in dev). See
-> `docs/api/API.md` and `docs/architecture/integration.md` for the API contract.
+Currently, two official plugins are available:
 
-## Structure
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-| Path | Purpose |
-|---|---|
-| `src/components/` | Reusable UI components |
-| `src/pages/` | Page-level views |
-| `src/services/` | API client / data services |
-| `src/utils/` | Shared utilities |
-| `public/` | Static public assets |
-| `tests/` | Dashboard tests |
+## React Compiler
+
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+
+## Expanding the Oxlint configuration
+
+If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+
+```json
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript", "oxc"],
+  "options": {
+    "typeAware": true
+  },
+  "rules": {
+    "react/rules-of-hooks": "error",
+    "react/only-export-components": ["warn", { "allowConstantExport": true }]
+  }
+}
+```
+
+See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.

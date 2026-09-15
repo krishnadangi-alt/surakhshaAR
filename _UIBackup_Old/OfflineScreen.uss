@@ -1,0 +1,30 @@
+/* =========================================================
+   SURAKSHAAR - OFFLINE STATE STYLES
+   Unity UI Toolkit USS
+   Offline notice & sync status
+   ========================================================= */
+
+.offline-banner {
+    width: 100%;
+    height: 36px;
+    background-color: rgb(255, 245, 230);
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(245, 225, 195);
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.offline-banner-icon {
+    font-size: 14px;
+    color: rgb(220, 130, 20);
+    margin-right: 6px;
+}
+
+.offline-banner-text {
+    font-size: 11px;
+    color: rgb(110, 80, 30);
+    -unity-font-style: bold;
+}

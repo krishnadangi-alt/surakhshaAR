@@ -1,0 +1,106 @@
+/* =========================================================
+   SURAKSHAAR - APP BASE STYLES
+   Unity UI Toolkit USS
+   Base layout, reset, responsive utilities
+   ========================================================= */
+
+* {
+    -unity-font-definition: resource("DefaultControlsFont");
+    margin: 0;
+    padding: 0;
+}
+
+.screen {
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    overflow: hidden;
+    background-color: rgb(246, 248, 250); /* #F6F8FA page background */
+    position: relative;
+}
+
+.screen-host {
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.screen-spacer {
+    flex-grow: 1;
+}
+
+.safe-area {
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 12px;
+    padding-bottom: 16px;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.screen-layout {
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.content-column {
+    width: 100%;
+    flex-grow: 1;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+.scroll-content {
+    flex-grow: 1;
+    min-height: 0;
+}
+
+.unity-scroll-view {
+    flex-grow: 1;
+}
+
+.unity-scroller--vertical {
+    width: 4px;
+    opacity: 0.3;
+}
+
+.unity-scroller--vertical .unity-base-slider__dragger {
+    background-color: rgb(180, 192, 188);
+    border-radius: 2px;
+}
+
+.unity-scroller--vertical .unity-base-slider__tracker {
+    background-color: transparent;
+    border-width: 0;
+}
+
+Label {
+    color: rgb(25, 46, 62);
+    white-space: normal;
+}
+
+Button {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    padding: 0;
+    background-color: transparent;
+    -unity-text-align: middle-center;
+}
+
+Button:hover {
+    opacity: 0.94;
+}
+
+Button:active {
+    opacity: 0.84;
+}

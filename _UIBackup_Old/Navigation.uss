@@ -1,0 +1,127 @@
+/* =========================================================
+   SURAKSHAAR - NAVIGATION STYLES
+   Unity UI Toolkit USS
+   Top bars, Back buttons, Bottom Nav Bar
+   ========================================================= */
+
+/* ---------- TOP BAR ---------- */
+
+.topbar {
+    width: 100%;
+    height: 54px;
+    min-height: 54px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 14px;
+    padding-right: 14px;
+    background-color: rgb(255, 255, 255);
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(228, 233, 231);
+}
+
+.topbar--transparent {
+    background-color: transparent;
+    border-bottom-width: 0;
+}
+
+.topbar-back-btn {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    min-height: 38px;
+    border-radius: 19px;
+    background-color: rgb(255, 255, 255);
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-color: rgb(228, 233, 231);
+    color: rgb(26, 49, 68);
+    font-size: 22px;
+    -unity-text-align: middle-center;
+}
+
+.topbar-back-btn:hover {
+    background-color: rgb(243, 247, 245);
+}
+
+.topbar-title {
+    flex-grow: 1;
+    font-size: 15px;
+    -unity-font-style: bold;
+    color: rgb(22, 45, 64);
+    margin-left: 10px;
+    -unity-text-align: middle-left;
+}
+
+.topbar-spacer {
+    width: 38px;
+    min-width: 38px;
+    height: 100%;
+    min-height: 38px;
+}
+
+.topbar-skip-btn {
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 34px;
+    color: rgb(90, 105, 115);
+    font-size: 12px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+/* ---------- BOTTOM NAVIGATION BAR ---------- */
+
+.bottom-nav {
+    width: 100%;
+    height: 64px;
+    min-height: 64px;
+    flex-direction: row;
+    background-color: rgb(255, 255, 255);
+    border-top-width: 1px;
+    border-top-color: rgb(224, 230, 227);
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-bottom: 4px;
+}
+
+.bottom-nav-item {
+    flex-grow: 1;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    padding-top: 6px;
+    padding-bottom: 4px;
+    background-color: transparent;
+}
+
+.bottom-nav-icon {
+    width: 26px;
+    height: 26px;
+    align-items: center;
+    justify-content: center;
+}
+
+.bottom-nav-symbol {
+    font-size: 18px;
+    color: rgb(118, 131, 139);
+    -unity-text-align: middle-center;
+}
+
+.bottom-nav-label {
+    font-size: 9px;
+    color: rgb(118, 131, 139);
+    margin-top: 3px;
+    -unity-text-align: middle-center;
+}
+
+.bottom-nav-item--active .bottom-nav-symbol {
+    color: rgb(0, 137, 105);
+}
+
+.bottom-nav-item--active .bottom-nav-label {
+    color: rgb(0, 137, 105);
+    -unity-font-style: bold;
+}

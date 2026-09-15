@@ -40,13 +40,6 @@ Assets/AssetStoreTools*
 .idea/
 .vs/
 .vscode/
-.vsconfig
-
-# Unity Android build artifacts
-.utmp/
-
-# Unity-generated solution files
-*.slnx
 
 ##############
 # Python (ml/, backend/)
@@ -76,10 +69,6 @@ htmlcov/
 .nox/
 .hypothesis/
 .ipynb_checkpoints/
-
-# Local SQLite dev databases
-*.db
-*.sqlite3
 
 ##############
 # Node / Web (dashboard/)
@@ -118,16 +107,3 @@ Thumbs.db
 Desktop.ini
 *.swp
 *~
-# Unity crash-recovery snapshots
-assets/AR_Fire_foundation/_Recovery/
-
-Assets/_Recovery/
-UI_Legacy_Backup/
-_UIBackup_Old/
-
-##############
-# Temporary / test artifacts
-##############
-__tmp_read.txt
-**/__tmp_read.txt
-backend/pytest_results.txt
