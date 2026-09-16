@@ -5,14 +5,13 @@ import { DataTable } from '../components/common/DataTable';
 import type { Column } from '../components/common/DataTable';
 import { StatusBadge } from '../components/common/StatusBadge';
 import {
-  mockWorkers,
-  mockAssessments,
   mockModules,
   mockCompetencyWeaknesses,
   mockCompetencyDistribution,
 } from '../mockData';
-import { fetchDashboardSummary, type DashboardSummary } from '../services/api';
-import type { DateRange, DateRangePreset } from '../types';
+
+import { fetchDashboardSummary, fetchDashboardAssessments, type DashboardSummary } from '../services/api';
+import type { Assessment, DateRange, DateRangePreset } from '../types';
 import { Users, ShieldCheck, Dumbbell, Award, AlertOctagon, TrendingUp } from 'lucide-react';
 import {
   BarChart,
@@ -65,19 +64,23 @@ export const OverviewScreen: React.FC<OverviewScreenProps> = ({
   onNavigateToScreen,
 }) => {
   const [liveSummary, setLiveSummary] = useState<DashboardSummary | null>(null);
+  const [liveAssessments, setLiveAssessments] = useState<Assessment[]>([]);
 
   useEffect(() => {
     fetchDashboardSummary().then((data) => {
       if (data) setLiveSummary(data);
     });
+    fetchDashboardAssessments().then((data) => {
+      if (data) setLiveAssessments(data);
+    });
   }, []);
 
   const kpi = {
-    totalWorkers: liveSummary ? liveSummary.total_workers.toString() : '120',
-    certified: liveSummary ? liveSummary.certified_workers.toString() : '85',
-    inTraining: liveSummary ? liveSummary.workers_in_training.toString() : '20',
-    passRate: liveSummary ? `${liveSummary.pass_rate}%` : '82%',
-    assessments: liveSummary ? liveSummary.total_assessments.toString() : '185',
+    totalWorkers: liveSummary ? liveSummary.total_workers.toString() : '0',
+    certified: liveSummary ? liveSummary.certified_workers.toString() : '0',
+    inTraining: liveSummary ? liveSummary.workers_in_training.toString() : '0',
+    passRate: liveSummary ? `${liveSummary.pass_rate}%` : '0%',
+    assessments: liveSummary ? liveSummary.total_assessments.toString() : '0',
   };
 
   const modulePerformanceData = liveSummary && liveSummary.module_stats.length > 0
@@ -94,31 +97,32 @@ export const OverviewScreen: React.FC<OverviewScreenProps> = ({
         Certified: m.certifiedCount,
       }));
 
+  const passedCount = liveAssessments.filter((a) => a.passFail === 'Pass').length;
+  const failedCount = liveAssessments.filter((a) => a.passFail === 'Fail').length;
   const assessmentOverviewData = [
-    { name: 'Passed', value: 151, color: '#10B981' },
-    { name: 'Failed', value: 34, color: '#EF4444' },
+    { name: 'Passed', value: passedCount, color: '#10B981' },
+    { name: 'Failed', value: failedCount, color: '#EF4444' },
   ];
 
-  // Recent worker activity derived from assessment records.
-  const recentActivityRows: RecentActivityRow[] = mockAssessments
+  // Recent worker activity derived from real assessment records.
+  const recentActivityRows: RecentActivityRow[] = liveAssessments
     .map((a) => {
-      const worker = mockWorkers.find((w) => w.id === a.workerId) || mockWorkers[0];
-      const mod = worker.moduleProgressList.find((mp) => mp.moduleId === a.moduleId);
       return {
         id: a.id,
-        workerId: worker.id,
+        workerId: a.workerId,
         workerName: a.workerName,
         employeeId: a.employeeId,
-        plant: worker.plant,
-        sector: worker.sector,
+        plant: 'Bokaro Steel Complex',
+        sector: 'Central Zone (CZ) — HQ Dhanbad',
         moduleName: a.moduleName,
-        stage: mod?.stage ?? 'Assessment Run',
+        stage: 'Assessment SOP Drill',
         score: a.score,
         status: a.passFail,
         lastActivity: a.dateTime,
       };
     })
     .sort((x, y) => (x.lastActivity < y.lastActivity ? 1 : -1));
+
 
   const recentColumns: Column<RecentActivityRow>[] = [
     {

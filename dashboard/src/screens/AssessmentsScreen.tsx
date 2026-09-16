@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FilterBar } from '../components/common/FilterBar';
 import { DataTable } from '../components/common/DataTable';
 import type { Column } from '../components/common/DataTable';
 import { StatusBadge } from '../components/common/StatusBadge';
 import { AssessmentDetailModal } from '../components/modals/AssessmentDetailModal';
 import { DateRangePicker } from '../components/common/DateRangePicker';
-import { mockAssessments } from '../mockData';
+import { fetchDashboardAssessments } from '../services/api';
 import type { Assessment, DateRange, DateRangePreset } from '../types';
 import { AlertOctagon, Eye, Download } from 'lucide-react';
 import { filterAssessmentsByRange } from '../utils/dateRange';
 import { downloadCsv } from '../utils/export';
 
 export const AssessmentsScreen: React.FC = () => {
+  const [assessmentsList, setAssessmentsList] = useState<Assessment[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [moduleFilter, setModuleFilter] = useState('ALL');
   const [resultFilter, setResultFilter] = useState('ALL');
@@ -20,7 +21,19 @@ export const AssessmentsScreen: React.FC = () => {
   const [customRange, setCustomRange] = useState<DateRange | null>(null);
   const [selectedAssessment, setSelectedAssessment] = useState<Assessment | null>(null);
 
-  const dateFiltered = filterAssessmentsByRange(mockAssessments, dateRangePreset, customRange ?? undefined);
+  const loadData = () => {
+    fetchDashboardAssessments().then((data) => {
+      setAssessmentsList(data || []);
+    });
+  };
+
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const dateFiltered = filterAssessmentsByRange(assessmentsList, dateRangePreset, customRange ?? undefined);
+
 
   // Filtered dataset
   const filteredAssessments = dateFiltered.filter((a) => {

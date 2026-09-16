@@ -63,3 +63,28 @@ class DashboardWorkerDetailOut(BaseModel):
     assessments: list[AssessmentOut]
     certificates: list[CertificateOut]
     competency_profile: list[WorkerCompetencyProfileOut] = []
+
+
+class DashboardAssessmentItemOut(BaseModel):
+    id: int
+    worker_id: int
+    worker_name: str
+    employee_id: str
+    module_id: int
+    module_code: str
+    module_name: str
+    scenario_type: str
+    client_session_id: str | None = None
+    attempt_number: int
+    score: float
+    passed: bool
+    pass_reason: str | None = None
+    correct_actions: int = 0
+    wrong_actions: int = 0
+    critical_errors: int = 0
+    critical_error_details: str | None = None
+    duration_seconds: float = 0.0
+    created_at: str
+    weaknesses: list = []
+    competency_scores: dict = {}
+    events: list = []

@@ -14,6 +14,7 @@ from app.schemas.assessment import AssessmentOut, CompetencyScoreOut, WeaknessOu
 from app.schemas.certificate import CertificateOut
 from app.schemas.dashboard import (
     CommonWeaknessOut,
+    DashboardAssessmentItemOut,
     DashboardSummaryOut,
     DashboardWorkerDetailOut,
     DashboardWorkerListOut,
@@ -236,3 +237,78 @@ def dashboard_worker_detail(
         certificates=[CertificateOut.model_validate(c) for c in certificates],
         competency_profile=_competency_profile(db, worker_id),
     )
+
+
+@router.get("/assessments", response_model=list[DashboardAssessmentItemOut])
+def dashboard_assessments_list(
+    admin: AuthUser = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    rows = (
+        db.query(Assessment, Worker, Module)
+        .join(Worker, Assessment.worker_id == Worker.id)
+        .join(Module, Assessment.module_id == Module.id)
+        .order_by(Assessment.created_at.desc())
+        .all()
+    )
+    result = []
+    for assessment, worker, module in rows:
+        events = assessment.events or []
+        correct_count = sum(
+            1
+            for e in events
+            if e.get("correct") is True
+            or e.get("result") == "correct"
+            or str(e.get("event_type", "")).lower() == "correct_action"
+        )
+        wrong_count = sum(
+            1
+            for e in events
+            if e.get("correct") is False
+            or str(e.get("event_type", "")).lower()
+            in ("wrong_action", "sequence_error", "unsafe_action", "aim_off_target")
+        )
+        crit_count = len(assessment.critical_errors or [])
+        crit_details = (
+            ", ".join(str(c) for c in assessment.critical_errors)
+            if assessment.critical_errors
+            else None
+        )
+
+        dur = 0.0
+        if events:
+            elapsed_list = [
+                float(e.get("elapsed_seconds", 0.0))
+                for e in events
+                if e.get("elapsed_seconds") is not None
+            ]
+            if elapsed_list:
+                dur = max(elapsed_list)
+
+        result.append(
+            DashboardAssessmentItemOut(
+                id=assessment.id,
+                worker_id=worker.id,
+                worker_name=worker.name,
+                employee_id=worker.employee_id,
+                module_id=module.id,
+                module_code=module.code,
+                module_name=module.name,
+                scenario_type=assessment.scenario_type,
+                client_session_id=assessment.client_session_id,
+                attempt_number=assessment.attempt_number,
+                score=assessment.score,
+                passed=assessment.passed,
+                pass_reason=assessment.pass_reason,
+                correct_actions=correct_count,
+                wrong_actions=wrong_count,
+                critical_errors=crit_count,
+                critical_error_details=crit_details,
+                duration_seconds=dur,
+                created_at=assessment.created_at.isoformat() if assessment.created_at else "",
+                weaknesses=assessment.weaknesses or [],
+                competency_scores=assessment.competency_scores or {},
+                events=events,
+            )
+        )
+    return result
