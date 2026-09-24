@@ -512,7 +512,7 @@ namespace SurakshaAR.UI
             for (int i = 0; i < text.Length; i++)
             {
                 char c = text[i];
-                if (char.IsSurrogate(c) || c == '✓' || c == '➔' || c == '→' || c == '‹' || c == '⚡' ||
+                if (char.IsSurrogate(c) || c == '✓' || c == '➔' || c == '→' || c == '↗' || c == '›' || c == '‹' || c == '⚡' ||
                     c == '⚙' || c == '▦' || c == '⬇' || c == '⏱' || c == '☁')
                 {
                     hasSpecial = true;
@@ -526,6 +526,8 @@ namespace SurakshaAR.UI
                 .Replace("✓", "OK")
                 .Replace("➔", ">")
                 .Replace("→", ">")
+                .Replace("↗", ">")
+                .Replace("›", ">")
                 .Replace("‹", "<")
                 .Replace("🎯", "")
                 .Replace("🔥", "")

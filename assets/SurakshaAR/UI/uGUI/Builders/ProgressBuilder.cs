@@ -221,19 +221,19 @@ namespace SurakshaAR.UI.Builders
         {
             var item = new GameObject(rowName);
             item.transform.SetParent(parent, false);
-            UIHelper.SetLayout(item, preferredHeight: 285, minHeight: 265);
+            UIHelper.SetLayout(item, preferredHeight: 235, minHeight: 220);
 
             var itemImg = item.AddComponent<Image>();
             itemImg.color  = locked ? Hex("#F8FAFC") : Color.white;
             itemImg.sprite = UIHelper.GetWhiteSprite();
-            UIHelper.SetImageRoundedSprite(itemImg, 24);
+            UIHelper.SetImageRoundedSprite(itemImg, 22);
 
             var outline = item.AddComponent<Outline>();
             outline.effectColor    = Hex("#E2E8F0");
             outline.effectDistance = new Vector2(1.5f, -1.5f);
 
             var inner = UIHelper.MakeHorizontal("Inner", item.transform, 16,
-                new RectOffset(22, 22, 18, 18),
+                new RectOffset(20, 20, 14, 14),
                 childForceWidth: false, childForceHeight: false);
             UIHelper.Stretch(inner, 0, 0, 0, 0);
             inner.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
@@ -257,10 +257,9 @@ namespace SurakshaAR.UI.Builders
                 iconImg.raycastTarget  = false;
             }
 
-            // Text column
-            var textCol = UIHelper.MakeVertical("TextCol", inner, 8);
-            UIHelper.SetLayout(textCol.gameObject, flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 215, minHeight: 180);
+            // Text column (clean 6px spacing between heading and description)
+            var textCol = UIHelper.MakeVertical("TextCol", inner, 6);
+            UIHelper.SetLayout(textCol.gameObject, flexibleWidth: true, flexWidth: 1);
             var textVlg = textCol.GetComponent<VerticalLayoutGroup>();
             textVlg.childAlignment = TextAnchor.MiddleLeft;
             textVlg.childControlWidth = true;
@@ -268,26 +267,26 @@ namespace SurakshaAR.UI.Builders
             textVlg.childForceExpandHeight = false;
 
             var titleColor = Hex("#0F172A");
-            var descColor  = Hex("#64748B");
+            var descColor  = Hex("#475569");
 
             var titleLbl = UIHelper.MakeLabel($"label-title-{rowName}", textCol,
-                title, 42, titleColor, TextAlignmentOptions.Left, bold: true);
-            titleLbl.lineSpacing = 1.06f;
+                title, 46, titleColor, TextAlignmentOptions.Left, bold: true);
+            titleLbl.lineSpacing = 1.05f;
             titleLbl.textWrappingMode = TextWrappingModes.Normal;
-            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 104, minHeight: 52);
+            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: -1, minHeight: 48);
 
             var descLbl = UIHelper.MakeLabel($"label-desc-{rowName}", textCol,
-                desc, 30, descColor, TextAlignmentOptions.Left);
-            descLbl.lineSpacing = 1.15f;
+                desc, 34, descColor, TextAlignmentOptions.Left);
+            descLbl.lineSpacing = 1.12f;
             descLbl.textWrappingMode = TextWrappingModes.Normal;
-            UIHelper.SetLayout(descLbl.gameObject, preferredHeight: 96, minHeight: 54);
+            UIHelper.SetLayout(descLbl.gameObject, preferredHeight: -1, minHeight: 38);
 
             // Right side: status + chevron horizontal row
             var rightRow = UIHelper.MakeHorizontal("RightRow", inner, 10,
                 new RectOffset(0, 0, 0, 0),
                 childForceWidth: false, childForceHeight: false);
             UIHelper.SetLayout(rightRow.gameObject, preferredWidth: 260, minWidth: 200,
-                preferredHeight: 70);
+                preferredHeight: 68);
             var rrHlg = rightRow.GetComponent<HorizontalLayoutGroup>();
             rrHlg.childAlignment = TextAnchor.MiddleRight;
             rrHlg.childControlWidth = true;

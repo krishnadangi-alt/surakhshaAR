@@ -526,7 +526,7 @@ namespace SurakshaAR.UI.Builders
 
             var vlg = section.AddComponent<VerticalLayoutGroup>();
             vlg.padding            = new RectOffset(0, 0, 0, 0);
-            vlg.spacing            = 20;
+            vlg.spacing            = 16;
             vlg.childForceExpandWidth  = true;
             vlg.childForceExpandHeight = false;
             vlg.childControlWidth      = true;
@@ -538,7 +538,7 @@ namespace SurakshaAR.UI.Builders
 
             // Section Header: "📖 Training Modules" + "View All"
             var headerRow = UIHelper.MakeHorizontal("SectionHeader", section.transform, 14, childForceWidth: false, childForceHeight: false);
-            UIHelper.SetLayout(headerRow.gameObject, preferredHeight: 64, minHeight: 60);
+            UIHelper.SetLayout(headerRow.gameObject, preferredHeight: 56, minHeight: 50);
             headerRow.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
             var bookIcon = UIHelper.MakeRect("BookIcon", headerRow);
@@ -547,15 +547,15 @@ namespace SurakshaAR.UI.Builders
             bkImg.color  = Hex("#16A34A");
             bkImg.sprite = UIHelper.GetBookSprite();
 
-            var secTitle = UIHelper.MakeLabel("label-modules-section", headerRow, "प्रशिक्षण मॉड्यूल", 44, Hex("#0A192F"), TextAlignmentOptions.Left, bold: true);
-            UIHelper.SetLayout(secTitle.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 54, minHeight: 50);
+            var secTitle = UIHelper.MakeLabel("label-modules-section", headerRow, "प्रशिक्षण मॉड्यूल", 46, Hex("#0A192F"), TextAlignmentOptions.Left, bold: true);
+            UIHelper.SetLayout(secTitle.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 54, minHeight: 48);
 
             var viewAll = UIHelper.MakeButton("btn-view-all", headerRow, "सभी देखें >", 32, UIColors.Transparent, Hex("#16A34A"), 0);
-            UIHelper.SetLayout(viewAll.gameObject, preferredWidth: 170, minWidth: 150, preferredHeight: 52, minHeight: 48);
+            UIHelper.SetLayout(viewAll.gameObject, preferredWidth: 170, minWidth: 150, preferredHeight: 48, minHeight: 44);
             var vaLbl = viewAll.GetComponentInChildren<TextMeshProUGUI>();
             if (vaLbl != null) { vaLbl.name = "label-view-all"; vaLbl.fontStyle = FontStyles.Bold; }
 
-            // Vertical list of module cards (275px high, comfortable spacing, zero title collision)
+            // Vertical list of module cards (232px high, compact, sleek, zero dead space)
             BuildModuleCard(section.transform, "card-fire",
                 cardBgColor:   Hex("#FFFBF7"),
                 borderColor:   Hex("#FDBA74"),
@@ -600,14 +600,14 @@ namespace SurakshaAR.UI.Builders
         {
             var card = new GameObject(btnName);
             card.transform.SetParent(parent, false);
-            UIHelper.SetLayout(card.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 285, minHeight: 265);
+            UIHelper.SetLayout(card.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 232, minHeight: 218);
 
             var cardImg = card.AddComponent<Image>();
             cardImg.color  = cardBgColor;
-            UIHelper.SetImageRoundedSprite(cardImg, 24);
+            UIHelper.SetImageRoundedSprite(cardImg, 22);
 
             var shadow = card.AddComponent<Shadow>();
-            shadow.effectColor = new Color(0, 0, 0, 0.05f);
+            shadow.effectColor = new Color(0, 0, 0, 0.04f);
             shadow.effectDistance = new Vector2(0, -3f);
 
             var border = card.AddComponent<Outline>();
@@ -619,16 +619,16 @@ namespace SurakshaAR.UI.Builders
 
             // Card Inner Row
             var hlg = UIHelper.MakeHorizontal("CardRow", card.transform, 16,
-                new RectOffset(20, 18, 18, 18), childForceWidth: false, childForceHeight: false);
+                new RectOffset(20, 18, 14, 14), childForceWidth: false, childForceHeight: false);
             UIHelper.Stretch(hlg, 0, 0, 0, 0);
             hlg.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
-            // Icon Container (Rounded square 112x112)
+            // Icon Container (Rounded square 108x108)
             var iconBox = UIHelper.MakeRect("IconBox", hlg);
-            UIHelper.SetLayout(iconBox.gameObject, preferredWidth: 112, minWidth: 112, preferredHeight: 112, minHeight: 112);
+            UIHelper.SetLayout(iconBox.gameObject, preferredWidth: 108, minWidth: 108, preferredHeight: 108, minHeight: 108);
             var ibImg = iconBox.gameObject.AddComponent<Image>();
             ibImg.color = iconBgColor;
-            UIHelper.SetImageRoundedSprite(ibImg, 24);
+            UIHelper.SetImageRoundedSprite(ibImg, 22);
 
             var spr = UIHelper.LoadProjectSprite(iconFilename);
             if (spr != null)
@@ -641,9 +641,9 @@ namespace SurakshaAR.UI.Builders
                 artImg.raycastTarget = false;
             }
 
-            // Center: Content column (generous headroom, light distance, zero text collision)
-            var contentCol = UIHelper.MakeVertical("ContentCol", hlg, 8, childForceWidth: true, childForceHeight: false);
-            UIHelper.SetLayout(contentCol.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 215, minHeight: 185);
+            // Center: Content column (compact 6px spacing between title and subtitle — no awkward dead space)
+            var contentCol = UIHelper.MakeVertical("ContentCol", hlg, 6, childForceWidth: true, childForceHeight: false);
+            UIHelper.SetLayout(contentCol.gameObject, flexibleWidth: true, flexWidth: 1);
             var cvlg = contentCol.GetComponent<VerticalLayoutGroup>();
             cvlg.childAlignment = TextAnchor.MiddleLeft;
             cvlg.childControlWidth = true;
@@ -651,23 +651,23 @@ namespace SurakshaAR.UI.Builders
             cvlg.childForceExpandHeight = false;
             cvlg.padding = new RectOffset(0, 0, 0, 0);
 
-            // Title: 42px bold (matching My Progress) with 104px height so multiline "Gas Leak & Confined Space" does not overflow!
-            var titleLbl = UIHelper.MakeLabel(hindiLabelName, contentCol, englishTitle, 42, Hex("#0A192F"), TextAlignmentOptions.Left, bold: true);
-            titleLbl.lineSpacing = 1.06f;
+            // Title: 46px bold (crisp, authoritative, readable)
+            var titleLbl = UIHelper.MakeLabel(hindiLabelName, contentCol, englishTitle, 46, Hex("#0A192F"), TextAlignmentOptions.Left, bold: true);
+            titleLbl.lineSpacing = 1.05f;
             titleLbl.textWrappingMode = TextWrappingModes.Normal;
             titleLbl.overflowMode = TextOverflowModes.Overflow;
-            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 104, minHeight: 52);
+            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: -1, minHeight: 48);
 
-            // Subtitle: 30px (matching My Progress), dark slate (#334155) with 8px light distance from title
-            var subLbl = UIHelper.MakeLabel(engLabelName, contentCol, subtitle, 30, Hex("#334155"), TextAlignmentOptions.Left);
-            subLbl.lineSpacing = 1.15f;
+            // Subtitle: 34px (clear, legible, comfortable 6px distance from title)
+            var subLbl = UIHelper.MakeLabel(engLabelName, contentCol, subtitle, 34, Hex("#334155"), TextAlignmentOptions.Left);
+            subLbl.lineSpacing = 1.12f;
             subLbl.textWrappingMode = TextWrappingModes.Normal;
             subLbl.overflowMode = TextOverflowModes.Overflow;
-            UIHelper.SetLayout(subLbl.gameObject, preferredHeight: 88, minHeight: 56);
+            UIHelper.SetLayout(subLbl.gameObject, preferredHeight: -1, minHeight: 38);
 
             // Right: Rounded Colored "Start" Button + Chevron side-by-side
             var rightCol = UIHelper.MakeHorizontal("RightCol", hlg, 10, childForceWidth: false, childForceHeight: false);
-            UIHelper.SetLayout(rightCol.gameObject, preferredWidth: 175, minWidth: 155, preferredHeight: 72, minHeight: 62);
+            UIHelper.SetLayout(rightCol.gameObject, preferredWidth: 178, minWidth: 158, preferredHeight: 68, minHeight: 60);
             var rcHlg = rightCol.GetComponent<HorizontalLayoutGroup>();
             rcHlg.childAlignment = TextAnchor.MiddleRight;
             rcHlg.childControlWidth = true;
@@ -676,13 +676,13 @@ namespace SurakshaAR.UI.Builders
             rcHlg.childForceExpandHeight = false;
 
             var startBtnGO = UIHelper.MakeRect("StartBtnWrap", rightCol);
-            UIHelper.SetLayout(startBtnGO.gameObject, preferredWidth: 140, minWidth: 120, preferredHeight: 66, minHeight: 58);
+            UIHelper.SetLayout(startBtnGO.gameObject, preferredWidth: 142, minWidth: 124, preferredHeight: 64, minHeight: 58);
             var startBtnImg = startBtnGO.gameObject.AddComponent<Image>();
             startBtnImg.color = btnBgColor;
-            UIHelper.SetImageRoundedSprite(startBtnImg, 20);
+            UIHelper.SetImageRoundedSprite(startBtnImg, 18);
 
-            // Start button text: 30px bold
-            var startLbl = UIHelper.MakeLabel(statusLabelName, startBtnGO, "शुरू करें", 30, Color.white, TextAlignmentOptions.Center, bold: true);
+            // Start button text: 32px bold
+            var startLbl = UIHelper.MakeLabel(statusLabelName, startBtnGO, "शुरू करें", 32, Color.white, TextAlignmentOptions.Center, bold: true);
             UIHelper.Stretch(startLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
 
             // Right chevron `>`

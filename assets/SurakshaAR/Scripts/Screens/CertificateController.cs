@@ -434,17 +434,17 @@ namespace SurakshaAR.Screens
 
         private void CreateCertificateCard(Transform parent, CertApiItem cert, string baseUrl)
         {
-            var card = UIHelper.MakeVertical($"CertCard_{cert.id}", parent, 14, new RectOffset(24, 24, 22, 22));
-            UIHelper.SetLayout(card.gameObject, preferredHeight: 340, minHeight: 320);
+            var card = UIHelper.MakeVertical($"CertCard_{cert.id}", parent, 10, new RectOffset(20, 20, 16, 16));
+            UIHelper.SetLayout(card.gameObject, preferredHeight: 310, minHeight: 295);
             var cardImg = card.gameObject.AddComponent<Image>();
             cardImg.color = UIColors.Card;
             UIHelper.SetImageRoundedSprite(cardImg, 22);
 
-            // Row 1: Module Title & Status Badge (42px bold matching My Progress)
-            var row1 = UIHelper.MakeHorizontal("Row1", card, 14);
+            // Row 1: Module Title & Status Badge (46px bold)
+            var row1 = UIHelper.MakeHorizontal("Row1", card, 12);
             UIHelper.SetLayout(row1.gameObject, preferredHeight: 52);
 
-            var title = UIHelper.MakeLabel("Title", row1, cert.module_snapshot ?? "Fire & Explosion Response", 42, UIColors.PrimaryDark, bold: true);
+            var title = UIHelper.MakeLabel("Title", row1, cert.module_snapshot ?? "Fire & Explosion Response", 46, UIColors.PrimaryDark, bold: true);
             UIHelper.SetLayout(title.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 52);
 
             // Status Badge (26px bold)
@@ -473,36 +473,36 @@ namespace SurakshaAR.Screens
             }
 
             var badgeBox = UIHelper.MakeRect("StatusBadge", row1);
-            UIHelper.SetLayout(badgeBox.gameObject, preferredWidth: 200, preferredHeight: 46);
+            UIHelper.SetLayout(badgeBox.gameObject, preferredWidth: 195, preferredHeight: 44);
             var bImg = badgeBox.gameObject.AddComponent<Image>();
             bImg.color = badgeBg;
             UIHelper.SetImageRoundedSprite(bImg, 14);
             var bTxt = UIHelper.MakeLabel("StatusText", badgeBox, statusDisplay, 26, badgeText, TextAlignmentOptions.Center, bold: true);
             UIHelper.Stretch(bTxt.GetComponent<RectTransform>(), 0, 0, 0, 0);
 
-            // Row 2: Worker Recipient Name (30px bold)
+            // Row 2: Worker Recipient Name (32px bold)
             string workerName = !string.IsNullOrEmpty(cert.worker_name_snapshot) ? cert.worker_name_snapshot : "Krishna";
             var row2Worker = UIHelper.MakeLabel("WorkerLbl", card,
                 $"Recipient: {workerName}  •  {cert.employee_id_snapshot ?? "EMP-PROD-CERT"}",
-                30, UIColors.Hex("#0F172A"), bold: true);
-            UIHelper.SetLayout(row2Worker.gameObject, preferredHeight: 38);
+                32, UIColors.Hex("#0F172A"), bold: true);
+            UIHelper.SetLayout(row2Worker.gameObject, preferredHeight: 36);
 
-            // Row 3: Score & Competency (30px bold)
+            // Row 3: Score & Competency (32px bold)
             var row2 = UIHelper.MakeLabel("ScoreLbl", card,
                 $"Score: {cert.score_snapshot:F0} / 100  •  Competency: {cert.competency_snapshot ?? "Grade A"}",
-                30, UIColors.TextPrimary, bold: true);
-            UIHelper.SetLayout(row2.gameObject, preferredHeight: 38);
+                32, UIColors.TextPrimary, bold: true);
+            UIHelper.SetLayout(row2.gameObject, preferredHeight: 36);
 
-            // Row 4: Meta (Cert ID & Date) (26px)
+            // Row 4: Meta (Cert ID & Date) (28px)
             string dateStr = cert.issued_at != null ? cert.issued_at.Split('T')[0] : "Pending Review";
             var row3 = UIHelper.MakeLabel("MetaLbl", card,
                 $"ID: {cert.certificate_number}  •  Date: {dateStr}",
-                26, UIColors.TextSecondary);
-            UIHelper.SetLayout(row3.gameObject, preferredHeight: 34);
+                28, UIColors.TextSecondary);
+            UIHelper.SetLayout(row3.gameObject, preferredHeight: 32);
 
-            // Row 5: Actions (View Image, Download, Verify) (28px bold, height 70)
-            var row4 = UIHelper.MakeHorizontal("ActionsRow", card, 12);
-            UIHelper.SetLayout(row4.gameObject, preferredHeight: 70);
+            // Row 5: Actions (View Image, Download, Verify) (28px bold, height 66)
+            var row4 = UIHelper.MakeHorizontal("ActionsRow", card, 10);
+            UIHelper.SetLayout(row4.gameObject, preferredHeight: 66);
 
             bool isIssued = statusStr == "ISSUED" || statusStr == "active";
 
