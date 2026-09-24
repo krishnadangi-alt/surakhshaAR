@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { DateRangePicker } from '../common/DateRangePicker';
 import type { DateRange, DateRangePreset } from '../../types';
 import { Bell, Search, ShieldCheck } from 'lucide-react';
-import { mockNotifications } from '../../mockData';
+import { fetchDashboardAssessments, checkBackendHealth } from '../../services/api';
 
 interface TopbarProps {
   title: string;
@@ -25,16 +25,51 @@ export const Topbar: React.FC<TopbarProps> = ({
   onOpenNotifications,
   onOpenSearch,
 }) => {
-  const unreadCount = mockNotifications.filter((n) => !n.read).length;
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [isBackendConnected, setIsBackendConnected] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const check = () => {
+      checkBackendHealth().then((ok) => {
+        if (isMounted) setIsBackendConnected(ok);
+      });
+    };
+    check();
+    const interval = setInterval(check, 4000);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, []);
+
+  useEffect(() => {
+    fetchDashboardAssessments().then((assessments) => {
+      const crits = (assessments || []).filter((a) => a.criticalErrors > 0 || a.passFail === 'Fail').length;
+      setUnreadCount(crits);
+    });
+  }, []);
 
   return (
     <header className="sticky top-0 z-20 flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 bg-white/95 backdrop-blur px-6 py-4 shadow-sm">
       <div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <h2 className="text-lg font-bold tracking-tight text-slate-900">{title}</h2>
           <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-0.5 text-[10px] font-bold text-blue-700 border border-blue-200">
             <ShieldCheck className="w-3 h-3 text-blue-600" /> Govt. of Jharkhand Portal
           </span>
+          {isBackendConnected === true && (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 border border-emerald-200" title="FastAPI Backend connected on port 8000">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Backend Connected (:8000)
+            </span>
+          )}
+          {isBackendConnected === false && (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-2.5 py-0.5 text-[10px] font-bold text-rose-700 border border-rose-200" title="Backend unreachable on port 8000">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+              Backend Disconnected
+            </span>
+          )}
         </div>
         {description && <p className="text-xs text-slate-500 mt-0.5">{description}</p>}
       </div>

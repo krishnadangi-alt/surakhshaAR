@@ -122,6 +122,7 @@ class AssessmentOut(BaseModel):
     module_id: int
     attempt_number: int
     scenario_type: str
+    client_session_id: str | None = None
     score: float
     passed: bool
     pass_reason: str

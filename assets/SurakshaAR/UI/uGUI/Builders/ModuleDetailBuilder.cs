@@ -82,13 +82,16 @@ namespace SurakshaAR.UI.Builders
         private static void BuildHeroHeader(Transform parent)
         {
             var heroRT = UIHelper.MakeRect("HeroHeader", parent);
-            heroRT.sizeDelta = new Vector2(0, 720);
+            heroRT.sizeDelta = new Vector2(0, 780);
             var le = heroRT.gameObject.AddComponent<LayoutElement>();
-            le.preferredHeight = 720;
-            le.minHeight = 720;
+            le.preferredHeight = 780;
+            le.minHeight = 780;
 
             var heroImg = heroRT.gameObject.AddComponent<Image>();
-            var heroSprite = UIHelper.LoadProjectSprite("fire intro");
+            var heroSprite = UIHelper.LoadProjectSprite("fire_intro")
+                          ?? UIHelper.LoadProjectSprite("fire intro")
+                          ?? UIHelper.LoadProjectSprite("jharkhand_miner_hero.jpg")
+                          ?? UIHelper.LoadProjectSprite("login_header_perfect.png");
             if (heroSprite != null)
             {
                 heroImg.sprite = heroSprite;
@@ -119,37 +122,37 @@ namespace SurakshaAR.UI.Builders
             infoBox.anchorMin = new Vector2(0, 0);
             infoBox.anchorMax = new Vector2(1, 0);
             infoBox.pivot = new Vector2(0.5f, 0);
-            infoBox.sizeDelta = new Vector2(-80, 320);
+            infoBox.sizeDelta = new Vector2(-80, 360);
             infoBox.anchoredPosition = new Vector2(0, 36);
 
             var infoVLG = infoBox.gameObject.AddComponent<VerticalLayoutGroup>();
-            infoVLG.spacing = 16;
+            infoVLG.spacing = 14;
             infoVLG.padding = new RectOffset(0, 0, 0, 0);
             infoVLG.childForceExpandWidth = true;
             infoVLG.childForceExpandHeight = false;
             infoVLG.childControlWidth = true;
             infoVLG.childControlHeight = false;
 
-            // Title Row
+            // Title Row (Allow wrap for Hindi & Santali titles)
             var titleRow = UIHelper.MakeRect("TitleRow", infoBox);
-            titleRow.sizeDelta = new Vector2(0, 64);
-            UIHelper.SetLayout(titleRow.gameObject, preferredHeight: 64);
+            titleRow.sizeDelta = new Vector2(0, 78);
+            UIHelper.SetLayout(titleRow.gameObject, preferredHeight: 78, minHeight: 64);
 
-            var titleLbl = UIHelper.MakeLabel("label-module-name", titleRow, "Fire & Explosion Response", 52, Color.white, bold: true, wrap: false);
+            var titleLbl = UIHelper.MakeLabel("label-module-name", titleRow, "Fire & Explosion Response", 54, Color.white, bold: true, wrap: true);
             UIHelper.Stretch(titleLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
 
             // Subtitle
             var subRow = UIHelper.MakeRect("SubRow", infoBox);
-            subRow.sizeDelta = new Vector2(0, 40);
-            UIHelper.SetLayout(subRow.gameObject, preferredHeight: 40);
+            subRow.sizeDelta = new Vector2(0, 50);
+            UIHelper.SetLayout(subRow.gameObject, preferredHeight: 50, minHeight: 44);
 
-            var subLbl = UIHelper.MakeLabel("label-subtitle", subRow, "Learn • Practice • Assess", 30, Hex("#CBD5E1"), wrap: false);
+            var subLbl = UIHelper.MakeLabel("label-subtitle", subRow, "Learn • Practice • Assess", 34, Hex("#CBD5E1"), wrap: true);
             UIHelper.Stretch(subLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
 
             // Chips row (Duration, Difficulty, Steps)
             var chipsRow = UIHelper.MakeRect("ChipsRow", infoBox);
-            chipsRow.sizeDelta = new Vector2(0, 64);
-            UIHelper.SetLayout(chipsRow.gameObject, preferredHeight: 64);
+            chipsRow.sizeDelta = new Vector2(0, 72);
+            UIHelper.SetLayout(chipsRow.gameObject, preferredHeight: 72);
 
             var chipsHLG = chipsRow.gameObject.AddComponent<HorizontalLayoutGroup>();
             chipsHLG.spacing = 16;
@@ -158,22 +161,22 @@ namespace SurakshaAR.UI.Builders
             chipsHLG.childControlWidth = false;
             chipsHLG.childControlHeight = true;
 
-            MakeChip(chipsRow, "chip-duration-value", "45 min", 200);
-            MakeChip(chipsRow, "chip-difficulty-value", "Intermediate", 260);
-            MakeChip(chipsRow, "chip-scenarios-value", "12 Steps", 210);
+            MakeChip(chipsRow, "chip-duration-value", "45 min", 220);
+            MakeChip(chipsRow, "chip-difficulty-value", "Intermediate", 280);
+            MakeChip(chipsRow, "chip-scenarios-value", "12 Steps", 230);
         }
 
         private static void MakeChip(Transform parent, string name, string text, float width)
         {
             var chipGO = UIHelper.MakeRect(name, parent);
-            chipGO.sizeDelta = new Vector2(width, 60);
-            UIHelper.SetLayout(chipGO.gameObject, preferredWidth: width, preferredHeight: 60);
+            chipGO.sizeDelta = new Vector2(width, 68);
+            UIHelper.SetLayout(chipGO.gameObject, preferredWidth: width, preferredHeight: 68);
 
             var chipImg = chipGO.gameObject.AddComponent<Image>();
             chipImg.color = new Color(1f, 1f, 1f, 0.20f);
-            UIHelper.SetImageRoundedSprite(chipImg, 30);
+            UIHelper.SetImageRoundedSprite(chipImg, 34);
 
-            var lbl = UIHelper.MakeLabel(name + "_lbl", chipGO, text, 26, Color.white, TextAlignmentOptions.Center, bold: true, wrap: false);
+            var lbl = UIHelper.MakeLabel(name + "_lbl", chipGO, text, 32, Color.white, TextAlignmentOptions.Center, bold: true, wrap: false);
             UIHelper.Stretch(lbl.GetComponent<RectTransform>(), 12, 12, 4, 4);
         }
 
@@ -206,8 +209,8 @@ namespace SurakshaAR.UI.Builders
 
             // Header: Icon + "What you'll learn"
             var headRow = UIHelper.MakeRect("HeadRow", cardGO.transform);
-            headRow.sizeDelta = new Vector2(0, 52);
-            UIHelper.SetLayout(headRow.gameObject, preferredHeight: 52);
+            headRow.sizeDelta = new Vector2(0, 56);
+            UIHelper.SetLayout(headRow.gameObject, preferredHeight: 56);
 
             var headHLG = headRow.gameObject.AddComponent<HorizontalLayoutGroup>();
             headHLG.spacing = 16;
@@ -218,13 +221,13 @@ namespace SurakshaAR.UI.Builders
             headHLG.childControlHeight = true;
 
             var headBadge = UIHelper.MakeRect("HeadBadge", headRow);
-            headBadge.sizeDelta = new Vector2(40, 40);
+            headBadge.sizeDelta = new Vector2(44, 44);
             var badgeImg = headBadge.gameObject.AddComponent<Image>();
             badgeImg.color = UIColors.Primary;
             UIHelper.SetImageRoundedSprite(badgeImg, 12);
 
-            var headLbl = UIHelper.MakeLabel("HeadText", headRow, "What you'll learn", 38, UIColors.TextPrimary, bold: true, wrap: false);
-            headLbl.GetComponent<RectTransform>().sizeDelta = new Vector2(400, 52);
+            var headLbl = UIHelper.MakeLabel("HeadText", headRow, "What you'll learn", 44, UIColors.TextPrimary, bold: true, wrap: false);
+            headLbl.GetComponent<RectTransform>().sizeDelta = new Vector2(440, 56);
 
             // Learn Items (5 items matching Figma)
             MakeLearnItem(cardGO.transform, "Identify fire classes and appropriate extinguisher types");
@@ -237,8 +240,8 @@ namespace SurakshaAR.UI.Builders
         public static void MakeLearnItem(Transform parent, string text)
         {
             var row = UIHelper.MakeRect("LearnItem", parent);
-            row.sizeDelta = new Vector2(0, 72);
-            UIHelper.SetLayout(row.gameObject, preferredHeight: 72, minHeight: 60);
+            row.sizeDelta = new Vector2(0, 76);
+            UIHelper.SetLayout(row.gameObject, preferredHeight: 76, minHeight: 64);
 
             var hlg = row.gameObject.AddComponent<HorizontalLayoutGroup>();
             hlg.spacing = 20;
@@ -248,23 +251,23 @@ namespace SurakshaAR.UI.Builders
             hlg.childControlWidth = true;
             hlg.childControlHeight = false;
 
-            // Green Check Circle (48x48)
+            // Green Check Circle (52x52)
             var checkCircle = UIHelper.MakeRect("CheckCircle", row);
-            checkCircle.sizeDelta = new Vector2(48, 48);
-            UIHelper.SetLayout(checkCircle.gameObject, preferredWidth: 48, preferredHeight: 48, minWidth: 48, minHeight: 48);
+            checkCircle.sizeDelta = new Vector2(52, 52);
+            UIHelper.SetLayout(checkCircle.gameObject, preferredWidth: 52, preferredHeight: 52, minWidth: 52, minHeight: 52);
 
             var checkImg = checkCircle.gameObject.AddComponent<Image>();
             checkImg.sprite = UIHelper.GetCircleSprite();
             checkImg.color = Hex("#DCFCE7");
 
             var innerDot = UIHelper.MakeRect("InnerDot", checkCircle);
-            innerDot.sizeDelta = new Vector2(20, 20);
+            innerDot.sizeDelta = new Vector2(22, 22);
             var dotImg = innerDot.gameObject.AddComponent<Image>();
             dotImg.sprite = UIHelper.GetCircleSprite();
             dotImg.color = UIColors.SafetyGreen;
 
             // Wrapped Text Label (flexible width fills remaining card space)
-            var itemLbl = UIHelper.MakeLabel("Text", row, text, 28, Hex("#1E293B"), bold: false, wrap: true);
+            var itemLbl = UIHelper.MakeLabel("Text", row, text, 34, Hex("#1E293B"), bold: false, wrap: true);
             var itemLE = itemLbl.gameObject.GetComponent<LayoutElement>() ?? itemLbl.gameObject.AddComponent<LayoutElement>();
             itemLE.flexibleWidth = 1f;
             itemLE.minWidth = 300;
@@ -278,62 +281,72 @@ namespace SurakshaAR.UI.Builders
             var boxImg = box.AddComponent<Image>();
             boxImg.color = Hex("#FEF3C7"); // Warm light amber
             boxImg.sprite = UIHelper.GetWhiteSprite();
-            UIHelper.SetImageRoundedSprite(boxImg, 28);
+            UIHelper.SetImageRoundedSprite(boxImg, 24);
 
             var boxOutline = box.AddComponent<Outline>();
             boxOutline.effectColor = Hex("#FDE68A");
             boxOutline.effectDistance = new Vector2(2, -2);
 
-            // Direct VerticalLayoutGroup on SafetyNoteBox
+            var boxLE = box.AddComponent<LayoutElement>();
+            boxLE.flexibleWidth = 1f;
+            boxLE.minHeight = 220;
+
+            // Direct VerticalLayoutGroup on SafetyNoteBox with childControlHeight = true
             var vlg = box.AddComponent<VerticalLayoutGroup>();
-            vlg.padding = new RectOffset(36, 36, 32, 32);
-            vlg.spacing = 14;
+            vlg.padding = new RectOffset(36, 36, 28, 28);
+            vlg.spacing = 16;
             vlg.childForceExpandWidth = true;
             vlg.childForceExpandHeight = false;
             vlg.childControlWidth = true;
-            vlg.childControlHeight = false;
+            vlg.childControlHeight = true;
 
             var csf = box.AddComponent<ContentSizeFitter>();
             csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             // Title Row: Amber Warning Badge + SAFETY NOTE
             var titleRow = UIHelper.MakeRect("TitleRow", box.transform);
-            titleRow.sizeDelta = new Vector2(0, 40);
-            UIHelper.SetLayout(titleRow.gameObject, preferredHeight: 40);
+            UIHelper.SetLayout(titleRow.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 48, minHeight: 48);
 
             var titleHLG = titleRow.gameObject.AddComponent<HorizontalLayoutGroup>();
             titleHLG.spacing = 14;
             titleHLG.childAlignment = TextAnchor.MiddleLeft;
             titleHLG.childForceExpandWidth = false;
-            titleHLG.childForceExpandHeight = true;
+            titleHLG.childForceExpandHeight = false;
             titleHLG.childControlWidth = false;
-            titleHLG.childControlHeight = true;
+            titleHLG.childControlHeight = false;
 
             var warnBadge = UIHelper.MakeRect("WarnBadge", titleRow);
             warnBadge.sizeDelta = new Vector2(36, 36);
+            UIHelper.SetLayout(warnBadge.gameObject, preferredWidth: 36, minWidth: 36, preferredHeight: 36, minHeight: 36);
             var wbImg = warnBadge.gameObject.AddComponent<Image>();
             wbImg.color = Hex("#D97706");
             UIHelper.SetImageRoundedSprite(wbImg, 10);
 
-            var titleLbl = UIHelper.MakeLabel("WarnTitle", titleRow, "SAFETY NOTE", 26, Hex("#B45309"), bold: true, wrap: false);
-            titleLbl.GetComponent<RectTransform>().sizeDelta = new Vector2(300, 40);
+            var titleLbl = UIHelper.MakeLabel("WarnTitle", titleRow, "SAFETY NOTE", 36, Hex("#B45309"), bold: true, wrap: false);
+            titleLbl.GetComponent<RectTransform>().sizeDelta = new Vector2(360, 44);
+            UIHelper.SetLayout(titleLbl.gameObject, preferredWidth: 360, minWidth: 300, preferredHeight: 44, minHeight: 44);
 
-            // Body Warning Text
+            // Body Warning Text — multi-line wrapping with ample headroom
             var noteLbl = UIHelper.MakeLabel("WarnText", box.transform,
                 "Never attempt to fight a fire if evacuation routes are compromised. Always alert colleagues first before responding.",
-                26, Hex("#92400E"), bold: false, wrap: true);
+                34, Hex("#92400E"), bold: false, wrap: true);
+            noteLbl.lineSpacing = 3f;
+            noteLbl.textWrappingMode = TextWrappingModes.Normal;
+            noteLbl.overflowMode = TextOverflowModes.Overflow;
             var noteLE = noteLbl.gameObject.GetComponent<LayoutElement>() ?? noteLbl.gameObject.AddComponent<LayoutElement>();
             noteLE.flexibleWidth = 1f;
+            noteLE.minHeight = 110;
+            noteLE.preferredHeight = -1;
         }
 
         private static void BuildStartButton(Transform parent)
         {
-            var btn = UIHelper.MakeButton("btn-start-module", parent, "START MODULE  >", 34,
+            var btn = UIHelper.MakeButton("btn-start-module", parent, "START MODULE  >", 38,
                 UIColors.Hex("#0A192F"), Color.white, 28f);
-            btn.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 120);
+            btn.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 128);
             var le = btn.gameObject.GetComponent<LayoutElement>() ?? btn.gameObject.AddComponent<LayoutElement>();
-            le.preferredHeight = 120;
-            le.minHeight = 120;
+            le.preferredHeight = 128;
+            le.minHeight = 128;
         }
 
         private static Color Hex(string hex) => UIColors.Hex(hex);

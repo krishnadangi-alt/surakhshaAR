@@ -6,13 +6,13 @@ namespace SurakshaAR.UI.Builders
 {
     /// <summary>
     /// Upgraded Certificate Screen Builder:
-    /// Official Government of India & Ministry of Mines Industrial Safety Certification.
-    /// Includes:
-    /// - Formal National Emblem / Seal header
-    /// - Worker Name & Mine Employee ID
-    /// - Module certification details & Score
-    /// - QR Code Verification box & unique Certificate ID
-    /// - Action buttons (Download PDF, Share Verification, Return to Dashboard)
+    /// Dynamic Worker Certificates List & Latest Certificate Download.
+    /// In compliance with Rules 53-57:
+    /// - Dynamic list for the currently logged-in worker
+    /// - Sorted by newest issued first
+    /// - Latest Certificate spotlight card with direct PDF download
+    /// - Clear status badges (PENDING_REVIEW, ISSUED, REJECTED, REVOKED)
+    /// - Authentic empty / pending states
     /// </summary>
     public static class CertificateBuilder
     {
@@ -24,7 +24,7 @@ namespace SurakshaAR.UI.Builders
             rootImg.color = UIColors.Background;
             rootImg.sprite = UIHelper.GetWhiteSprite();
 
-            // ── Scrollable Certificate Card ──────────────────────────────
+            // ── Scrollable Area ──────────────────────────────────────────
             var scrollRoot = UIHelper.MakeRect("ScrollArea", root.transform);
             scrollRoot.anchorMin = Vector2.zero;
             scrollRoot.anchorMax = Vector2.one;
@@ -66,10 +66,20 @@ namespace SurakshaAR.UI.Builders
             // ── 1. Top Bar Navigation ─────────────────────────────────────
             BuildTopBar(content);
 
-            // ── 2. Official Formal Certificate Document Card ──────────────
-            BuildCertificateCard(content);
+            // ── 2. Worker Identity Header ─────────────────────────────────
+            BuildWorkerHeader(content);
 
-            // ── 3. Bottom Action Buttons (Download, Share, Dashboard) ──────
+            // ── 3. Latest Certificate Spotlight Card ──────────────────────
+            BuildLatestCertificateSpotlight(content);
+
+            // ── 4. Dynamic List Container ─────────────────────────────────
+            BuildCertificatesListHeader(content);
+            BuildCertificatesContainer(content);
+
+            // ── 5. Empty / Status State Container ─────────────────────────
+            BuildEmptyStateContainer(content);
+
+            // ── 6. Bottom Action Buttons ──────────────────────────────────
             BuildActionButtons(content);
 
             return root;
@@ -77,157 +87,169 @@ namespace SurakshaAR.UI.Builders
 
         private static void BuildTopBar(Transform parent)
         {
-            var row = UIHelper.MakeHorizontal("TopBarRow", parent, 16);
-            UIHelper.SetLayout(row.gameObject, preferredHeight: 56);
+            var row = UIHelper.MakeHorizontal("TopBarRow", parent, 18);
+            UIHelper.SetLayout(row.gameObject, preferredHeight: 84);
 
-            var backBtn = UIHelper.MakeButton("btn-back", row, "‹", 38, Color.white, UIColors.PrimaryDark, 16);
-            UIHelper.SetLayout(backBtn.gameObject, preferredWidth: 54, preferredHeight: 54);
+            var backBtn = UIHelper.MakeButton("btn-back", row, "‹", 52, Color.white, UIColors.PrimaryDark, 20);
+            UIHelper.SetLayout(backBtn.gameObject, preferredWidth: 76, preferredHeight: 76);
             var backBorder = backBtn.gameObject.AddComponent<Outline>();
             backBorder.effectColor = UIColors.Border;
             backBorder.effectDistance = new Vector2(1, -1);
 
-            var titleLbl = UIHelper.MakeLabel("label-title", row, "Official Safety Certificate", 22, UIColors.PrimaryDark, bold: true);
+            var titleLbl = UIHelper.MakeLabel("label-title", row, "My Safety Certificates", 52, UIColors.PrimaryDark, bold: true);
             UIHelper.SetLayout(titleLbl.gameObject, flexibleWidth: true, flexWidth: 1);
         }
 
-        private static void BuildCertificateCard(Transform parent)
+        private static void BuildWorkerHeader(Transform parent)
         {
-            var card = new GameObject("CertCard");
-            card.transform.SetParent(parent, false);
-            var cardImg = card.AddComponent<Image>();
+            var card = UIHelper.MakeHorizontal("WorkerHeaderCard", parent, 16, new RectOffset(20, 20, 16, 16));
+            UIHelper.SetLayout(card.gameObject, preferredHeight: 110, minHeight: 96);
+            var cardImg = card.gameObject.AddComponent<Image>();
+            cardImg.color = UIColors.Card;
+            UIHelper.SetImageRoundedSprite(cardImg, 20);
+
+            var infoCol = UIHelper.MakeVertical("WorkerInfoCol", card, 4);
+            UIHelper.SetLayout(infoCol.gameObject, flexibleWidth: true, flexWidth: 1);
+
+            var nameLbl = UIHelper.MakeLabel("label-worker-name", infoCol, "Krishna", 42, UIColors.PrimaryDark, bold: true);
+            UIHelper.SetLayout(nameLbl.gameObject, preferredHeight: 48);
+
+            var idLbl = UIHelper.MakeLabel("label-worker-id", infoCol, "Mine Worker | ID: EMP-PROD-CERT", 30, UIColors.TextSecondary);
+            UIHelper.SetLayout(idLbl.gameObject, preferredHeight: 34);
+
+            var badgeBox = UIHelper.MakeRect("MineBadgeBox", card);
+            UIHelper.SetLayout(badgeBox.gameObject, preferredWidth: 160, preferredHeight: 48);
+            var badgeImg = badgeBox.gameObject.AddComponent<Image>();
+            badgeImg.color = UIColors.Hex("#FEF3C7");
+            UIHelper.SetImageRoundedSprite(badgeImg, 14);
+            var badgeText = UIHelper.MakeLabel("label-mine-site", badgeBox, "Dhanbad Colliery", 26, UIColors.Hex("#B45309"), TextAlignmentOptions.Center, bold: true);
+            UIHelper.Stretch(badgeText.GetComponent<RectTransform>(), 0, 0, 0, 0);
+        }
+
+        private static void BuildLatestCertificateSpotlight(Transform parent)
+        {
+            var card = UIHelper.MakeVertical("LatestCertSpotlight", parent, 16, new RectOffset(24, 24, 24, 24));
+            UIHelper.SetLayout(card.gameObject, preferredHeight: 630, minHeight: 580);
+            var cardImg = card.gameObject.AddComponent<Image>();
             cardImg.color = Color.white;
             UIHelper.SetImageRoundedSprite(cardImg, 24);
 
-            var border = card.AddComponent<Outline>();
-            border.effectColor = UIColors.Hex("#E2E8F0");
-            border.effectDistance = new Vector2(2, -2);
+            var border = card.gameObject.AddComponent<Outline>();
+            border.effectColor = UIColors.Hex("#D97706");
+            border.effectDistance = new Vector2(2f, -2f);
 
-            var vlg = card.AddComponent<VerticalLayoutGroup>();
-            vlg.padding = new RectOffset(28, 28, 32, 32);
-            vlg.spacing = 14;
-            vlg.childForceExpandWidth = true;
-            vlg.childForceExpandHeight = false;
-            vlg.childControlWidth = true;
-            vlg.childControlHeight = false;
+            // Title row
+            var titleRow = UIHelper.MakeHorizontal("SpotlightTitleRow", card, 8);
+            UIHelper.SetLayout(titleRow.gameObject, preferredHeight: 38);
+            var badge = UIHelper.MakeLabel("SpotlightBadge", titleRow, "★ OFFICIAL DGMS COMPLIANCE CREDENTIAL", 28, UIColors.Hex("#B45309"), bold: true);
+            UIHelper.SetLayout(badge.gameObject, flexibleWidth: true, flexWidth: 1);
 
-            var csf = card.AddComponent<ContentSizeFitter>();
-            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            // Recipient / Worker Name
+            var workerLbl = UIHelper.MakeLabel("label-latest-worker", card, "Certified Recipient: Krishna", 36, UIColors.Hex("#0F172A"), bold: true);
+            UIHelper.SetLayout(workerLbl.gameObject, preferredHeight: 44);
 
-            Transform inner = card.transform;
+            // Module Title
+            var modTitle = UIHelper.MakeLabel("label-latest-module", card, "Fire & Explosion Response", 42, UIColors.PrimaryDark, bold: true, wrap: true);
+            UIHelper.SetLayout(modTitle.gameObject, preferredHeight: 50);
 
-            // Header Emblem & Ministry
-            var govHeader = UIHelper.MakeVertical("GovHeader", inner, 4);
-            UIHelper.SetLayout(govHeader.gameObject, preferredHeight: 64);
+            // Score & Grade
+            var scoreLbl = UIHelper.MakeLabel("label-latest-score", card, "Competency: Grade A • Competent (Score: 90/100)", 32, UIColors.SafetyGreen, bold: true);
+            UIHelper.SetLayout(scoreLbl.gameObject, preferredHeight: 38);
 
-            var govLbl = UIHelper.MakeLabel("GovLbl", govHeader, "GOVERNMENT OF INDIA", 14, UIColors.PrimaryDark, TextAlignmentOptions.Center, bold: true);
-            UIHelper.SetLayout(govLbl.gameObject, preferredHeight: 18);
+            // Cert Number & Date
+            var metaLbl = UIHelper.MakeLabel("label-latest-meta", card, "Certificate ID: SUR-2026-0002  •  Issued: 21 Sep 2026", 28, UIColors.TextSecondary);
+            UIHelper.SetLayout(metaLbl.gameObject, preferredHeight: 34);
 
-            var minLbl = UIHelper.MakeLabel("MinLbl", govHeader, "MINISTRY OF MINES • SURAKSHA-AR", 12, UIColors.SafetyGreen, TextAlignmentOptions.Center, bold: true);
-            UIHelper.SetLayout(minLbl.gameObject, preferredHeight: 18);
+            // ── QR Code Showcase Section ──────────────────────────────────
+            var qrRow = UIHelper.MakeHorizontal("SpotlightQrRow", card, 16);
+            UIHelper.SetLayout(qrRow.gameObject, preferredHeight: 210);
 
-            // Gold Emblem Circle
-            var sealBox = UIHelper.MakeRect("SealBox", inner);
-            UIHelper.SetLayout(sealBox.gameObject, preferredHeight: 74);
-            var sealCircle = UIHelper.MakeRect("SealCircle", sealBox);
-            sealCircle.anchorMin = new Vector2(0.5f, 0.5f);
-            sealCircle.anchorMax = new Vector2(0.5f, 0.5f);
-            sealCircle.sizeDelta = new Vector2(70, 70);
-            var sealImg = sealCircle.gameObject.AddComponent<Image>();
-            sealImg.sprite = UIHelper.GetCircleSprite();
-            sealImg.color = UIColors.Hex("#FEF3C7"); // Warm Gold
+            var qrBox = UIHelper.MakeVertical("QrBox", qrRow, 6, new RectOffset(10, 10, 10, 10));
+            UIHelper.SetLayout(qrBox.gameObject, preferredWidth: 190, preferredHeight: 200);
+            var qrBoxImg = qrBox.gameObject.AddComponent<Image>();
+            qrBoxImg.color = UIColors.Hex("#F8FAFC");
+            UIHelper.SetImageRoundedSprite(qrBoxImg, 16);
+            var qrBoxOutline = qrBox.gameObject.AddComponent<Outline>();
+            qrBoxOutline.effectColor = UIColors.Hex("#E2E8F0");
+            qrBoxOutline.effectDistance = new Vector2(1, -1);
 
-            var sealIconGO = new GameObject("SealIcon");
-            sealIconGO.transform.SetParent(sealCircle, false);
-            var sealIconImg = sealIconGO.AddComponent<Image>();
-            sealIconImg.sprite = UIHelper.GetShieldSprite();
-            sealIconImg.color = UIColors.PrimaryDark;
-            UIHelper.AnchorCenter(sealIconGO.GetComponent<RectTransform>(), 40, 40);
+            // QR Image
+            var qrImgGO = UIHelper.MakeRect("image-latest-qr", qrBox);
+            UIHelper.SetLayout(qrImgGO.gameObject, preferredWidth: 170, preferredHeight: 170);
+            var qrImg = qrImgGO.gameObject.AddComponent<Image>();
+            qrImg.color = Color.white;
+            qrImg.sprite = UIHelper.GetQRSprite();
 
-            // Title
-            var certTitle = UIHelper.MakeLabel("CertTitle", inner, "CERTIFICATE OF SAFETY COMPETENCY", 22, UIColors.PrimaryDark, TextAlignmentOptions.Center, bold: true);
-            UIHelper.SetLayout(certTitle.gameObject, preferredHeight: 30);
-
-            var certSub = UIHelper.MakeLabel("CertSub", inner, "This is to certify that industrial worker", 15, UIColors.TextSecondary, TextAlignmentOptions.Center);
-            UIHelper.SetLayout(certSub.gameObject, preferredHeight: 20);
-
-            // Worker Name
-            var nameLbl = UIHelper.MakeLabel("label-worker-name", inner, "Trainee Worker", 28, UIColors.PrimaryDark, TextAlignmentOptions.Center, bold: true);
-            UIHelper.SetLayout(nameLbl.gameObject, preferredHeight: 36);
-
-            // Worker ID
-            var idLbl = UIHelper.MakeLabel("label-worker-id", inner, "Mine Worker | ID: Unassigned", 16, UIColors.TextSecondary, TextAlignmentOptions.Center);
-            UIHelper.SetLayout(idLbl.gameObject, preferredHeight: 22);
-
-            var descLbl = UIHelper.MakeLabel("DescLbl", inner,
-                "has demonstrated validated, certified practical safety proficiency in accordance with the National Mining Safety Standards for:",
-                14, UIColors.TextSecondary, TextAlignmentOptions.Center);
-            UIHelper.SetLayout(descLbl.gameObject, preferredHeight: 40);
-
-            // Module Title Badge
-            var modBadge = UIHelper.MakeVertical("ModBadge", inner, 4, new RectOffset(16, 16, 12, 12));
-            UIHelper.SetLayout(modBadge.gameObject, preferredHeight: 58);
-            var bImg = modBadge.gameObject.AddComponent<Image>();
-            bImg.color = UIColors.Hex("#F0FDF4"); // Soft mint green
-            UIHelper.SetImageRoundedSprite(bImg, 12);
-
-            var modTitle = UIHelper.MakeLabel("label-module-title", modBadge, "Fire & Explosion Response", 18, UIColors.SafetyGreen, TextAlignmentOptions.Center, bold: true);
-            UIHelper.SetLayout(modTitle.gameObject, preferredHeight: 24);
-
-            var scoreText = UIHelper.MakeLabel("label-score-grade", modBadge, "Competency Grade: Level 1 (95% Score • 0 Critical Errors)", 13, UIColors.PrimaryDark, TextAlignmentOptions.Center);
-            UIHelper.SetLayout(scoreText.gameObject, preferredHeight: 18);
-
-            // Verification & QR Box
-            var qrRow = UIHelper.MakeHorizontal("QRRow", inner, 16, new RectOffset(16, 16, 14, 14));
-            UIHelper.SetLayout(qrRow.gameObject, preferredHeight: 110);
-            var qrBg = qrRow.gameObject.AddComponent<Image>();
-            qrBg.color = UIColors.Hex("#F8FAFC");
-            UIHelper.SetImageRoundedSprite(qrBg, 12);
-
-            // QR Box Graphic
-            var qrBox = UIHelper.MakeRect("QRBox", qrRow);
-            UIHelper.SetLayout(qrBox.gameObject, preferredWidth: 80, preferredHeight: 80);
-            var qrImg = qrBox.gameObject.AddComponent<Image>();
-            qrImg.color = UIColors.PrimaryDark;
-            UIHelper.SetImageRoundedSprite(qrImg, 8);
-
-            var qrText = UIHelper.MakeLabel("QRText", qrBox, "QR", 22, Color.white, TextAlignmentOptions.Center, bold: true);
-            UIHelper.Stretch(qrText.GetComponent<RectTransform>(), 0, 0, 0, 0);
-
-            var qrInfoCol = UIHelper.MakeVertical("QRInfo", qrRow, 4);
+            // QR Description / Instructions Column
+            var qrInfoCol = UIHelper.MakeVertical("QrInfoCol", qrRow, 6);
             UIHelper.SetLayout(qrInfoCol.gameObject, flexibleWidth: true, flexWidth: 1);
 
-            var certIdLbl = UIHelper.MakeLabel("label-cert-id", qrInfoCol, "Cert ID: IND-SAR-2026-0941", 13, UIColors.PrimaryDark, bold: true);
-            UIHelper.SetLayout(certIdLbl.gameObject, preferredHeight: 18);
+            var qrTitle = UIHelper.MakeLabel("label-qr-title", qrInfoCol, "Scan to Verify Credential", 32, UIColors.PrimaryDark, bold: true);
+            UIHelper.SetLayout(qrTitle.gameObject, preferredHeight: 36);
 
-            var dateLbl = UIHelper.MakeLabel("label-cert-date", qrInfoCol, "Date Issued: 12 Sept 2026", 12, UIColors.TextSecondary);
-            UIHelper.SetLayout(dateLbl.gameObject, preferredHeight: 16);
+            var qrSub = UIHelper.MakeLabel("label-qr-sub", qrInfoCol, "Scan this QR code using Google Lens or any smartphone camera to open the official public verification page directly.", 26, UIColors.TextSecondary, wrap: true);
+            UIHelper.SetLayout(qrSub.gameObject, flexibleHeight: true, flexHeight: 1);
 
-            var statusLbl = UIHelper.MakeLabel("StatusLbl", qrInfoCol, "Status: Cryptographically Verified", 12, UIColors.SafetyGreen, bold: true);
-            UIHelper.SetLayout(statusLbl.gameObject, preferredHeight: 16);
+            var btnViewImage = UIHelper.MakeButton("btn-view-image", qrInfoCol, "Open Certificate Image ↗", 30, UIColors.Hex("#F59E0B"), UIColors.Hex("#0F172A"), 14);
+            UIHelper.SetLayout(btnViewImage.gameObject, preferredHeight: 64);
+
+            // Action Buttons Row (PDF & Online Verify)
+            var btnRow = UIHelper.MakeHorizontal("LatestBtnRow", card, 14);
+            UIHelper.SetLayout(btnRow.gameObject, preferredHeight: 84);
+
+            var dlBtn = UIHelper.MakeButton("btn-download-latest", btnRow, "Download Official PDF", 32, UIColors.SafetyGreen, Color.white, 16);
+            UIHelper.SetLayout(dlBtn.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 84);
+
+            var viewBtn = UIHelper.MakeButton("btn-view-latest", btnRow, "Verify Online", 32, Color.white, UIColors.PrimaryDark, 16);
+            UIHelper.SetLayout(viewBtn.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 84);
+            var viewBorder = viewBtn.gameObject.AddComponent<Outline>();
+            viewBorder.effectColor = UIColors.Border;
+            viewBorder.effectDistance = new Vector2(1, -1);
+        }
+
+        private static void BuildCertificatesListHeader(Transform parent)
+        {
+            var lbl = UIHelper.MakeLabel("label-section-all", parent, "All Safety Credentials", 42, UIColors.PrimaryDark, bold: true);
+            UIHelper.SetLayout(lbl.gameObject, preferredHeight: 48);
+        }
+
+        private static void BuildCertificatesContainer(Transform parent)
+        {
+            var container = UIHelper.MakeVertical("CertificatesListContainer", parent, 16);
+            UIHelper.SetLayout(container.gameObject, flexibleWidth: true, flexWidth: 1);
+            var csf = container.gameObject.AddComponent<ContentSizeFitter>();
+            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+        }
+
+        private static void BuildEmptyStateContainer(Transform parent)
+        {
+            var box = UIHelper.MakeVertical("EmptyStateContainer", parent, 12, new RectOffset(24, 24, 32, 32));
+            UIHelper.SetLayout(box.gameObject, preferredHeight: 200, minHeight: 180);
+            var boxImg = box.gameObject.AddComponent<Image>();
+            boxImg.color = UIColors.Card;
+            UIHelper.SetImageRoundedSprite(boxImg, 20);
+
+            var title = UIHelper.MakeLabel("label-empty-title", box, "No Issued Certificates Yet", 36, UIColors.PrimaryDark, TextAlignmentOptions.Center, bold: true);
+            UIHelper.SetLayout(title.gameObject, preferredHeight: 44);
+
+            var desc = UIHelper.MakeLabel("label-empty-desc", box,
+                "Complete the practical AR training and assessment. Once reviewed and approved by a safety officer, your official certificate will appear here.",
+                30, UIColors.TextSecondary, TextAlignmentOptions.Center, wrap: true);
+            UIHelper.SetLayout(desc.gameObject, preferredHeight: 76);
         }
 
         private static void BuildActionButtons(Transform parent)
         {
-            var col = UIHelper.MakeVertical("ActionButtons", parent, 12);
-            UIHelper.SetLayout(col.gameObject, preferredHeight: 180, minHeight: 188);
+            var col = UIHelper.MakeVertical("ActionButtons", parent, 14);
+            UIHelper.SetLayout(col.gameObject, preferredHeight: 200);
 
-            // Download Button
-            var downloadBtn = UIHelper.MakeButton("btn-download-cert", col, "Download Certificate (PDF)", 18,
-                UIColors.SafetyGreen, Color.white, 16);
-            UIHelper.SetLayout(downloadBtn.gameObject, preferredHeight: 58, minHeight: 50);
+            var refreshBtn = UIHelper.MakeButton("btn-refresh-certs", col, "Sync & Refresh Certificates", 34,
+                UIColors.Hex("#F3F5F7"), UIColors.TextPrimary, 20);
+            UIHelper.SetLayout(refreshBtn.gameObject, preferredHeight: 90);
 
-            // Share Button
-            var shareBtn = UIHelper.MakeButton("btn-share-cert", col, "Share Official Verification", 17,
-                Color.white, UIColors.PrimaryDark, 16);
-            UIHelper.SetLayout(shareBtn.gameObject, preferredHeight: 54, minHeight: 46);
-            var shareBorder = shareBtn.gameObject.AddComponent<Outline>();
-            shareBorder.effectColor = UIColors.Border;
-            shareBorder.effectDistance = new Vector2(1, -1);
-
-            // Return to Home Button
-            var homeBtn = UIHelper.MakeButton("btn-back-home", col, "Return to Dashboard", 17,
-                UIColors.Hex("#F3F5F7"), UIColors.TextPrimary, 16);
-            UIHelper.SetLayout(homeBtn.gameObject, preferredHeight: 52, minHeight: 44);
+            var homeBtn = UIHelper.MakeButton("btn-back-home", col, "Return to Dashboard", 34,
+                UIColors.PrimaryDark, Color.white, 20);
+            UIHelper.SetLayout(homeBtn.gameObject, preferredHeight: 90);
         }
     }
 }

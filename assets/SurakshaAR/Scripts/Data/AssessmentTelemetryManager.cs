@@ -33,7 +33,7 @@ namespace SurakshaAR.Data
                 return;
             }
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            if (Application.isPlaying) DontDestroyOnLoad(gameObject);
 
             SubscribeTrainingEvents();
         }
@@ -336,9 +336,11 @@ namespace SurakshaAR.Data
         // ── Day 1 Common Assessment Event Handlers ───────────────────────
         private int GetCurrentWorkerId()
         {
-            return (AppState.Instance != null && AppState.Instance.CurrentUser != null)
-                ? AppState.Instance.CurrentUser.id
-                : 1;
+            if (AppState.Instance != null && int.TryParse(AppState.Instance.EmployeeId, out int workerId))
+            {
+                return workerId;
+            }
+            return 1;
         }
 
         private void HandleCommonScenarioStarted(string module, string scenario)

@@ -79,6 +79,43 @@ namespace SurakshaAR.Core
                 return false;
             }
 
+#if UNITY_ANDROID && !UNITY_EDITOR
+            if (!UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.Camera))
+            {
+                StartCoroutine(RequestCameraAndLaunchRoutine(module));
+                return true;
+            }
+#endif
+
+            ExecuteLaunch(module);
+            return true;
+        }
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+        private System.Collections.IEnumerator RequestCameraAndLaunchRoutine(ModuleData module)
+        {
+            UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.Camera);
+            float waitTimer = 0f;
+            while (!UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.Camera) && waitTimer < 3.0f)
+            {
+                waitTimer += Time.unscaledDeltaTime;
+                yield return null;
+            }
+
+            if (UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.Camera))
+            {
+                ExecuteLaunch(module);
+            }
+            else
+            {
+                Debug.LogError("[ARModuleLauncher] Camera permission denied. Cannot start AR scenario without camera feed.");
+                AppManager.Instance?.UIManager?.SetUIVisible(true);
+            }
+        }
+#endif
+
+        private void ExecuteLaunch(ModuleData module)
+        {
             _loadedArSceneName = module.arSceneName;
             _trainingCompleted = false;
             AppManager.Instance.UIManager.SetUIVisible(false);
@@ -91,8 +128,22 @@ namespace SurakshaAR.Core
                 _uiCamera.gameObject.SetActive(false);
             }
 
+            // Ensure XR Loader is initialized and subsystems are running
+            if (UnityEngine.XR.Management.XRGeneralSettings.Instance != null &&
+                UnityEngine.XR.Management.XRGeneralSettings.Instance.Manager != null)
+            {
+                var mgr = UnityEngine.XR.Management.XRGeneralSettings.Instance.Manager;
+                if (mgr.activeLoader == null)
+                {
+                    mgr.InitializeLoaderSync();
+                }
+                if (mgr.activeLoader != null)
+                {
+                    mgr.StartSubsystems();
+                }
+            }
+
             SceneManager.LoadScene(_loadedArSceneName, LoadSceneMode.Additive);
-            return true;
         }
 
         /// <summary>
@@ -104,6 +155,18 @@ namespace SurakshaAR.Core
             if (!_arSceneActive || string.IsNullOrEmpty(_loadedArSceneName))
             {
                 return;
+            }
+
+            // Stop XR subsystems upon exiting AR mode
+            if (UnityEngine.XR.Management.XRGeneralSettings.Instance != null &&
+                UnityEngine.XR.Management.XRGeneralSettings.Instance.Manager != null)
+            {
+                var mgr = UnityEngine.XR.Management.XRGeneralSettings.Instance.Manager;
+                if (mgr.activeLoader != null)
+                {
+                    mgr.StopSubsystems();
+                    mgr.DeinitializeLoader();
+                }
             }
 
             SceneManager.UnloadSceneAsync(_loadedArSceneName);

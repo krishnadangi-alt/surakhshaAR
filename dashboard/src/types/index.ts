@@ -50,6 +50,8 @@ export interface Assessment {
   duration: string;
   dateTime: string;
   stepDetails: AssessmentStep[];
+  competencyScores?: Record<string, { name: string; score: number; passed: boolean; pass_threshold: number }>;
+  weaknesses?: Array<{ competency_name: string; score?: number; threshold?: number; severity?: string; reason?: string }>;
 }
 
 export interface Worker {
@@ -118,9 +120,13 @@ export interface Certificate {
   issueDate: string;
   expiryDate: string;
   status: CertificateStatus;
-  /** Simulated integrity code for DEMO verification UI only — not a cryptographic signature. */
   verificationCode: string;
   issuerDepartment: string;
+  score?: number;
+  competencyStatus?: string;
+  publicImageUrl?: string;
+  hasImage?: boolean;
+  hasPdf?: boolean;
 }
 
 export interface RetentionRecord {

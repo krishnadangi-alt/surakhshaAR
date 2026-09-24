@@ -84,14 +84,14 @@ namespace SurakshaAR.UI.Builders
 
         private static void BuildHeaderStatus(Transform parent)
         {
-            var headerBox = UIHelper.MakeVertical("HeaderBox", parent, 10);
-            UIHelper.SetLayout(headerBox.gameObject, minHeight: 160);
+            var headerBox = UIHelper.MakeVertical("HeaderBox", parent, 12);
+            UIHelper.SetLayout(headerBox.gameObject, minHeight: 220);
             var csf = headerBox.gameObject.AddComponent<ContentSizeFitter>();
             csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             // Circular Badge
             var circle = UIHelper.MakeRect("Circle", headerBox);
-            circle.sizeDelta = new Vector2(84, 84);
+            circle.sizeDelta = new Vector2(120, 120);
             var circleImg = circle.gameObject.AddComponent<Image>();
             circleImg.sprite = UIHelper.GetCircleSprite();
             circleImg.color = UIColors.Hex("#E6F4EC"); // Pass green tint (or amber for fail)
@@ -101,44 +101,45 @@ namespace SurakshaAR.UI.Builders
             var badgeImg = badgeIconGO.AddComponent<Image>();
             badgeImg.sprite = UIHelper.GetCheckmarkSprite();
             badgeImg.color = UIColors.SafetyGreen;
-            UIHelper.AnchorCenter(badgeIconGO.GetComponent<RectTransform>(), 46, 46);
+            UIHelper.AnchorCenter(badgeIconGO.GetComponent<RectTransform>(), 64, 64);
 
             var titleLbl = UIHelper.MakeLabel("label-result-title", headerBox, "Assessment Passed!",
-                28, UIColors.PrimaryDark, TextAlignmentOptions.Center, bold: true, wrap: true);
-            UIHelper.SetLayout(titleLbl.gameObject, minHeight: 36);
+                52, UIColors.PrimaryDark, TextAlignmentOptions.Center, bold: true, wrap: true);
+            UIHelper.SetLayout(titleLbl.gameObject, minHeight: 62);
 
             var subLbl = UIHelper.MakeLabel("label-result-sub", headerBox,
                 "Demonstrated compliance with Ministry of Mines Industrial Safety SOP.",
-                16, UIColors.TextSecondary, TextAlignmentOptions.Center, wrap: true);
-            UIHelper.SetLayout(subLbl.gameObject, minHeight: 24);
+                34, UIColors.TextSecondary, TextAlignmentOptions.Center, wrap: true);
+            subLbl.lineSpacing = 4f;
+            UIHelper.SetLayout(subLbl.gameObject, minHeight: 52);
         }
 
         private static void BuildMetricsCard(Transform parent)
         {
             var card = new GameObject("MetricsCard");
             card.transform.SetParent(parent, false);
-            UIHelper.SetLayout(card, preferredHeight: 170);
+            UIHelper.SetLayout(card, preferredHeight: 280, minHeight: 260);
 
             var cardImg = card.AddComponent<Image>();
             cardImg.color = Color.white;
-            UIHelper.SetImageRoundedSprite(cardImg, 20);
+            UIHelper.SetImageRoundedSprite(cardImg, 24);
 
-            var cardCol = UIHelper.MakeVertical("Inner", card.transform, 12, new RectOffset(20, 20, 20, 20));
+            var cardCol = UIHelper.MakeVertical("Inner", card.transform, 16, new RectOffset(24, 24, 24, 24));
             UIHelper.Stretch(cardCol, 0, 0, 0, 0);
 
             // Primary score text
             var topRow = UIHelper.MakeHorizontal("TopRow", cardCol, 12);
-            UIHelper.SetLayout(topRow.gameObject, preferredHeight: 48);
+            UIHelper.SetLayout(topRow.gameObject, preferredHeight: 72);
 
-            var scoreLbl = UIHelper.MakeLabel("label-score", topRow, "95%", 42, UIColors.SafetyGreen, bold: true);
+            var scoreLbl = UIHelper.MakeLabel("label-score", topRow, "95%", 72, UIColors.SafetyGreen, bold: true);
             UIHelper.SetLayout(scoreLbl.gameObject, flexibleWidth: true, flexWidth: 1);
 
-            var passChip = UIHelper.MakeButton("label-pass-chip", topRow, "COMPETENT", 14, UIColors.Hex("#E6F4EC"), UIColors.SafetyGreen, 12);
-            UIHelper.SetLayout(passChip.gameObject, preferredWidth: 150, preferredHeight: 32);
+            var passChip = UIHelper.MakeButton("label-pass-chip", topRow, "COMPETENT", 32, UIColors.Hex("#E6F4EC"), UIColors.SafetyGreen, 16);
+            UIHelper.SetLayout(passChip.gameObject, preferredWidth: 230, preferredHeight: 56);
 
             // 4-Column Stats Grid
-            var gridRow = UIHelper.MakeHorizontal("StatsGrid", cardCol, 8);
-            UIHelper.SetLayout(gridRow.gameObject, preferredHeight: 64);
+            var gridRow = UIHelper.MakeHorizontal("StatsGrid", cardCol, 10);
+            UIHelper.SetLayout(gridRow.gameObject, preferredHeight: 120);
 
             BuildStatBox(gridRow, "label-time-val", "00:48", "Time Taken");
             BuildStatBox(gridRow, "label-crit-val", "0", "Critical Errors");
@@ -148,35 +149,35 @@ namespace SurakshaAR.UI.Builders
 
         private static void BuildStatBox(Transform parent, string valLabelName, string valText, string titleText)
         {
-            var box = UIHelper.MakeVertical("StatBox", parent, 4, new RectOffset(6, 6, 6, 6));
+            var box = UIHelper.MakeVertical("StatBox", parent, 4, new RectOffset(6, 6, 10, 10));
             UIHelper.SetLayout(box.gameObject, flexibleWidth: true, flexWidth: 1);
 
             var bg = box.gameObject.AddComponent<Image>();
             bg.color = UIColors.Hex("#F3F5F7");
-            UIHelper.SetImageRoundedSprite(bg, 10);
+            UIHelper.SetImageRoundedSprite(bg, 14);
 
-            var val = UIHelper.MakeLabel(valLabelName, box, valText, 17, UIColors.PrimaryDark, TextAlignmentOptions.Center, bold: true);
-            UIHelper.SetLayout(val.gameObject, preferredHeight: 22);
+            var val = UIHelper.MakeLabel(valLabelName, box, valText, 38, UIColors.PrimaryDark, TextAlignmentOptions.Center, bold: true);
+            UIHelper.SetLayout(val.gameObject, preferredHeight: 46);
 
-            var lbl = UIHelper.MakeLabel("Title", box, titleText, 11, UIColors.TextSecondary, TextAlignmentOptions.Center);
-            UIHelper.SetLayout(lbl.gameObject, preferredHeight: 16);
+            var lbl = UIHelper.MakeLabel("Title", box, titleText, 28, UIColors.TextSecondary, TextAlignmentOptions.Center, wrap: true);
+            UIHelper.SetLayout(lbl.gameObject, preferredHeight: 36);
         }
 
         private static void BuildCompetencyCard(Transform parent)
         {
             var card = new GameObject("CompetencyCard");
             card.transform.SetParent(parent, false);
-            UIHelper.SetLayout(card, preferredHeight: 240);
+            UIHelper.SetLayout(card, preferredHeight: 380, minHeight: 360);
 
             var cardImg = card.AddComponent<Image>();
             cardImg.color = Color.white;
-            UIHelper.SetImageRoundedSprite(cardImg, 20);
+            UIHelper.SetImageRoundedSprite(cardImg, 24);
 
-            var col = UIHelper.MakeVertical("Inner", card.transform, 12, new RectOffset(20, 20, 18, 18));
+            var col = UIHelper.MakeVertical("Inner", card.transform, 14, new RectOffset(24, 24, 22, 22));
             UIHelper.Stretch(col, 0, 0, 0, 0);
 
-            var titleLbl = UIHelper.MakeLabel("CompTitle", col, "Competency Breakdown", 18, UIColors.PrimaryDark, bold: true);
-            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 26);
+            var titleLbl = UIHelper.MakeLabel("CompTitle", col, "Competency Breakdown", 42, UIColors.PrimaryDark, bold: true);
+            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 50);
 
             BuildCompetencyRow(col, "Hazard Recognition", "Strong", UIColors.SafetyGreen, "Pass");
             BuildCompetencyRow(col, "Emergency Alarm Response", "Strong", UIColors.SafetyGreen, "Pass");
@@ -186,61 +187,61 @@ namespace SurakshaAR.UI.Builders
 
         private static void BuildCompetencyRow(Transform parent, string name, string status, Color statusColor, string icon)
         {
-            var row = UIHelper.MakeHorizontal("Row", parent, 10);
-            UIHelper.SetLayout(row.gameObject, preferredHeight: 34);
+            var row = UIHelper.MakeHorizontal("Row", parent, 12);
+            UIHelper.SetLayout(row.gameObject, preferredHeight: 60);
 
-            var nameLbl = UIHelper.MakeLabel("Name", row, name, 15, UIColors.TextPrimary);
+            var nameLbl = UIHelper.MakeLabel("Name", row, name, 34, UIColors.TextPrimary, wrap: true);
             UIHelper.SetLayout(nameLbl.gameObject, flexibleWidth: true, flexWidth: 1);
 
-            var statusBadge = UIHelper.MakeHorizontal("Badge", row, 6, new RectOffset(10, 10, 4, 4));
-            UIHelper.SetLayout(statusBadge.gameObject, preferredHeight: 28);
+            var statusBadge = UIHelper.MakeHorizontal("Badge", row, 6, new RectOffset(14, 14, 6, 6));
+            UIHelper.SetLayout(statusBadge.gameObject, preferredHeight: 46);
             var bImg = statusBadge.gameObject.AddComponent<Image>();
             bImg.color = UIColors.Hex("#E6F4EC");
-            UIHelper.SetImageRoundedSprite(bImg, 8);
+            UIHelper.SetImageRoundedSprite(bImg, 12);
 
-            var statusLbl = UIHelper.MakeLabel("Status", statusBadge, $"{icon} {status}", 13, statusColor, bold: true);
-            UIHelper.SetLayout(statusLbl.gameObject, preferredWidth: 90);
+            var statusLbl = UIHelper.MakeLabel("Status", statusBadge, $"{icon} {status}", 30, statusColor, bold: true);
+            UIHelper.SetLayout(statusLbl.gameObject, preferredWidth: 150);
         }
 
         private static void BuildComparisonCard(Transform parent)
         {
             var card = new GameObject("ComparisonCard");
             card.transform.SetParent(parent, false);
-            UIHelper.SetLayout(card, preferredHeight: 110);
+            UIHelper.SetLayout(card, preferredHeight: 190, minHeight: 170);
 
             var cardImg = card.AddComponent<Image>();
             cardImg.color = UIColors.Hex("#F0F7FF"); // Light calm blue
-            UIHelper.SetImageRoundedSprite(cardImg, 16);
+            UIHelper.SetImageRoundedSprite(cardImg, 20);
 
-            var col = UIHelper.MakeVertical("Inner", card.transform, 6, new RectOffset(18, 18, 14, 14));
+            var col = UIHelper.MakeVertical("Inner", card.transform, 6, new RectOffset(22, 22, 18, 18));
             UIHelper.Stretch(col, 0, 0, 0, 0);
 
-            var titleLbl = UIHelper.MakeLabel("CompTitle", col, "Continuous Safety Improvement", 15, UIColors.Primary, bold: true);
-            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 22);
+            var titleLbl = UIHelper.MakeLabel("CompTitle", col, "Continuous Safety Improvement", 38, UIColors.Primary, bold: true);
+            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 44);
 
             var descLbl = UIHelper.MakeLabel("label-comp-desc", col,
                 "Previous Attempt: 65%  >  Current Performance: 95% (+30% Improvement)",
-                14, UIColors.TextPrimary);
-            UIHelper.SetLayout(descLbl.gameObject, preferredHeight: 22);
+                32, UIColors.TextPrimary, wrap: true);
+            UIHelper.SetLayout(descLbl.gameObject, preferredHeight: 42);
 
-            var subLbl = UIHelper.MakeLabel("Sub", col, "Zero critical errors maintained across all industrial procedures.", 12, UIColors.TextSecondary);
-            UIHelper.SetLayout(subLbl.gameObject, preferredHeight: 18);
+            var subLbl = UIHelper.MakeLabel("Sub", col, "Zero critical errors maintained across all industrial procedures.", 28, UIColors.TextSecondary, wrap: true);
+            UIHelper.SetLayout(subLbl.gameObject, preferredHeight: 36);
         }
 
         private static void BuildActions(Transform parent)
         {
-            var actionsCol = UIHelper.MakeVertical("ActionsCol", parent, 12);
-            UIHelper.SetLayout(actionsCol.gameObject, preferredHeight: 140);
+            var actionsCol = UIHelper.MakeVertical("ActionsCol", parent, 16);
+            UIHelper.SetLayout(actionsCol.gameObject, preferredHeight: 236);
 
             // Primary action button (Safety Green)
-            var certBtn = UIHelper.MakeButton("btn-view-certificate", actionsCol, "View Official Certificate", 20,
-                UIColors.SafetyGreen, Color.white, 18);
-            UIHelper.SetLayout(certBtn.gameObject, preferredHeight: 62);
+            var certBtn = UIHelper.MakeButton("btn-view-certificate", actionsCol, "View Official Certificate", 36,
+                UIColors.SafetyGreen, Color.white, 22);
+            UIHelper.SetLayout(certBtn.gameObject, preferredHeight: 110, minHeight: 100);
 
             // Secondary action button (Return to Dashboard)
-            var homeBtn = UIHelper.MakeButton("btn-home", actionsCol, "Return to Dashboard", 18,
-                Color.white, UIColors.PrimaryDark, 18);
-            UIHelper.SetLayout(homeBtn.gameObject, preferredHeight: 56);
+            var homeBtn = UIHelper.MakeButton("btn-home", actionsCol, "Return to Dashboard", 36,
+                Color.white, UIColors.PrimaryDark, 22);
+            UIHelper.SetLayout(homeBtn.gameObject, preferredHeight: 106, minHeight: 96);
             var border = homeBtn.gameObject.AddComponent<Outline>();
             border.effectColor = UIColors.Border;
             border.effectDistance = new Vector2(1, -1);

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SurakshaAR.Localization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -53,6 +54,20 @@ namespace SurakshaAR.UI
             foreach (var f in root.GetComponentsInChildren<TMP_InputField>(true))
                 if (f.gameObject.name == name) return f;
             return null;
+        }
+
+        /// <summary>Safely destroys a GameObject or Component whether in Play Mode or Edit Mode.</summary>
+        public static void SafeDestroy(UnityEngine.Object obj)
+        {
+            if (obj == null) return;
+            if (Application.isPlaying)
+            {
+                UnityEngine.Object.Destroy(obj);
+            }
+            else
+            {
+                UnityEngine.Object.DestroyImmediate(obj);
+            }
         }
 
         // ──────────────────────────────────────────────────────────────
@@ -120,50 +135,16 @@ namespace SurakshaAR.UI
             // Purge any corrupted or material-less fallback assets
             baseFont.fallbackFontAssetTable.RemoveAll(f => f == null || f.material == null);
 
-            if (_devanagariFont != null && _devanagariFont.material != null && !baseFont.fallbackFontAssetTable.Contains(_devanagariFont))
+            var dev = GetDevanagariFont();
+            if (dev != null && dev.material != null && dev != baseFont && !baseFont.fallbackFontAssetTable.Contains(dev))
             {
-                baseFont.fallbackFontAssetTable.Add(_devanagariFont);
-                return;
+                baseFont.fallbackFontAssetTable.Add(dev);
             }
 
-            // Check if a Devanagari font asset is available in Resources
-            var devAsset = Resources.Load<TMP_FontAsset>("Fonts/NotoSansDevanagari SDF")
-                        ?? Resources.Load<TMP_FontAsset>("Fonts & Materials/NotoSansDevanagari SDF")
-                        ?? Resources.Load<TMP_FontAsset>("Fonts & Materials/NotoSans SDF");
-
-            if (devAsset != null && devAsset.material == null)
+            var santali = GetSantaliFont();
+            if (santali != null && santali.material != null && santali != baseFont && !baseFont.fallbackFontAssetTable.Contains(santali))
             {
-                devAsset = null;
-            }
-
-            if (devAsset == null)
-            {
-                var font = Resources.Load<Font>("Fonts/NotoSansDevanagari");
-                if (font != null)
-                {
-                    try
-                    {
-                        var created = TMP_FontAsset.CreateFontAsset(font, 36, 5, UnityEngine.TextCore.LowLevel.GlyphRenderMode.SDFAA, 512, 512, AtlasPopulationMode.Dynamic);
-                        if (created != null && created.material != null)
-                        {
-                            created.name = "NotoSansDevanagari Dynamic";
-                            devAsset = created;
-                        }
-                    }
-                    catch (System.Exception ex)
-                    {
-                        Debug.LogWarning($"[UIHelper] Dynamic font asset creation failed: {ex.Message}");
-                    }
-                }
-            }
-
-            if (devAsset != null && devAsset.material != null)
-            {
-                _devanagariFont = devAsset;
-                if (!baseFont.fallbackFontAssetTable.Contains(devAsset))
-                {
-                    baseFont.fallbackFontAssetTable.Add(devAsset);
-                }
+                baseFont.fallbackFontAssetTable.Add(santali);
             }
         }
 
@@ -173,7 +154,7 @@ namespace SurakshaAR.UI
         /// </summary>
         public static bool HasDevanagariSupport()
         {
-            var font = GetDefaultFont();
+            var font = GetDevanagariFont();
             if (font == null) return false;
             if (font.HasCharacter(0x0915)) return true;
             if (font.fallbackFontAssetTable != null)
@@ -192,7 +173,7 @@ namespace SurakshaAR.UI
         /// </summary>
         public static bool HasOlChikiSupport()
         {
-            var font = GetDefaultFont();
+            var font = GetSantaliFont();
             if (font == null) return false;
             if (font.HasCharacter(0x1C5A)) return true;
             if (font.fallbackFontAssetTable != null)
@@ -209,38 +190,93 @@ namespace SurakshaAR.UI
 
         /// <summary>
         /// Returns a font suitable for Devanagari (Hindi) text.
-        /// Tries dedicated Devanagari/NotoSans assets, then attempts dynamic creation from TTF,
-        /// and registers it as a fallback on the default font.
+        /// Loads NotoSansDevanagari SDF or dynamically generates it from the bundled TTF font,
+        /// ensuring Devanagari glyphs (U+0900-U+097F) render cleanly without boxes.
         /// </summary>
         public static TMP_FontAsset GetDevanagariFont()
         {
-            if (_devanagariFont != null && _devanagariFont.material != null) return _devanagariFont;
-            
-            var asset = Resources.Load<TMP_FontAsset>("Fonts/NotoSansDevanagari SDF")
-                     ?? Resources.Load<TMP_FontAsset>("Fonts & Materials/NotoSansDevanagari SDF")
-                     ?? Resources.Load<TMP_FontAsset>("Fonts & Materials/NotoSans SDF");
-
-            if (asset != null && asset.material == null)
+            if (_devanagariFont != null)
             {
-                var shader = Shader.Find("TextMeshPro/Distance Field") ?? Shader.Find("TextMeshPro/Mobile/Distance Field");
-                if (shader != null)
+                try
                 {
-                    asset.material = new Material(shader);
-                    asset.material.mainTexture = asset.atlasTexture;
+                    if (_devanagariFont.material != null && _devanagariFont.atlasTexture != null && _devanagariFont.HasCharacter(0x0915))
+                        return _devanagariFont;
+                }
+                catch
+                {
+                    _devanagariFont = null;
                 }
             }
 
-            if (asset == null || asset.material == null)
+            var sb = new System.Text.StringBuilder(1024);
+            for (int c = 0x0900; c <= 0x097F; c++) sb.Append((char)c);
+            int[] puaGlyphs = new int[]
+            {
+                0xE02B, 0xE02C, 0xE02D, 0xE02F, 0xE030, 0xE031, 0xE032, 0xE034, 0xE035,
+                0xE036, 0xE037, 0xE038, 0xE03D, 0xE03E, 0xE03F, 0xE041, 0xE042, 0xE043,
+                0xE044, 0xE045, 0xE046, 0xE047, 0xE048, 0xE04A, 0xE04C, 0xE04D, 0xE04E,
+                0xE04F, 0xE050, 0xE076, 0xE078, 0xE085, 0xE08A, 0xE094, 0xE14E, 0xE166,
+                0xE181, 0xE189, 0xE190, 0xE1AA, 0xE1AD
+            };
+            foreach (int p in puaGlyphs) sb.Append((char)p);
+            sb.Append(" 0123456789%+-=()[]{}<>/\\|:;.,!?~@#$^&*'\"•✓★→➔↗›‹✔✓");
+            sb.Append("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+            string devanagariGlyphs = sb.ToString();
+
+            TMP_FontAsset asset = null;
+            try
+            {
+                asset = Resources.Load<TMP_FontAsset>("Fonts/NotoSansDevanagari SDF")
+                     ?? Resources.Load<TMP_FontAsset>("Fonts & Materials/NotoSansDevanagari SDF")
+                     ?? Resources.Load<TMP_FontAsset>("Fonts & Materials/NotoSans SDF");
+
+                if (asset != null)
+                {
+                    // Check for null textures in array
+                    if (asset.atlasTextures == null || asset.atlasTextures.Length == 0 || asset.atlasTextures[0] == null)
+                    {
+                        asset = null;
+                    }
+                    else
+                    {
+                        for (int i = 0; i < asset.atlasTextures.Length; i++)
+                        {
+                            if (asset.atlasTextures[i] == null) { asset = null; break; }
+                        }
+                    }
+                }
+
+                if (asset != null)
+                {
+                    if (asset.material == null && asset.atlasTexture != null)
+                    {
+                        var shader = Shader.Find("TextMeshPro/Distance Field") ?? Shader.Find("TextMeshPro/Mobile/Distance Field");
+                        if (shader != null)
+                        {
+                            asset.material = new Material(shader);
+                            asset.material.mainTexture = asset.atlasTexture;
+                        }
+                    }
+                    asset.TryAddCharacters(devanagariGlyphs);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning($"[UIHelper] Existing Devanagari asset invalid: {ex.Message}");
+                asset = null;
+            }
+
+            if (asset == null || asset.material == null || !asset.HasCharacter(0x0915) || !asset.HasCharacter(0xE02B))
             {
                 var font = Resources.Load<Font>("Fonts/NotoSansDevanagari");
                 if (font != null)
                 {
                     try
                     {
-                        var created = TMP_FontAsset.CreateFontAsset(font, 36, 5, UnityEngine.TextCore.LowLevel.GlyphRenderMode.SDFAA, 512, 512, AtlasPopulationMode.Dynamic);
+                        var created = TMP_FontAsset.CreateFontAsset(font, 36, 5, UnityEngine.TextCore.LowLevel.GlyphRenderMode.SDFAA, 1024, 1024, AtlasPopulationMode.Dynamic);
                         if (created != null)
                         {
-                            if (created.material == null)
+                            if (created.material == null && created.atlasTexture != null)
                             {
                                 var shader = Shader.Find("TextMeshPro/Distance Field") ?? Shader.Find("TextMeshPro/Mobile/Distance Field");
                                 if (shader != null)
@@ -250,20 +286,45 @@ namespace SurakshaAR.UI
                                 }
                             }
                             created.name = "NotoSansDevanagari Dynamic";
-                            asset = created;
+                            created.isMultiAtlasTexturesEnabled = false;
+                            created.TryAddCharacters(devanagariGlyphs);
+                            if (created.HasCharacter(0x0915)) asset = created;
                         }
                     }
                     catch (System.Exception ex)
                     {
-                        Debug.LogWarning($"[UIHelper] Dynamic Devanagari font creation failed: {ex.Message}");
+                        Debug.LogWarning($"[UIHelper] Dynamic Devanagari font creation from TTF failed: {ex.Message}");
                     }
+                }
+            }
+
+            // Fallback to system fonts if needed
+            if (asset == null || !asset.HasCharacter(0x0915))
+            {
+                try
+                {
+                    var sysFont = Font.CreateDynamicFontFromOSFont(new string[] { "Nirmala UI", "Mangal", "Aparajita", "Utsaah" }, 36);
+                    if (sysFont != null)
+                    {
+                        var created = TMP_FontAsset.CreateFontAsset(sysFont, 36, 5, UnityEngine.TextCore.LowLevel.GlyphRenderMode.SDFAA, 512, 512, AtlasPopulationMode.Dynamic);
+                        if (created != null)
+                        {
+                            created.name = "NirmalaUI Dynamic";
+                            created.TryAddCharacters(devanagariGlyphs);
+                            if (created.HasCharacter(0x0915)) asset = created;
+                        }
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogWarning($"[UIHelper] OS Devanagari font fallback failed: {ex.Message}");
                 }
             }
 
             if (asset != null && asset.material != null)
             {
                 _devanagariFont = asset;
-                var defFont = GetDefaultFont();
+                var defFont = _defaultFont;
                 if (defFont != null && defFont.fallbackFontAssetTable != null && !defFont.fallbackFontAssetTable.Contains(asset))
                 {
                     defFont.fallbackFontAssetTable.Add(asset);
@@ -274,18 +335,73 @@ namespace SurakshaAR.UI
             return GetDefaultFont();
         }
 
-        /// <summary>Returns a font suitable for Santali text (Ol Chiki or regional fallback).</summary>
+        /// <summary>
+        /// Returns a font suitable for Santali text (Ol Chiki U+1C50-U+1C7F).
+        /// Loads NotoSansOlChiki SDF or dynamically creates it from the bundled TTF font.
+        /// </summary>
         public static TMP_FontAsset GetSantaliFont()
         {
-            if (_santaliFont != null && _santaliFont.material != null) return _santaliFont;
+            if (_santaliFont != null && _santaliFont.material != null && _santaliFont.HasCharacter(0x1C5A))
+                return _santaliFont;
+
+            const string olChikiGlyphs = "᱐᱑᱒᱓᱔᱕᱖᱗᱘᱙ᱚᱛᱜᱝᱞᱟᱠᱡᱢᱣᱤᱥᱦᱧᱨᱩᱪᱫᱬᱭᱮᱯᱰᱱᱲᱳᱴᱵᱶᱷᱸᱹᱺᱻᱼᱽ᱾᱿ ";
 
             var asset = Resources.Load<TMP_FontAsset>("Fonts/NotoSansOlChiki SDF")
-                     ?? Resources.Load<TMP_FontAsset>("Fonts/Nirmala SDF")
                      ?? Resources.Load<TMP_FontAsset>("Fonts & Materials/NotoSansOlChiki SDF");
+
+            if (asset != null)
+            {
+                if (asset.material == null && asset.atlasTexture != null)
+                {
+                    var shader = Shader.Find("TextMeshPro/Distance Field") ?? Shader.Find("TextMeshPro/Mobile/Distance Field");
+                    if (shader != null)
+                    {
+                        asset.material = new Material(shader);
+                        asset.material.mainTexture = asset.atlasTexture;
+                    }
+                }
+                asset.TryAddCharacters(olChikiGlyphs);
+            }
+
+            if (asset == null || asset.material == null || !asset.HasCharacter(0x1C5A))
+            {
+                var font = Resources.Load<Font>("Fonts/NotoSansOlChiki");
+                if (font != null)
+                {
+                    try
+                    {
+                        var created = TMP_FontAsset.CreateFontAsset(font, 36, 5, UnityEngine.TextCore.LowLevel.GlyphRenderMode.SDFAA, 512, 512, AtlasPopulationMode.Dynamic);
+                        if (created != null)
+                        {
+                            if (created.material == null && created.atlasTexture != null)
+                            {
+                                var shader = Shader.Find("TextMeshPro/Distance Field") ?? Shader.Find("TextMeshPro/Mobile/Distance Field");
+                                if (shader != null)
+                                {
+                                    created.material = new Material(shader);
+                                    created.material.mainTexture = created.atlasTexture;
+                                }
+                            }
+                            created.name = "NotoSansOlChiki Dynamic";
+                            created.TryAddCharacters(olChikiGlyphs);
+                            if (created.HasCharacter(0x1C5A)) asset = created;
+                        }
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Debug.LogWarning($"[UIHelper] Dynamic Ol Chiki font creation failed: {ex.Message}");
+                    }
+                }
+            }
 
             if (asset != null && asset.material != null)
             {
                 _santaliFont = asset;
+                var defFont = _defaultFont;
+                if (defFont != null && defFont.fallbackFontAssetTable != null && !defFont.fallbackFontAssetTable.Contains(asset))
+                {
+                    defFont.fallbackFontAssetTable.Add(asset);
+                }
                 return _santaliFont;
             }
 
@@ -295,16 +411,30 @@ namespace SurakshaAR.UI
             return GetDefaultFont();
         }
 
-        /// <summary>Returns the font asset corresponding to the given language (always the unified menu font with fallbacks).</summary>
+        /// <summary>Returns the font asset corresponding to the given language.</summary>
         public static TMP_FontAsset GetFontForLanguage(SurakshaAR.Data.AppLanguage lang)
         {
-            return GetDefaultFont();
+            switch (lang)
+            {
+                case SurakshaAR.Data.AppLanguage.Hindi:
+                    return GetDevanagariFont();
+                case SurakshaAR.Data.AppLanguage.Santali:
+                    return GetSantaliFont();
+                case SurakshaAR.Data.AppLanguage.English:
+                default:
+                    return GetDefaultFont();
+            }
         }
 
-        /// <summary>Returns the active font asset based on current AppState / Localization selection (unified menu font).</summary>
+        /// <summary>Returns the active font asset based on current AppState / Localization selection.</summary>
         public static TMP_FontAsset GetCurrentFont()
         {
-            return GetDefaultFont();
+            var lang = SurakshaAR.Core.AppState.Instance != null
+                ? SurakshaAR.Core.AppState.Instance.CurrentLanguage
+                : (SurakshaAR.Localization.LocalizationManager.Instance != null
+                    ? SurakshaAR.Localization.LocalizationManager.Instance.CurrentLanguage
+                    : SurakshaAR.Data.AppLanguage.English);
+            return GetFontForLanguage(lang);
         }
 
         /// <summary>Adds a TextMeshProUGUI component with language-aware font pre-assigned.</summary>
@@ -313,6 +443,14 @@ namespace SurakshaAR.UI
             if (go == null) return null;
             var tmp = go.GetComponent<TextMeshProUGUI>() ?? go.AddComponent<TextMeshProUGUI>();
             if (tmp == null) return null;
+            tmp.isRightToLeftText = false;
+            var rt = tmp.rectTransform;
+            if (rt != null && rt.localScale.x < 0f)
+            {
+                var s = rt.localScale;
+                s.x = Mathf.Abs(s.x);
+                rt.localScale = s;
+            }
             var font = GetCurrentFont();
             if (font != null) tmp.font = font;
             return tmp;
@@ -328,12 +466,12 @@ namespace SurakshaAR.UI
             go.transform.SetParent(parent, false);
             var rt = go.AddComponent<RectTransform>();
             float initialWidth = wrap ? 400f : 240f;
-            rt.sizeDelta = new Vector2(initialWidth, fontSize * 1.35f);
+            rt.sizeDelta = new Vector2(initialWidth, fontSize * 1.45f);
 
             var le = go.AddComponent<LayoutElement>();
             if (!wrap)
             {
-                le.preferredHeight = fontSize * 1.35f;
+                le.preferredHeight = fontSize * 1.45f;
                 le.minWidth = 20f;
             }
             else
@@ -343,6 +481,11 @@ namespace SurakshaAR.UI
 
             var tmp = AddTMP(go);
             string cleanText = SanitizeText(text);
+            if (DevanagariShaper.HasDevanagari(cleanText))
+            {
+                cleanText = DevanagariShaper.Shape(cleanText);
+                try { tmp.font = GetDevanagariFont(); } catch {}
+            }
             tmp.text = cleanText;
             tmp.fontSize = fontSize;
             tmp.color = color;
@@ -416,10 +559,10 @@ namespace SurakshaAR.UI
             var go = new GameObject(name);
             go.transform.SetParent(parent, false);
             var rt = go.AddComponent<RectTransform>();
-            rt.sizeDelta = new Vector2(0, 56);
+            rt.sizeDelta = new Vector2(0, 96);
 
             var le = go.AddComponent<LayoutElement>();
-            le.preferredHeight = 56;
+            le.preferredHeight = 96;
             le.flexibleWidth = 1f;
 
             var img = go.AddComponent<Image>();
@@ -442,20 +585,22 @@ namespace SurakshaAR.UI
                 var labelRT = labelGO.AddComponent<RectTransform>();
                 labelRT.anchorMin = Vector2.zero;
                 labelRT.anchorMax = Vector2.one;
-                labelRT.offsetMin = new Vector2(12, 4);
-                labelRT.offsetMax = new Vector2(-12, -4);
+                labelRT.offsetMin = new Vector2(18, 6);
+                labelRT.offsetMax = new Vector2(-18, -6);
 
                 var tmp = AddTMP(labelGO);
                 string cleanLabel = SanitizeText(label);
                 tmp.text = cleanLabel;
-                tmp.fontSize = fontSize;
+                // Enforce mobile minimum font size of 32-36px for text-bearing buttons
+                float effectiveFontSize = (fontSize < 30f && fontSize > 0f) ? 34f : fontSize;
+                tmp.fontSize = effectiveFontSize;
                 tmp.color = textColor;
                 tmp.alignment = TextAlignmentOptions.Center;
                 tmp.fontStyle = FontStyles.Bold;
                 tmp.textWrappingMode = TextWrappingModes.Normal;
                 tmp.enableAutoSizing = true;
-                tmp.fontSizeMin = Mathf.Max(12f, fontSize * 0.75f);
-                tmp.fontSizeMax = fontSize;
+                tmp.fontSizeMin = Mathf.Max(26f, effectiveFontSize * 0.85f);
+                tmp.fontSizeMax = effectiveFontSize;
                 tmp.raycastTarget = false;
             }
 
@@ -493,7 +638,35 @@ namespace SurakshaAR.UI
             hlg.childForceExpandHeight = childForceHeight;
             hlg.childControlWidth = childControlWidth;
             hlg.childControlHeight = childControlHeight;
+            hlg.reverseArrangement = false;
             return rt;
+        }
+
+        /// <summary>
+        /// Recursively resets any mirrored/negative scaleX and forces strict LTR on all RectTransforms,
+        /// HorizontalLayoutGroups, and TextMeshPro components.
+        /// Guaranteed safe execution path for Santali (Ol Chiki), Hindi, and English.
+        /// </summary>
+        public static void EnforceLtrLayout(Transform root)
+        {
+            if (root == null) return;
+            foreach (var rt in root.GetComponentsInChildren<RectTransform>(true))
+            {
+                var s = rt.localScale;
+                if (s.x < 0f)
+                {
+                    s.x = Mathf.Abs(s.x);
+                    rt.localScale = s;
+                }
+            }
+            foreach (var hlg in root.GetComponentsInChildren<HorizontalLayoutGroup>(true))
+            {
+                hlg.reverseArrangement = false;
+            }
+            foreach (var tmp in root.GetComponentsInChildren<TextMeshProUGUI>(true))
+            {
+                tmp.isRightToLeftText = false;
+            }
         }
 
         /// <summary>Add a LayoutElement with preferred/minimum sizes.</summary>
@@ -889,6 +1062,49 @@ namespace SurakshaAR.UI
         {
             if (_cachedDownChevron == null) _cachedDownChevron = CreateDownChevronSprite();
             return _cachedDownChevron;
+        }
+
+        private static Sprite _cachedCheckmarkCircle;
+        public static Sprite GetCheckmarkCircleSprite()
+        {
+            if (_cachedCheckmarkCircle != null) return _cachedCheckmarkCircle;
+            int res = 64;
+            var tex = new Texture2D(res, res, TextureFormat.RGBA32, false);
+            tex.filterMode = FilterMode.Bilinear;
+            float c = (res - 1) / 2f;
+            float r = c - 2f;
+            for (int y = 0; y < res; y++)
+            {
+                for (int x = 0; x < res; x++)
+                {
+                    float dist = Mathf.Sqrt((x - c) * (x - c) + (y - c) * (y - c));
+                    if (dist <= r)
+                    {
+                        bool isCheck = false;
+                        float d1 = DistToSegment(new Vector2(x, y), new Vector2(18, 30), new Vector2(27, 21));
+                        float d2 = DistToSegment(new Vector2(x, y), new Vector2(27, 21), new Vector2(46, 42));
+                        if (Mathf.Min(d1, d2) <= 3.2f) isCheck = true;
+
+                        tex.SetPixel(x, y, isCheck ? Color.white : UIColors.Hex("#10B981"));
+                    }
+                    else
+                    {
+                        tex.SetPixel(x, y, Color.clear);
+                    }
+                }
+            }
+            tex.Apply();
+            _cachedCheckmarkCircle = Sprite.Create(tex, new Rect(0, 0, res, res), new Vector2(0.5f, 0.5f), 100f);
+            return _cachedCheckmarkCircle;
+        }
+
+        private static float DistToSegment(Vector2 p, Vector2 a, Vector2 b)
+        {
+            Vector2 pa = p - a, ba = b - a;
+            float lenSq = ba.sqrMagnitude;
+            if (lenSq < 0.0001f) return (p - a).magnitude;
+            float h = Mathf.Clamp01(Vector2.Dot(pa, ba) / lenSq);
+            return (pa - ba * h).magnitude;
         }
 
         private static Sprite _cachedHome;
@@ -1350,6 +1566,33 @@ namespace SurakshaAR.UI
             tex.Apply();
             _cachedLeaf = Sprite.Create(tex, new Rect(0, 0, res, res), new Vector2(0.5f, 0.5f), 100f);
             return _cachedLeaf;
+        }
+
+        private static Sprite _cachedCloud;
+        public static Sprite GetCloudSprite()
+        {
+            if (_cachedCloud != null) return _cachedCloud;
+            int res = 64;
+            var tex = new Texture2D(res, res, TextureFormat.RGBA32, false);
+            tex.filterMode = FilterMode.Bilinear;
+            for (int y = 0; y < res; y++)
+            {
+                for (int x = 0; x < res; x++)
+                {
+                    float alpha = 0f;
+                    if (y >= 18 && y <= 30 && x >= 16 && x <= 48) alpha = 1f;
+                    float dL = Mathf.Sqrt((x - 24) * (x - 24) + (y - 28) * (y - 28));
+                    if (dL <= 10f) alpha = Mathf.Max(alpha, Mathf.Clamp01((10.5f - dL) * 1.5f));
+                    float dC = Mathf.Sqrt((x - 34) * (x - 34) + (y - 34) * (y - 34));
+                    if (dC <= 13f) alpha = Mathf.Max(alpha, Mathf.Clamp01((13.5f - dC) * 1.5f));
+                    float dR = Mathf.Sqrt((x - 44) * (x - 44) + (y - 28) * (y - 28));
+                    if (dR <= 9f) alpha = Mathf.Max(alpha, Mathf.Clamp01((9.5f - dR) * 1.5f));
+                    tex.SetPixel(x, y, new Color(1f, 1f, 1f, alpha));
+                }
+            }
+            tex.Apply();
+            _cachedCloud = Sprite.Create(tex, new Rect(0, 0, res, res), new Vector2(0.5f, 0.5f), 100f);
+            return _cachedCloud;
         }
 
         private static Sprite _cachedLock;
@@ -1986,50 +2229,79 @@ namespace SurakshaAR.UI
         {
             if (string.IsNullOrEmpty(filename)) return null;
 
-            string lower = filename.ToLower();
-            // Direct procedural vector fallback for emblem and emoji icons (guaranteed on all platforms including Android APK)
-            if (lower.Contains("ashoka_lion_emblem") || lower.Contains("emblem"))
-            {
-                return GetAshokaEmblemSprite();
-            }
-            if (lower.Contains("fire_emoji") || lower.Contains("fire_module") || (lower.Contains("fire") && lower.Contains("emoji")))
-            {
-                return GetFireEmojiSprite();
-            }
-            if (lower.Contains("gas_emoji") || lower.Contains("gas_module") || (lower.Contains("gas") && lower.Contains("emoji")))
-            {
-                return GetGasEmojiSprite();
-            }
-            if (lower.Contains("gear_emoji") || lower.Contains("machinery_module") || (lower.Contains("gear") && lower.Contains("emoji")) || (lower.Contains("machinery") && lower.Contains("emoji")))
-            {
-                return GetGearEmojiSprite();
-            }
-
             if (_loadedProjectSprites.TryGetValue(filename, out var cached) && cached != null)
                 return cached;
 
-            // 1. Try Resources.Load directly (works inside compiled APKs on Android)
+            string lower = filename.ToLower();
+
+            // 1. Try Resources.Load directly across normalized name variants (works inside compiled APKs on Android)
             var cleanName = System.IO.Path.GetFileNameWithoutExtension(filename);
-            var resSpr = Resources.Load<Sprite>("Images/" + cleanName);
-            if (resSpr != null)
+            var nameVariants = new string[]
             {
-                _loadedProjectSprites[filename] = resSpr;
-                return resSpr;
-            }
-            var resTex = Resources.Load<Texture2D>("Images/" + cleanName);
-            if (resTex != null)
+                cleanName,
+                cleanName.Replace(" ", "_"),
+                cleanName.Replace("_", " "),
+                cleanName.ToLower(),
+                cleanName.ToLower().Replace(" ", "_"),
+                cleanName.ToLower().Replace("_", " ")
+            };
+
+            foreach (var name in nameVariants)
             {
-                var spr = Sprite.Create(resTex, new Rect(0, 0, resTex.width, resTex.height), new Vector2(0.5f, 0.5f), 100f);
-                _loadedProjectSprites[filename] = spr;
-                return spr;
+                var resSpr = Resources.Load<Sprite>("Images/" + name);
+                if (resSpr != null)
+                {
+                    _loadedProjectSprites[filename] = resSpr;
+                    return resSpr;
+                }
+                var resTex = Resources.Load<Texture2D>("Images/" + name);
+                if (resTex != null)
+                {
+                    var spr = Sprite.Create(resTex, new Rect(0, 0, resTex.width, resTex.height), new Vector2(0.5f, 0.5f), 100f);
+                    _loadedProjectSprites[filename] = spr;
+                    return spr;
+                }
             }
 
-            const string brainDir = @"C:\Users\MP2NQ\.gemini\antigravity-ide\brain\d869a06e-6e5a-46fa-8163-70413ce9cee6";
+            // 2. Role-based fallback for key screens on mobile APKs
+            if (lower.Contains("splash"))
+            {
+                var fallback = Resources.Load<Sprite>("Images/splashbackgroundimage")
+                            ?? Resources.Load<Sprite>("Images/home_menu_mine_baground")
+                            ?? Resources.Load<Sprite>("Images/jharkhand_mine_banner_clean");
+                if (fallback != null) { _loadedProjectSprites[filename] = fallback; return fallback; }
+            }
+            if (lower.Contains("fire") && (lower.Contains("intro") || lower.Contains("header") || lower.Contains("hero")))
+            {
+                var fallback = Resources.Load<Sprite>("Images/fire_intro")
+                            ?? Resources.Load<Sprite>("Images/jharkhand_miner_hero")
+                            ?? Resources.Load<Sprite>("Images/login_header_perfect");
+                if (fallback != null) { _loadedProjectSprites[filename] = fallback; return fallback; }
+            }
+            if (lower.Contains("home") || lower.Contains("menu") || lower.Contains("baground") || lower.Contains("background"))
+            {
+                var fallback = Resources.Load<Sprite>("Images/home_menu_mine_baground")
+                            ?? Resources.Load<Sprite>("Images/jharkhand_mine_banner_clean")
+                            ?? Resources.Load<Sprite>("Images/login_header_perfect");
+                if (fallback != null) { _loadedProjectSprites[filename] = fallback; return fallback; }
+            }
+            if (lower.Contains("mission"))
+            {
+                var fallback = Resources.Load<Sprite>("Images/mission_banner_perfect")
+                            ?? Resources.Load<Sprite>("Images/miners_team_banner");
+                if (fallback != null) { _loadedProjectSprites[filename] = fallback; return fallback; }
+            }
+            if (lower.Contains("avatar") || lower.Contains("worker"))
+            {
+                var fallback = Resources.Load<Sprite>("Images/profile_avatar_ref2")
+                            ?? Resources.Load<Sprite>("Images/worker_avatar_ref1")
+                            ?? Resources.Load<Sprite>("Images/worker_miner_avatar");
+                if (fallback != null) { _loadedProjectSprites[filename] = fallback; return fallback; }
+            }
+
+            // 3. Filesystem search fallback (useful in Editor / Standalone desktop)
             string[] searchPaths = new string[]
             {
-                System.IO.Path.Combine(brainDir, filename),
-                System.IO.Path.Combine(brainDir, filename + ".png"),
-                System.IO.Path.Combine(brainDir, filename + ".jpg"),
                 System.IO.Path.Combine(Application.dataPath, "Resources", "Images", filename),
                 System.IO.Path.Combine(Application.dataPath, "Resources", "Images", filename + ".png"),
                 System.IO.Path.Combine(Application.dataPath, "Resources", "Images", filename + ".jpg"),
@@ -2100,6 +2372,33 @@ namespace SurakshaAR.UI
                     }
                 }
             }
+
+            // 4. Guaranteed procedural vector fallbacks for emblem and emojis if image assets are missing
+            if (lower.Contains("ashoka_lion_emblem") || lower.Contains("emblem"))
+            {
+                var emblem = GetAshokaEmblemSprite();
+                _loadedProjectSprites[filename] = emblem;
+                return emblem;
+            }
+            if (lower.Contains("fire_emoji") || lower.Contains("fire_module") || (lower.Contains("fire") && lower.Contains("emoji")))
+            {
+                var fire = GetFireEmojiSprite();
+                _loadedProjectSprites[filename] = fire;
+                return fire;
+            }
+            if (lower.Contains("gas_emoji") || lower.Contains("gas_module") || (lower.Contains("gas") && lower.Contains("emoji")))
+            {
+                var gas = GetGasEmojiSprite();
+                _loadedProjectSprites[filename] = gas;
+                return gas;
+            }
+            if (lower.Contains("gear_emoji") || lower.Contains("machinery_module") || (lower.Contains("gear") && lower.Contains("emoji")) || (lower.Contains("machinery") && lower.Contains("emoji")))
+            {
+                var gear = GetGearEmojiSprite();
+                _loadedProjectSprites[filename] = gear;
+                return gear;
+            }
+
             return null;
         }
     }

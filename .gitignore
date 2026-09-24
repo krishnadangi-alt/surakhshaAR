@@ -107,3 +107,16 @@ Thumbs.db
 Desktop.ini
 *.swp
 *~
+
+# Scratch and debug logs
+hs_err_pid*.log
+phone_data*.json
+scratch/
+scratch_phone_offline_data.json
+temp_sync_*.json
+test_phone_sync.py
+sync_all_phone_data.py
+surakhshaar.db
+backend/inspect_db.py
+backend/inspect_schema.py
+backend/trace_sync.py

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, User, Award, ArrowRight } from 'lucide-react';
-import { mockWorkers, mockAssessments } from '../../mockData';
+import { fetchDashboardWorkers, fetchDashboardAssessments } from '../../services/api';
+import type { Assessment } from '../../types';
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -10,6 +11,19 @@ interface SearchModalProps {
 
 export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onNavigate }) => {
   const [query, setQuery] = useState('');
+  const [workers, setWorkers] = useState<any[]>([]);
+  const [assessments, setAssessments] = useState<Assessment[]>([]);
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchDashboardWorkers().then((w) => {
+        if (w) setWorkers(w.map(i => ({ id: `w-${i.id}`, name: i.name, employeeId: i.employee_id, role: i.role })));
+      });
+      fetchDashboardAssessments().then((a) => {
+        if (a) setAssessments(a || []);
+      });
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -24,11 +38,11 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onNav
 
   if (!isOpen) return null;
 
-  const filteredWorkers = mockWorkers.filter(
+  const filteredWorkers = workers.filter(
     (w) => w.name.toLowerCase().includes(query.toLowerCase()) || w.employeeId.toLowerCase().includes(query.toLowerCase())
   );
 
-  const filteredAssessments = mockAssessments.filter(
+  const filteredAssessments = assessments.filter(
     (a) => a.scenarioName.toLowerCase().includes(query.toLowerCase()) || a.moduleName.toLowerCase().includes(query.toLowerCase())
   );
 

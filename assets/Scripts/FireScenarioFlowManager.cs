@@ -66,11 +66,17 @@ public class FireScenarioFlowManager : MonoBehaviour
     public bool isAssessmentMode = false;
 
     [Header("Scoring")]
-    public int currentScore = 70;
+    public int currentScore = 0;
     public int correctActions = 0;
     public int wrongActions = 0;
     public int unsafeActions = 0;
     public int criticalErrors = 0;
+
+    public int CurrentScore => currentScore;
+    public int CorrectActionsCount => correctActions;
+    public int WrongActionsCount => wrongActions;
+    public int UnsafeActionsCount => unsafeActions;
+    public int CriticalErrorsCount => criticalErrors;
 
     [Header("Timing")]
     public float scenarioTimer = 0f;
@@ -81,8 +87,18 @@ public class FireScenarioFlowManager : MonoBehaviour
 
     public Stage CurrentStage => stage;
 
+    public event Action<Stage> OnStageChanged;
+
+    private void SetStage(Stage newStage)
+    {
+        stage = newStage;
+        Debug.Log($"[UI-STEP] Current Stage = {newStage}");
+        OnStageChanged?.Invoke(newStage);
+    }
+
     private Stage stage = Stage.Intro;
     private bool subscribed;
+    private bool _scenarioPlacedHandled = false;
     private Coroutine messageRoutine;
     private float hazardLookTimer = 0f;
     private float aimBaseLookTimer = 0f;
@@ -91,19 +107,102 @@ public class FireScenarioFlowManager : MonoBehaviour
     private FireAssessmentAdapter EnsureFireAdapter()
     {
         if (FireAssessmentAdapter.Instance != null) return FireAssessmentAdapter.Instance;
+        var existing = FindAnyObjectByType<FireAssessmentAdapter>(FindObjectsInactive.Include);
+        if (existing != null) return existing;
         var go = new GameObject("FireAssessmentAdapter");
+        if (!Application.isPlaying) go.hideFlags = HideFlags.DontSave;
         return go.AddComponent<FireAssessmentAdapter>();
     }
+
+    /// <summary>
+    /// Public wrapper so ExtinguisherSprayCollision (which has no FlowManager reference) can
+    /// access the FireAssessmentAdapter without creating a second instance.
+    /// </summary>
+    public FireAssessmentAdapter EnsureFireAdapterPublic() => EnsureFireAdapter();
+
+    public static FireScenarioFlowManager Instance { get; private set; }
 
     // =====================================================
     // LIFECYCLE
     // =====================================================
 
+    private void Awake()
+    {
+        Instance = this;
+        ResolveReferences();
+        ResetScenarioState();
+        EnsureInitialExtinguisherVisibility();
+    }
+
+    public void EnsureInitialExtinguisherVisibility()
+    {
+        // If we are in active operational steps (Step 4 to Step 7) and original extinguisher is held, do not detach or hide it
+        if (stage >= Stage.Step4_RemovePin && stage <= Stage.Step7_Evacuate && originalPickup != null && originalPickup.IsHeld())
+        {
+            return;
+        }
+
+        if (displayPickup == null)
+            displayPickup = FindAnyObjectByType<ExtinguisherDisplayPickup>(FindObjectsInactive.Include);
+
+        if (originalPickup == null)
+            originalPickup = FindAnyObjectByType<ExtinguisherPickup>(FindObjectsInactive.Include);
+
+        // Ensure display extinguisher is active, visible, and reset
+        if (displayPickup != null)
+        {
+            displayPickup.gameObject.SetActive(true);
+            displayPickup.ResetDisplay();
+        }
+
+        // Ensure original operational FireExt is hidden and not interactable
+        if (originalPickup != null)
+        {
+            if (originalPickup.IsHeld())
+            {
+                originalPickup.DetachFromCamera();
+            }
+            originalPickup.SetRuntimeVisibility(false);
+        }
+    }
+
+    public void ResetScenarioState()
+    {
+        currentScore = 0;
+        correctActions = 0;
+        wrongActions = 0;
+        unsafeActions = 0;
+        criticalErrors = 0;
+        scenarioTimer = 0f;
+        isTimerRunning = false;
+        timeoutTriggered = false;
+        _lastPenaltyTimes.Clear();
+    }
+
+    public void InitializeForTraining()
+    {
+        if (Instance == null) Instance = this;
+        ResolveReferences();
+        SubscribeEvents();
+        ResetScenarioState();
+        EnsureInitialExtinguisherVisibility();
+    }
+
     private void Start()
     {
+        if (Instance == null) Instance = this;
         ResolveReferences();
         BuildUI();
         SubscribeEvents();
+        EnsureInitialExtinguisherVisibility();
+
+#if UNITY_EDITOR
+        if (Camera.main != null)
+        {
+            Camera.main.clearFlags = CameraClearFlags.SolidColor;
+            Camera.main.backgroundColor = new Color(0.10f, 0.14f, 0.20f, 1f);
+        }
+#endif
 
         bool alreadyPlaced = (arPlacement != null && arPlacement.IsScenarioPlaced) ||
                              (placement != null && placement.IsPlaced);
@@ -120,6 +219,7 @@ public class FireScenarioFlowManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (Instance == this) Instance = null;
         UnsubscribeEvents();
     }
 
@@ -156,10 +256,14 @@ public class FireScenarioFlowManager : MonoBehaviour
         }
     }
 
-    public void AddScore(int points, string reason = null)
+    /// <param name="isCorrectAction">
+    /// When true (default) increments correctActions counter.
+    /// Pass false for score-only adjustments (e.g. grip aim bonus) that should not inflate the correct-action count.
+    /// </param>
+    public void AddScore(int points, string reason = null, bool isCorrectAction = true)
     {
         currentScore = Mathf.Clamp(currentScore + points, 0, 100);
-        correctActions++;
+        if (isCorrectAction) correctActions++;
         if (ui != null)
         {
             ui.SetScore(currentScore, points);
@@ -195,6 +299,113 @@ public class FireScenarioFlowManager : MonoBehaviour
             ui.ShowFeedback(fType, title, reason, 3.0f);
         }
     }
+
+    // --- DETERMINISTIC PENALTY RATE LIMITING ---
+    private readonly System.Collections.Generic.Dictionary<string, float> _lastPenaltyTimes =
+        new System.Collections.Generic.Dictionary<string, float>();
+    private const float PenaltyCooldownSeconds = 1.2f;
+
+    public bool CanApplyPenalty(string penaltyKey)
+    {
+        float now = Time.time;
+        if (_lastPenaltyTimes.TryGetValue(penaltyKey, out float lastTime))
+        {
+            if (now - lastTime < PenaltyCooldownSeconds)
+                return false;
+        }
+        _lastPenaltyTimes[penaltyKey] = now;
+        return true;
+    }
+
+    public void ResetPenaltyCooldowns()
+    {
+        _lastPenaltyTimes.Clear();
+    }
+
+    public void HandlePrematureAlarmAttempt()
+    {
+        if (stage == Stage.Step2_ActivateAlarm || stage == Stage.Complete || stage == Stage.Timeout) return;
+        if (!CanApplyPenalty("premature_alarm")) return;
+
+        string msg = GetLoc("fire.feedback.identifyHazardFirst", "Identify the fire hazard first.");
+        DeductScore(5, msg, isUnsafe: false);
+        EnsureFireAdapter().RecordSequenceError("identify_hazard", "activate_alarm");
+    }
+
+    public void HandlePrematureExtinguisherAttempt()
+    {
+        EnsureInitialExtinguisherVisibility();
+        if (stage == Stage.Step3_SelectExtinguisher || stage == Stage.Complete || stage == Stage.Timeout) return;
+        if (!CanApplyPenalty("premature_extinguisher")) return;
+
+        if (stage == Stage.Step1_IdentifyHazard || stage == Stage.Intro || stage == Stage.Scanning)
+        {
+            string msg = GetLoc("fire.feedback.identifyHazardFirst", "Identify the fire hazard first.");
+            DeductScore(5, msg, isUnsafe: false);
+            EnsureFireAdapter().RecordSequenceError("identify_hazard", "select_extinguisher");
+        }
+        else if (stage == Stage.Step2_ActivateAlarm)
+        {
+            // CRITICAL RULE (Section 4): tapping extinguisher before alarm is an UNSAFE action (-10 marks)
+            string msg = GetLoc("fire.feedback.activateAlarmFirst", "Activate the fire alarm before selecting the extinguisher.");
+            DeductScore(10, msg, isUnsafe: true);
+            EnsureFireAdapter().RecordUnsafeAction("premature_extinguisher_attempt", msg);
+            EnsureFireAdapter().RecordSequenceError("activate_alarm", "select_extinguisher");
+        }
+    }
+
+    public void HandlePrematurePinAttempt()
+    {
+        if (stage == Stage.Step4_RemovePin || stage == Stage.Complete || stage == Stage.Timeout) return;
+        if (!CanApplyPenalty("premature_pin")) return;
+
+        string msg = stage == Stage.Step1_IdentifyHazard
+            ? GetLoc("fire.feedback.identifyHazardFirst", "Identify the fire hazard first.")
+            : (stage == Stage.Step2_ActivateAlarm
+                ? GetLoc("fire.feedback.activateAlarmFirst", "Activate the fire alarm before selecting the extinguisher.")
+                : GetLoc("fire.feedback.selectExtinguisherFirst", "Select the CO2 extinguisher first."));
+
+        DeductScore(5, msg, isUnsafe: false);
+        EnsureFireAdapter().RecordSequenceError("select_extinguisher", "remove_pin");
+    }
+
+    public void HandlePrematureGripAttempt()
+    {
+        if (stage == Stage.Complete || stage == Stage.Timeout) return;
+        if (!CanApplyPenalty("premature_grip")) return;
+
+        // CRITICAL RULE (Section 6): Attempting grip before pin removal is an UNSAFE action (-10 marks)
+        string msg = GetLoc("fire.feedback.removePinBeforeHandle", "Remove the safety pin before using the handle.");
+        DeductScore(10, msg, isUnsafe: true);
+        EnsureFireAdapter().RecordUnsafeAction("lever_squeezed_before_pin", msg);
+        EnsureFireAdapter().RecordSequenceError("remove_pin", "grip_handle");
+    }
+
+    public void HandleInvalidAim()
+    {
+        if (!CanApplyPenalty("invalid_aim")) return;
+
+        string msg = GetLoc("fire.feedback.aimAtBase", "Aim the nozzle at the base of the fire.");
+        DeductScore(5, msg, isUnsafe: false);
+        EnsureFireAdapter().RecordAimAtBase(false);
+        // Raise named telemetry event so assessment pipeline captures invalid_aim
+        EnsureFireAdapter().RecordInvalidAim();
+    }
+
+    /// <summary>
+    /// Handles a premature spray attempt (spray before safety pin is removed).
+    /// Records as unsafe action, deducts score, raises telemetry. No spray proceeds.
+    /// </summary>
+    public void HandlePrematureSprayAttempt()
+    {
+        if (stage == Stage.Step6_Extinguish || stage == Stage.Complete || stage == Stage.Timeout) return;
+        if (!CanApplyPenalty("premature_spray")) return;
+
+        string msg = GetLoc("fire.feedback.prematureSpray", "Remove the safety pin before spraying.");
+        DeductScore(10, msg, isUnsafe: true);
+        EnsureFireAdapter().RecordPrematureSprayAttempt();
+    }
+
 
     // =====================================================
     // REFERENCE RESOLUTION
@@ -282,8 +493,20 @@ public class FireScenarioFlowManager : MonoBehaviour
         }
 
         // Scene-wide fallback resolution
+        if (displayPickup == null)
+            displayPickup = FindAnyObjectByType<ExtinguisherDisplayPickup>(FindObjectsInactive.Include);
+
+        if (originalPickup == null)
+            originalPickup = FindAnyObjectByType<ExtinguisherPickup>(FindObjectsInactive.Include);
+
         if (fire == null)
             fire = FindAnyObjectByType<FireExtinguishable>();
+
+        if (fire != null)
+        {
+            fire.OnExtinguished.RemoveListener(HandleFireExtinguished);
+            fire.OnExtinguished.AddListener(HandleFireExtinguished);
+        }
 
         if (gripInteraction == null)
             gripInteraction = FindAnyObjectByType<ExtinguisherGripInteraction>();
@@ -320,11 +543,24 @@ public class FireScenarioFlowManager : MonoBehaviour
 
     private void BuildUI()
     {
-        if (ui != null) return;
+        if (ui == null)
+            ui = GetComponentInChildren<FireScenarioUIController>(true) ?? FindAnyObjectByType<FireScenarioUIController>(FindObjectsInactive.Include);
+
+        if (ui != null)
+        {
+            WireUICallbacks();
+            return;
+        }
 
         GameObject uiGO = new GameObject("FireScenarioUGUI");
         uiGO.transform.SetParent(transform, false);
         ui = uiGO.AddComponent<FireScenarioUIController>();
+        WireUICallbacks();
+    }
+
+    private void WireUICallbacks()
+    {
+        if (ui == null) return;
 
         // Wire top bar button callbacks
         ui.OnBackClicked = () =>
@@ -368,8 +604,6 @@ public class FireScenarioFlowManager : MonoBehaviour
         if (arPlacement != null)
             arPlacement.OnScenarioPlaced.AddListener(HandleScenarioPlaced);
 
-        TrainingEventManager.OnScenarioPlaced += HandleScenarioPlacedFromEvent;
-
         if (alarmInteraction != null)
             alarmInteraction.OnAlarmActivated.AddListener(HandleAlarmActivated);
 
@@ -381,6 +615,7 @@ public class FireScenarioFlowManager : MonoBehaviour
 
         if (gripInteraction != null)
         {
+            gripInteraction.OnGripActivated.AddListener(HandleGripActivated);
             gripInteraction.OnSprayStarted.AddListener(HandleSprayStarted);
             gripInteraction.OnSprayStopped.AddListener(HandleSprayStopped);
             gripInteraction.OnPinRemovalRequired.AddListener(HandlePinRemovalRequired);
@@ -389,6 +624,9 @@ public class FireScenarioFlowManager : MonoBehaviour
         if (fire != null)
             fire.OnExtinguished.AddListener(HandleFireExtinguished);
 
+        if (SurakshaAR.Localization.LocalizationManager.Instance != null)
+            SurakshaAR.Localization.LocalizationManager.Instance.OnLanguageChanged += HandleLanguageChanged;
+
         subscribed = true;
     }
 
@@ -396,13 +634,14 @@ public class FireScenarioFlowManager : MonoBehaviour
     {
         if (!subscribed) return;
 
+        if (SurakshaAR.Localization.LocalizationManager.Instance != null)
+            SurakshaAR.Localization.LocalizationManager.Instance.OnLanguageChanged -= HandleLanguageChanged;
+
         if (placement != null)
             placement.OnScenarioPlaced.RemoveListener(HandleScenarioPlaced);
 
         if (arPlacement != null)
             arPlacement.OnScenarioPlaced.RemoveListener(HandleScenarioPlaced);
-
-        TrainingEventManager.OnScenarioPlaced -= HandleScenarioPlacedFromEvent;
 
         if (alarmInteraction != null)
             alarmInteraction.OnAlarmActivated.RemoveListener(HandleAlarmActivated);
@@ -415,6 +654,7 @@ public class FireScenarioFlowManager : MonoBehaviour
 
         if (gripInteraction != null)
         {
+            gripInteraction.OnGripActivated.RemoveListener(HandleGripActivated);
             gripInteraction.OnSprayStarted.RemoveListener(HandleSprayStarted);
             gripInteraction.OnSprayStopped.RemoveListener(HandleSprayStopped);
             gripInteraction.OnPinRemovalRequired.RemoveListener(HandlePinRemovalRequired);
@@ -426,20 +666,111 @@ public class FireScenarioFlowManager : MonoBehaviour
         subscribed = false;
     }
 
+    private void HandleLanguageChanged(AppLanguage newLang)
+    {
+        if (ui != null)
+        {
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.ApplyLanguageFonts(ui.gameObject, newLang);
+            }
+            else
+            {
+                var font = UIHelper.GetFontForLanguage(newLang);
+                if (font != null)
+                {
+                    foreach (var tmp in ui.GetComponentsInChildren<TMPro.TextMeshProUGUI>(true))
+                    {
+                        tmp.font = font;
+                    }
+                }
+            }
+        }
+        RefreshCurrentStageGuidance();
+    }
+
+    public void RefreshCurrentStageGuidance()
+    {
+        if (ui == null) return;
+        switch (stage)
+        {
+            case Stage.Intro:
+                ui.SetModuleInfo(GetLoc("module.fire.title", "Fire & Explosion Response"), 0, 6);
+                ui.ShowGuidance(
+                    stepTag: "SURAKSHAAR AR",
+                    title: GetLoc("fire.intro.title", "Industrial Fire Response Training"),
+                    description: GetLoc("fire.intro.desc", "In this scenario, an electrical equipment fire breaks out in a mining facility.\nFollow standard operating procedures (SOP) to safely respond and evacuate."),
+                    hint: GetLoc("fire.intro.hint", "Scan the floor and tap the reticle to anchor the 3D training scenario."),
+                    actionBtnText: GetLoc("fire.intro.action", "Tap to Start AR Training"),
+                    onActionClicked: BeginScanning
+                );
+                break;
+            case Stage.Scanning:
+                ui.SetModuleInfo(GetLoc("module.fire.title", "Fire & Explosion Response"), 0, 6);
+                ui.ShowGuidance(
+                    stepTag: "SURFACE SCAN",
+                    title: GetLoc("fire.scan.title", "Find a Flat Surface"),
+                    description: GetLoc("fire.scan.desc", "Move your phone slowly to scan the ground.\nWhen the placement reticle appears, tap anywhere to place the industrial scenario."),
+                    hint: GetLoc("fire.scan.hint", "Ensure adequate ambient lighting for optical feature tracking."),
+                    actionBtnText: GetLoc("fire.scan.action", "Simulate Placement"),
+                    onActionClicked: () =>
+                    {
+                        if (arPlacement != null)
+                            arPlacement.SimulatePlacement();
+                        else
+                            HandleScenarioPlaced();
+                    }
+                );
+                break;
+            case Stage.Step1_IdentifyHazard:
+                TransitionToStep1();
+                break;
+            case Stage.Step2_ActivateAlarm:
+                TransitionToStep2_ActivateAlarm();
+                break;
+            case Stage.Step3_SelectExtinguisher:
+                TransitionToStep3_SelectExtinguisher();
+                break;
+            case Stage.Step4_RemovePin:
+                TransitionToStep3_RemovePin();
+                break;
+            case Stage.Step5_AimBase:
+                TransitionToStep4_AimBase();
+                break;
+            case Stage.Step6_Extinguish:
+                TransitionToStep5_Extinguish();
+                break;
+            case Stage.Step7_Evacuate:
+                TransitionToStep6_Evacuate();
+                break;
+            case Stage.Timeout:
+                TransitionToTimeout();
+                break;
+        }
+    }
+
     // =====================================================
     // 7-STEP SOP TRAINING FLOW
     // =====================================================
 
+    private string GetLoc(string key, string fallback)
+    {
+        return SurakshaAR.Localization.LocalizationManager.Instance != null
+            ? SurakshaAR.Localization.LocalizationManager.Instance.Get(key)
+            : fallback;
+    }
+
     private void BeginIntro()
     {
-        stage = Stage.Intro;
+        SetStage(Stage.Intro);
         isTimerRunning = false;
         scenarioTimer = 0f;
-        currentScore = 40;
+        currentScore = 0;
         correctActions = 0;
         wrongActions = 0;
         unsafeActions = 0;
         criticalErrors = 0;
+        _lastPenaltyTimes.Clear();
 
         if (placement != null)
             placement.SetPlacementActive(false);
@@ -448,17 +779,17 @@ public class FireScenarioFlowManager : MonoBehaviour
 
         if (ui != null)
         {
-            ui.SetModuleInfo("Fire & Explosion Response", 0, 6);
+            ui.SetModuleInfo(GetLoc("module.fire.title", "Fire & Explosion Response"), 0, 6);
             ui.SetScore(currentScore, 0);
             ui.SetTimer(0f);
             ui.HideProgress();
 
             ui.ShowGuidance(
                 stepTag: "SURAKSHAAR AR",
-                title: "Industrial Fire Response Training",
-                description: "In this scenario, an electrical equipment fire breaks out in a mining facility.\nFollow standard operating procedures (SOP) to safely respond and evacuate.",
-                hint: "Scan the floor and tap the reticle to anchor the 3D training scenario.",
-                actionBtnText: "Tap to Start AR Training",
+                title: GetLoc("fire.intro.title", "Industrial Fire Response Training"),
+                description: GetLoc("fire.intro.desc", "In this scenario, an electrical equipment fire breaks out in a mining facility.\nFollow standard operating procedures (SOP) to safely respond and evacuate."),
+                hint: GetLoc("fire.intro.hint", "Scan the floor and tap the reticle to anchor the 3D training scenario."),
+                actionBtnText: GetLoc("fire.intro.action", "Tap to Start AR Training"),
                 onActionClicked: BeginScanning
             );
         }
@@ -466,17 +797,17 @@ public class FireScenarioFlowManager : MonoBehaviour
 
     private void BeginScanning()
     {
-        stage = Stage.Scanning;
+        SetStage(Stage.Scanning);
 
         if (ui != null)
         {
-            ui.SetModuleInfo("Fire & Explosion Response", 0, 6);
+            ui.SetModuleInfo(GetLoc("module.fire.title", "Fire & Explosion Response"), 0, 6);
             ui.ShowGuidance(
                 stepTag: "SURFACE SCAN",
-                title: "Find a Flat Surface",
-                description: "Move your phone slowly to scan the ground.\nWhen the placement reticle appears, tap anywhere to place the industrial scenario.",
-                hint: "Ensure adequate ambient lighting for optical feature tracking.",
-                actionBtnText: "Simulate Placement",
+                title: GetLoc("fire.scan.title", "Find a Flat Surface"),
+                description: GetLoc("fire.scan.desc", "Move your phone slowly to scan the ground.\nWhen the placement reticle appears, tap anywhere to place the industrial scenario."),
+                hint: GetLoc("fire.scan.hint", "Ensure adequate ambient lighting for optical feature tracking."),
+                actionBtnText: GetLoc("fire.scan.action", "Simulate Placement"),
                 onActionClicked: () =>
                 {
                     if (arPlacement != null)
@@ -487,6 +818,15 @@ public class FireScenarioFlowManager : MonoBehaviour
                         HandleScenarioPlaced();
                 }
             );
+
+            // Connect bottom bar "Place" button callback
+            ui.SetPlacementState(true, () =>
+            {
+                if (arPlacement != null)
+                    arPlacement.SimulatePlacement();
+                else
+                    HandleScenarioPlaced();
+            });
         }
 
         if (placement != null)
@@ -497,7 +837,11 @@ public class FireScenarioFlowManager : MonoBehaviour
 
     private void HandleScenarioPlaced()
     {
+        if (_scenarioPlacedHandled) return;
         if (stage != Stage.Scanning && stage != Stage.Intro) return;
+        _scenarioPlacedHandled = true;
+
+        EnsureInitialExtinguisherVisibility();
 
         if (placement != null)
             placement.SetPlacementActive(false);
@@ -506,10 +850,12 @@ public class FireScenarioFlowManager : MonoBehaviour
 
         isTimerRunning = true;
         scenarioTimer = 0f;
-        TrainingEventManager.RaiseScenarioPlaced();
 
-        // Step 1: Identify Fire Hazard
+        // Step 1: Identify Fire Hazard (sets stage = Stage.Step1_IdentifyHazard)
         TransitionToStep1();
+
+        // Broadcast event safely after stage transition has completed
+        TrainingEventManager.RaiseScenarioPlaced();
     }
 
     // =====================================================
@@ -598,21 +944,59 @@ public class FireScenarioFlowManager : MonoBehaviour
     private void UpdateAimBaseDetection()
     {
         if (stage != Stage.Step5_AimBase) return;
-        if (fire == null) return;
+        if (fire == null)
+        {
+            fire = FindAnyObjectByType<FireExtinguishable>(FindObjectsInactive.Include);
+            if (fire == null) return;
+        }
 
-        Camera cam = Camera.main;
+        bool isSprayingNow = (gripInteraction != null && gripInteraction.IsGripHeld);
+        if (!isSprayingNow)
+        {
+            var p = FindAnyObjectByType<DryPowderSpray>();
+            if (p != null && p.IsSpraying()) isSprayingNow = true;
+        }
+
+        Camera cam = Camera.main ?? FindAnyObjectByType<Camera>();
         if (cam == null) return;
 
         Vector3 firePos = fire.FireWorldPosition;
         Vector3 toFire = firePos - cam.transform.position;
         float dist = toFire.magnitude;
-        if (dist > 0.1f && dist < 6f)
+
+        // Also check actual nozzle forward direction if available
+        Transform nozzle = gripInteraction != null ? gripInteraction.transform : (originalPickup != null ? originalPickup.transform : null);
+        bool nozzleAimed = false;
+        if (nozzle != null)
+        {
+            Vector3 nozzleToFire = firePos - nozzle.position;
+            if (nozzleToFire.magnitude < 25f)
+            {
+                float nozzleAngle = Vector3.Angle(nozzle.forward, nozzleToFire.normalized);
+                float revAngle = Vector3.Angle(-nozzle.forward, nozzleToFire.normalized);
+                if (Mathf.Min(nozzleAngle, revAngle) < 65f)
+                    nozzleAimed = true;
+            }
+        }
+
+        if (dist > 0.1f && dist < 25f)
         {
             float angle = Vector3.Angle(cam.transform.forward, toFire.normalized);
-            if (angle < 25f)
+            Vector3 vp = cam.WorldToViewportPoint(firePos);
+            bool inView = (vp.z > 0f && vp.x >= -0.3f && vp.x <= 1.3f && vp.y >= -0.3f && vp.y <= 1.3f);
+
+            if (angle < 55f || inView || nozzleAimed)
             {
+                // If user is already pressing handle / spraying towards fire, advance immediately to Step 6
+                if (isSprayingNow)
+                {
+                    aimBaseLookTimer = 0f;
+                    OnAimConfirmed();
+                    return;
+                }
+
                 aimBaseLookTimer += Time.deltaTime;
-                if (aimBaseLookTimer >= 1.2f)
+                if (aimBaseLookTimer >= 0.35f)
                 {
                     aimBaseLookTimer = 0f;
                     OnAimConfirmed();
@@ -632,29 +1016,34 @@ public class FireScenarioFlowManager : MonoBehaviour
     // --- STEP 1: IDENTIFY HAZARD ---
     public void TransitionToStep1()
     {
-        stage = Stage.Step1_IdentifyHazard;
+        SetStage(Stage.Step1_IdentifyHazard);
+        EnsureInitialExtinguisherVisibility();
         hazardLookTimer = 0f;
         EnsureFireAdapter().StartScenario("fire_drill_01");
         if (fire != null)
         {
-            if (MovementTelemetryCollector.Instance == null)
+            var collector = MovementTelemetryCollector.Instance;
+            if (collector == null)
             {
                 var mgo = new GameObject("MovementTelemetryCollector");
-                mgo.AddComponent<MovementTelemetryCollector>();
+                collector = mgo.AddComponent<MovementTelemetryCollector>();
             }
-            MovementTelemetryCollector.Instance?.StartCollection(fire.transform);
+            if (collector != null)
+            {
+                collector.StartCollection(fire.transform);
+            }
         }
         if (ui == null) return;
 
-        ui.SetModuleInfo("Fire & Explosion Response", 1, 6);
+        ui.SetModuleInfo(GetLoc("module.fire.title", "Fire & Explosion Response"), 1, 6);
         ui.HideProgress();
 
         ui.ShowGuidance(
             stepTag: "STEP 1 OF 6",
-            title: "Identify Fire Hazard",
-            description: "Look around your surroundings to locate the electrical fire. Aim your camera at the flames or tap directly on the fire in AR.",
-            hint: "Look for sparks, dark smoke, and electrical panel indicators.",
-            actionBtnText: "I Have Identified Fire Source",
+            title: GetLoc("fire.sop.step1.title", "Identify Fire Hazard"),
+            description: GetLoc("fire.sop.step1.desc", "Look around your surroundings to locate the electrical fire. Aim your camera at the flames or tap directly on the fire in AR."),
+            hint: GetLoc("fire.sop.step1.hint", "Look for sparks, dark smoke, and electrical panel indicators."),
+            actionBtnText: GetLoc("fire.sop.step1.action", "I Have Identified Fire Source"),
             onActionClicked: OnHazardIdentified
         );
     }
@@ -667,39 +1056,34 @@ public class FireScenarioFlowManager : MonoBehaviour
         EnsureFireAdapter().RecordHazardIdentified("electrical_fire", true);
         TrainingEventManager.RaiseHazardIdentified();
 
+        // SOP Step 2: Activate Alarm (transition immediately so workflow state is authoritative)
+        TransitionToStep2_ActivateAlarm();
+
         if (ui != null)
         {
             ui.ShowTransientToast(
-                title: "Hazard Identified!",
-                subtitle: "Activate the fire alarm immediately!",
-                duration: 2.0f,
-                onDismiss: () =>
-                {
-                    // SOP Step 2: Activate Alarm BEFORE reaching for extinguisher
-                    TransitionToStep2_ActivateAlarm();
-                }
+                title: GetLoc("fire.toast.hazard.title", "Hazard Identified!"),
+                subtitle: GetLoc("fire.toast.hazard.sub", "Activate the fire alarm immediately!"),
+                duration: 2.0f
             );
-        }
-        else
-        {
-            TransitionToStep2_ActivateAlarm();
         }
     }
 
     // --- STEP 2: ACTIVATE FIRE ALARM ---
     public void TransitionToStep2_ActivateAlarm()
     {
-        stage = Stage.Step2_ActivateAlarm;
+        SetStage(Stage.Step2_ActivateAlarm);
+        EnsureInitialExtinguisherVisibility();
         if (ui == null) return;
 
-        ui.SetModuleInfo("Fire & Explosion Response", 2, 6);
+        ui.SetModuleInfo(GetLoc("module.fire.title", "Fire & Explosion Response"), 2, 6);
 
         ui.ShowGuidance(
             stepTag: "STEP 2 OF 6",
-            title: "Activate Fire Alarm",
-            description: "Locate the red fire alarm pull station on the wall and tap it to alert all personnel in the facility.",
-            hint: "Always alert others before attempting to fight a fire alone. Never skip the alarm.",
-            actionBtnText: "Activate Fire Alarm",
+            title: GetLoc("fire.sop.step2.title", "Activate Fire Alarm"),
+            description: GetLoc("fire.sop.step2.desc", "Locate the red fire alarm pull station on the wall and tap it to alert all personnel in the facility."),
+            hint: GetLoc("fire.sop.step2.hint", "Always alert others before attempting to fight a fire alone. Never skip the alarm."),
+            actionBtnText: GetLoc("fire.sop.step2.action", "Activate Fire Alarm"),
             onActionClicked: () =>
             {
                 if (alarmInteraction != null)
@@ -712,43 +1096,46 @@ public class FireScenarioFlowManager : MonoBehaviour
 
     private void HandleAlarmActivated()
     {
-        if (stage != Stage.Step2_ActivateAlarm) return;
+        if (stage != Stage.Step2_ActivateAlarm)
+        {
+            if (stage == Stage.Step1_IdentifyHazard || stage == Stage.Intro || stage == Stage.Scanning)
+            {
+                HandlePrematureAlarmAttempt();
+            }
+            return;
+        }
 
         AddScore(10, "Fire Alarm Activated");
         EnsureFireAdapter().RecordAlarmActivated();
 
+        // SOP Step 3: Select Extinguisher (transition immediately so workflow state is authoritative)
+        TransitionToStep3_SelectExtinguisher();
+
         if (ui != null)
         {
             ui.ShowTransientToast(
-                title: "Alarm Activated!",
-                subtitle: "Personnel alerted. Now locate the extinguisher.",
-                duration: 2.0f,
-                onDismiss: () =>
-                {
-                    TransitionToStep3_SelectExtinguisher();
-                }
+                title: GetLoc("fire.toast.alarm.title", "Alarm Activated!"),
+                subtitle: GetLoc("fire.toast.alarm.sub", "Personnel alerted. Now locate the extinguisher."),
+                duration: 2.0f
             );
-        }
-        else
-        {
-            TransitionToStep3_SelectExtinguisher();
         }
     }
 
     // --- STEP 3: SELECT EXTINGUISHER ---
     public void TransitionToStep3_SelectExtinguisher()
     {
-        stage = Stage.Step3_SelectExtinguisher;
+        SetStage(Stage.Step3_SelectExtinguisher);
+        EnsureInitialExtinguisherVisibility();
         if (ui == null) return;
 
-        ui.SetModuleInfo("Fire & Explosion Response", 3, 6);
+        ui.SetModuleInfo(GetLoc("module.fire.title", "Fire & Explosion Response"), 3, 6);
 
         ui.ShowGuidance(
             stepTag: "STEP 3 OF 6",
-            title: "Select Correct Extinguisher",
-            description: "Examine the burning equipment. Tap on the CO2 Extinguisher (Black band) in your surroundings to equip it.",
-            hint: "DANGER: Never use Water or Foam on live electrical panels! Electrocution hazard.",
-            actionBtnText: "Equip CO2 Extinguisher",
+            title: GetLoc("fire.sop.step3.title", "Select Correct Extinguisher"),
+            description: GetLoc("fire.sop.step3.desc", "Examine the burning equipment. Tap on the CO2 Extinguisher (Black band) in your surroundings to equip it."),
+            hint: GetLoc("fire.sop.step3.hint", "DANGER: Never use Water or Foam on live electrical panels! Electrocution hazard."),
+            actionBtnText: GetLoc("fire.sop.step3.action", "Equip CO2 Extinguisher"),
             onActionClicked: () =>
             {
                 if (displayPickup != null)
@@ -764,53 +1151,143 @@ public class FireScenarioFlowManager : MonoBehaviour
     public void TransitionToStep2() => TransitionToStep2_ActivateAlarm();
     public void TransitionToStep3() => TransitionToStep3_SelectExtinguisher();
 
-    private void HandleExtinguisherPickedUp()
+    public void HandleExtinguisherPickedUp()
     {
-        if (stage != Stage.Step3_SelectExtinguisher) return;
+        if (stage != Stage.Step3_SelectExtinguisher)
+        {
+            if (stage == Stage.Step4_RemovePin) return; // Cleanly ignore redundant invocation in same frame
+            HandlePrematureExtinguisherAttempt();
+            return;
+        }
 
-        AddScore(10, "CO2 Extinguisher Selected");
+        Debug.Log("[FireAR] DISPLAY TAP DETECTED");
+        Debug.Log($"[FireAR] CURRENT STAGE = {stage}");
+
+        // 1. FireExt_display MUST DISAPPEAR immediately
+        if (displayPickup != null && displayPickup.gameObject.activeSelf)
+        {
+            displayPickup.gameObject.SetActive(false);
+        }
+
+        // 2. The EXISTING ORIGINAL FireExt MUST become active and attach to the worker's camera/hand position
+        if (originalPickup == null)
+        {
+            originalPickup = FindAnyObjectByType<ExtinguisherPickup>(FindObjectsInactive.Include);
+        }
+
+        if (originalPickup != null)
+        {
+            Debug.Log($"[FireAR] ORIGINAL FIRES EXT REFERENCE = {originalPickup.gameObject.name}");
+
+            // Ensure runtime visibility is enabled BEFORE SetActive so Start() knows handoff occurred
+            originalPickup.SetRuntimeVisibility(true);
+
+            if (!originalPickup.gameObject.activeSelf)
+            {
+                originalPickup.gameObject.SetActive(true);
+            }
+            Debug.Log($"[FireAR] ORIGINAL ACTIVE SELF = {originalPickup.gameObject.activeSelf.ToString().ToLower()}");
+            Debug.Log($"[FireAR] ORIGINAL ACTIVE IN HIERARCHY = {originalPickup.gameObject.activeInHierarchy.ToString().ToLower()}");
+            Debug.Log($"[FireAR] RUNTIME VISIBILITY = {originalPickup.IsRuntimeVisible().ToString().ToLower()}");
+            Debug.Log("[FireAR] PICKUP COMPONENT = FOUND");
+
+            if (!originalPickup.IsHeld())
+            {
+                originalPickup.AttachToCamera();
+            }
+            Debug.Log($"[FireAR] AR CAMERA = {(originalPickup.arCamera != null ? originalPickup.arCamera.name : "None")}");
+            Debug.Log("[FireAR] ATTACH TO CAMERA = COMPLETE");
+            Debug.Log($"[FireAR] IS HELD = {originalPickup.IsHeld().ToString().ToLower()}");
+        }
+        else
+        {
+            Debug.LogError("[FireAR] ORIGINAL FIRES EXT REFERENCE = null");
+        }
+
+        Debug.Log("[FireAR] DISPLAY = INACTIVE");
+
+        // 3. Immediately transition to Step 4 so stage is authoritative
+        SetStage(Stage.Step4_RemovePin);
+        Debug.Log("[FireAR] NEXT STATE = Step4_RemovePin");
+
+        AddScore(15, "CO2 Extinguisher Selected");
         EnsureFireAdapter().RecordEquipmentSelected("co2_extinguisher", true);
         TrainingEventManager.RaiseExtinguisherPickedUp();
 
         // Dynamically re-bind components to the active functional extinguisher
         if (originalPickup != null)
         {
-            pinInteraction = originalPickup.GetComponentInChildren<FirePinInteraction>(true) ?? pinInteraction;
-            gripInteraction = originalPickup.GetComponentInChildren<ExtinguisherGripInteraction>(true) ?? gripInteraction;
+            var newPin = originalPickup.GetComponentInChildren<FirePinInteraction>(true);
+            if (newPin != null)
+            {
+                if (pinInteraction != null && pinInteraction != newPin)
+                    pinInteraction.OnPinRemoved.RemoveListener(HandlePinRemoved);
+                pinInteraction = newPin;
+                pinInteraction.OnPinRemoved.AddListener(HandlePinRemoved);
+            }
+
+            var newGrip = originalPickup.GetComponentInChildren<ExtinguisherGripInteraction>(true);
+            if (newGrip != null)
+            {
+                if (gripInteraction != null && gripInteraction != newGrip)
+                {
+                    gripInteraction.OnGripActivated.RemoveListener(HandleGripActivated);
+                    gripInteraction.OnSprayStarted.RemoveListener(HandleSprayStarted);
+                    gripInteraction.OnSprayStopped.RemoveListener(HandleSprayStopped);
+                    gripInteraction.OnPinRemovalRequired.RemoveListener(HandlePinRemovalRequired);
+                }
+                gripInteraction = newGrip;
+                gripInteraction.OnGripActivated.AddListener(HandleGripActivated);
+                gripInteraction.OnSprayStarted.AddListener(HandleSprayStarted);
+                gripInteraction.OnSprayStopped.AddListener(HandleSprayStopped);
+                gripInteraction.OnPinRemovalRequired.AddListener(HandlePinRemovalRequired);
+            }
         }
 
         if (ui != null)
         {
-            ui.ShowTransientToast(
-                title: "CO2 Extinguisher Equipped!",
-                subtitle: "Prepare extinguisher for operation",
-                duration: 2.0f,
-                onDismiss: () =>
+            ui.SetModuleInfo(GetLoc("module.fire.title", "Fire & Explosion Response"), 4, 6);
+            ui.ShowGuidance(
+                stepTag: "STEP 4 OF 6",
+                title: GetLoc("fire.sop.step4.title", "Remove Safety Pin"),
+                description: GetLoc("fire.sop.step4.desc", "Tap the safety pin on the extinguisher handle to break the tamper seal and unlock the lever."),
+                hint: GetLoc("fire.sop.step4.hint", "Twist slightly and pull firmly. Do not squeeze the lever while pulling."),
+                actionBtnText: GetLoc("fire.sop.step4.action", "Pull Safety Pin"),
+                onActionClicked: () =>
                 {
-                    TransitionToStep3_RemovePin();
+                    if (pinInteraction != null)
+                    {
+                        pinInteraction.RemovePin();
+                    }
+                    else
+                    {
+                        HandlePinRemoved();
+                    }
                 }
             );
-        }
-        else
-        {
-            TransitionToStep3_RemovePin();
+
+            ui.ShowTransientToast(
+                title: GetLoc("fire.toast.ext.title", "CO2 Extinguisher Equipped!"),
+                subtitle: GetLoc("fire.toast.ext.sub", "Prepare extinguisher for operation"),
+                duration: 2.0f
+            );
         }
     }
 
     // --- STEP 4: REMOVE SAFETY PIN ---
     public void TransitionToStep3_RemovePin()
     {
-        stage = Stage.Step4_RemovePin;
+        SetStage(Stage.Step4_RemovePin);
         if (ui == null) return;
 
-        ui.SetModuleInfo("Fire & Explosion Response", 4, 6);
+        ui.SetModuleInfo(GetLoc("module.fire.title", "Fire & Explosion Response"), 4, 6);
 
         ui.ShowGuidance(
             stepTag: "STEP 4 OF 6",
-            title: "Remove Safety Pin",
-            description: "Tap the safety pin on the extinguisher handle to break the tamper seal and unlock the lever.",
-            hint: "Twist slightly and pull firmly. Do not squeeze the lever while pulling.",
-            actionBtnText: "Pull Safety Pin",
+            title: GetLoc("fire.sop.step4.title", "Remove Safety Pin"),
+            description: GetLoc("fire.sop.step4.desc", "Tap the safety pin on the extinguisher handle to break the tamper seal and unlock the lever."),
+            hint: GetLoc("fire.sop.step4.hint", "Twist slightly and pull firmly. Do not squeeze the lever while pulling."),
+            actionBtnText: GetLoc("fire.sop.step4.action", "Pull Safety Pin"),
             onActionClicked: () =>
             {
                 if (pinInteraction != null)
@@ -831,51 +1308,49 @@ public class FireScenarioFlowManager : MonoBehaviour
 
     private void HandlePinRemoved()
     {
-        if (stage != Stage.Step4_RemovePin) return;
+        if (stage != Stage.Step4_RemovePin)
+        {
+            HandlePrematurePinAttempt();
+            return;
+        }
 
-        AddScore(10, "Safety Pin Removed");
+        AddScore(15, "Safety Pin Removed");
         EnsureFireAdapter().RecordPinRemoved();
         TrainingEventManager.RaisePinRemoved();
+
+        // Immediately transition to AimBase so user is armed without delay
+        TransitionToStep4_AimBase();
 
         if (ui != null)
         {
             ui.ShowTransientToast(
-                title: "Safety Pin Removed!",
-                subtitle: "Handle unlocked. Extinguisher is armed and ready.",
-                duration: 2.0f,
-                onDismiss: () =>
-                {
-                    TransitionToStep4_AimBase();
-                }
+                title: GetLoc("fire.toast.pin.title", "Safety Pin Removed!"),
+                subtitle: GetLoc("fire.toast.pin.sub", "Handle unlocked. Extinguisher is armed and ready."),
+                duration: 2.0f
             );
-        }
-        else
-        {
-            TransitionToStep4_AimBase();
         }
     }
 
     private void HandlePinRemovalRequired()
     {
-        DeductScore(5, "Safety pin must be removed before operating the lever!", isUnsafe: false);
-        EnsureFireAdapter().RecordWrongAction("lever_squeezed_before_pin", "Safety pin must be removed before operating the lever", "minor");
+        HandlePrematureGripAttempt();
     }
 
     // --- STEP 5: AIM AT BASE OF FIRE ---
     public void TransitionToStep4_AimBase()
     {
-        stage = Stage.Step5_AimBase;
+        SetStage(Stage.Step5_AimBase);
         aimBaseLookTimer = 0f;
         if (ui == null) return;
 
-        ui.SetModuleInfo("Fire & Explosion Response", 5, 6);
+        ui.SetModuleInfo(GetLoc("module.fire.title", "Fire & Explosion Response"), 5, 6);
 
         ui.ShowGuidance(
             stepTag: "STEP 5 OF 6",
-            title: "Aim at Fire Base",
-            description: "Hold the insulated discharge horn. Aim directly at the fuel base of the fire, not at the high flames.",
-            hint: "Aiming at the flames allows the fire to continue feeding from the combustible base.",
-            actionBtnText: "Nozzle Aimed at Base",
+            title: GetLoc("fire.sop.step5.title", "Aim at Fire Base"),
+            description: GetLoc("fire.sop.step5.desc", "Hold the insulated discharge horn. Aim directly at the fuel base of the fire, not at the high flames."),
+            hint: GetLoc("fire.sop.step5.hint", "Aiming at the flames allows the fire to continue feeding from the combustible base."),
+            actionBtnText: GetLoc("fire.sop.step5.action", "Nozzle Aimed at Base"),
             onActionClicked: OnAimConfirmed
         );
     }
@@ -887,51 +1362,78 @@ public class FireScenarioFlowManager : MonoBehaviour
     {
         if (stage != Stage.Step5_AimBase) return;
 
-        AddScore(10, "Aimed at Base");
+        AddScore(15, "Aimed at Base");
         EnsureFireAdapter().RecordAimAtBase(true);
+        // Raise valid_aim event — distinct from the broader aim_at_base_of_fire telemetry
+        EnsureFireAdapter().RecordValidAim();
+
+        // Immediately transition to Extinguish so countdown UI card appears right away
+        TransitionToStep5_Extinguish();
 
         if (ui != null)
         {
             ui.ShowTransientToast(
-                title: "Nozzle Aimed at Base!",
-                subtitle: "Ready for sweep discharge",
-                duration: 2.0f,
-                onDismiss: () =>
-                {
-                    TransitionToStep5_Extinguish();
-                }
+                title: GetLoc("fire.toast.aim.title", "Nozzle Aimed at Base!"),
+                subtitle: GetLoc("fire.toast.aim.sub", "Squeeze handle to discharge spray"),
+                duration: 1.5f
             );
-        }
-        else
-        {
-            TransitionToStep5_Extinguish();
         }
     }
 
     // --- STEP 6: EXTINGUISH (SWEEP & SPRAY) ---
     public void TransitionToStep5_Extinguish()
     {
-        stage = Stage.Step6_Extinguish;
+        SetStage(Stage.Step6_Extinguish);
+
+        // Ensure grip interaction is refreshed on the active held extinguisher
+        if (originalPickup != null)
+        {
+            var newGrip = originalPickup.GetComponentInChildren<ExtinguisherGripInteraction>(true);
+            if (newGrip != null) gripInteraction = newGrip;
+        }
+        if (gripInteraction == null)
+        {
+            gripInteraction = FindAnyObjectByType<ExtinguisherGripInteraction>(FindObjectsInactive.Include);
+        }
+        if (gripInteraction != null)
+        {
+            gripInteraction.OnGripActivated.RemoveListener(HandleGripActivated);
+            gripInteraction.OnSprayStarted.RemoveListener(HandleSprayStarted);
+            gripInteraction.OnSprayStopped.RemoveListener(HandleSprayStopped);
+            gripInteraction.OnPinRemovalRequired.RemoveListener(HandlePinRemovalRequired);
+            gripInteraction.OnGripActivated.AddListener(HandleGripActivated);
+            gripInteraction.OnSprayStarted.AddListener(HandleSprayStarted);
+            gripInteraction.OnSprayStopped.AddListener(HandleSprayStopped);
+            gripInteraction.OnPinRemovalRequired.AddListener(HandlePinRemovalRequired);
+        }
+
         if (ui == null) return;
 
-        ui.SetModuleInfo("Fire & Explosion Response", 6, 6);
+        ui.SetModuleInfo(GetLoc("module.fire.title", "Fire & Explosion Response"), 6, 6);
 
         ui.ShowGuidance(
             stepTag: "STEP 6 OF 6",
-            title: "Extinguish the Fire",
-            description: "Squeeze the operating lever or tap the button below to discharge spray. Sweep side-to-side across the fuel base until the fire is completely out.",
-            hint: "Maintain continuous discharge for 10 seconds until all flames and smoke cease.",
-            actionBtnText: gripInteraction != null && gripInteraction.IsGripHeld ? "Release Handle (Stop Spray)" : "Press Handle & Spray",
+            title: GetLoc("fire.sop.step6.title", "Extinguish the Fire (PASS)"),
+            description: GetLoc("fire.sop.step6.desc", "Squeeze the operating lever or tap the button below to discharge spray. Sweep side-to-side across the fuel base until the fire is completely out."),
+            hint: GetLoc("fire.sop.step6.hint", "Maintain continuous discharge for 10 seconds until all flames and smoke cease."),
+            actionBtnText: (gripInteraction != null && gripInteraction.IsGripHeld)
+                ? GetLoc("fire.sop.step6.actionStop", "Release Handle (Stop Spray)")
+                : GetLoc("fire.sop.step6.action", "Press Handle & Spray"),
             onActionClicked: () =>
             {
                 if (gripInteraction != null)
                 {
                     gripInteraction.ToggleGrip();
                 }
+                else
+                {
+                    var g = FindAnyObjectByType<ExtinguisherGripInteraction>(FindObjectsInactive.Include);
+                    g?.ToggleGrip();
+                }
             }
         );
 
-        ui.ShowProgress(0f, 0f, 10f, "Ready");
+        ui.ShowProgress(0f, "Ready");
     }
 
     // Legacy alias
@@ -939,6 +1441,13 @@ public class FireScenarioFlowManager : MonoBehaviour
 
     private void HandleSprayStarted()
     {
+        // Guard: if pin is not yet removed, this is a premature spray attempt
+        if (stage < Stage.Step5_AimBase)
+        {
+            HandlePrematureSprayAttempt();
+            return;
+        }
+
         if (stage == Stage.Step6_Extinguish)
         {
             EnsureFireAdapter().RecordSprayAction(true, 0f);
@@ -947,10 +1456,10 @@ public class FireScenarioFlowManager : MonoBehaviour
             {
                 ui.ShowGuidance(
                     stepTag: "🔥 STEP 6 OF 6",
-                    title: "Extinguish the Fire",
-                    description: "Spraying active! Sweep side-to-side across the fuel base. Keep particles directly on the fire.",
-                    hint: "Maintain continuous discharge for 10 seconds until all flames cease.",
-                    actionBtnText: "Release Handle (Stop Spray)",
+                    title: GetLoc("fire.sop.step6.title", "Extinguish the Fire (PASS)"),
+                    description: GetLoc("fire.sop.step6.sprayingDesc", "Spraying active! Sweep side-to-side across the fuel base. Keep particles directly on the fire."),
+                    hint: GetLoc("fire.sop.step6.hint", "Maintain continuous discharge for 10 seconds until all flames cease."),
+                    actionBtnText: GetLoc("fire.sop.step6.actionStop", "Release Handle (Stop Spray)"),
                     onActionClicked: () =>
                     {
                         if (gripInteraction != null) gripInteraction.ToggleGrip();
@@ -958,6 +1467,13 @@ public class FireScenarioFlowManager : MonoBehaviour
                 );
             }
         }
+    }
+
+    /// <summary>Handles the first successful grip activation (distinct from spray_started).</summary>
+    private void HandleGripActivated()
+    {
+        if (stage < Stage.Step5_AimBase) return; // safety guard
+        EnsureFireAdapter().RecordGripActivated();
     }
 
     private void HandleSprayStopped()
@@ -969,10 +1485,10 @@ public class FireScenarioFlowManager : MonoBehaviour
             {
                 ui.ShowGuidance(
                     stepTag: "🔥 STEP 6 OF 6",
-                    title: "Extinguish the Fire",
-                    description: "Squeeze the operating lever or tap the button below to discharge spray. Sweep side-to-side across the fuel base until the fire is completely out.",
-                    hint: "Maintain continuous discharge for 10 seconds until all flames and smoke cease.",
-                    actionBtnText: "Press Handle & Spray",
+                    title: GetLoc("fire.sop.step6.title", "Extinguish the Fire (PASS)"),
+                    description: GetLoc("fire.sop.step6.desc", "Squeeze the operating lever or tap the button below to discharge spray. Sweep side-to-side across the fuel base until the fire is completely out."),
+                    hint: GetLoc("fire.sop.step6.hint", "Maintain continuous discharge for 10 seconds until all flames and smoke cease."),
+                    actionBtnText: GetLoc("fire.sop.step6.action", "Press Handle & Spray"),
                     onActionClicked: () =>
                     {
                         if (gripInteraction != null) gripInteraction.ToggleGrip();
@@ -984,47 +1500,70 @@ public class FireScenarioFlowManager : MonoBehaviour
 
     private void UpdateSprayProgress()
     {
-        if (stage != Stage.Step6_Extinguish || ui == null || fire == null)
+        if (stage != Stage.Step6_Extinguish || ui == null)
             return;
+
+        if (fire == null)
+        {
+            fire = FindAnyObjectByType<FireExtinguishable>(FindObjectsInactive.Include);
+            if (fire == null) return;
+        }
 
         float progress = fire.SprayProgress01;
         float total = fire.extinguishTime > 0 ? fire.extinguishTime : 10f;
         float elapsed = fire.CurrentContactTimer;
 
-        if (fire.IsBeingSprayed)
+        bool isSprayingActive = (gripInteraction != null && gripInteraction.IsGripHeld);
+        if (!isSprayingActive)
+        {
+            var ps = FindAnyObjectByType<DryPowderSpray>();
+            if (ps != null && ps.IsSpraying()) isSprayingActive = true;
+        }
+
+        if (isSprayingActive && fire.IsBeingSprayed)
         {
             _wasSprayingOffTarget = false;
-            // Continuously colliding: live timer counts up to 10.0s!
-            ui.ShowProgress(progress, elapsed, total, "Spraying...");
+            // Particles actively colliding with fire: countdown advances!
+            ui.ShowProgress(progress, elapsed, total, $"Spraying... ({elapsed:F1}s / {total:F0}s)");
         }
-        else if (gripInteraction != null && gripInteraction.IsGripHeld)
+        else if (isSprayingActive)
         {
-            // Spray is active but particles are off-target: timer reset!
-            ui.ShowProgress(0f, 0f, total, "Off Target");
+            string offTargetMsg = GetLoc("fire.feedback.aimAtBase", "Aim the nozzle at the base of the fire.");
+            ui.ShowProgress(progress, elapsed, total, $"Aim at Fire Base ({elapsed:F1}s / {total:F0}s)");
             if (!_wasSprayingOffTarget)
             {
                 _wasSprayingOffTarget = true;
-                ui.ShowFeedback(FireScenarioUIController.FeedbackType.Wrong, "Off Target - Timer Reset!", "Spray particles must continuously hit the fire for 10s!", 1.5f);
+                ui.ShowFeedback(FireScenarioUIController.FeedbackType.Wrong, "Off Target", offTargetMsg, 1.5f);
+                if (CanApplyPenalty("spray_off_target"))
+                {
+                    EnsureFireAdapter().RecordInvalidAim();
+                }
             }
         }
         else
         {
             _wasSprayingOffTarget = false;
-            // Extinguisher ready to spray
-            ui.ShowProgress(0f, 0f, total, "Ready to Spray");
+            // Grip released: progress is 0, timer is 0
+            ui.ShowProgress(0f, 0f, total, "Hold Grip to Spray (10s)");
         }
     }
 
-    private void HandleFireExtinguished()
+    public void HandleFireExtinguished()
     {
-        if (stage != Stage.Step6_Extinguish) return;
+        if (stage == Stage.Complete || stage == Stage.Success || stage == Stage.Timeout || stage == Stage.MoveToExit)
+            return;
+
+        if (stage < Stage.Step6_Extinguish)
+        {
+            SetStage(Stage.Step6_Extinguish);
+        }
 
         if (gripInteraction != null)
         {
             gripInteraction.StopGrip();
         }
 
-        AddScore(10, "Fire Fully Extinguished!");
+        AddScore(25, "Fire Fully Extinguished!");
         EnsureFireAdapter().RecordFireExtinguished(scenarioTimer);
         TrainingEventManager.RaiseFireExtinguished();
 
@@ -1033,8 +1572,8 @@ public class FireScenarioFlowManager : MonoBehaviour
         if (ui != null)
         {
             ui.ShowTransientToast(
-                title: "Fire Fully Extinguished!",
-                subtitle: "Hazard neutralized. Training complete!",
+                title: GetLoc("fire.toast.extinguished.title", "Fire Fully Extinguished!"),
+                subtitle: GetLoc("fire.toast.extinguished.sub", "Hazard neutralized. Training complete!"),
                 duration: 2.0f,
                 onDismiss: () =>
                 {
@@ -1051,18 +1590,18 @@ public class FireScenarioFlowManager : MonoBehaviour
     // --- OPTIONAL / LEGACY EVACUATION STEP ---
     public void TransitionToStep6_Evacuate()
     {
-        stage = Stage.Step7_Evacuate;
+        SetStage(Stage.Step7_Evacuate);
         if (ui == null) return;
 
-        ui.SetModuleInfo("Fire & Explosion Response", 6, 6);
+        ui.SetModuleInfo(GetLoc("module.fire.title", "Fire & Explosion Response"), 6, 6);
         ui.HideProgress();
 
         ui.ShowGuidance(
             stepTag: "🚪 SAFE EVACUATION",
-            title: "Safe Evacuation",
-            description: "The fire is suppressed. Back away slowly while keeping visual contact. Follow the emergency EXIT signs to the assembly point.",
-            hint: "Never turn your back on a suppressed fire due to re-ignition risk.",
-            actionBtnText: "Proceed to Emergency Exit",
+            title: GetLoc("fire.sop.step7.title", "Safe Evacuation"),
+            description: GetLoc("fire.sop.step7.desc", "The fire is suppressed. Back away slowly while keeping visual contact. Follow the emergency EXIT signs to the assembly point."),
+            hint: GetLoc("fire.sop.step7.hint", "Never turn your back on a suppressed fire due to re-ignition risk."),
+            actionBtnText: GetLoc("fire.sop.step7.action", "Proceed to Emergency Exit"),
             onActionClicked: () => CompleteScenario(true)
         );
     }
@@ -1081,17 +1620,19 @@ public class FireScenarioFlowManager : MonoBehaviour
 
         stage = Stage.Timeout;
         isTimerRunning = false;
-        EnsureFireAdapter().RecordCriticalAction("scenario_timeout", "7-minute time limit expired before fire was extinguished");
+        // Use the named RecordTimeout() method (not bare RecordCriticalAction) for consistent telemetry
+        EnsureFireAdapter().RecordTimeout();
+        TrainingEventManager.RaiseScenarioTimeout();
 
         if (ui != null)
         {
             ui.HideProgress();
             ui.ShowGuidance(
                 stepTag: "⏰ TIME LIMIT REACHED",
-                title: "Training Time Expired",
-                description: "The 7-minute time limit has been reached. The fire was not suppressed in time. You must now evacuate via the emergency exit.",
-                hint: "Safety first: Never remain in a hazard zone once the emergency timeout is reached.",
-                actionBtnText: "Proceed to Emergency Exit",
+                title: GetLoc("fire.timeout.title", "Training Time Expired"),
+                description: GetLoc("fire.timeout.desc", "The 7-minute time limit has been reached. The fire was not suppressed in time. You must now evacuate via the emergency exit."),
+                hint: GetLoc("fire.timeout.hint", "Safety first: Never remain in a hazard zone once the emergency timeout is reached."),
+                actionBtnText: GetLoc("fire.timeout.action", "Proceed to Emergency Exit"),
                 onActionClicked: TransitionToMoveToExit
             );
         }
@@ -1105,10 +1646,10 @@ public class FireScenarioFlowManager : MonoBehaviour
 
         ui.ShowGuidance(
             stepTag: "🚪 EMERGENCY EVACUATION",
-            title: "Evacuate the Hazard Zone",
-            description: "Follow the green EXIT signs to the emergency assembly point. Do not attempt to re-enter.",
-            hint: "Inform emergency services of fire location, fuel type, and any personnel still inside.",
-            actionBtnText: "Exit Reached — Complete Evacuation",
+            title: GetLoc("fire.evac.title", "Evacuate the Hazard Zone"),
+            description: GetLoc("fire.evac.desc", "Follow the green EXIT signs to the emergency assembly point. Do not attempt to re-enter."),
+            hint: GetLoc("fire.evac.hint", "Inform emergency services of fire location, fuel type, and any personnel still inside."),
+            actionBtnText: GetLoc("fire.evac.action", "Exit Reached — Complete Evacuation"),
             onActionClicked: () => CompleteScenario(false)
         );
     }
@@ -1124,9 +1665,13 @@ public class FireScenarioFlowManager : MonoBehaviour
 
     public void CompleteScenario(bool isSuccess)
     {
-        stage = isSuccess ? Stage.Complete : Stage.Timeout;
+        SetStage(isSuccess ? Stage.Complete : Stage.Timeout);
         isTimerRunning = false;
-        MovementTelemetryCollector.Instance?.StopCollection();
+        var collector = MovementTelemetryCollector.Instance;
+        if (collector != null)
+        {
+            collector.StopCollection();
+        }
 
         EnsureFireAdapter().RecordEvacuation(isSuccess, isSuccess ? "emergency_exit_A" : "emergency_exit_timeout");
         EnsureFireAdapter().CompleteScenario(currentScore, isSuccess);
@@ -1214,6 +1759,7 @@ public class FireScenarioFlowManager : MonoBehaviour
         if (gripInteraction != null)
         {
             gripInteraction.StopGrip();
+            gripInteraction.ResetGripSession();
         }
 
         // Reset alarm interaction for re-play
@@ -1222,8 +1768,28 @@ public class FireScenarioFlowManager : MonoBehaviour
             alarmInteraction.ResetAlarm();
         }
 
+        // Reset display extinguisher and return real extinguisher to unheld state
+        if (displayPickup != null)
+        {
+            displayPickup.ResetDisplay();
+        }
+
+        if (originalPickup != null)
+        {
+            if (originalPickup.IsHeld())
+            {
+                originalPickup.DetachFromCamera();
+            }
+            originalPickup.gameObject.SetActive(false);
+        }
+
+        if (pinInteraction != null)
+        {
+            pinInteraction.ResetPin();
+        }
+
         // Return to Step 1 — reset all counters
-        currentScore    = 40;
+        currentScore    = 0;
         scenarioTimer   = 0f;
         isTimerRunning  = true;
         timeoutTriggered = false;
@@ -1231,11 +1797,12 @@ public class FireScenarioFlowManager : MonoBehaviour
         wrongActions    = 0;
         unsafeActions   = 0;
         criticalErrors  = 0;
+        _lastPenaltyTimes.Clear();
 
         if (ui != null)
         {
             ui.SetScore(currentScore, 0);
-            ui.SetTimer(maxTrainingTimeSeconds); // show full countdown time at restart
+            ui.SetTimer(0f);
             ui.HideProgress();
         }
 

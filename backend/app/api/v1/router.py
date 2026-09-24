@@ -1,8 +1,9 @@
-﻿"""Aggregates all v1 API routers."""
+"""Aggregates all v1 API routers."""
 
 from fastapi import APIRouter
 
 from app.api.v1 import (
+    admin_reviews,
     assessments,
     auth,
     certificates,
@@ -23,4 +24,7 @@ api_router.include_router(assessments.router)
 api_router.include_router(events.router)
 api_router.include_router(sync.router)
 api_router.include_router(certificates.router)
+api_router.include_router(certificates.verify_router)  # public /verify endpoint for QR scans
+api_router.include_router(admin_reviews.router)
 api_router.include_router(dashboard.router)
+

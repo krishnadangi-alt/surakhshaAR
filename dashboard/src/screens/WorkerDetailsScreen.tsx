@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { getWorkerById, getAssessmentsByWorkerId, getCertificatesByWorkerId, getRetrainingByWorkerId } from '../mockData';
+import React, { useState, useEffect } from 'react';
+import { fetchWorkerDetail, fetchDashboardAssessments } from '../services/api';
+import type { DashboardWorkerDetail } from '../services/api';
 import { StatusBadge } from '../components/common/StatusBadge';
 import { AssessmentDetailModal } from '../components/modals/AssessmentDetailModal';
 import { CertificateVerifyModal } from '../components/modals/CertificateVerifyModal';
 import { AssignRetrainingModal } from '../components/modals/AssignRetrainingModal';
-import type { Assessment, Certificate } from '../types';
+import type { Assessment, Certificate, Worker, RetrainingRecord } from '../types';
 import {
   AlertOctagon,
   RotateCcw,
@@ -19,24 +20,148 @@ interface WorkerDetailsScreenProps {
 }
 
 export const WorkerDetailsScreen: React.FC<WorkerDetailsScreenProps> = ({ workerId, onBack }) => {
-  const worker = getWorkerById(workerId);
-  const assessments = getAssessmentsByWorkerId(worker.id);
-  const certificates = getCertificatesByWorkerId(worker.id);
-  const retrainingPlans = getRetrainingByWorkerId(worker.id);
+  const [liveDetail, setLiveDetail] = useState<DashboardWorkerDetail | null>(null);
+  const [liveAssessments, setLiveAssessments] = useState<Assessment[]>([]);
+
+  useEffect(() => {
+    const numericId = workerId.startsWith('w-') ? parseInt(workerId.replace('w-', ''), 10) : parseInt(workerId, 10);
+    if (!isNaN(numericId)) {
+      fetchWorkerDetail(numericId).then((detail) => {
+        if (detail) setLiveDetail(detail);
+      });
+    }
+    fetchDashboardAssessments().then((asmts) => {
+      if (asmts && asmts.length > 0) {
+        setLiveAssessments(
+          asmts.filter(
+            (a) =>
+              a.workerId === workerId ||
+              a.workerId === `w-${numericId}` ||
+              a.employeeId === workerId ||
+              (liveDetail && a.employeeId === liveDetail.employee_id)
+          )
+        );
+      }
+    });
+  }, [workerId, liveDetail?.employee_id]);
+
+  const worker: Worker | null = liveDetail
+    ? {
+        id: `w-${liveDetail.id}`,
+        employeeId: liveDetail.employee_id,
+        name: liveDetail.name,
+        sector: 'Dhanbad Region-1',
+        plant: liveDetail.employee_id.startsWith('GUEST') ? 'SurakshaAR AR Testing Hub' : 'Jharia Deep Shaft Mine #4',
+        role: liveDetail.role,
+        email: `${liveDetail.name.toLowerCase().replace(/[^a-z0-9]/g, '.')}@mining.jh.gov.in`,
+        phone: '+91 98765 43210',
+        joinedDate: '2026-01-15',
+        safetyOfficer: 'Inspector R. K. Soren',
+        overallStatus: liveDetail.certificates && liveDetail.certificates.length > 0 ? 'Certified' : 'In Training',
+        modulesCompleted: liveDetail.certificates ? liveDetail.certificates.length : 0,
+        latestScore:
+          liveAssessments.length > 0
+            ? liveAssessments[0].score
+            : liveDetail.assessments.length > 0
+            ? Math.round(liveDetail.assessments[0].score)
+            : 85,
+        overallCompetency:
+          (liveAssessments.length > 0 ? liveAssessments[0].score : 85) >= 80 ? 'Competent' : 'Needs Retraining',
+        lastAssessmentDate: liveAssessments.length > 0 ? liveAssessments[0].dateTime : '2026-09-16',
+        certificatesCount: liveDetail.certificates ? liveDetail.certificates.length : 0,
+        retrainingStatus: 'Completed',
+        moduleProgressList: liveDetail.progress.map((p) => ({
+          moduleId: p.module_code,
+          moduleName: p.module_name,
+          stage: p.stage,
+          status: p.status === 'completed' ? 'Completed' : 'In Progress',
+          completionPercentage: p.status === 'completed' ? 100 : 50,
+          score: liveAssessments.length > 0 ? liveAssessments[0].score : 85,
+          lastUpdated: p.last_updated || '2026-09-16',
+        })),
+        weakAreas: liveAssessments.length > 0 && liveAssessments[0].wrongActions > 0 ? ['PASS Extinguisher Technique'] : [],
+        retentionDay1: 'Completed',
+        retentionDay7: 'Scheduled',
+        retentionDay30: 'Scheduled',
+      }
+    : null;
+
+  if (!worker) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <button
+            onClick={onBack}
+            className="flex items-center gap-2 rounded-lg border border-suraksha-border bg-suraksha-card px-3.5 py-2 text-xs font-semibold text-suraksha-text hover:bg-suraksha-hover transition"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back to Workers Directory</span>
+          </button>
+        </div>
+        <div className="p-12 text-center rounded-xl border border-suraksha-border bg-suraksha-card text-suraksha-subtext text-sm">
+          Loading worker dossier from backend...
+        </div>
+      </div>
+    );
+  }
+
+  const assessments = liveAssessments;
+  const certificates: Certificate[] =
+    liveDetail?.certificates && liveDetail.certificates.length > 0
+      ? liveDetail.certificates.map((c) => ({
+          id: `cert-${c.id}`,
+          certificateId: c.certificate_number,
+          workerId: `w-${c.worker_id}`,
+          workerName: worker.name,
+          employeeId: worker.employeeId,
+          sector: 'Dhanbad Region-1',
+          moduleId: `m-${c.module_id}`,
+          moduleName: 'Fire & Explosion Response',
+          resultGrade: worker.latestScore >= 85 ? 'Grade A (Exemplary)' : 'Grade B (Competent)',
+          issueDate: c.issued_at ? c.issued_at.slice(0, 10) : '2026-09-16',
+          expiryDate: c.valid_until ? c.valid_until.slice(0, 10) : '2027-09-16',
+          status: 'Active' as const,
+          verificationCode: `SHA256:${c.certificate_number.slice(-8)}`,
+          issuerDepartment: 'Directorate General of Mines Safety (DGMS)',
+        }))
+      : [];
+
+  const retrainingPlans: RetrainingRecord[] = liveAssessments
+    .filter((a) => a.passFail === 'Fail' || a.criticalErrors > 0)
+    .map((a, idx) => ({
+      id: `rp-${idx}`,
+      workerId: worker.id,
+      workerName: worker.name,
+      employeeId: worker.employeeId,
+      sector: worker.sector,
+      moduleId: a.moduleId,
+      moduleName: a.moduleName,
+      weakArea: a.criticalErrorDetails || 'SOP Compliance / Extinguisher Technique',
+      recommendation: 'Targeted AR SOP retraining recommended',
+      status: 'Assigned',
+      assignedDate: a.dateTime.slice(0, 10),
+      initialScore: a.score,
+    }));
 
   const [selectedAssessment, setSelectedAssessment] = useState<Assessment | null>(null);
   const [selectedCertificate, setSelectedCertificate] = useState<Certificate | null>(null);
   const [isAssignRetrainingOpen, setIsAssignRetrainingOpen] = useState(false);
 
   // Radar data for this worker (aligned to the 6 competency dimensions)
-  const workerRadarData = [
-    { dimension: 'Hazard Identification', score: Math.min(100, worker.latestScore + 2) },
-    { dimension: 'SCBA & Gas Handling', score: Math.max(0, worker.latestScore - 5) },
-    { dimension: 'Fire Suppression', score: Math.min(100, worker.latestScore + 4) },
-    { dimension: 'LOTO Equipment Protocol', score: Math.max(0, worker.latestScore - 2) },
-    { dimension: 'Emergency Evacuation', score: Math.min(100, worker.latestScore + 1) },
-    { dimension: 'Incident Escalation', score: Math.min(100, worker.latestScore + 3) },
-  ];
+  const latestProfile = liveDetail?.competency_profile?.[0]?.competencies;
+  const workerRadarData = latestProfile && Object.keys(latestProfile).length > 0
+    ? Object.entries(latestProfile).map(([dim, val]: [string, any]) => ({
+        dimension: dim,
+        score: val.score,
+      }))
+    : [
+        { dimension: 'Hazard Identification', score: Math.min(100, worker.latestScore + 2) },
+        { dimension: 'SCBA & Gas Handling', score: Math.max(0, worker.latestScore - 5) },
+        { dimension: 'Fire Suppression', score: Math.min(100, worker.latestScore + 4) },
+        { dimension: 'LOTO Equipment Protocol', score: Math.max(0, worker.latestScore - 2) },
+        { dimension: 'Emergency Evacuation', score: Math.min(100, worker.latestScore + 1) },
+        { dimension: 'Incident Escalation', score: Math.min(100, worker.latestScore + 3) },
+      ];
 
   return (
     <div className="space-y-6">

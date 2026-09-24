@@ -1,4 +1,4 @@
-﻿"""Worker request/response schemas."""
+"""Worker request/response schemas."""
 
 from datetime import datetime
 
@@ -30,3 +30,11 @@ class WorkerOut(BaseModel):
     employee_id: str
     role: str
     created_at: datetime
+
+
+class WorkerRegisterRequest(BaseModel):
+    employee_id: str = Field(..., min_length=1, max_length=64)
+    name: str | None = Field(None, max_length=120)
+    role: str | None = Field(None, max_length=64)
+    is_guest: bool | None = False
+    password: str | None = Field(None, max_length=128)

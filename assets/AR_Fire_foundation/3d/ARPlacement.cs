@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
@@ -51,7 +52,10 @@ public class ARPlacement : MonoBehaviour
     public void SimulatePlacement()
     {
         if (scenarioPlaced) return;
-        Pose p = hasValidPose ? currentPose : new Pose(Vector3.forward * 2f, Quaternion.identity);
+        Pose p = hasValidPose ? currentPose : new Pose(
+            Camera.main != null ? Camera.main.transform.position + Camera.main.transform.forward * 1.8f : Vector3.forward * 1.8f,
+            Quaternion.identity
+        );
         PlaceFireScenario(p);
     }
 
@@ -82,13 +86,52 @@ public class ARPlacement : MonoBehaviour
             );
         }
 
-        // The template must NEVER be visible before placement.
+        // Hide scenario 3D visuals until placed, but keep FireScenario and FlowManager active so UI initializes
         if (fireScenario != null)
         {
-            fireScenario.SetActive(false);
+            SetScenarioVisualsActive(false);
         }
 
         CreatePlacementIndicator();
+    }
+
+    public void SetScenarioVisualsActive(bool active)
+    {
+        if (fireScenario == null) return;
+        foreach (Transform child in fireScenario.transform)
+        {
+            // Do not disable UI or Canvas objects
+            if (child.name.Contains("UGUI") || child.name.Contains("UI") || child.GetComponent<FireScenarioUIController>() != null)
+                continue;
+            child.gameObject.SetActive(active);
+        }
+
+        if (active)
+        {
+            EnsureOperationalExtinguisherHidden();
+        }
+    }
+
+    public void EnsureOperationalExtinguisherHidden()
+    {
+        if (fireScenario == null) return;
+        var pickups = fireScenario.GetComponentsInChildren<ExtinguisherPickup>(true);
+        foreach (var pickup in pickups)
+        {
+            if (pickup != null && !pickup.IsHeld())
+            {
+                pickup.gameObject.SetActive(false);
+            }
+        }
+
+        var displays = fireScenario.GetComponentsInChildren<ExtinguisherDisplayPickup>(true);
+        foreach (var disp in displays)
+        {
+            if (disp != null && !disp.IsPickedUp)
+            {
+                disp.gameObject.SetActive(true);
+            }
+        }
     }
 
 
@@ -299,43 +342,52 @@ public class ARPlacement : MonoBehaviour
 
     private void CheckForTap()
     {
-        if (Touch.activeTouches.Count == 0)
-            return;
+        Vector2 touchPosition = Vector2.zero;
+        bool hasTap = false;
 
-        Touch touch =
-            Touch.activeTouches[0];
-
-        if (touch.phase !=
-            UnityEngine.InputSystem.TouchPhase.Began)
+        // 1. Direct Touchscreen input (primary New Input System on Android)
+        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
         {
-            return;
+            touchPosition = Touchscreen.current.primaryTouch.position.ReadValue();
+            hasTap = true;
         }
+        // 2. EnhancedTouch fallback
+        else if (Touch.activeTouches.Count > 0 && Touch.activeTouches[0].phase == UnityEngine.InputSystem.TouchPhase.Began)
+        {
+            touchPosition = Touch.activeTouches[0].screenPosition;
+            hasTap = true;
+        }
+#if UNITY_EDITOR || UNITY_STANDALONE
+        // 3. Mouse input for Editor testing
+        else if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            touchPosition = Mouse.current.position.ReadValue();
+            hasTap = true;
+        }
+#endif
 
-        Vector2 touchPosition =
-            touch.screenPosition;
+        if (!hasTap) return;
 
         raycastHits.Clear();
+        bool hit = raycastManager != null && raycastManager.Raycast(
+            touchPosition,
+            raycastHits,
+            TrackableType.PlaneWithinPolygon
+        );
 
-        bool hit =
-            raycastManager.Raycast(
-                touchPosition,
-                raycastHits,
-                TrackableType.PlaneWithinPolygon
-            );
-
-        if (!hit || raycastHits.Count == 0)
+        if (hit && raycastHits.Count > 0)
         {
-            Debug.Log(
-                "ARPlacement: Tap did not hit a detected floor."
-            );
-
-            return;
+            PlaceFireScenario(raycastHits[0].pose);
         }
-
-        Pose hitPose =
-            raycastHits[0].pose;
-
-        PlaceFireScenario(hitPose);
+        else
+        {
+            // Fallback for editor or non-detected surfaces: anchor in front of camera or at current pose
+            Pose hitPose = hasValidPose ? currentPose : new Pose(
+                Camera.main != null ? Camera.main.transform.position + Camera.main.transform.forward * 1.8f : Vector3.forward * 1.8f,
+                Quaternion.identity
+            );
+            PlaceFireScenario(hitPose);
+        }
     }
 
 
@@ -345,81 +397,52 @@ public class ARPlacement : MonoBehaviour
 
     private void PlaceFireScenario(Pose hitPose)
     {
+        if (scenarioPlaced)
+            return;
+
         if (fireScenario == null)
             return;
+
+        // Immediately lock placement to prevent duplicate triggers
+        scenarioPlaced = true;
+        PlacementActive = false;
 
         Quaternion rotation;
 
         if (usePrefabRotation)
         {
-            rotation =
-                fireScenario.transform.rotation;
+            rotation = fireScenario.transform.rotation;
         }
         else
         {
-            rotation =
-                Quaternion.Euler(
-                    0f,
-                    hitPose.rotation.eulerAngles.y,
-                    0f
-                );
+            rotation = Quaternion.Euler(
+                0f,
+                hitPose.rotation.eulerAngles.y,
+                0f
+            );
         }
 
+        // Position existing in-scene scenario and activate 3D visuals
+        fireScenario.transform.position = hitPose.position;
+        fireScenario.transform.rotation = rotation;
+        fireScenario.transform.localScale = Vector3.one * scenarioScale;
+        SetScenarioVisualsActive(true);
 
-        spawnedScenario =
-            Instantiate(
-                fireScenario,
-                hitPose.position,
-                rotation
-            );
-
-
+        spawnedScenario = fireScenario;
         spawnedScenario.SetActive(true);
 
-
-        spawnedScenario.transform.localScale =
-            Vector3.one * scenarioScale;
-
-
-        // Add AR Anchor to the complete scenario.
-        ARAnchor anchor =
-            spawnedScenario.GetComponent<ARAnchor>();
-
-        if (anchor == null)
-        {
-            anchor =
-                spawnedScenario.AddComponent<ARAnchor>();
-        }
-
-
-        // Hide original template.
-        fireScenario.SetActive(false);
-
-
-        // Hide blue circle.
+        // Hide blue circle
         if (placementIndicator != null)
         {
             placementIndicator.SetActive(false);
         }
 
-
-        // Placement is permanently finished.
-        scenarioPlaced = true;
-        PlacementActive = false;
-
-
-        // Stop plane detection.
+        // Stop plane detection safely
         HidePlanes();
 
+        Debug.Log("[ARPlacement] FireScenario placed successfully at: " + hitPose.position);
 
-        Debug.Log(
-            "training_started"
-        );
-
-        Debug.Log(
-            "FireScenario placed and anchored."
-        );
-
+        // Notify flow manager
         if (spawnedScenario != null)
         {
             var flows = spawnedScenario.GetComponentsInChildren<FireScenarioFlowManager>(true);
@@ -430,7 +453,6 @@ public class ARPlacement : MonoBehaviour
         }
 
         OnScenarioPlaced?.Invoke();
-        TrainingEventManager.RaiseScenarioPlaced();
     }
 
 
@@ -443,16 +465,21 @@ public class ARPlacement : MonoBehaviour
         if (planeManager == null)
             return;
 
-        foreach (ARPlane plane in
-                 planeManager.trackables)
+        try
         {
-            if (plane != null)
+            foreach (ARPlane plane in planeManager.trackables)
             {
-                plane.gameObject.SetActive(false);
+                if (plane != null && plane.gameObject != null)
+                {
+                    plane.gameObject.SetActive(false);
+                }
             }
+            planeManager.enabled = false;
         }
-
-        planeManager.enabled = false;
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning("[ARPlacement] HidePlanes exception handled: " + ex.Message);
+        }
     }
 
 

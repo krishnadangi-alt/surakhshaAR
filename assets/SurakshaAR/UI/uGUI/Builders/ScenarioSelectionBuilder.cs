@@ -76,15 +76,15 @@ namespace SurakshaAR.UI.Builders
         private static void BuildTopBar(Transform parent)
         {
             var row = UIHelper.MakeHorizontal("TopBarRow", parent, 16);
-            UIHelper.SetLayout(row.gameObject, preferredHeight: 64);
+            UIHelper.SetLayout(row.gameObject, preferredHeight: 84);
 
-            var backBtn = UIHelper.MakeButton("btn-back", row, "‹", 38, Color.white, UIColors.PrimaryDark, 18);
-            UIHelper.SetLayout(backBtn.gameObject, preferredWidth: 56, preferredHeight: 56);
+            var backBtn = UIHelper.MakeButton("btn-back", row, "‹", 52, Color.white, UIColors.PrimaryDark, 20);
+            UIHelper.SetLayout(backBtn.gameObject, preferredWidth: 76, preferredHeight: 76);
             var border = backBtn.gameObject.AddComponent<Outline>();
             border.effectColor = UIColors.Border;
             border.effectDistance = new Vector2(1, -1);
 
-            var titleLbl = UIHelper.MakeLabel("label-title", row, "Select Scenario", 26, UIColors.PrimaryDark, bold: true);
+            var titleLbl = UIHelper.MakeLabel("label-title", row, "Select Scenario", 52, UIColors.PrimaryDark, bold: true);
             UIHelper.SetLayout(titleLbl.gameObject, flexibleWidth: true, flexWidth: 1);
         }
 
@@ -92,22 +92,23 @@ namespace SurakshaAR.UI.Builders
         {
             var banner = new GameObject("InfoBanner");
             banner.transform.SetParent(parent, false);
-            UIHelper.SetLayout(banner, preferredHeight: 110);
+            UIHelper.SetLayout(banner, preferredHeight: 180, minHeight: 160);
 
             var bImg = banner.AddComponent<Image>();
             bImg.color = UIColors.Hex("#EBF5FF");
-            UIHelper.SetImageRoundedSprite(bImg, 18);
+            UIHelper.SetImageRoundedSprite(bImg, 20);
 
-            var inner = UIHelper.MakeVertical("Inner", banner.transform, 6, new RectOffset(20, 20, 14, 14));
+            var inner = UIHelper.MakeVertical("Inner", banner.transform, 8, new RectOffset(24, 24, 18, 18));
             UIHelper.Stretch(inner, 0, 0, 0, 0);
 
-            var title = UIHelper.MakeLabel("BannerTitle", inner, "Standard Industrial Scenarios", 18, UIColors.PrimaryDark, bold: true);
-            UIHelper.SetLayout(title.gameObject, preferredHeight: 24);
+            var title = UIHelper.MakeLabel("BannerTitle", inner, "Standard Industrial Scenarios", 38, UIColors.PrimaryDark, bold: true);
+            UIHelper.SetLayout(title.gameObject, preferredHeight: 46);
 
             var desc = UIHelper.MakeLabel("BannerDesc", inner,
                 "Select an emergency situation below to begin mobile AR assessment. Zero critical errors are required for compliance certification.",
-                14, UIColors.TextSecondary);
-            UIHelper.SetLayout(desc.gameObject, preferredHeight: 48);
+                32, UIColors.TextSecondary, wrap: true);
+            desc.lineSpacing = 4f;
+            UIHelper.SetLayout(desc.gameObject, preferredHeight: 96, flexibleWidth: true, flexWidth: 1);
         }
 
         private static void BuildScenarioCards(Transform parent)
@@ -168,22 +169,22 @@ namespace SurakshaAR.UI.Builders
             Color badgeBg,
             string icon)
         {
-            var btn = UIHelper.MakeButton(btnName, parent, "", 16, Color.white, UIColors.TextPrimary, 20);
-            UIHelper.SetLayout(btn.gameObject, preferredHeight: 146, minHeight: 120);
+            var btn = UIHelper.MakeButton(btnName, parent, "", 16, Color.white, UIColors.TextPrimary, 22);
+            UIHelper.SetLayout(btn.gameObject, preferredHeight: 270, minHeight: 240);
 
             var outline = btn.gameObject.AddComponent<Outline>();
             outline.effectColor = UIColors.Border;
             outline.effectDistance = new Vector2(1, -1);
 
-            var inner = UIHelper.MakeHorizontal("Inner", btn.transform, 18, new RectOffset(20, 20, 18, 18));
+            var inner = UIHelper.MakeHorizontal("Inner", btn.transform, 20, new RectOffset(22, 22, 20, 20));
             UIHelper.Stretch(inner, 0, 0, 0, 0);
 
             // Left Icon Box
             var iconBox = UIHelper.MakeRect("IconBox", inner);
-            UIHelper.SetLayout(iconBox.gameObject, preferredWidth: 68, preferredHeight: 68);
+            UIHelper.SetLayout(iconBox.gameObject, preferredWidth: 104, preferredHeight: 104, minWidth: 104, minHeight: 104);
             var iconBg = iconBox.gameObject.AddComponent<Image>();
             iconBg.color = badgeBg;
-            UIHelper.SetImageRoundedSprite(iconBg, 16);
+            UIHelper.SetImageRoundedSprite(iconBg, 20);
 
             Sprite spr = null;
             if (icon.Contains("🔥") || icon.ToLower().Contains("fire")) spr = UIHelper.GetFireEmojiSprite();
@@ -201,39 +202,41 @@ namespace SurakshaAR.UI.Builders
                 var rt = iconImgGo.GetComponent<RectTransform>();
                 rt.anchorMin = new Vector2(0.5f, 0.5f);
                 rt.anchorMax = new Vector2(0.5f, 0.5f);
-                rt.sizeDelta = new Vector2(40, 40);
+                rt.sizeDelta = new Vector2(60, 60);
             }
             else
             {
-                var iconLbl = UIHelper.MakeLabel("IconLbl", iconBox, icon, 32, Color.white, TextAlignmentOptions.Center);
+                var iconLbl = UIHelper.MakeLabel("IconLbl", iconBox, icon, 44, Color.white, TextAlignmentOptions.Center);
                 UIHelper.Stretch(iconLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
             }
 
             // Middle Content Column
-            var textCol = UIHelper.MakeVertical("TextCol", inner, 4);
+            var textCol = UIHelper.MakeVertical("TextCol", inner, 6);
             UIHelper.SetLayout(textCol.gameObject, flexibleWidth: true, flexWidth: 1);
 
-            var titleLbl = UIHelper.MakeLabel("Title", textCol, title, 20, UIColors.PrimaryDark, bold: true);
-            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 26);
+            var titleLbl = UIHelper.MakeLabel("Title", textCol, title, 42, UIColors.PrimaryDark, bold: true, wrap: true);
+            titleLbl.lineSpacing = 2f;
+            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 58, minHeight: 48);
 
-            var descLbl = UIHelper.MakeLabel("Desc", textCol, subtitle, 14, UIColors.TextSecondary);
-            UIHelper.SetLayout(descLbl.gameObject, preferredHeight: 40);
+            var descLbl = UIHelper.MakeLabel("Desc", textCol, subtitle, 30, UIColors.TextSecondary, wrap: true);
+            descLbl.lineSpacing = 4f;
+            UIHelper.SetLayout(descLbl.gameObject, preferredHeight: 96, minHeight: 72);
 
             var badgeRow = UIHelper.MakeHorizontal("BadgeRow", textCol, 6);
-            UIHelper.SetLayout(badgeRow.gameObject, preferredHeight: 24);
+            UIHelper.SetLayout(badgeRow.gameObject, preferredHeight: 44);
 
             var badgePill = UIHelper.MakeRect("BadgePill", badgeRow);
-            UIHelper.SetLayout(badgePill.gameObject, preferredWidth: 140, preferredHeight: 24);
+            UIHelper.SetLayout(badgePill.gameObject, preferredWidth: 260, preferredHeight: 44);
             var bImg = badgePill.gameObject.AddComponent<Image>();
             bImg.color = badgeBg;
-            UIHelper.SetImageRoundedSprite(bImg, 6);
+            UIHelper.SetImageRoundedSprite(bImg, 10);
 
-            var bLbl = UIHelper.MakeLabel("BLbl", badgePill, badge, 11, badgeColor, TextAlignmentOptions.Center, bold: true);
+            var bLbl = UIHelper.MakeLabel("BLbl", badgePill, badge, 28, badgeColor, TextAlignmentOptions.Center, bold: true);
             UIHelper.Stretch(bLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
 
             // Right Arrow
-            var arrow = UIHelper.MakeLabel("Arrow", inner, ">", 22, UIColors.TextMuted, TextAlignmentOptions.Right);
-            UIHelper.SetLayout(arrow.gameObject, preferredWidth: 28);
+            var arrow = UIHelper.MakeLabel("Arrow", inner, ">", 44, UIColors.TextMuted, TextAlignmentOptions.Right);
+            UIHelper.SetLayout(arrow.gameObject, preferredWidth: 32);
         }
     }
 }

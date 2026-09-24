@@ -23,7 +23,7 @@ namespace SurakshaAR.Editor
     {
         private const string TriggerFile = @"C:\project\surakshaAR\Temp\run_qa_trigger.txt";
         private const string ResultsFile = @"C:\project\surakshaAR\Temp\qa_results.txt";
-        private const string ScreenshotDir = @"C:\Users\MP2NQ\.gemini\antigravity-ide\brain\412ee6bb-ee21-4d87-9a62-f97ff10f32ae\screenshots";
+        private const string ScreenshotDir = @"C:\Users\MP2NQ\.gemini\antigravity-ide\brain\d5e32a86-b373-434c-9539-64b1d5d775ba\screenshots";
         private const string BuildTriggerFile = @"C:\project\surakshaAR\Temp\build_trigger.txt";
         private const string BuildReportFile = @"C:\project\surakshaAR\Temp\build_report.txt";
 
@@ -63,6 +63,8 @@ namespace SurakshaAR.Editor
 
             if (EditorApplication.isCompiling || EditorApplication.isUpdating) return;
 
+            RealWorkerFireValidation.CheckTrigger();
+
             if (File.Exists(ReadyFile))
             {
                 try
@@ -85,6 +87,8 @@ namespace SurakshaAR.Editor
                 try { File.Delete(BuildTriggerFile); } catch {}
                 BuildAndroidAPK();
             }
+
+            RealWorkerFireValidation.CheckTrigger();
         }
 
         [MenuItem("SurakshaAR/Run Full QA & Capture Evidence")]
@@ -241,7 +245,8 @@ namespace SurakshaAR.Editor
                     
                     if (flow != null)
                     {
-                        flow.SendMessage("ResolveReferences", SendMessageOptions.DontRequireReceiver);
+                        var resolveMethod = flow.GetType().GetMethod("ResolveReferences", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public);
+                        resolveMethod?.Invoke(flow, null);
                     }
                     var alarm = UnityEngine.Object.FindAnyObjectByType<AlarmInteraction>();
 
@@ -282,12 +287,15 @@ namespace SurakshaAR.Editor
                             $"IsPinRemoved: {pin.IsPinRemoved()}, GameObject active: {pin.gameObject.activeSelf} (Expected: true, false)");
 
                         // ---------------------------------------------------------
+                        // ---------------------------------------------------------
                         // TEST C: Squeeze handle after pin removal -> Spray Activates
                         // ---------------------------------------------------------
                         grip.StartGrip();
                         bool testCSprayActive = grip.IsGripHeld;
-                        LogTest("TEST C: Grip after Pin Removal (Spray Activates)", testCSprayActive,
-                            $"IsGripHeld: {grip.IsGripHeld} (Expected: true)");
+                        var powder = UnityEngine.Object.FindAnyObjectByType<DryPowderSpray>();
+                        bool powderSpraying = powder != null && powder.IsSpraying();
+                        LogTest("TEST C: Grip after Pin Removal (Spray & Powder Activates)", testCSprayActive && powderSpraying,
+                            $"IsGripHeld: {grip.IsGripHeld}, Powder IsSpraying: {powderSpraying} (Expected: true, true)");
 
                         // ---------------------------------------------------------
                         // PROBLEM 1 & TEST D: Off-Target Spray -> Fire NOT extinguished
@@ -351,7 +359,8 @@ namespace SurakshaAR.Editor
                         var uiCtrl = UnityEngine.Object.FindAnyObjectByType<FireScenarioUIController>();
                         if (uiCtrl != null)
                         {
-                            uiCtrl.SendMessage("ResolveSceneTargets", SendMessageOptions.DontRequireReceiver);
+                            var rstMethod = typeof(FireScenarioUIController).GetMethod("ResolveSceneTargets", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public);
+                            rstMethod?.Invoke(uiCtrl, null);
 
                             var displayField = typeof(FireScenarioUIController).GetField("_displayExtinguisherTransform", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                             var actualField = typeof(FireScenarioUIController).GetField("_actualExtinguisherTransform", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
@@ -503,6 +512,10 @@ namespace SurakshaAR.Editor
             // Ensure a pristine live AppState exists for UI rendering with real user credentials
             try
             {
+                if (AppManager.Instance != null && AppManager.Instance.gameObject != null)
+                {
+                    UnityEngine.Object.DestroyImmediate(AppManager.Instance.gameObject);
+                }
                 if (AppState.Instance != null && AppState.Instance.gameObject != null)
                 {
                     UnityEngine.Object.DestroyImmediate(AppState.Instance.gameObject);
@@ -510,14 +523,18 @@ namespace SurakshaAR.Editor
             }
             catch {}
 
-            var liveStateGO = new GameObject("LiveAppState");
-            var liveState = liveStateGO.AddComponent<AppState>();
+            var liveAppGO = new GameObject("LiveAppManager");
+            var liveApp = liveAppGO.AddComponent<AppManager>();
+            liveApp.InitializeForTesting(AppLanguage.Hindi);
+
+            var liveState = liveApp.AppState;
             AppState.Instance = liveState;
-            liveState.SetUser("JH-MN-004821", "Amit Soren", false);
+            liveState.SetUser("EMP-PROD-CORE-001", "Krishna", false);
+            liveState.SetLanguage(AppLanguage.Hindi);
             liveState.WorkerRole = "Mine Worker";
             liveState.RecordAssessmentResult(95, 4);
-            liveState.CompletedModulesCount = 3;
-            liveState.AssessmentScore = 92;
+            liveState.CompletedModulesCount = 1;
+            liveState.AssessmentScore = 33;
 
             int shotSuccess = 0;
             shotSuccess += CaptureScreen(() => SplashScreenBuilder.Build(), new SplashScreenController(), "00_splash.png", sb);
@@ -532,7 +549,7 @@ namespace SurakshaAR.Editor
             {
                 id = ModuleId.FireAndExplosion,
                 titleKey = "module.fire.title",
-                descriptionKey = "module.fire.desc",
+                descriptionKey = "module.fire.description",
                 difficultyKey = "difficulty.intermediate",
                 scenarioCount = 7,
                 durationLabel = "15 Mins",
@@ -541,32 +558,32 @@ namespace SurakshaAR.Editor
             };
             shotSuccess += CaptureScreen(() => ModuleDetailBuilder.Build(), new ModuleDetailController(), "05_module_detail.png", sb, testMod);
 
-            // AR HUD States matching the reference image & user prompt section 21:
-            // State 1: AR module just started -> "Tap to Start AR Training"
-            shotSuccess += CaptureArHudState("01_ar_start_training.png", 0, "Industrial Fire Response Training", "Scan the floor and tap the reticle to anchor the 3D training scenario.", sb, null, "start");
-            // State 2: Scenario successfully placed -> Step 1
-            shotSuccess += CaptureArHudState("02_ar_scenario_placed_step1.png", 1, "Identify the Hazard", "Find the electrical fire.", sb);
-            // State 3: Hazard identified -> Step 2
-            shotSuccess += CaptureArHudState("03_ar_step2_alarm.png", 2, "Activate the Alarm", "Pull the emergency alarm.", sb);
-            // State 4: Alarm activated -> Step 3
-            shotSuccess += CaptureArHudState("04_ar_step3_extinguisher.png", 3, "Select CO<sub>2</sub> Extinguisher", "Pick the correct CO<sub>2</sub> extinguisher.", sb);
-            // State 5: Extinguisher selected -> Step 4
-            shotSuccess += CaptureArHudState("05_ar_step4_pin.png", 4, "Remove Safety Pin", "Pull the safety pin.", sb);
-            // State 6: Pin guidance visible
-            shotSuccess += CaptureArHudState("06_ar_step4_pin_guidance.png", 4, "Remove Safety Pin", "Pull the safety pin.", sb);
-            // State 7: Pin removed -> Step 5
-            shotSuccess += CaptureArHudState("07_ar_step5_aim.png", 5, "Aim at Base", "Point the nozzle at the base of the fire.", sb);
-            // State 8: Valid aim -> Step 6
-            shotSuccess += CaptureArHudState("08_ar_step6_spray_ready.png", 6, "Spray & Extinguish", "Press and hold the handle.", sb, null, null, 0f, "Spraying... 0.0 / 10.0 s");
-            // State 9: Handle pressed / spraying -> live spray timer
-            shotSuccess += CaptureArHudState("09_ar_step6_spraying_0s.png", 6, "Spray & Extinguish", "Press and hold the handle.", sb, null, null, 0.05f, "Spraying... 0.5 / 10.0 s");
-            // State 10: 6.5 / 10.0 seconds
-            shotSuccess += CaptureArHudState("10_ar_step6_spraying_6_5s.png", 6, "Spray & Extinguish", "Keep spraying at the base.", sb, null, null, 0.65f, "Spraying... 6.5 / 10.0 s");
-            // State 11: 10.0 / 10.0 seconds
-            shotSuccess += CaptureArHudState("11_ar_step6_spraying_10s.png", 6, "Spray & Extinguish", "Keep spraying at the base.", sb, null, null, 1.0f, "Spraying... 10.0 / 10.0 s");
+            // AR HUD States matching the reference image & natural Hindi instructions:
+            // State 1: AR module just started -> "AR प्रशिक्षण शुरू करें"
+            shotSuccess += CaptureArHudState("01_ar_start_training.png", 0, "औद्योगिक आग से निपटने का प्रशिक्षण", "इस परिदृश्य में, खनन परिसर के विद्युत उपकरण में आग लग जाती है।\nसुरक्षित बचाव और निकासी के लिए मानक संचालन प्रक्रिया (SOP) का पालन करें।", sb, feedback: null, actionBtn: "start");
+            // State 2: Scenario placed -> Step 1: खतरे की पहचान
+            shotSuccess += CaptureArHudState("02_ar_scenario_placed_step1.png", 1, "खतरे की पहचान करें", "अपने आसपास देखें और विद्युत आग को पहचानें। आग दिखाई देने पर उस पर टैप करें।", sb, actionBtn: "मैंने आग पहचान ली है");
+            // State 3: Step 2: अलार्म सक्रिय करें
+            shotSuccess += CaptureArHudState("03_ar_step2_alarm.png", 2, "अलार्म सक्रिय करें", "दीवार पर लाल फायर अलार्म स्टेशन का पता लगाएँ और परिसर में मौजूद सभी कर्मियों को सचेत करने के लिए इसे टैप करें।", sb, actionBtn: "अलार्म सक्रिय करें");
+            // State 4: Step 3: सही अग्निशामक यंत्र चुनें
+            shotSuccess += CaptureArHudState("04_ar_step3_extinguisher.png", 3, "सही अग्निशामक यंत्र चुनें", "जलते हुए उपकरण की जाँच करें। विद्युत आग के लिए उपयुक्त CO₂ अग्निशामक (काली पट्टी) चुनें।", sb, actionBtn: "CO₂ अग्निशामक चुनें");
+            // State 5: Step 4: सुरक्षा पिन निकालें
+            shotSuccess += CaptureArHudState("05_ar_step4_pin.png", 4, "सुरक्षा पिन निकालें", "हैंडल अनलॉक करने के लिए सुरक्षा पिन निकालें।", sb, actionBtn: "सुरक्षा पिन निकालें");
+            // State 6: Step 4: Pin guidance visible
+            shotSuccess += CaptureArHudState("06_ar_step4_pin_guidance.png", 4, "सुरक्षा पिन निकालें", "पिन को थोड़ा घुमाएँ और मजबूती से बाहर खींचें। खींचते समय लीवर को न दबाएँ।", sb, actionBtn: "सुरक्षा पिन निकालें");
+            // State 7: Step 5: आग के आधार पर निशाना लगाएँ
+            shotSuccess += CaptureArHudState("07_ar_step5_aim.png", 5, "आग के आधार पर निशाना लगाएँ", "इंसुलेटेड हॉर्न को पकड़ें। लपटों पर नहीं, सीधे आग के आधार पर निशाना लगाएँ।", sb, actionBtn: "आग के आधार पर निशाना लगाएँ");
+            // State 8: Step 6: स्प्रे के लिए तैयार
+            shotSuccess += CaptureArHudState("08_ar_step6_spray_ready.png", 6, "आग बुझाएँ (PASS तकनीक)", "हैंडल दबाकर रखें या नीचे बटन पर टैप करें। आग बुझने तक आधार पर दायें-बायें स्प्रे करें।", sb, actionBtn: "हैंडल दबाकर स्प्रे करें", progress: 0f, progressLabel: "स्प्रे के लिए तैयार");
+            // State 9: Step 6: स्प्रे हो रहा है (0s)
+            shotSuccess += CaptureArHudState("09_ar_step6_spraying_0s.png", 6, "आग बुझाएँ (PASS तकनीक)", "स्प्रे जारी है! आग के आधार पर दायें-बायें स्वीप करें।", sb, actionBtn: "हैंडल दबाकर स्प्रे करें", progress: 0.05f, progressLabel: "स्प्रे हो रहा है... 0.5 / 10.0 से.");
+            // State 10: Step 6: 6.5s
+            shotSuccess += CaptureArHudState("10_ar_step6_spraying_6_5s.png", 6, "आग बुझाएँ (PASS तकनीक)", "आग और धुआँ पूरी तरह समाप्त होने तक लगातार 10 सेकंड स्प्रे करते रहें।", sb, actionBtn: "हैंडल दबाकर स्प्रे करें", progress: 0.65f, progressLabel: "स्प्रे हो रहा है... 6.5 / 10.0 से.");
+            // State 11: Step 6: 10s
+            shotSuccess += CaptureArHudState("11_ar_step6_spraying_10s.png", 6, "आग बुझाएँ (PASS तकनीक)", "स्प्रे जारी है! आग के आधार पर दायें-बायें स्वीप करें।", sb, actionBtn: "हैंडल छोड़ें (स्प्रे रोकें)", progress: 1.0f, progressLabel: "स्प्रे हो रहा है... 10.0 / 10.0 से.");
             // State 12: Fire extinguished -> Completion
             shotSuccess += CaptureArHudCompletion("12_ar_completion.png", 100, "05:42", sb);
-            shotSuccess += CaptureArHudState("16_timeout_evacuation.png", 6, "Evacuate the Hazard Zone", "Follow the green EXIT signs to the emergency assembly point.", sb, "Exit Reached — Complete Evacuation", "Time limit reached! Evacuate now!");
+            shotSuccess += CaptureArHudState("16_timeout_evacuation.png", 6, "सुरक्षित निकासी", "आग बुझा दी गई है। निरंतर नजर रखते हुए धीरे-धीरे पीछे हटें और आपातकालीन निकास संकेतों का पालन करते हुए सुरक्षित स्थान पर जाएँ।", sb, actionBtn: "आपातकालीन निकास की ओर बढ़ें", feedback: "सुरक्षित निकासी");
 
             shotSuccess += CaptureScreen(() => AssessmentBuilder.Build(), new AssessmentController(), "13_assessment.png", sb);
             shotSuccess += CaptureScreen(() => ResultBuilder.Build(), new ResultController(), "14_result.png", sb);
@@ -581,8 +598,11 @@ namespace SurakshaAR.Editor
             File.WriteAllText(ResultsFile, finalLog);
             Debug.Log(finalLog);
 
-            // Restore Main scene
-            SafeOpenScene("Assets/SurakshaAR/Scenes/Main.unity");
+            // Restore FireTraining scene
+            if (File.Exists("Assets/AR_Fire_foundation/scenes/FireTraining.unity"))
+            {
+                SafeOpenScene("Assets/AR_Fire_foundation/scenes/FireTraining.unity");
+            }
         }
 
         private static UnityEngine.SceneManagement.Scene SafeOpenScene(string scenePath)
@@ -646,8 +666,8 @@ namespace SurakshaAR.Editor
                     controller.OnShow(screenGO, param);
                 }
 
-                // Ensure all screens use the exact same font as the menu
-                var menuFont = UI.UIHelper.GetDefaultFont();
+                // Ensure all screens use the authentic Devanagari Hindi font matching reference
+                var menuFont = UI.UIHelper.GetFontForLanguage(AppLanguage.Hindi);
                 if (menuFont != null)
                 {
                     foreach (var tmp in screenGO.GetComponentsInChildren<TMPro.TextMeshProUGUI>(true))
@@ -761,18 +781,18 @@ namespace SurakshaAR.Editor
                     }
                 }
 
-                ui.SetModuleInfo("Fire & Explosion Response", stepIndex, 6);
+                ui.SetModuleInfo("आग एवं विस्फोट से निपटना", stepIndex, 6);
 
                 if (stepIndex == 0)
                 {
                     if (actionBtn == "start")
                     {
                         ui.ShowGuidance(
-                            stepTag: "SURAKSHAAR AR",
-                            title: "Industrial Fire Response Training",
-                            description: "In this scenario, an electrical equipment fire breaks out in a mining facility.\nFollow standard operating procedures (SOP) to safely respond and evacuate.",
-                            hint: "Scan the floor and tap the reticle to anchor the 3D training scenario.",
-                            actionBtnText: "TAP TO START AR TRAINING",
+                            stepTag: "सुरक्षाAR AR",
+                            title: "औद्योगिक आग से निपटने का प्रशिक्षण",
+                            description: "इस परिदृश्य में, खनन परिसर के विद्युत उपकरण में आग लग जाती है।\nसुरक्षित बचाव और निकासी के लिए मानक संचालन प्रक्रिया (SOP) का पालन करें।",
+                            hint: "फर्श को स्कैन करें और 3D प्रशिक्षण परिदृश्य स्थापित करने के लिए सतह पर टैप करें।",
+                            actionBtnText: "AR प्रशिक्षण शुरू करें",
                             onActionClicked: null
                         );
                     }
@@ -785,7 +805,7 @@ namespace SurakshaAR.Editor
                 {
                     ui.SetScore(70, -30);
                     ui.SetTimer(420f);
-                    ui.ShowGuidance("🚪 EMERGENCY EVACUATION", title, description, "Safety first: Never remain in a hazard zone once the emergency timeout is reached.", actionBtn ?? "Exit Reached — Complete Evacuation", null);
+                    ui.ShowGuidance("🚪 आपातकालीन निकासी", title, description, "सुरक्षा सर्वोपरि: आपातकालीन समय सीमा समाप्त होने के बाद कभी भी खतरे वाले क्षेत्र में न रहें।", actionBtn ?? "निकास द्वार पहुँचा — निकासी पूर्ण", null);
                 }
                 else
                 {
@@ -816,17 +836,26 @@ namespace SurakshaAR.Editor
                             ui.SetTimer(321f); // 05:21
                             break;
                     }
-                    ui.ShowGuidance($"STEP {stepIndex} OF 6", title, description, "Follow National Mining Safety standard SOP.", actionBtn ?? "Action Confirmed", null);
+                    ui.ShowGuidance($"चरण {stepIndex} / 6", title, description, "राष्ट्रीय खनन सुरक्षा मानक (SOP) का पालन करें।", actionBtn ?? "कार्रवाई की पुष्टि करें", null);
                 }
 
                 if (!string.IsNullOrEmpty(feedback))
                 {
-                    ui.ShowFeedback(FireScenarioUIController.FeedbackType.Correct, "Action Complete", feedback, 3.0f);
+                    ui.ShowFeedback(FireScenarioUIController.FeedbackType.Correct, "कार्रवाई पूर्ण", feedback, 3.0f);
                 }
 
                 if (progress >= 0f)
                 {
-                    ui.ShowProgress(progress, progressLabel ?? "Spraying Fire Base...");
+                    ui.ShowProgress(progress, progressLabel ?? "स्प्रे जारी है...");
+                }
+
+                var hudFont = UI.UIHelper.GetFontForLanguage(AppLanguage.Hindi);
+                if (hudFont != null && canvas != null)
+                {
+                    foreach (var tmp in canvas.GetComponentsInChildren<TMPro.TextMeshProUGUI>(true))
+                    {
+                        tmp.font = hudFont;
+                    }
                 }
 
                 Canvas.ForceUpdateCanvases();
@@ -937,17 +966,26 @@ namespace SurakshaAR.Editor
                     }
                 }
 
-                ui.SetModuleInfo("Fire & Explosion Response", 6, 6);
+                ui.SetModuleInfo("आग एवं विस्फोट से निपटना", 6, 6);
                 ui.SetScore(score, 0);
                 ui.SetTimer(342f); // 05:42
 
                 ui.ShowCompletion(
-                    title: "Fire Extinguished!",
-                    message: "Well Done!",
+                    title: "आग बुझाई गई!",
+                    message: "उत्कृष्ट प्रदर्शन!",
                     score: score,
                     timeTaken: timeTaken,
                     onContinue: null
                 );
+
+                var hudFontComp = UI.UIHelper.GetFontForLanguage(AppLanguage.Hindi);
+                if (hudFontComp != null && canvas != null)
+                {
+                    foreach (var tmp in canvas.GetComponentsInChildren<TMPro.TextMeshProUGUI>(true))
+                    {
+                        tmp.font = hudFontComp;
+                    }
+                }
 
                 Canvas.ForceUpdateCanvases();
                 if (canvas != null)

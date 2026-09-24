@@ -14,7 +14,7 @@ public class FirePinInteraction : MonoBehaviour
 
     [Header("Tap Forgiveness")]
     [Tooltip("If the ray misses the small pin collider, a tap within this many screen pixels of the pin still counts.")]
-    [SerializeField] private float tapTolerancePixels = 100f;
+    [SerializeField] private float tapTolerancePixels = 200f;
 
     private Camera arCamera;
     private bool pinRemoved = false;
@@ -114,13 +114,13 @@ public class FirePinInteraction : MonoBehaviour
             // Accept:
             // 1. The pin itself
             // 2. Any child of the pin
+            // 3. Any hit named "Pin"
             if (hitTransform == transform ||
-                hitTransform.IsChildOf(transform))
+                hitTransform.IsChildOf(transform) ||
+                hitTransform.name.IndexOf("pin", System.StringComparison.OrdinalIgnoreCase) >= 0)
             {
-                Debug.Log("PIN TAP DETECTED");
-
+                Debug.Log("PIN TAP DETECTED (raycast)");
                 RemovePin();
-
                 return;
             }
         }
@@ -130,44 +130,64 @@ public class FirePinInteraction : MonoBehaviour
         if (IsTapNearPin(screenPosition))
         {
             Debug.Log("PIN TAP DETECTED (screen tolerance)");
-
             RemovePin();
         }
     }
 
     private bool IsTapNearPin(Vector2 screenPosition)
     {
+        // 1. Check collider bounds center
         Vector3 pinWorld = transform.position;
-
         Collider pinCollider = GetComponent<Collider>();
-        if (pinCollider != null)
+        if (pinCollider != null && pinCollider.bounds.size.sqrMagnitude > 0.0001f)
         {
             pinWorld = pinCollider.bounds.center;
         }
         else
         {
             Renderer pinRenderer = GetComponentInChildren<Renderer>();
-            if (pinRenderer != null)
+            if (pinRenderer != null && pinRenderer.bounds.size.sqrMagnitude > 0.0001f)
                 pinWorld = pinRenderer.bounds.center;
+            else
+                pinWorld = transform.TransformPoint(new Vector3(0f, 0.01f, 0.45f));
         }
 
-        Vector3 screenPoint =
-            arCamera.WorldToScreenPoint(pinWorld);
+        Vector3 screenPoint = arCamera.WorldToScreenPoint(pinWorld);
 
         // Behind the camera - cannot be tapped.
         if (screenPoint.z <= 0f)
             return false;
 
-        float distance =
-            Vector2.Distance(screenPoint, screenPosition);
+        float distance = Vector2.Distance(screenPoint, screenPosition);
+        if (distance <= tapTolerancePixels)
+            return true;
 
-        return distance <= tapTolerancePixels;
+        // Also check direct local pin head position
+        Vector3 pinHeadWorld = transform.TransformPoint(new Vector3(0f, 0.01f, 0.45f));
+        Vector3 headScreenPoint = arCamera.WorldToScreenPoint(pinHeadWorld);
+        if (headScreenPoint.z > 0f)
+        {
+            if (Vector2.Distance(headScreenPoint, screenPosition) <= tapTolerancePixels)
+                return true;
+        }
+
+        return false;
     }
 
     public void RemovePin()
     {
         if (pinRemoved)
             return;
+
+        var flow = FireScenarioFlowManager.Instance ?? FindAnyObjectByType<FireScenarioFlowManager>(FindObjectsInactive.Include);
+        if (flow != null)
+        {
+            if (flow.CurrentStage != FireScenarioFlowManager.Stage.Step4_RemovePin)
+            {
+                flow.HandlePrematurePinAttempt();
+                return;
+            }
+        }
 
         pinRemoved = true;
 
@@ -192,15 +212,30 @@ public class FirePinInteraction : MonoBehaviour
         // Tell other systems.
         OnPinRemoved?.Invoke();
 
-        // Move extinguisher if configured.
+        // Move extinguisher if configured (only if not held by camera).
         if (extinguisherAutoMove != null)
         {
-            extinguisherAutoMove.MoveToTarget();
+            var pickup = GetComponentInParent<ExtinguisherPickup>();
+            if (pickup == null || !pickup.IsHeld())
+            {
+                extinguisherAutoMove.MoveToTarget();
+            }
         }
     }
 
     public bool IsPinRemoved()
     {
         return pinRemoved;
+    }
+
+    public void ResetPin()
+    {
+        pinRemoved = false;
+        gameObject.SetActive(true);
+        var r = GetComponent<Renderer>();
+        if (r != null) r.enabled = true;
+        var c = GetComponent<Collider>();
+        if (c != null) c.enabled = true;
+        enabled = true;
     }
 }

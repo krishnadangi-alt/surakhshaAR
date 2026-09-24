@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChartCard } from '../components/common/ChartCard';
-import { mockModules } from '../mockData';
+import { fetchDashboardSummary, fetchDashboardAssessments, type DashboardSummary } from '../services/api';
+import type { Assessment } from '../types';
 import { Flame, Wind, Cog } from 'lucide-react';
 import {
   BarChart,
@@ -17,8 +18,76 @@ import {
 
 export const ModuleAnalyticsScreen: React.FC = () => {
   const [selectedModuleId, setSelectedModuleId] = useState<string>('ALL');
+  const [liveSummary, setLiveSummary] = useState<DashboardSummary | null>(null);
+  const [liveAssessments, setLiveAssessments] = useState<Assessment[]>([]);
 
-  const selectedModule = mockModules.find((m) => m.moduleId === selectedModuleId);
+  useEffect(() => {
+    fetchDashboardSummary().then((s) => { if (s) setLiveSummary(s); });
+    fetchDashboardAssessments().then((a) => { if (a) setLiveAssessments(a); });
+  }, []);
+
+  const fireAssessments = liveAssessments.filter(a => a.moduleId.includes('1') || a.moduleName.toLowerCase().includes('fire'));
+  const gasAssessments = liveAssessments.filter(a => a.moduleId.includes('2') || a.moduleName.toLowerCase().includes('gas'));
+
+  const fireAvg = fireAssessments.length > 0 ? Math.round(fireAssessments.reduce((acc, a) => acc + a.score, 0) / fireAssessments.length) : 85;
+  const firePassed = fireAssessments.filter(a => a.passFail === 'Pass').length;
+  const firePassRate = fireAssessments.length > 0 ? Math.round((firePassed / fireAssessments.length) * 100) : 80;
+
+  const modules = [
+    {
+      moduleId: 'm-fire',
+      moduleName: 'Fire & Explosion Response',
+      shortName: 'Fire & Explosion',
+      description: 'Underground coal dust & methane ignition response, PASS protocol & evacuation',
+      icon: Flame,
+      color: '#E87722',
+      totalEnrolled: liveSummary?.module_stats?.[0]?.workers_enrolled ?? liveSummary?.total_workers ?? 0,
+      completedCount: liveSummary?.module_stats?.[0]?.certified ?? liveSummary?.certified_workers ?? 0,
+      certifiedCount: liveSummary?.module_stats?.[0]?.certified ?? liveSummary?.certified_workers ?? 0,
+      averageScore: fireAvg,
+      passRate: firePassRate,
+      criticalErrorCount: fireAssessments.reduce((acc, a) => acc + a.criticalErrors, 0),
+      scenarios: [
+        { name: 'Electrical Fire SOP Drill', attempts: fireAssessments.length || 1, passRate: firePassRate, avgDuration: '03:12', avgScore: fireAvg, criticalErrors: fireAssessments.reduce((acc, a) => acc + a.criticalErrors, 0) },
+      ]
+    },
+    {
+      moduleId: 'm-gas',
+      moduleName: 'Gas Leak & Confined Space',
+      shortName: 'Gas & Confined Space',
+      description: 'Toxic gas identification, SCBA donning, multi-gas detector calibration & safe entry',
+      icon: Wind,
+      color: '#3B82F6',
+      totalEnrolled: liveSummary?.module_stats?.[1]?.workers_enrolled ?? 0,
+      completedCount: liveSummary?.module_stats?.[1]?.certified ?? 0,
+      certifiedCount: liveSummary?.module_stats?.[1]?.certified ?? 0,
+      averageScore: 0,
+      passRate: 0,
+      criticalErrorCount: 0,
+      scenarios: [
+        { name: 'Methane Ingress Protocol', attempts: gasAssessments.length, passRate: 0, avgDuration: '04:20', avgScore: 0, criticalErrors: 0 },
+      ]
+    },
+    {
+      moduleId: 'm-machinery',
+      moduleName: 'Heavy Machinery & Conveyor Safety',
+      shortName: 'Machinery & Conveyors',
+      description: 'Lockout/Tagout (LOTO) protocols, conveyor emergency tripwire & pinch-point safety',
+      icon: Cog,
+      color: '#8B5CF6',
+      totalEnrolled: liveSummary?.module_stats?.[2]?.workers_enrolled ?? 0,
+      completedCount: liveSummary?.module_stats?.[2]?.certified ?? 0,
+      certifiedCount: liveSummary?.module_stats?.[2]?.certified ?? 0,
+      averageScore: 0,
+      passRate: 0,
+      criticalErrorCount: 0,
+      scenarios: [
+        { name: 'LOTO Isolation Drill', attempts: 0, passRate: 0, avgDuration: '05:10', avgScore: 0, criticalErrors: 0 },
+      ]
+    }
+  ];
+
+  const selectedModule = modules.find((m) => m.moduleId === selectedModuleId);
 
   // Combined trend line data
   const combinedTrendData = [
@@ -52,7 +121,7 @@ export const ModuleAnalyticsScreen: React.FC = () => {
           >
             All Modules
           </button>
-          {mockModules.map((m) => (
+          {modules.map((m) => (
             <button
               key={m.moduleId}
               onClick={() => setSelectedModuleId(m.moduleId)}
@@ -70,7 +139,7 @@ export const ModuleAnalyticsScreen: React.FC = () => {
 
       {/* Module KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {mockModules.map((m) => {
+        {modules.map((m) => {
           const isSelected = selectedModuleId === 'ALL' || selectedModuleId === m.moduleId;
           return (
             <div
@@ -161,7 +230,7 @@ export const ModuleAnalyticsScreen: React.FC = () => {
           <div className="h-72 w-full pt-2">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
-                data={(selectedModule || mockModules[0]).scenarios}
+                data={(selectedModule || modules[0]).scenarios}
                 layout="vertical"
                 margin={{ top: 5, right: 20, left: 40, bottom: 5 }}
               >
@@ -261,7 +330,7 @@ export const ModuleAnalyticsScreen: React.FC = () => {
         </h4>
 
         <div className="space-y-3">
-          {(selectedModule ? selectedModule.scenarios : mockModules.flatMap((m) => m.scenarios)).map(
+          {(selectedModule ? selectedModule.scenarios : modules.flatMap((m) => m.scenarios)).map(
             (sc, idx) => (
               <div
                 key={idx}

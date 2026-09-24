@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using SurakshaAR.Core;
 
 namespace SurakshaAR.Data
 {
@@ -51,7 +52,7 @@ namespace SurakshaAR.Data
                 return;
             }
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            if (Application.isPlaying) DontDestroyOnLoad(gameObject);
         }
 
         private float GetDeltaTime()
@@ -70,9 +71,14 @@ namespace SurakshaAR.Data
             _isSessionActive = true;
             _recordedEvents.Clear();
 
+            if (AuthSession.Instance != null && AuthSession.Instance.WorkerId > 0)
+            {
+                _workerId = AuthSession.Instance.WorkerId;
+            }
+
             TrainingEventManager.RaiseScenarioStarted("fire", scenarioId);
             RecordEvent(AssessmentEvent.Create(CommonAssessmentEvents.SCENARIO_STARTED, "start_scenario", "info", false, 0f));
-            Debug.Log($"[FIRE ADAPTER] Started Fire Scenario: {scenarioId}");
+            Debug.Log($"[FIRE ADAPTER] Started Fire Scenario: {scenarioId} for Worker ID: {_workerId}");
         }
 
         public void CompleteScenario(float finalScore, bool passed)
@@ -92,6 +98,38 @@ namespace SurakshaAR.Data
 
             Debug.Log($"[FIRE ADAPTER] Completed scenario '{_activeScenarioId}' in {duration:F1}s. Provisional Score: {result.overall_score:F1}%, Passed: {result.passed}");
         }
+
+        /// <summary>
+        /// Combines AR scenario actions and knowledge assessment quiz into ONE unified assessment session.
+        /// Evaluates all 5 competency dimensions and queues for background sync.
+        /// </summary>
+        public void FinalizeModuleAssessment(float finalScore, bool passed, AssessmentEvent quizEvent = null)
+        {
+            if (quizEvent != null)
+            {
+                RecordEvent(quizEvent);
+            }
+            float duration = Mathf.Max(15f, ElapsedSeconds);
+            _isSessionActive = false;
+
+            // Rule 10, 11, 20, 21: Evidence must come from REAL Fire AR interaction.
+            // Synthetic event injection is disabled so only authentic worker actions are evaluated.
+
+            var result = CompetencyEngine.Evaluate("fire", _recordedEvents, duration);
+            result.overall_score = finalScore;
+            result.passed = passed;
+
+            OfflineDataStore.Instance?.SaveAssessmentSession("fire", result, _recordedEvents);
+            OfflineSyncManager.Instance?.TriggerSync();
+
+            Debug.Log($"[FIRE ADAPTER] Finalized Unified Assessment: Score={finalScore}%, Passed={passed}, Real Events={_recordedEvents.Count}");
+        }
+
+        private void EnsureComprehensiveFireEvents(bool passed)
+        {
+            // Deprecated: synthetic event injection disabled per SurakshaAR Rules 10, 11, 20, 21.
+        }
+
 
         public void AbortScenario(string reason)
         {
@@ -253,9 +291,70 @@ namespace SurakshaAR.Data
             RecordCriticalAction("training_timed_out", "Exceeded 420-second (7-minute) training time limit");
         }
 
+        // ── Fine-Grained Grip / Aim / Spray Events (per Master Implementation Rule) ──
+
+        /// <summary>Records the first successful grip activation after pin removal.</summary>
+        public void RecordGripActivated(float responseTime = 0f)
+        {
+            float rt = responseTime > 0f ? responseTime : GetDeltaTime();
+            RecordCorrectAction("grip_activated", rt);
+            TrainingEventManager.RaiseGripActivated();
+        }
+
+        /// <summary>Records a confirmed valid aim at the base of the fire.</summary>
+        public void RecordValidAim(float responseTime = 0f)
+        {
+            float rt = responseTime > 0f ? responseTime : GetDeltaTime();
+            RecordCorrectAction("valid_aim", rt);
+            TrainingEventManager.RaiseValidAim();
+        }
+
+        /// <summary>Records an invalid aim event (rate-limited by FlowManager penalty cooldown).</summary>
+        public void RecordInvalidAim()
+        {
+            RecordWrongAction("invalid_aim", "Nozzle aimed away from fire base", "minor");
+            TrainingEventManager.RaiseInvalidAim();
+        }
+
+        /// <summary>Records the transition into valid spray contact with the fire.</summary>
+        public void RecordSprayContactValid()
+        {
+            float rt = GetDeltaTime();
+            var ev = AssessmentEvent.Create(CommonAssessmentEvents.OBJECT_INTERACTION, "spray_contact_valid", "correct", false, rt);
+            RecordEvent(ev);
+            TrainingEventManager.RaiseSprayContactValid();
+        }
+
+        /// <summary>Records the moment spray contact with the fire is first lost (grace period begins).</summary>
+        public void RecordSprayInterrupted()
+        {
+            RecordWrongAction("spray_interrupted", "Spray contact with fire lost — grace period started", "minor");
+            TrainingEventManager.RaiseSprayInterrupted();
+        }
+
+        /// <summary>Records a full contact timer reset after grace period expires.</summary>
+        public void RecordSprayContactReset()
+        {
+            RecordWrongAction("spray_contact_reset", "Grace period exceeded — contact timer reset to 0", "minor");
+            TrainingEventManager.RaiseSprayContactReset();
+        }
+
+        /// <summary>Records an attempt to spray before the safety pin has been removed.</summary>
+        public void RecordPrematureSprayAttempt()
+        {
+            RecordUnsafeAction("premature_spray_attempt", "Attempted to spray before safety pin was removed");
+            RecordSequenceError("remove_safety_pin", "spray_attempt");
+            TrainingEventManager.RaisePrematureSprayAttempt();
+        }
+
+
         private void RecordEvent(AssessmentEvent ev)
         {
             if (ev == null) return;
+            if (AuthSession.Instance != null && AuthSession.Instance.WorkerId > 0)
+            {
+                _workerId = AuthSession.Instance.WorkerId;
+            }
             ev.worker_id = _workerId;
             ev.module = "fire";
             ev.scenario = _activeScenarioId;

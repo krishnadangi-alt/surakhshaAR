@@ -30,6 +30,8 @@ export const AssessmentsScreen: React.FC = () => {
 
   useEffect(() => {
     loadData();
+    const interval = setInterval(loadData, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   const dateFiltered = filterAssessmentsByRange(assessmentsList, dateRangePreset, customRange ?? undefined);

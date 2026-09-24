@@ -24,8 +24,69 @@ namespace SurakshaAR.Editor
             if (File.Exists(TriggerFile))
             {
                 try { File.Delete(TriggerFile); } catch {}
+                SanitizeScene();
                 DumpScene();
                 DiagnoseARObjects();
+            }
+        }
+
+        public static void SanitizeScene()
+        {
+            try
+            {
+                const string scenePath = "Assets/AR_Fire_foundation/scenes/FireTraining.unity";
+                var scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
+                if (!scene.IsValid()) return;
+
+                bool keptAdapter = false;
+                bool keptCollector = false;
+                bool keptAppState = false;
+
+                foreach (var go in scene.GetRootGameObjects())
+                {
+                    if (go == null) continue;
+                    string n = go.name;
+
+                    if (n.Contains("FireAssessmentAdapter"))
+                    {
+                        if (!keptAdapter) keptAdapter = true;
+                        else UnityEngine.Object.DestroyImmediate(go);
+                    }
+                    else if (n.Contains("MovementTelemetryCollector"))
+                    {
+                        if (!keptCollector) keptCollector = true;
+                        else UnityEngine.Object.DestroyImmediate(go);
+                    }
+                    else if (n.Contains("AppState"))
+                    {
+                        if (!keptAppState) keptAppState = true;
+                        else UnityEngine.Object.DestroyImmediate(go);
+                    }
+                    else if (n.Contains("TempCaptureCamera") || n.Contains("FireScenarioUGUI") || n.Contains("TargetBox") || n.Contains("MainCanvas"))
+                    {
+                        UnityEngine.Object.DestroyImmediate(go);
+                    }
+                }
+
+                GameObject fireScenario = GameObject.Find("FireScenario");
+                if (fireScenario != null)
+                {
+                    for (int i = fireScenario.transform.childCount - 1; i >= 0; i--)
+                    {
+                        var child = fireScenario.transform.GetChild(i);
+                        if (child.name.Contains("FireScenarioUGUI") || child.name.Contains("TargetBox") || child.name.Contains("Canvas"))
+                        {
+                            UnityEngine.Object.DestroyImmediate(child.gameObject);
+                        }
+                    }
+                }
+
+                EditorSceneManager.MarkSceneDirty(scene);
+                EditorSceneManager.SaveScene(scene);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("[SanitizeScene Exception] " + ex);
             }
         }
 

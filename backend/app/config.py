@@ -1,4 +1,4 @@
-﻿"""Application configuration for the SurakshaAR backend.
+"""Application configuration for the SurakshaAR backend.
 
 Secrets (the JWT signing key, admin bootstrap credentials) are read from the
 environment / ``backend/.env`` and are never committed to the repository.
@@ -61,13 +61,12 @@ PORT = int(os.getenv("SURAKHSHAAR_PORT", "8000"))
 # Auto-reload is a development-only convenience; keep it off in production.
 RELOAD = _env_flag("SURAKHSHAAR_RELOAD", "1")
 
-# Comma-separated browser origins allowed to call the API. Defaults to ``*``
-# because the dashboard is served either from the backend origin (``/dashboard``)
-# or opened from the file system during an offline demo; an unconfigured
-# deployment must never silently break a client.
+# Comma-separated browser origins allowed to call the API.
+# Includes standard Vite dev server ports (5173), localhost origins, and wildcard.
+DEFAULT_CORS = "http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000,http://127.0.0.1:3000,http://localhost:8000,http://127.0.0.1:8000,*"
 CORS_ORIGINS = [
     origin.strip()
-    for origin in os.getenv("SURAKHSHAAR_CORS_ORIGINS", "*").split(",")
+    for origin in os.getenv("SURAKHSHAAR_CORS_ORIGINS", DEFAULT_CORS).split(",")
     if origin.strip()
 ] or ["*"]
 

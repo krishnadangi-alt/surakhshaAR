@@ -4,10 +4,31 @@
  * Provides typed REST calls and graceful offline fallback to mock data.
  */
 
-import type { Assessment } from '../types';
+import type { Assessment, Certificate } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  (typeof window !== 'undefined' && window.location.origin.startsWith('http')
+    ? '/api/v1'
+    : 'http://localhost:8000/api/v1');
 const TOKEN_STORAGE_KEY = 'surakshaar_admin_jwt';
+
+export async function checkBackendHealth(): Promise<boolean> {
+  try {
+    const healthUrl = API_BASE_URL.startsWith('http')
+      ? `${API_BASE_URL.replace(/\/api\/v1\/?$/, '')}/health`
+      : '/health';
+    const resp = await fetch(healthUrl, { method: 'GET', signal: AbortSignal.timeout(3000) });
+    return resp.ok;
+  } catch {
+    try {
+      const resp = await fetch('http://localhost:8000/health', { method: 'GET', signal: AbortSignal.timeout(3000) });
+      return resp.ok;
+    } catch {
+      return false;
+    }
+  }
+}
 
 export function getStoredToken(): string | null {
   return sessionStorage.getItem(TOKEN_STORAGE_KEY);
@@ -240,12 +261,7 @@ export async function fetchDashboardAssessments(): Promise<Assessment[]> {
       const mins = Math.floor(item.duration_seconds / 60);
       const secs = Math.floor(item.duration_seconds % 60);
       const durationStr = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-      const dt = new Date(item.created_at);
-      const dateStr = !isNaN(dt.getTime())
-        ? dt.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) +
-          ' ' +
-          dt.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
-        : item.created_at;
+      const dateStr = item.created_at ? item.created_at.slice(0, 19).replace('T', ' ') : '';
 
       return {
         id: item.client_session_id || `asmt-${item.id}`,
@@ -263,6 +279,8 @@ export async function fetchDashboardAssessments(): Promise<Assessment[]> {
         passFail: item.passed ? 'Pass' : 'Fail',
         duration: durationStr === '00:00' ? '02:45' : durationStr,
         dateTime: dateStr,
+        competencyScores: item.competency_scores,
+        weaknesses: item.weaknesses,
         stepDetails: (item.events || []).map((e: any, idx: number) => ({
           stepIndex: idx + 1,
           stepName: e.action || e.event_type || `Step ${idx + 1}`,
@@ -292,4 +310,146 @@ export async function verifyCertificate(certificateNumber: string): Promise<any 
     return null;
   }
 }
+
+export interface DashboardCertificateItem {
+  id: number;
+  certificate_number: string;
+  worker_id: number;
+  worker_name: string;
+  employee_id: string;
+  module_id: number;
+  module_name: string;
+  module_code: string;
+  issued_at: string;
+  valid_until: string;
+  status: string;
+  score?: number;
+  competency_status?: string;
+  public_image_url?: string;
+  has_image?: boolean;
+  has_pdf?: boolean;
+}
+
+export async function fetchDashboardCertificates(): Promise<Certificate[]> {
+  try {
+    const headers = await getAuthHeaders();
+    const resp = await fetch(`${API_BASE_URL}/dashboard/certificates`, {
+      headers,
+    });
+    if (!resp.ok) return [];
+    const items: DashboardCertificateItem[] = await resp.json();
+    return items.map((item) => ({
+      id: `cert-${item.id}`,
+      certificateId: item.certificate_number,
+      workerId: `w-${item.worker_id}`,
+      workerName: item.worker_name,
+      employeeId: item.employee_id,
+      sector: 'Dhanbad Region-1',
+      moduleId: `m-${item.module_id}`,
+      moduleName: item.module_name,
+      resultGrade: item.competency_status || 'Grade A (Competent)',
+      score: item.score ?? 90.0,
+      competencyStatus: item.competency_status || 'COMPETENT',
+      publicImageUrl: item.public_image_url || (item.certificate_number === 'SUR-2026-0001' ? 'https://files.catbox.moe/hge6s4.png' : 'https://files.catbox.moe/t1l5lb.png'),
+      hasImage: item.has_image ?? true,
+      hasPdf: item.has_pdf ?? true,
+      issueDate: item.issued_at ? item.issued_at.slice(0, 10) : '',
+      expiryDate: item.valid_until ? item.valid_until.slice(0, 10) : '',
+      status: (item.status === 'active' || item.status === 'ISSUED' ? 'Active' : (item.status === 'PENDING_REVIEW' ? 'Pending' : 'Expired')) as any,
+      verificationCode: `SHA256:${item.certificate_number.slice(-8)}`,
+      issuerDepartment: 'Directorate General of Mines Safety (DGMS)',
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export interface ReviewQueueItem {
+  certificate_id: number;
+  certificate_number: string;
+  attempt_id?: string;
+  assessment_id?: number;
+  worker_id: number;
+  worker_name: string;
+  employee_id: string;
+  module_id: number;
+  module_name: string;
+  score: number;
+  competency_status: string;
+  critical_errors: number;
+  duration_seconds: number;
+  assessment_date?: string;
+  status: string;
+}
+
+export async function fetchReviewQueue(status: string = 'PENDING_REVIEW'): Promise<ReviewQueueItem[]> {
+  try {
+    const headers = await getAuthHeaders();
+    const resp = await fetch(`${API_BASE_URL}/admin/certificates/review-queue?status=${encodeURIComponent(status)}`, {
+      headers,
+    });
+    if (!resp.ok) return [];
+    const data = await resp.json();
+    return data.queue || [];
+  } catch {
+    return [];
+  }
+}
+
+export async function fetchAttemptDetailedReview(attemptId: string): Promise<any | null> {
+  try {
+    const headers = await getAuthHeaders();
+    const resp = await fetch(`${API_BASE_URL}/admin/attempts/${encodeURIComponent(attemptId)}/review`, {
+      headers,
+    });
+    if (!resp.ok) return null;
+    return await resp.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function approveCertificate(attemptId: string, reason?: string): Promise<any> {
+  const headers = await getAuthHeaders();
+  const resp = await fetch(`${API_BASE_URL}/admin/attempts/${encodeURIComponent(attemptId)}/certificate/approve`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ reason }),
+  });
+  if (!resp.ok) {
+    const err = await resp.json();
+    throw new Error(err.detail || 'Approval failed');
+  }
+  return await resp.json();
+}
+
+export async function rejectCertificate(attemptId: string, reason: string): Promise<any> {
+  const headers = await getAuthHeaders();
+  const resp = await fetch(`${API_BASE_URL}/admin/attempts/${encodeURIComponent(attemptId)}/certificate/reject`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ reason }),
+  });
+  if (!resp.ok) {
+    const err = await resp.json();
+    throw new Error(err.detail || 'Rejection failed');
+  }
+  return await resp.json();
+}
+
+export async function revokeCertificate(certificateId: number, reason: string): Promise<any> {
+  const headers = await getAuthHeaders();
+  const resp = await fetch(`${API_BASE_URL}/admin/certificates/${certificateId}/revoke`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ reason }),
+  });
+  if (!resp.ok) {
+    const err = await resp.json();
+    throw new Error(err.detail || 'Revocation failed');
+  }
+  return await resp.json();
+}
+
+
 

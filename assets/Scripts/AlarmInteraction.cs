@@ -218,9 +218,21 @@ public class AlarmInteraction : MonoBehaviour
     /// Activates the fire alarm: plays audio, shows effect, fires the event.
     /// Safe to call multiple times — only activates once.
     /// </summary>
+
     public void ActivateAlarm()
     {
         if (IsActivated) return;
+
+        var flow = FireScenarioFlowManager.Instance ?? FindAnyObjectByType<FireScenarioFlowManager>(FindObjectsInactive.Include);
+        if (flow != null)
+        {
+            if (flow.CurrentStage != FireScenarioFlowManager.Stage.Step2_ActivateAlarm)
+            {
+                flow.HandlePrematureAlarmAttempt();
+                return;
+            }
+        }
+
         IsActivated = true;
 
         Debug.Log("[AlarmInteraction] ALARM ACTIVATED");

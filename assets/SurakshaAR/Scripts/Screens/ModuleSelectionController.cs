@@ -1,5 +1,6 @@
 using SurakshaAR.Core;
 using SurakshaAR.Data;
+using SurakshaAR.Localization;
 using SurakshaAR.UI;
 using SurakshaAR.UI.Builders;
 using TMPro;
@@ -12,10 +13,12 @@ namespace SurakshaAR.Screens
     {
         private Button _btnBack;
         private Button _navHome, _navLearn, _navProgress, _navCertificates;
+        private SurakshaAR.Localization.LocalizationManager _loc;  // stored for BuildModuleCard access
 
         public void OnShow(GameObject root, object param)
         {
-            var loc         = AppManager.Instance?.Localization;
+            _loc        = AppManager.Instance?.Localization;
+            var loc     = _loc;  // local alias for readability in OnShow
             var currentLang = AppState.Instance != null
                 ? AppState.Instance.CurrentLanguage
                 : AppLanguage.English;
@@ -35,24 +38,16 @@ namespace SurakshaAR.Screens
             if (_navProgress     != null) _navProgress.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.Progress));
             if (_navCertificates != null) _navCertificates.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.Certificate));
 
-            // ── Localize nav labels ───────────────────────────────────────
-            SetNavLabel(root, "label-nav-home",         currentLang, "Home",         "होम",        "ᱚᱲᱟᱜ");
-            SetNavLabel(root, "label-nav-learn",        currentLang, "Learn",        "सीखें",      "ᱥᱮᱪᱮᱫ");
-            SetNavLabel(root, "label-nav-progress",     currentLang, "Progress",     "प्रगति",     "ᱞᱟᱦᱟᱱᱛᱤ");
-            SetNavLabel(root, "label-nav-certificates", currentLang, "Certificates", "प्रमाणपत्र", "ᱥᱟᱹᱠᱷᱤ ᱥᱟᱠᱟᱢ");
+            // ── Localize nav labels ─────────────────────────────────────────
+            // Nav labels route through LocalizationManager which has verified Ol Chiki values
+            SetLabel(root, "label-nav-home",         loc?.Get("home.navHome")         ?? "Home");
+            SetLabel(root, "label-nav-learn",        loc?.Get("home.navLearn")        ?? "Learn");
+            SetLabel(root, "label-nav-progress",     loc?.Get("home.navProgress")     ?? "My Progress");
+            SetLabel(root, "label-nav-certificates", loc?.Get("home.navCertificates") ?? "Certificates");
 
             // ── Localize header ───────────────────────────────────────────
-            var titleLbl = UIHelper.FindTMP(root, "label-title");
-            if (titleLbl != null)
-                titleLbl.text = currentLang == AppLanguage.Hindi
-                    ? "प्रशिक्षण मॉड्यूल"
-                    : "Safety Training Modules";
-
-            var subLbl = UIHelper.FindTMP(root, "label-sub");
-            if (subLbl != null)
-                subLbl.text = currentLang == AppLanguage.Hindi
-                    ? "एक सुरक्षित भविष्य के लिए सीखें"
-                    : "Build Skills for a Safer Tomorrow";
+            SetLabel(root, "label-title", loc?.Get("moduleSelection.title") ?? "Safety Training Modules");
+            SetLabel(root, "label-sub",   loc?.Get("moduleSelection.subtitle") ?? "Build Skills for a Safer Tomorrow");
 
             // ── Populate Module Cards ─────────────────────────────────────
             var listContainer = UIHelper.FindRect(root, "module-list");
@@ -60,7 +55,7 @@ namespace SurakshaAR.Screens
 
             // Clear existing dynamic cards
             for (int i = listContainer.childCount - 1; i >= 0; i--)
-                Object.Destroy(listContainer.GetChild(i).gameObject);
+                UIHelper.SafeDestroy(listContainer.GetChild(i).gameObject);
 
             // Get modules from AppManager if available, otherwise fall back to default catalog
             var modules = AppManager.Instance?.Modules
@@ -103,6 +98,9 @@ namespace SurakshaAR.Screens
                 mhMod.isLocked = true;
                 BuildModuleCard(listContainer, mhMod, null, null);
             }
+
+            // Ensure all dynamic module cards receive correct font for active language
+            UIManager.Instance?.ApplyLanguageFonts(root, currentLang);
         }
 
         // ── Build a card for a real AppManager module ─────────────────────
@@ -120,33 +118,33 @@ namespace SurakshaAR.Screens
                     iconSprite  = UIHelper.LoadProjectSprite("icon_fire_ref1.png") ?? UIHelper.GetFireEmojiSprite();
                     iconBg      = UIColors.Hex("#FFEDD5");
                     statusColor = UIColors.Hex("#EA580C");
-                    statusLabel = "Available";
+                    statusLabel = _loc?.Get("module.statusAvailable") ?? "Available";
                     if (string.IsNullOrEmpty(title) || title == module.titleKey)
-                        title = "Fire & Explosion Response";
+                        title = _loc?.Get("module.fire.title") ?? "Fire & Explosion Response";
                     if (string.IsNullOrEmpty(desc) || desc == module.descriptionKey)
-                        desc = "Learn to identify, respond and control fire hazards in mining environments.";
+                        desc = _loc?.Get("module.fire.description") ?? "Learn to identify, respond and control fire hazards in mining environments.";
                     break;
 
                 case ModuleId.GasLeakConfinedSpace:
                     iconSprite  = UIHelper.LoadProjectSprite("icon_gas_ref1.png") ?? UIHelper.GetGasEmojiSprite();
                     iconBg      = UIColors.Hex("#E0F2FE");
                     statusColor = UIColors.Hex("#0284C7");
-                    statusLabel = "Available";
+                    statusLabel = _loc?.Get("module.statusTheoryOnly") ?? "THEORY / ASSESSMENT";
                     if (string.IsNullOrEmpty(title) || title == module.titleKey)
-                        title = "Gas Leak & Confined Space";
+                        title = _loc?.Get("module.gas.title") ?? "Gas Leak & Confined Space";
                     if (string.IsNullOrEmpty(desc) || desc == module.descriptionKey)
-                        desc = "Stay safe in hazardous gas environments and confined spaces.";
+                        desc = _loc?.Get("module.gas.description") ?? "Stay safe in hazardous gas environments and confined spaces.";
                     break;
 
                 case ModuleId.MachinerySafety:
                     iconSprite  = UIHelper.LoadProjectSprite("icon_gear_ref1.png") ?? UIHelper.GetGearEmojiSprite();
                     iconBg      = UIColors.Hex("#DCFCE7");
-                    statusColor = UIColors.Hex("#16A34A");
-                    statusLabel = "Available";
+                    statusColor = UIColors.Hex("#0D9488");
+                    statusLabel = _loc?.Get("module.statusTheoryOnly") ?? "THEORY / ASSESSMENT";
                     if (string.IsNullOrEmpty(title) || title == module.titleKey)
-                        title = "Machinery Safety";
+                        title = _loc?.Get("module.machinery.title") ?? "Machinery Safety";
                     if (string.IsNullOrEmpty(desc) || desc == module.descriptionKey)
-                        desc = "Identify machinery, understand risks and follow safe procedures.";
+                        desc = _loc?.Get("module.machinery.description") ?? "Identify machinery, understand risks and follow safe procedures.";
                     break;
 
                 case ModuleId.ElectricalSafety:
@@ -154,11 +152,9 @@ namespace SurakshaAR.Screens
                     iconBg      = UIColors.Hex("#FEF3C7");
                     iconColor   = UIColors.Hex("#D97706");
                     statusColor = UIColors.Hex("#64748B");
-                    statusLabel = "Locked";
-                    if (string.IsNullOrEmpty(title) || title == module.titleKey)
-                        title = "Electrical Safety (Coming Soon)";
-                    if (string.IsNullOrEmpty(desc) || desc == module.descriptionKey)
-                        desc = "Learn electrical safety practices for mining environments.";
+                    statusLabel = _loc?.Get("module.statusComingSoon") ?? "COMING SOON";
+                    title = _loc?.Get("module.electrical.title") ?? "Electrical Safety (Coming Soon)";
+                    desc = _loc?.Get("module.electrical.description") ?? "Learn electrical safety practices for mining environments.";
                     break;
 
                 case ModuleId.MineHazardEnvironment:
@@ -166,25 +162,25 @@ namespace SurakshaAR.Screens
                     iconBg      = UIColors.Hex("#FFEDD5");
                     iconColor   = UIColors.Hex("#EA580C");
                     statusColor = UIColors.Hex("#64748B");
-                    statusLabel = "Locked";
-                    if (string.IsNullOrEmpty(title) || title == module.titleKey)
-                        title = "Mine Hazard & Environment";
-                    if (string.IsNullOrEmpty(desc) || desc == module.descriptionKey)
-                        desc = "Understand mine hazards and environmental risks for a safer workplace.";
+                    statusLabel = _loc?.Get("module.statusComingSoon") ?? "COMING SOON";
+                    title = _loc?.Get("module.minehazard.title") ?? "Mine Hazard & Environment";
+                    desc = _loc?.Get("module.minehazard.description") ?? "Understand mine hazards and environmental risks for a safer workplace.";
                     break;
 
                 default:
                     iconSprite  = UIHelper.GetFireEmojiSprite();
                     iconBg      = UIColors.Hex("#F8FAFC");
                     statusColor = UIColors.Hex("#059669");
-                    statusLabel = "Available";
+                    statusLabel = _loc?.Get("module.statusAvailable") ?? "Available";
                     break;
             }
+
+            string typeChipText = _loc?.Get("module.trainingModule") ?? "Training Module";
 
             var cardGO = ModuleSelectionBuilder.CreateModuleCard(
                 parent, $"card-{module.id}", iconSprite, iconBg,
                 title, desc,
-                module.isLocked, statusColor, statusLabel, iconColor);
+                module.isLocked, statusColor, statusLabel, iconColor, typeChipText);
 
             // Wire tap on unlocked cards
             if (!module.isLocked)
@@ -220,7 +216,35 @@ namespace SurakshaAR.Screens
 
         private static void SetText(TextMeshProUGUI tmp, string text)
         {
-            if (tmp != null && !string.IsNullOrEmpty(text)) tmp.text = text;
+            if (tmp != null && !string.IsNullOrEmpty(text))
+            {
+                if (DevanagariShaper.HasDevanagari(text))
+                {
+                    tmp.text = DevanagariShaper.Shape(text);
+                    try { tmp.font = UIHelper.GetDevanagariFont(); } catch {}
+                }
+                else
+                {
+                    tmp.text = text;
+                }
+            }
+        }
+
+        private static void SetLabel(GameObject root, string name, string text)
+        {
+            var tmp = UIHelper.FindTMP(root, name);
+            if (tmp != null && !string.IsNullOrEmpty(text))
+            {
+                if (DevanagariShaper.HasDevanagari(text))
+                {
+                    tmp.text = DevanagariShaper.Shape(text);
+                    try { tmp.font = UIHelper.GetDevanagariFont(); } catch {}
+                }
+                else
+                {
+                    tmp.text = text;
+                }
+            }
         }
 
         private void GoBack()

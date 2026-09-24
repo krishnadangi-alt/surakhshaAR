@@ -87,4 +87,24 @@ class DashboardAssessmentItemOut(BaseModel):
     created_at: str
     weaknesses: list = []
     competency_scores: dict = {}
-    events: list = []
+    events: list = []
+
+
+class DashboardCertificateItemOut(BaseModel):
+    id: int
+    certificate_number: str
+    worker_id: int
+    worker_name: str
+    employee_id: str
+    module_id: int
+    module_name: str
+    module_code: str
+    issued_at: str
+    valid_until: str
+    status: str
+    score: float | None = None
+    competency_status: str | None = None
+    public_image_url: str | None = None
+    has_image: bool = False
+    has_pdf: bool = False
+

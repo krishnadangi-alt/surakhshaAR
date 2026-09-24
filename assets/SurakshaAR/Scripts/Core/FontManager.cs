@@ -68,25 +68,105 @@ namespace SurakshaAR.Core
             return _latinFont;
         }
 
+        private static string GetDevanagariCharacterSet()
+        {
+            var sb = new System.Text.StringBuilder(1024);
+            // Complete Unicode Devanagari block: U+0900 to U+097F
+            for (int c = 0x0900; c <= 0x097F; c++)
+            {
+                sb.Append((char)c);
+            }
+            // Unicode PUA range for shaped Devanagari ligatures: 0xE000 to 0xE2B0
+            for (int c = 0xE000; c <= 0xE2B0; c++)
+            {
+                sb.Append((char)c);
+            }
+            // Essential ASCII, digits, punctuation, and UI symbols
+            sb.Append(" 0123456789%+-=()[]{}<>/\\|:;.,!?~@#$^&*'\"•✓★→➔↗›‹✔✓");
+            sb.Append("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+            return sb.ToString();
+        }
+
         private TMP_FontAsset GetDevanagariFont()
         {
-            if (_devanagariFont != null && _devanagariFont.material != null) return _devanagariFont;
+            if (_devanagariFont != null)
+            {
+                try
+                {
+                    if (_devanagariFont.material != null && _devanagariFont.atlasTexture != null && _devanagariFont.HasCharacter(0x0915))
+                        return _devanagariFont;
+                }
+                catch
+                {
+                    _devanagariFont = null;
+                }
+            }
 
-            _devanagariFont = Resources.Load<TMP_FontAsset>("Fonts/NotoSansDevanagari SDF")
-                           ?? Resources.Load<TMP_FontAsset>("Fonts & Materials/NotoSansDevanagari SDF");
+            string devanagariGlyphs = GetDevanagariCharacterSet();
 
-            if (_devanagariFont == null || _devanagariFont.material == null)
+            try
+            {
+                _devanagariFont = Resources.Load<TMP_FontAsset>("Fonts/NotoSansDevanagari SDF")
+                               ?? Resources.Load<TMP_FontAsset>("Fonts & Materials/NotoSansDevanagari SDF");
+
+                if (_devanagariFont != null)
+                {
+                    if (_devanagariFont.atlasTextures == null || _devanagariFont.atlasTextures.Length == 0 || _devanagariFont.atlasTextures[0] == null)
+                    {
+                        _devanagariFont = null;
+                    }
+                    else
+                    {
+                        for (int i = 0; i < _devanagariFont.atlasTextures.Length; i++)
+                        {
+                            if (_devanagariFont.atlasTextures[i] == null) { _devanagariFont = null; break; }
+                        }
+                    }
+                }
+
+                if (_devanagariFont != null)
+                {
+                    if (_devanagariFont.material == null && _devanagariFont.atlasTexture != null)
+                    {
+                        var shader = Shader.Find("TextMeshPro/Distance Field") ?? Shader.Find("TextMeshPro/Mobile/Distance Field");
+                        if (shader != null)
+                        {
+                            _devanagariFont.material = new Material(shader);
+                            _devanagariFont.material.mainTexture = _devanagariFont.atlasTexture;
+                        }
+                    }
+                    _devanagariFont.TryAddCharacters(devanagariGlyphs);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"[FontManager] Failed loading Devanagari asset: {ex.Message}");
+                _devanagariFont = null;
+            }
+
+            if (_devanagariFont == null || _devanagariFont.material == null || !_devanagariFont.HasCharacter(0x0915) || !_devanagariFont.HasCharacter(0xE02B))
             {
                 var font = Resources.Load<Font>("Fonts/NotoSansDevanagari");
                 if (font != null)
                 {
                     try
                     {
-                        var created = TMP_FontAsset.CreateFontAsset(font, 36, 5, UnityEngine.TextCore.LowLevel.GlyphRenderMode.SDFAA, 512, 512, AtlasPopulationMode.Dynamic);
-                        if (created != null && created.material != null)
+                        var created = TMP_FontAsset.CreateFontAsset(font, 36, 5, UnityEngine.TextCore.LowLevel.GlyphRenderMode.SDFAA, 1024, 1024, AtlasPopulationMode.Dynamic);
+                        if (created != null)
                         {
+                            if (created.material == null && created.atlasTexture != null)
+                            {
+                                var shader = Shader.Find("TextMeshPro/Distance Field") ?? Shader.Find("TextMeshPro/Mobile/Distance Field");
+                                if (shader != null)
+                                {
+                                    created.material = new Material(shader);
+                                    created.material.mainTexture = created.atlasTexture;
+                                }
+                            }
                             created.name = "NotoSansDevanagari Dynamic";
-                            _devanagariFont = created;
+                            created.isMultiAtlasTexturesEnabled = false;
+                            created.TryAddCharacters(devanagariGlyphs);
+                            if (created.HasCharacter(0x0915)) _devanagariFont = created;
                         }
                     }
                     catch (Exception ex)
@@ -101,12 +181,29 @@ namespace SurakshaAR.Core
 
         private TMP_FontAsset GetOlChikiFont()
         {
-            if (_olChikiFont != null && _olChikiFont.material != null) return _olChikiFont;
+            if (_olChikiFont != null && _olChikiFont.material != null && _olChikiFont.HasCharacter(0x1C5A))
+                return _olChikiFont;
+
+            const string olChikiGlyphs = "᱐᱑᱒᱓᱔᱕᱖᱗᱘᱙ᱚᱛᱜᱝᱞᱟᱠᱡᱢᱣᱤᱥᱦᱧᱨᱩᱪᱫᱬᱭᱮᱯᱰᱱᱲᱳᱴᱵᱶᱷᱸᱹᱺᱻᱼᱽ᱾᱿ ";
 
             _olChikiFont = Resources.Load<TMP_FontAsset>("Fonts/NotoSansOlChiki SDF")
                         ?? Resources.Load<TMP_FontAsset>("Fonts & Materials/NotoSansOlChiki SDF");
 
-            if (_olChikiFont == null || _olChikiFont.material == null)
+            if (_olChikiFont != null)
+            {
+                if (_olChikiFont.material == null && _olChikiFont.atlasTexture != null)
+                {
+                    var shader = Shader.Find("TextMeshPro/Distance Field") ?? Shader.Find("TextMeshPro/Mobile/Distance Field");
+                    if (shader != null)
+                    {
+                        _olChikiFont.material = new Material(shader);
+                        _olChikiFont.material.mainTexture = _olChikiFont.atlasTexture;
+                    }
+                }
+                _olChikiFont.TryAddCharacters(olChikiGlyphs);
+            }
+
+            if (_olChikiFont == null || _olChikiFont.material == null || !_olChikiFont.HasCharacter(0x1C5A))
             {
                 var font = Resources.Load<Font>("Fonts/NotoSansOlChiki");
                 if (font != null)
@@ -114,10 +211,20 @@ namespace SurakshaAR.Core
                     try
                     {
                         var created = TMP_FontAsset.CreateFontAsset(font, 36, 5, UnityEngine.TextCore.LowLevel.GlyphRenderMode.SDFAA, 512, 512, AtlasPopulationMode.Dynamic);
-                        if (created != null && created.material != null)
+                        if (created != null)
                         {
+                            if (created.material == null && created.atlasTexture != null)
+                            {
+                                var shader = Shader.Find("TextMeshPro/Distance Field") ?? Shader.Find("TextMeshPro/Mobile/Distance Field");
+                                if (shader != null)
+                                {
+                                    created.material = new Material(shader);
+                                    created.material.mainTexture = created.atlasTexture;
+                                }
+                            }
                             created.name = "NotoSansOlChiki Dynamic";
-                            _olChikiFont = created;
+                            created.TryAddCharacters(olChikiGlyphs);
+                            if (created.HasCharacter(0x1C5A)) _olChikiFont = created;
                         }
                     }
                     catch (Exception ex)

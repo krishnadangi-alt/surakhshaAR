@@ -35,11 +35,11 @@ namespace SurakshaAR.Screens
             if (string.IsNullOrEmpty(title) || title == _module.titleKey)
             {
                 if (_module.id == ModuleId.FireAndExplosion || (_module.titleKey != null && _module.titleKey.Contains("fire")))
-                    title = "Fire & Explosion Response";
+                    title = loc != null ? loc.Get("module.fire.title") : "Fire & Explosion Response";
                 else if (_module.id == ModuleId.GasLeakConfinedSpace || (_module.titleKey != null && _module.titleKey.Contains("gas")))
-                    title = "Gas Leak & Confined Space";
+                    title = loc != null ? loc.Get("module.gas.title") : "Gas Leak & Confined Space";
                 else if (_module.id == ModuleId.MachinerySafety || (_module.titleKey != null && _module.titleKey.Contains("machinery")))
-                    title = "Machinery Safety";
+                    title = loc != null ? loc.Get("module.machinery.title") : "Machinery Safety";
             }
             string description = loc != null ? loc.Get(_module.descriptionKey) : _module.descriptionKey;
             string difficulty = loc != null ? loc.Get(_module.difficultyKey) : _module.difficultyKey;
@@ -50,8 +50,26 @@ namespace SurakshaAR.Screens
             var labelModuleName = UIHelper.FindTMP(root, "label-module-name");
             if (labelModuleName != null) labelModuleName.text = title;
 
+            var labelSubtitle = UIHelper.FindTMP(root, "label-subtitle");
+            if (labelSubtitle != null && loc != null) labelSubtitle.text = loc.Get("moduleDetail.subtitleLearn");
+
             var labelDescription = UIHelper.FindTMP(root, "label-description");
             if (labelDescription != null) labelDescription.text = description;
+
+            var headText = UIHelper.FindTMP(root, "HeadText");
+            if (headText != null && loc != null) headText.text = loc.Get("moduleDetail.learnTitle");
+
+            var warnTitle = UIHelper.FindTMP(root, "WarnTitle");
+            if (warnTitle != null && loc != null) warnTitle.text = loc.Get("moduleDetail.safetyNoteTitle");
+
+            var warnText = UIHelper.FindTMP(root, "WarnText");
+            if (warnText != null && loc != null) warnText.text = loc.Get("moduleDetail.safetyNoteDesc");
+
+            var btnStartText = _btnStart?.GetComponentInChildren<TextMeshProUGUI>();
+            if (btnStartText != null && loc != null)
+            {
+                btnStartText.text = $"{loc.Get("common.start")}  >";
+            }
 
             // Stat chips
             var chipScenarios = UIHelper.FindTMP(root, "chip-scenarios-value");
@@ -68,18 +86,39 @@ namespace SurakshaAR.Screens
 
             // Learn list
             var learnList = UIHelper.FindRect(root, "learn-list");
-            if (learnList != null && _module.learningPointKeys != null && _module.learningPointKeys.Count > 0)
+            if (learnList != null)
             {
                 for (int i = learnList.childCount - 1; i >= 0; i--)
                 {
-                    Object.Destroy(learnList.GetChild(i).gameObject);
+                    UIHelper.SafeDestroy(learnList.GetChild(i).gameObject);
                 }
 
-                foreach (string key in _module.learningPointKeys)
+                if (_module.learningPointKeys != null && _module.learningPointKeys.Count > 0)
                 {
-                    ModuleDetailBuilder.MakeLearnItem(learnList, loc != null ? loc.Get(key) : key);
+                    foreach (string key in _module.learningPointKeys)
+                    {
+                        ModuleDetailBuilder.MakeLearnItem(learnList, loc != null ? loc.Get(key) : key);
+                    }
+                }
+                else
+                {
+                    string[] defaultPoints = {
+                        "moduleDetail.learnPoint1",
+                        "moduleDetail.learnPoint2",
+                        "moduleDetail.learnPoint3",
+                        "moduleDetail.learnPoint4"
+                    };
+                    foreach (string key in defaultPoints)
+                    {
+                        ModuleDetailBuilder.MakeLearnItem(learnList, loc != null ? loc.Get(key) : key);
+                    }
                 }
             }
+
+            var currentLang = AppState.Instance != null
+                ? AppState.Instance.CurrentLanguage
+                : (loc != null ? loc.CurrentLanguage : AppLanguage.English);
+            UIManager.Instance?.ApplyLanguageFonts(root, currentLang);
         }
 
         private void StartTraining()

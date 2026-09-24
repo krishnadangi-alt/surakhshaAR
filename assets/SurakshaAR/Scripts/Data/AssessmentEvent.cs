@@ -226,6 +226,8 @@ namespace SurakshaAR.Data
         public string scenario_type = "fire";
         public int attempt_number = 1;
         public string client_session_id;
+        public string guest_id;
+        public string attempt_id;
         public List<AssessmentEvent> events = new List<AssessmentEvent>();
     }
 
@@ -233,6 +235,7 @@ namespace SurakshaAR.Data
     public class SyncCreatePayload
     {
         public int worker_id = 1;
+        public string guest_id;
         public string device_id;
         public string batch_id;
         public List<SyncSessionData> sessions = new List<SyncSessionData>();

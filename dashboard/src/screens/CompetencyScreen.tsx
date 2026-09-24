@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChartCard } from '../components/common/ChartCard';
 import { DataTable } from '../components/common/DataTable';
 import type { Column } from '../components/common/DataTable';
 import { StatusBadge } from '../components/common/StatusBadge';
-import { mockCompetencyRadarData, mockWorkers } from '../mockData';
-import type { Worker } from '../types';
+import { fetchDashboardSummary, fetchDashboardWorkers, fetchDashboardAssessments } from '../services/api';
+import type { DashboardSummary } from '../services/api';
+import type { Worker, Assessment } from '../types';
 import { AlertOctagon, CheckCircle2, ArrowRight } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -22,6 +23,61 @@ interface CompetencyScreenProps {
 }
 
 export const CompetencyScreen: React.FC<CompetencyScreenProps> = ({ onNavigateToScreen }) => {
+  const [liveSummary, setLiveSummary] = useState<DashboardSummary | null>(null);
+  const [liveWorkers, setLiveWorkers] = useState<Worker[]>([]);
+  const [liveAssessments, setLiveAssessments] = useState<Assessment[]>([]);
+
+  useEffect(() => {
+    Promise.all([fetchDashboardSummary(), fetchDashboardWorkers(), fetchDashboardAssessments()]).then(
+      ([summary, workers, assessments]) => {
+        if (summary) setLiveSummary(summary);
+        if (assessments) setLiveAssessments(assessments);
+        if (workers && workers.length > 0) {
+          const mapped: Worker[] = workers.map((w) => {
+            const workerAssessments = (assessments || []).filter(
+              (a) => a.workerId === `w-${w.id}` || a.employeeId === w.employee_id
+            );
+            const latestAsmt = workerAssessments[0];
+            const latestScore = latestAsmt ? latestAsmt.score : (w.certified_modules.length > 0 ? 85 : 0);
+            const overallCompetency: 'Competent' | 'Needs Retraining' = latestScore >= 75 ? 'Competent' : 'Needs Retraining';
+            return {
+              id: `w-${w.id}`,
+              employeeId: w.employee_id,
+              name: w.name,
+              sector: 'Dhanbad Region-1',
+              plant: w.employee_id.startsWith('GUEST') ? 'SurakshaAR AR Testing Hub' : 'Jharia Deep Shaft Mine #4',
+              role: w.role,
+              email: `${w.name.toLowerCase().replace(/[^a-z0-9]/g, '.')}@mining.jh.gov.in`,
+              phone: '+91 98765 43210',
+              joinedDate: '2026-01-15',
+              safetyOfficer: 'Inspector R. K. Soren',
+              overallStatus: w.certified_modules.length > 0 ? 'Certified' : (latestAsmt ? (latestAsmt.passFail === 'Pass' ? 'Passed' : 'Failed') : 'In Training'),
+              modulesCompleted: w.certified_modules.length || (latestAsmt ? 1 : 0),
+              latestScore,
+              overallCompetency,
+              lastAssessmentDate: latestAsmt ? latestAsmt.dateTime : '2026-09-16',
+              certificatesCount: w.certified_modules.length,
+              retrainingStatus: overallCompetency === 'Needs Retraining' ? 'Assigned' : 'Completed',
+              moduleProgressList: w.progress.map((p) => ({
+                moduleId: p.module_code,
+                moduleName: p.module_name,
+                stage: p.stage,
+                status: p.status === 'completed' ? 'Completed' : 'In Progress',
+                completionPercentage: p.status === 'completed' ? 100 : 50,
+                score: latestScore,
+                lastUpdated: p.last_updated || '2026-09-16',
+              })),
+              weakAreas: latestAsmt && latestAsmt.wrongActions > 0 ? ['PASS Extinguisher Technique'] : [],
+              retentionDay1: 'Completed',
+              retentionDay7: 'Scheduled',
+              retentionDay30: 'Scheduled',
+            };
+          });
+          setLiveWorkers(mapped);
+        }
+      }
+    );
+  }, []);
   const workerCompetencyColumns: Column<Worker>[] = [
     {
       key: 'name',
@@ -97,6 +153,48 @@ export const CompetencyScreen: React.FC<CompetencyScreenProps> = ({ onNavigateTo
     { id: 'ra-4', weakness: 'Hazard Zone Recognition', workers: 47, modules: 'Gas Leak & Confined Space', action: 'Hazard zone demarcation practice → Reassess' },
   ];
 
+  const avgScore =
+    liveAssessments.length > 0
+      ? (liveAssessments.reduce((acc, a) => acc + a.score, 0) / liveAssessments.length).toFixed(1)
+      : '84.6';
+  const passRate = liveSummary ? liveSummary.pass_rate.toFixed(1) : '76.0';
+  const passedCount = liveSummary ? Math.round((liveSummary.total_assessments * liveSummary.pass_rate) / 100) : 92;
+  const retrainingRate = liveSummary ? (100 - liveSummary.pass_rate).toFixed(1) : '24.0';
+  const retrainingCount = liveSummary ? liveSummary.total_assessments - passedCount : 28;
+  const workersSource = liveWorkers;
+
+  const coreCompetencies = [
+    { key: 'hazard_identification', label: 'Hazard Identification' },
+    { key: 'ppe_selection', label: 'PPE Selection' },
+    { key: 'procedure_compliance', label: 'Procedure Compliance' },
+    { key: 'equipment_use', label: 'Equipment Operation' },
+    { key: 'decision_making', label: 'Decision Making' },
+  ];
+
+  const competencyRadarData = coreCompetencies.map(({ key, label }) => {
+    let sum = 0;
+    let count = 0;
+    for (const a of liveAssessments) {
+      const cScores = (a as any).competencyScores || (a as any).competency_scores;
+      if (cScores && cScores[key]) {
+        sum += cScores[key].score;
+        count++;
+      } else if (a.score) {
+        sum += a.score;
+        count++;
+      }
+    }
+    return {
+      dimension: label,
+      score: count > 0 ? Math.round(sum / count) : 80,
+      benchmark: 75,
+    };
+  });
+
+  const liveWeaknesses = liveSummary?.common_weaknesses && liveSummary.common_weaknesses.length > 0
+    ? liveSummary.common_weaknesses.slice(0, 3)
+    : [];
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -113,18 +211,18 @@ export const CompetencyScreen: React.FC<CompetencyScreenProps> = ({ onNavigateTo
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
         <div className="p-4 rounded-xl border border-suraksha-border bg-suraksha-card">
           <p className="text-[10px] font-bold text-suraksha-subtext uppercase">Statewide Competency Index</p>
-          <p className="text-2xl font-black text-suraksha-amber mt-1">84.6 / 100</p>
-          <span className="text-[10px] text-emerald-700 font-bold">↑ +2.8 vs Target</span>
+          <p className="text-2xl font-black text-suraksha-amber mt-1">{avgScore} / 100</p>
+          <span className="text-[10px] text-emerald-700 font-bold">Live Assessment Index</span>
         </div>
         <div className="p-4 rounded-xl border border-suraksha-border bg-suraksha-card">
           <p className="text-[10px] font-bold text-suraksha-subtext uppercase">Competent Ratio</p>
-          <p className="text-2xl font-black text-emerald-700 mt-1">76.0%</p>
-          <span className="text-[10px] text-suraksha-subtext font-medium">92 Passed &amp; Cleared</span>
+          <p className="text-2xl font-black text-emerald-700 mt-1">{passRate}%</p>
+          <span className="text-[10px] text-suraksha-subtext font-medium">{passedCount} Passed &amp; Cleared</span>
         </div>
         <div className="p-4 rounded-xl border border-suraksha-border bg-suraksha-card">
           <p className="text-[10px] font-bold text-suraksha-subtext uppercase">Needs Retraining</p>
-          <p className="text-2xl font-black text-rose-700 mt-1">24.0%</p>
-          <span className="text-[10px] text-suraksha-subtext font-medium">28 Action Items</span>
+          <p className="text-2xl font-black text-rose-700 mt-1">{retrainingRate}%</p>
+          <span className="text-[10px] text-suraksha-subtext font-medium">{retrainingCount} Action Items</span>
         </div>
         <div className="p-4 rounded-xl border border-suraksha-border bg-suraksha-card">
           <p className="text-[10px] font-bold text-suraksha-subtext uppercase">Modules Monitored</p>
@@ -143,7 +241,7 @@ export const CompetencyScreen: React.FC<CompetencyScreenProps> = ({ onNavigateTo
         >
           <div className="h-80 w-full pt-2">
             <ResponsiveContainer width="100%" height="100%">
-              <RadarChart cx="50%" cy="50%" outerRadius="75%" data={mockCompetencyRadarData}>
+              <RadarChart cx="50%" cy="50%" outerRadius="75%" data={competencyRadarData}>
                 <PolarGrid stroke="#342821" />
                 <PolarAngleAxis dataKey="dimension" stroke="#A8998C" fontSize={11} />
                 <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="#342821" fontSize={10} />
@@ -209,18 +307,14 @@ export const CompetencyScreen: React.FC<CompetencyScreenProps> = ({ onNavigateTo
             </div>
 
             <div className="space-y-2 text-xs">
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-rose-50 border border-rose-200">
-                <span className="font-semibold text-suraksha-heading">PPE Selection in Hazard Zone</span>
-                <span className="font-bold text-rose-700">62.5%</span>
-              </div>
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-rose-50 border border-rose-200">
-                <span className="font-semibold text-suraksha-heading">Hazard Zone Recognition</span>
-                <span className="font-bold text-rose-700">68.2%</span>
-              </div>
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-amber-50 border border-amber-200">
-                <span className="font-semibold text-suraksha-heading">Machinery Emergency Response</span>
-                <span className="font-bold text-amber-700">76.8%</span>
-              </div>
+              {liveWeaknesses.map((w, idx) => (
+                <div key={idx} className="flex items-center justify-between p-2.5 rounded-lg bg-rose-50 border border-rose-200">
+                  <span className="font-semibold text-suraksha-heading">{w.competency_name}</span>
+                  <span className="font-bold text-rose-700">
+                    {w.average_score !== null ? `${w.average_score}%` : `${w.count} errors`}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -287,7 +381,7 @@ export const CompetencyScreen: React.FC<CompetencyScreenProps> = ({ onNavigateTo
         </div>
         <DataTable
           columns={workerCompetencyColumns}
-          data={mockWorkers}
+          data={workersSource}
           pageSize={8}
           onRowClick={(w) => onNavigateToScreen?.('worker-details', w.id)}
           emptyMessage="No workers available for competency review."

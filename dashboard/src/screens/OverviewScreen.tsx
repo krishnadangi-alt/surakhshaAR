@@ -4,11 +4,7 @@ import { ChartCard } from '../components/common/ChartCard';
 import { DataTable } from '../components/common/DataTable';
 import type { Column } from '../components/common/DataTable';
 import { StatusBadge } from '../components/common/StatusBadge';
-import {
-  mockModules,
-  mockCompetencyWeaknesses,
-  mockCompetencyDistribution,
-} from '../mockData';
+
 
 import { fetchDashboardSummary, fetchDashboardAssessments, type DashboardSummary } from '../services/api';
 import type { Assessment, DateRange, DateRangePreset } from '../types';
@@ -67,12 +63,22 @@ export const OverviewScreen: React.FC<OverviewScreenProps> = ({
   const [liveAssessments, setLiveAssessments] = useState<Assessment[]>([]);
 
   useEffect(() => {
-    fetchDashboardSummary().then((data) => {
-      if (data) setLiveSummary(data);
-    });
-    fetchDashboardAssessments().then((data) => {
-      if (data) setLiveAssessments(data);
-    });
+    let isMounted = true;
+    const loadData = () => {
+      fetchDashboardSummary().then((data) => {
+        if (isMounted && data) setLiveSummary(data);
+      });
+      fetchDashboardAssessments().then((data) => {
+        if (isMounted && data) setLiveAssessments(data);
+      });
+    };
+
+    loadData();
+    const interval = setInterval(loadData, 3000);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, []);
 
   const kpi = {
@@ -90,12 +96,7 @@ export const OverviewScreen: React.FC<OverviewScreenProps> = ({
         Completed: m.certified,
         Certified: m.certified,
       }))
-    : mockModules.map((m) => ({
-        name: m.moduleName,
-        Enrolled: m.totalEnrolled,
-        Completed: m.completedCount,
-        Certified: m.certifiedCount,
-      }));
+    : [];
 
   const passedCount = liveAssessments.filter((a) => a.passFail === 'Pass').length;
   const failedCount = liveAssessments.filter((a) => a.passFail === 'Fail').length;
@@ -165,6 +166,26 @@ export const OverviewScreen: React.FC<OverviewScreenProps> = ({
     },
   ];
 
+  const weaknessesList = liveSummary && liveSummary.common_weaknesses && liveSummary.common_weaknesses.length > 0
+    ? liveSummary.common_weaknesses.map((cw, idx) => ({
+        id: `w-${idx}`,
+        name: cw.competency_name.replace(/_/g, ' ').toUpperCase(),
+        occurrenceCount: cw.count,
+        averageScore: cw.average_score ?? 60,
+        severity: (cw.average_score ?? 60) < 65 ? 'Critical' as const : 'Moderate' as const,
+        recommendedAction: 'Targeted SOP retraining recommended per DGMS guidelines',
+      }))
+    : [];
+
+  const competentAssessments = liveAssessments.filter((a) => a.passFail === 'Pass' && a.criticalErrors === 0).length;
+  const retrainingAssessments = liveAssessments.filter((a) => a.passFail === 'Fail' || a.criticalErrors > 0).length;
+  const totalAsmtCount = liveAssessments.length;
+  const compPct = totalAsmtCount > 0 ? Math.round((competentAssessments / totalAsmtCount) * 100) : 0;
+  const retPct = totalAsmtCount > 0 ? (100 - compPct) : 0;
+  const statewideIndex = totalAsmtCount > 0
+    ? (liveAssessments.reduce((acc, a) => acc + a.score, 0) / totalAsmtCount).toFixed(1)
+    : '0.0';
+
   return (
     <div className="space-y-6">
       {/* Top KPI Section */}
@@ -173,7 +194,7 @@ export const OverviewScreen: React.FC<OverviewScreenProps> = ({
           title="Total Workers"
           value={kpi.totalWorkers}
           subtitle="Enrolled personnel"
-          change="Demo cohort"
+          change={`${kpi.totalWorkers} registered`}
           changeType="neutral"
           icon={Users}
           accentColor="blue"
@@ -182,7 +203,7 @@ export const OverviewScreen: React.FC<OverviewScreenProps> = ({
           title="Certified Workers"
           value={kpi.certified}
           subtitle="Competencies completed"
-          change="70.8% certified"
+          change={liveSummary ? `${liveSummary.certified_workers} certified` : '0 certified'}
           changeType="positive"
           icon={ShieldCheck}
           variant="accent"
@@ -192,7 +213,7 @@ export const OverviewScreen: React.FC<OverviewScreenProps> = ({
           title="In Training"
           value={kpi.inTraining}
           subtitle="Active AR modules"
-          change="16.6% in training"
+          change={liveSummary ? `${liveSummary.workers_in_training} active` : '0 active'}
           changeType="neutral"
           icon={Dumbbell}
           accentColor="amber"
@@ -201,7 +222,7 @@ export const OverviewScreen: React.FC<OverviewScreenProps> = ({
           title="Pass Rate"
           value={kpi.passRate}
           subtitle="Assessment pass rate"
-          change="151 passed"
+          change={`${passedCount} passed`}
           changeType="positive"
           icon={TrendingUp}
           accentColor="green"
@@ -210,16 +231,14 @@ export const OverviewScreen: React.FC<OverviewScreenProps> = ({
           title="Total Assessments"
           value={kpi.assessments}
           subtitle="Evaluations completed"
-          change="34 failed or retrain"
+          change={`${failedCount} failed or retrain`}
           changeType="neutral"
           icon={Award}
           accentColor="blue"
         />
       </div>
-      
-                        
 
-{/* Main Visualization Grid */}
+      {/* Main Visualization Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Module Performance Card (2 cols wide) */}
         <ChartCard
@@ -248,8 +267,9 @@ export const OverviewScreen: React.FC<OverviewScreenProps> = ({
                 <Bar dataKey="Certified" fill="#10B981" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
-            </div>
-            </ChartCard>
+          </div>
+        </ChartCard>
+
         {/* Assessment Overview Donut Card */}
         <ChartCard
           title="Assessment Pass / Fail"
@@ -284,7 +304,7 @@ export const OverviewScreen: React.FC<OverviewScreenProps> = ({
             </ResponsiveContainer>
 
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <span className="text-xl font-bold text-suraksha-heading">82%</span>
+              <span className="text-xl font-bold text-suraksha-heading">{kpi.passRate}</span>
               <span className="text-[10px] uppercase font-bold text-suraksha-subtext">Pass Rate</span>
             </div>
           </div>
@@ -292,16 +312,17 @@ export const OverviewScreen: React.FC<OverviewScreenProps> = ({
           <div className="grid grid-cols-2 gap-2 pt-3 border-t border-suraksha-border/60 text-center text-xs">
             <div className="p-2 rounded-lg bg-emerald-50 border border-emerald-200">
               <p className="text-[10px] font-bold text-emerald-700 uppercase">Passed</p>
-              <p className="text-sm font-bold text-suraksha-heading">151</p>
+              <p className="text-sm font-bold text-suraksha-heading">{passedCount}</p>
             </div>
             <div className="p-2 rounded-lg bg-rose-50 border border-rose-200">
               <p className="text-[10px] font-bold text-rose-700 uppercase">Failed</p>
-              <p className="text-sm font-bold text-suraksha-heading">34</p>
+              <p className="text-sm font-bold text-suraksha-heading">{failedCount}</p>
             </div>
           </div>
         </ChartCard>
       </div>
-{/* Middle Section: Weaknesses & Competency Distribution */}
+
+      {/* Middle Section: Weaknesses & Competency Distribution */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Common Competency Weaknesses (2 cols wide) */}
         <div className="lg:col-span-2 rounded-xl border border-suraksha-border bg-suraksha-card p-5 shadow-card">
@@ -323,7 +344,7 @@ export const OverviewScreen: React.FC<OverviewScreenProps> = ({
           </div>
 
           <div className="space-y-3">
-            {mockCompetencyWeaknesses.map((cw) => (
+            {weaknessesList.map((cw) => (
               <div
                 key={cw.id}
                 className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl border border-suraksha-border bg-suraksha-surface/60 hover:border-suraksha-borderLight transition"
@@ -374,20 +395,20 @@ export const OverviewScreen: React.FC<OverviewScreenProps> = ({
               <div>
                 <div className="flex justify-between text-xs mb-1">
                   <span className="font-semibold text-emerald-700">Competent (Passed & Cleared Errors)</span>
-                  <span className="font-bold text-suraksha-heading">76.0% ({mockCompetencyDistribution.competentCount})</span>
+                  <span className="font-bold text-suraksha-heading">{compPct}% ({competentAssessments})</span>
                 </div>
                 <div className="h-2.5 w-full bg-suraksha-surface rounded-full overflow-hidden border border-suraksha-border">
-                  <div className="h-full bg-emerald-500 rounded-full" style={{ width: '76%' }} />
+                  <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${compPct}%` }} />
                 </div>
               </div>
 
               <div>
                 <div className="flex justify-between text-xs mb-1">
                   <span className="font-semibold text-rose-700">Needs Retraining (Failed or Error Flagged)</span>
-                  <span className="font-bold text-suraksha-heading">24.0% ({mockCompetencyDistribution.retrainingCount})</span>
+                  <span className="font-bold text-suraksha-heading">{retPct}% ({retrainingAssessments})</span>
                 </div>
                 <div className="h-2.5 w-full bg-suraksha-surface rounded-full overflow-hidden border border-suraksha-border">
-                  <div className="h-full bg-rose-500 rounded-full" style={{ width: '24%' }} />
+                  <div className="h-full bg-rose-500 rounded-full" style={{ width: `${retPct}%` }} />
                 </div>
               </div>
             </div>
@@ -395,8 +416,8 @@ export const OverviewScreen: React.FC<OverviewScreenProps> = ({
 
           <div className="mt-6 pt-4 border-t border-suraksha-border/60 text-center bg-suraksha-surface/40 p-3 rounded-xl">
             <p className="text-[10px] uppercase font-bold text-suraksha-subtext">Statewide Competency Index</p>
-            <p className="text-2xl font-black text-suraksha-amber mt-0.5">84.6 / 100</p>
-            <p className="text-[10px] text-emerald-700 font-semibold mt-1">↑ +2.8 points above safety target</p>
+            <p className="text-2xl font-black text-suraksha-amber mt-0.5">{statewideIndex} / 100</p>
+            <p className="text-[10px] text-emerald-700 font-semibold mt-1">Live Database Score Aggregate</p>
           </div>
         </div>
       </div>

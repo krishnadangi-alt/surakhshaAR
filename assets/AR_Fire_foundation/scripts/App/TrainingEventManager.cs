@@ -62,6 +62,32 @@ public static class TrainingEventManager
     /// <summary>Raised when the training flow is fully completed.</summary>
     public static event Action OnTrainingCompleted;
 
+    // ── Fine-Grained Fire Workflow Events (added per Master Implementation Rule) ──
+
+    /// <summary>Raised once when the worker correctly activates the grip after pin removal.</summary>
+    public static event Action OnGripActivated;
+
+    /// <summary>Raised when the nozzle aim is confirmed valid (within cone/distance of fire base).</summary>
+    public static event Action OnValidAim;
+
+    /// <summary>Raised (rate-limited) when the nozzle aim is off-target or invalid.</summary>
+    public static event Action OnInvalidAim;
+
+    /// <summary>Raised when spray particles make valid contact with the fire (contact start transition).</summary>
+    public static event Action OnSprayContactValid;
+
+    /// <summary>Raised when spray contact is first lost and the grace period begins.</summary>
+    public static event Action OnSprayInterrupted;
+
+    /// <summary>Raised when the grace period expires and the contact timer resets to 0.</summary>
+    public static event Action OnSprayContactReset;
+
+    /// <summary>Raised when the worker attempts to spray before removing the safety pin.</summary>
+    public static event Action OnPrematureSprayAttempt;
+
+    /// <summary>Raised when the 420-second scenario timeout is triggered (fire not extinguished in time).</summary>
+    public static event Action OnScenarioTimeout;
+
     // ── Backend Telemetry & 12 Common Assessment Events (Day 1 Specification) ──
     public static event Action<string> OnAssessmentStarted;
     public static event Action<string, string> OnScenarioStartedCommon; // module, scenario
@@ -262,6 +288,56 @@ public static class TrainingEventManager
     {
         Log($"[COMMON EVENT] SCENARIO_COMPLETED: module={module}, score={score:F1}, passed={passed}");
         OnScenarioCompletedCommon?.Invoke(module, score, passed);
+    }
+
+    // ── Fine-Grained Fire Workflow Raise Methods ────────────────────────────
+
+    public static void RaiseGripActivated()
+    {
+        Log("GripActivated");
+        OnGripActivated?.Invoke();
+    }
+
+    public static void RaiseValidAim()
+    {
+        Log("ValidAim");
+        OnValidAim?.Invoke();
+    }
+
+    public static void RaiseInvalidAim()
+    {
+        Log("InvalidAim");
+        OnInvalidAim?.Invoke();
+    }
+
+    public static void RaiseSprayContactValid()
+    {
+        Log("SprayContactValid");
+        OnSprayContactValid?.Invoke();
+    }
+
+    public static void RaiseSprayInterrupted()
+    {
+        Log("SprayInterrupted");
+        OnSprayInterrupted?.Invoke();
+    }
+
+    public static void RaiseSprayContactReset()
+    {
+        Log("SprayContactReset");
+        OnSprayContactReset?.Invoke();
+    }
+
+    public static void RaisePrematureSprayAttempt()
+    {
+        Log("PrematureSprayAttempt");
+        OnPrematureSprayAttempt?.Invoke();
+    }
+
+    public static void RaiseScenarioTimeout()
+    {
+        Log("ScenarioTimeout");
+        OnScenarioTimeout?.Invoke();
     }
 
     private static void Log(string message)

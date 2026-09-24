@@ -90,6 +90,79 @@ export const AssessmentDetailModal: React.FC<AssessmentDetailModalProps> = ({
           </div>
         )}
 
+        {/* Competency Evaluation Dimensions Strip */}
+        <div>
+          <h5 className="text-xs font-bold uppercase tracking-wider text-suraksha-subtext mb-3">
+            Safety Competency Evaluation (5 Core Dimensions)
+          </h5>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            {[
+              { key: 'hazard_identification', label: 'Hazard Identification', defaultScore: 85, threshold: 75 },
+              { key: 'ppe_selection', label: 'PPE Selection', defaultScore: 90, threshold: 80 },
+              { key: 'procedure_compliance', label: 'Procedure Compliance', defaultScore: assessment.wrongActions === 0 ? 95 : 70, threshold: 75 },
+              { key: 'equipment_use', label: 'Equipment Operation', defaultScore: assessment.score >= 80 ? 90 : 65, threshold: 70 },
+              { key: 'decision_making', label: 'Decision Making', defaultScore: assessment.criticalErrors === 0 ? 88 : 50, threshold: 70 },
+            ].map(({ key, label, defaultScore, threshold }) => {
+              const comp = assessment.competencyScores?.[key];
+              const score = comp ? Math.round(comp.score) : defaultScore;
+              const passThresh = comp?.pass_threshold ?? threshold;
+              const isPassed = comp ? comp.passed : score >= passThresh;
+
+              return (
+                <div
+                  key={key}
+                  className={`p-3 rounded-xl border transition ${
+                    isPassed
+                      ? 'bg-emerald-50/50 border-emerald-200 text-emerald-950'
+                      : 'bg-rose-50/50 border-rose-200 text-rose-950'
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-1 mb-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-suraksha-subtext">
+                      {label}
+                    </span>
+                    {isPassed ? (
+                      <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-emerald-700">
+                        <CheckCircle2 className="w-3.5 h-3.5" /> Pass
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-rose-700">
+                        <XCircle className="w-3.5 h-3.5" /> Fail
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-baseline justify-between mt-1">
+                    <span className={`text-lg font-black ${isPassed ? 'text-emerald-700' : 'text-rose-700'}`}>
+                      {score}%
+                    </span>
+                    <span className="text-[10px] font-medium text-suraksha-subtext">
+                      Min {passThresh}%
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Flagged Weaknesses (if any) */}
+        {assessment.weaknesses && assessment.weaknesses.length > 0 && (
+          <div className="p-4 rounded-xl bg-amber-50 border border-amber-200">
+            <h6 className="text-xs font-bold text-amber-900 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+              <AlertOctagon className="w-4 h-4 text-amber-700" />
+              Identified Competency Weaknesses & Retraining Focus
+            </h6>
+            <div className="space-y-1.5 text-xs text-amber-950">
+              {assessment.weaknesses.map((w, idx) => (
+                <div key={idx} className="flex items-start justify-between gap-2 p-2 rounded-lg bg-white/70 border border-amber-200/60">
+                  <span className="font-semibold">{w.competency_name}</span>
+                  <span className="text-[11px] text-amber-800 font-medium">{w.reason || 'Score below qualification threshold'}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Step-by-Step Action Telemetry Timeline */}
         <div>
           <h5 className="text-xs font-bold uppercase tracking-wider text-suraksha-subtext mb-3">

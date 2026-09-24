@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using SurakshaAR.Core;
+using SurakshaAR.Data;
+using SurakshaAR.Localization;
 using SurakshaAR.UI;
 
 /// <summary>
@@ -92,22 +94,25 @@ public class FireScenarioUIController : MonoBehaviour
     private TextMeshProUGUI _feedbackText;
     private Coroutine _feedbackRoutine;
 
-    // Normal Bottom Action Card (Steps 1 - 5)
-    private RectTransform _normalCard;
-    private Image _normalCardIconImg;
-    private TextMeshProUGUI _normalCardTitle;
-    private TextMeshProUGUI _normalCardSubtitle;
-    private Button _normalCardBtn;
+    // Single Authoritative Contextual Bottom Guidance Card (Steps 1 - 6)
+    private RectTransform _guidanceCard;
+    private Image _guidanceCardIconImg;
+    private Image _guidanceCardIconBadge;
+    private TextMeshProUGUI _guidanceCardTitle;
+    private TextMeshProUGUI _guidanceCardBody;
+    private Button _voiceBtn;
+    private Image _voiceBtnBg;
+    private Image _voiceBtnIcon;
+    private TextMeshProUGUI _voiceBtnText;
+    private bool _voiceActive = false;
+    private Coroutine _voiceFeedbackRoutine;
     private UnityAction _currentActionCallback;
 
-    // Spray Progress Two-Tier Card (Step 6)
-    private RectTransform _sprayCardContainer;
+    // Integrated Step 6 Spray Progress Elements (Inside Single Guidance Card)
+    private RectTransform _sprayProgressSection;
     private TextMeshProUGUI _sprayStatusText;
     private TextMeshProUGUI _sprayTimerText;
     private RectTransform _sprayProgressFill;
-    private TextMeshProUGUI _sprayCardBottomTitle;
-    private Image _sprayBadgeIconImg;
-    private Button _sprayCardBottomBtn;
 
     // Start Guidance Card (Screen 0: Tap to Start AR Training)
     private RectTransform _startCard;
@@ -186,11 +191,148 @@ public class FireScenarioUIController : MonoBehaviour
     private void OnDestroy()
     {
         if (Instance == this) Instance = null;
+        UnsubscribeFlowAndEvents();
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    //  LOCALIZATION HELPER
+    // ─────────────────────────────────────────────────────────────────
+    /// <summary>
+    /// Fetch a localized string. Safely returns key placeholder if manager is unavailable.
+    /// Never returns empty string — caller always gets displayable text.
+    /// </summary>
+    private static string Loc(string key, string fallback = null)
+    {
+        try
+        {
+            var mgr = AppManager.Instance?.Localization;
+            if (mgr != null)
+            {
+                string result = mgr.Get(key);
+                if (!string.IsNullOrEmpty(result) && result != $"[{key}]")
+                    return result;
+            }
+        }
+        catch { }
+        return !string.IsNullOrEmpty(fallback) ? fallback : key;
+    }
+
+    private static AppLanguage GetCurrentLanguage()
+    {
+        try
+        {
+            if (LocalizationManager.Instance != null)
+                return LocalizationManager.Instance.CurrentLanguage;
+            if (AppManager.Instance?.Localization != null)
+                return AppManager.Instance.Localization.CurrentLanguage;
+            if (PlayerPrefs.HasKey("SurakshaAR_Language"))
+                return (AppLanguage)PlayerPrefs.GetInt("SurakshaAR_Language", (int)AppLanguage.English);
+        }
+        catch { }
+        return AppLanguage.English;
+    }
+
+    private void OnEnable()
+    {
+        SubscribeFlowAndEvents();
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeFlowAndEvents();
     }
 
     private void Start()
     {
         ResolveSceneTargets();
+        SubscribeFlowAndEvents();
+
+        // Check if FlowManager is already active in an operational stage
+        if (FireScenarioFlowManager.Instance != null &&
+            FireScenarioFlowManager.Instance.CurrentStage >= FireScenarioFlowManager.Stage.Step1_IdentifyHazard &&
+            FireScenarioFlowManager.Instance.CurrentStage <= FireScenarioFlowManager.Stage.Step6_Extinguish)
+        {
+            HandleFlowStageChanged(FireScenarioFlowManager.Instance.CurrentStage);
+        }
+    }
+
+    private bool _flowSubscribed = false;
+    private void SubscribeFlowAndEvents()
+    {
+        if (_flowSubscribed) return;
+        _flowSubscribed = true;
+
+        if (FireScenarioFlowManager.Instance != null)
+        {
+            FireScenarioFlowManager.Instance.OnStageChanged -= HandleFlowStageChanged;
+            FireScenarioFlowManager.Instance.OnStageChanged += HandleFlowStageChanged;
+        }
+
+        TrainingEventManager.OnScenarioPlaced       -= HandleEventScenarioPlaced;
+        TrainingEventManager.OnScenarioPlaced       += HandleEventScenarioPlaced;
+        TrainingEventManager.OnHazardIdentified     -= HandleEventHazardIdentified;
+        TrainingEventManager.OnHazardIdentified     += HandleEventHazardIdentified;
+        TrainingEventManager.OnAlarmActivated      -= HandleEventAlarmActivated;
+        TrainingEventManager.OnAlarmActivated      += HandleEventAlarmActivated;
+        TrainingEventManager.OnExtinguisherPickedUp -= HandleEventExtinguisherPickedUp;
+        TrainingEventManager.OnExtinguisherPickedUp += HandleEventExtinguisherPickedUp;
+        TrainingEventManager.OnPinRemoved          -= HandleEventPinRemoved;
+        TrainingEventManager.OnPinRemoved          += HandleEventPinRemoved;
+    }
+
+    private void UnsubscribeFlowAndEvents()
+    {
+        if (!_flowSubscribed) return;
+        _flowSubscribed = false;
+
+        if (FireScenarioFlowManager.Instance != null)
+        {
+            FireScenarioFlowManager.Instance.OnStageChanged -= HandleFlowStageChanged;
+        }
+
+        TrainingEventManager.OnScenarioPlaced       -= HandleEventScenarioPlaced;
+        TrainingEventManager.OnHazardIdentified     -= HandleEventHazardIdentified;
+        TrainingEventManager.OnAlarmActivated      -= HandleEventAlarmActivated;
+        TrainingEventManager.OnExtinguisherPickedUp -= HandleEventExtinguisherPickedUp;
+        TrainingEventManager.OnPinRemoved          -= HandleEventPinRemoved;
+    }
+
+    private void HandleEventScenarioPlaced()       => RefreshStepGuidance(1);
+    private void HandleEventHazardIdentified()     => RefreshStepGuidance(2);
+    private void HandleEventAlarmActivated()      => RefreshStepGuidance(3);
+    private void HandleEventExtinguisherPickedUp() => RefreshStepGuidance(4);
+    private void HandleEventPinRemoved()          => RefreshStepGuidance(5);
+
+    public void HandleFlowStageChanged(FireScenarioFlowManager.Stage stage)
+    {
+        Debug.Log($"[UI-STEP] UI received stage change: {stage}");
+        switch (stage)
+        {
+            case FireScenarioFlowManager.Stage.Step1_IdentifyHazard:
+                RefreshStepGuidance(1);
+                break;
+            case FireScenarioFlowManager.Stage.Step2_ActivateAlarm:
+                RefreshStepGuidance(2);
+                break;
+            case FireScenarioFlowManager.Stage.Step3_SelectExtinguisher:
+                RefreshStepGuidance(3);
+                break;
+            case FireScenarioFlowManager.Stage.Step4_RemovePin:
+                RefreshStepGuidance(4);
+                break;
+            case FireScenarioFlowManager.Stage.Step5_AimBase:
+                RefreshStepGuidance(5);
+                break;
+            case FireScenarioFlowManager.Stage.Step6_Extinguish:
+                RefreshStepGuidance(6);
+                break;
+        }
+    }
+
+    public void RefreshStepGuidance(int step)
+    {
+        SetModuleInfo(Loc("module.fire.title", "Fire & Explosion Response"), step, 6);
+        Debug.Log($"[UI-GUIDANCE] guidanceKey = fire.step{step}.guidance");
     }
 
     private void LateUpdate()
@@ -203,6 +345,12 @@ public class FireScenarioUIController : MonoBehaviour
     // =================================================================
     private void BuildUGUIHierarchy()
     {
+        // 0. Clean up any existing children to prevent duplicate UI layers
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            UIHelper.SafeDestroy(transform.GetChild(i).gameObject);
+        }
+
         // 1. Canvas
         var canvasGO = new GameObject("AR_UGUI_Canvas");
         canvasGO.transform.SetParent(transform, false);
@@ -236,8 +384,7 @@ public class FireScenarioUIController : MonoBehaviour
         BuildPlacementReticle(_safeArea);
         BuildWorldTargetOverlays(_safeArea);
         BuildFeedbackBanner(_safeArea);
-        BuildNormalBottomCard(_safeArea);
-        BuildSprayTwoTierCard(_safeArea);
+        BuildGuidanceCard(_safeArea); // Single Authoritative Contextual Bottom Guidance Card
         BuildPlacementBottomCard(_safeArea);
         BuildStartCard(_safeArea);
         BuildCompletionCard(_safeArea);
@@ -469,6 +616,45 @@ public class FireScenarioUIController : MonoBehaviour
                 FillCapsule(28, 18, 50, 46, 5f, white);
                 break;
 
+            case "spray":
+                // Angled nozzle handle
+                FillCapsule(18, 20, 28, 30, 4.5f, white);
+                FillCapsule(26, 28, 32, 34, 5.5f, white);
+                // Spray droplet rays expanding forward
+                FillCapsule(34, 38, 50, 54, 2.5f, white);
+                FillCapsule(36, 34, 54, 44, 2.5f, white);
+                FillCapsule(36, 30, 54, 30, 2.5f, white);
+                FillCapsule(36, 26, 52, 18, 2.5f, white);
+                FillCapsule(32, 22, 44, 12, 2.0f, white);
+                break;
+
+            case "speaker":
+                // Base rectangle
+                FillRect(10, 24, 10, 16, white);
+                // Cone trapezoid
+                for (float sx = 20; sx <= 32; sx += 0.5f)
+                {
+                    float st = (sx - 20f) / 12f;
+                    float stopY = Mathf.Lerp(40f, 52f, st);
+                    float sbotY = Mathf.Lerp(24f, 12f, st);
+                    FillCapsule(sx, sbotY, sx, stopY, 1.2f, white);
+                }
+                // Sound wave arcs
+                for (float a = -45f * Mathf.Deg2Rad; a <= 45f * Mathf.Deg2Rad; a += 0.04f)
+                {
+                    FillDisc(24 + Mathf.Cos(a) * 16f, 32 + Mathf.Sin(a) * 16f, 1.75f, white);
+                }
+                for (float a = -40f * Mathf.Deg2Rad; a <= 40f * Mathf.Deg2Rad; a += 0.03f)
+                {
+                    FillDisc(24 + Mathf.Cos(a) * 24f, 32 + Mathf.Sin(a) * 24f, 1.75f, white);
+                }
+                break;
+
+            case "stop":
+                // Clean solid square stop icon with rounded corners
+                FillRect(18, 18, 28, 28, white);
+                break;
+
             case "target":
             default:
                 FillDisc(32, 32, 20, white);
@@ -486,6 +672,22 @@ public class FireScenarioUIController : MonoBehaviour
         return Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect);
     }
 
+    private static Sprite _cachedSpeakerSprite;
+    public static Sprite CreateSpeakerSprite()
+    {
+        if (_cachedSpeakerSprite != null) return _cachedSpeakerSprite;
+        _cachedSpeakerSprite = CreateProceduralIcon("speaker");
+        return _cachedSpeakerSprite;
+    }
+
+    private static Sprite _cachedStopSprite;
+    public static Sprite CreateStopSprite()
+    {
+        if (_cachedStopSprite != null) return _cachedStopSprite;
+        _cachedStopSprite = CreateProceduralIcon("stop");
+        return _cachedStopSprite;
+    }
+
     // ─────────────────────────────────────────────────────────────────
     //  1. TOP BAR (Matches Reference Image exactly)
     // ─────────────────────────────────────────────────────────────────
@@ -495,30 +697,30 @@ public class FireScenarioUIController : MonoBehaviour
         _topBar.anchorMin = new Vector2(0, 1);
         _topBar.anchorMax = new Vector2(1, 1);
         _topBar.pivot = new Vector2(0.5f, 1);
-        _topBar.sizeDelta = new Vector2(0, 130);
+        _topBar.sizeDelta = new Vector2(0, 164); // taller for mobile readability
         _topBar.anchoredPosition = new Vector2(0, -10);
 
-        // A. Back Button (Left: 54x54px dark rounded button)
-        var backBtn = UIHelper.MakeButton("btn-ar-back", _topBar, "‹", 32, new Color(0.06f, 0.10f, 0.18f, 0.75f), Color.white, 16);
+        // A. Back Button — 72x72 minimum touch target
+        var backBtn = UIHelper.MakeButton("btn-ar-back", _topBar, "‹", 44, new Color(0.06f, 0.10f, 0.18f, 0.75f), Color.white, 18);
         var backRT = backBtn.GetComponent<RectTransform>();
         backRT.anchorMin = new Vector2(0, 0.5f);
         backRT.anchorMax = new Vector2(0, 0.5f);
-        backRT.pivot = new Vector2(0, 0.5f);
-        backRT.sizeDelta = new Vector2(56, 56);
-        backRT.anchoredPosition = new Vector2(24, 6);
+        backRT.pivot = new Vector2(0.5f, 0.5f);
+        backRT.sizeDelta = new Vector2(72, 72);
+        backRT.anchoredPosition = new Vector2(28, 6);
 
         var backOutline = backBtn.gameObject.AddComponent<Outline>();
         backOutline.effectColor = new Color(1f, 1f, 1f, 0.15f);
         backOutline.effectDistance = new Vector2(1, -1);
         backBtn.onClick.AddListener(HandleBackClicked);
 
-        // B. Module Title & Step Subtitle Stack (Center / Left)
+        // B. Module Title & Step Subtitle Stack (Expanded width to prevent any truncation)
         var titleStack = UIHelper.MakeRect("TitleStack", _topBar);
         titleStack.anchorMin = new Vector2(0, 0.5f);
         titleStack.anchorMax = new Vector2(0, 0.5f);
-        titleStack.pivot = new Vector2(0, 0.5f);
-        titleStack.anchoredPosition = new Vector2(96, 6);
-        titleStack.sizeDelta = new Vector2(650, 78);
+        titleStack.pivot = new Vector2(0f, 0.5f);
+        titleStack.anchoredPosition = new Vector2(116, 6);
+        titleStack.sizeDelta = new Vector2(560, 96);
 
         var vlg = titleStack.gameObject.AddComponent<VerticalLayoutGroup>();
         vlg.spacing = 2;
@@ -528,71 +730,75 @@ public class FireScenarioUIController : MonoBehaviour
         vlg.childForceExpandWidth = true;
         vlg.childForceExpandHeight = false;
 
-        _moduleTitleText = UIHelper.MakeLabel("ModuleTitle", titleStack, "Fire & Explosion Response", 32, Color.white, bold: true, wrap: false);
-        _moduleTitleText.overflowMode = TextOverflowModes.Overflow;
-        UIHelper.SetLayout(_moduleTitleText.gameObject, preferredWidth: 640, minWidth: 500, preferredHeight: 40);
+        // Module title: 38px — clean, crisp white, full visibility
+        _moduleTitleText = UIHelper.MakeLabel("ModuleTitle", titleStack, "Fire & Explosion Response", 38, Color.white, bold: true, wrap: false);
+        _moduleTitleText.overflowMode = TextOverflowModes.Ellipsis;
+        UIHelper.SetLayout(_moduleTitleText.gameObject, preferredWidth: 550, minWidth: 420, preferredHeight: 50);
 
-        _stepCounterText = UIHelper.MakeLabel("StepCounter", titleStack, "Step 1 of 6", 26, Hex("#94A3B8"), bold: false, wrap: false);
-        _stepCounterText.overflowMode = TextOverflowModes.Overflow;
-        UIHelper.SetLayout(_stepCounterText.gameObject, preferredWidth: 640, minWidth: 500, preferredHeight: 34);
+        // Step counter: 32px — safety green sub-label matching reference image
+        _stepCounterText = UIHelper.MakeLabel("StepCounter", titleStack, "Step 1 of 6", 32, Hex("#22C55E"), bold: true, wrap: false);
+        _stepCounterText.overflowMode = TextOverflowModes.Ellipsis;
+        UIHelper.SetLayout(_stepCounterText.gameObject, preferredWidth: 550, minWidth: 420, preferredHeight: 40);
 
-        // C. Right Cluster (Stopwatch Timer + Score)
+        // C. Right Cluster (Score + Stopwatch Timer)
         var rightCluster = UIHelper.MakeRect("RightCluster", _topBar);
         rightCluster.anchorMin = new Vector2(1, 0.5f);
         rightCluster.anchorMax = new Vector2(1, 0.5f);
         rightCluster.pivot = new Vector2(1, 0.5f);
         rightCluster.anchoredPosition = new Vector2(-24, 6);
-        rightCluster.sizeDelta = new Vector2(340, 56);
+        rightCluster.sizeDelta = new Vector2(280, 68);
 
         var hlg = rightCluster.gameObject.AddComponent<HorizontalLayoutGroup>();
-        hlg.spacing = 12;
+        hlg.spacing = 10;
         hlg.childAlignment = TextAnchor.MiddleRight;
         hlg.childControlWidth = true;
         hlg.childControlHeight = true;
         hlg.childForceExpandWidth = false;
         hlg.childForceExpandHeight = false;
 
-        // Score Label
-        _scoreText = UIHelper.MakeLabel("ScoreLbl", rightCluster, "Score: 70", 26, Hex("#CBD5E1"), TextAlignmentOptions.Right, bold: true, wrap: false);
+        // Score Label: 34px
+        _scoreText = UIHelper.MakeLabel("ScoreLbl", rightCluster, "Score: 0", 34, Hex("#CBD5E1"), TextAlignmentOptions.Right, bold: true, wrap: false);
         _scoreText.overflowMode = TextOverflowModes.Overflow;
-        UIHelper.SetLayout(_scoreText.gameObject, preferredWidth: 140, minWidth: 120, preferredHeight: 40);
+        UIHelper.SetLayout(_scoreText.gameObject, preferredWidth: 130, minWidth: 100, preferredHeight: 48);
 
-        _scoreDeltaText = UIHelper.MakeLabel("DeltaLbl", rightCluster, "+10", 26, Hex("#4ADE80"), bold: true, wrap: false);
+        _scoreDeltaText = UIHelper.MakeLabel("DeltaLbl", rightCluster, "+10", 34, Hex("#4ADE80"), bold: true, wrap: false);
         _scoreDeltaText.overflowMode = TextOverflowModes.Overflow;
-        UIHelper.SetLayout(_scoreDeltaText.gameObject, preferredWidth: 56, minWidth: 50, preferredHeight: 40);
+        UIHelper.SetLayout(_scoreDeltaText.gameObject, preferredWidth: 60, minWidth: 50, preferredHeight: 48);
         _scoreDeltaText.gameObject.SetActive(false);
 
-        // Timer Pill (Stopwatch icon + time)
+        // Timer Pill (Stopwatch icon + time) — 136x54
         _timerPill = UIHelper.MakeRect("TimerPill", rightCluster);
-        _timerPill.sizeDelta = new Vector2(150, 48);
-        UIHelper.SetLayout(_timerPill.gameObject, preferredWidth: 150, minWidth: 140, preferredHeight: 48);
+        _timerPill.sizeDelta = new Vector2(136, 54);
+        UIHelper.SetLayout(_timerPill.gameObject, preferredWidth: 136, minWidth: 120, preferredHeight: 54);
         var timerImg = _timerPill.gameObject.AddComponent<Image>();
-        timerImg.color = new Color(0.06f, 0.10f, 0.18f, 0.65f);
+        timerImg.color = new Color(0.06f, 0.10f, 0.18f, 0.50f);
         timerImg.sprite = UIHelper.GetWhiteSprite();
         UIHelper.SetImageRoundedSprite(timerImg, 14);
 
         var timerRow = UIHelper.MakeHorizontal("Row", _timerPill, 6);
         UIHelper.Stretch(timerRow, 8, 8, 0, 0);
 
+        // Timer icon: 26x26
         var timerIconGO = UIHelper.MakeRect("TimerIcon", timerRow);
         timerIconGO.sizeDelta = new Vector2(26, 26);
         UIHelper.SetLayout(timerIconGO.gameObject, preferredWidth: 26, minWidth: 26, preferredHeight: 26);
         var timerIconImg = timerIconGO.gameObject.AddComponent<Image>();
         timerIconImg.sprite = CreateProceduralIcon("timer");
-        timerIconImg.color = Hex("#94A3B8");
+        timerIconImg.color = Hex("#CBD5E1");
         timerIconImg.type = Image.Type.Simple;
         timerIconImg.preserveAspect = true;
 
-        _timerText = UIHelper.MakeLabel("TimerText", timerRow, "06:58", 34, Color.white, bold: true, wrap: false);
+        // Timer text: 36px — ARTimer semantic target
+        _timerText = UIHelper.MakeLabel("TimerText", timerRow, "00:00", 36, Color.white, bold: true, wrap: false);
         _timerText.overflowMode = TextOverflowModes.Overflow;
-        UIHelper.SetLayout(_timerText.gameObject, preferredWidth: 98, minWidth: 90, preferredHeight: 40);
+        UIHelper.SetLayout(_timerText.gameObject, preferredWidth: 92, minWidth: 80, preferredHeight: 48);
 
-        // D. Sleek Thin Progress Bar Line directly below TopBar
+        // D. Progress bar — slightly thicker (5px, was 4)
         _topProgressBarTrack = UIHelper.MakeRect("TopProgressTrack", _topBar);
         _topProgressBarTrack.anchorMin = new Vector2(0.02f, 0f);
         _topProgressBarTrack.anchorMax = new Vector2(0.98f, 0f);
         _topProgressBarTrack.pivot = new Vector2(0.5f, 0f);
-        _topProgressBarTrack.sizeDelta = new Vector2(0, 4);
+        _topProgressBarTrack.sizeDelta = new Vector2(0, 5);
         _topProgressBarTrack.anchoredPosition = new Vector2(0, 4);
 
         var trackImg = _topProgressBarTrack.gameObject.AddComponent<Image>();
@@ -623,19 +829,22 @@ public class FireScenarioUIController : MonoBehaviour
         _placementPill.anchorMin = new Vector2(0.5f, 1f);
         _placementPill.anchorMax = new Vector2(0.5f, 1f);
         _placementPill.pivot = new Vector2(0.5f, 1f);
-        _placementPill.sizeDelta = new Vector2(480, 52);
-        _placementPill.anchoredPosition = new Vector2(0, -165);
+        _placementPill.sizeDelta = new Vector2(680, 78);
+        _placementPill.anchoredPosition = new Vector2(0, -172);
 
         var pillImg = _placementPill.gameObject.AddComponent<Image>();
         pillImg.color = new Color(0.06f, 0.10f, 0.18f, 0.85f);
         pillImg.sprite = UIHelper.GetWhiteSprite();
-        UIHelper.SetImageRoundedSprite(pillImg, 22);
+        pillImg.raycastTarget = false;
+        UIHelper.SetImageRoundedSprite(pillImg, 24);
 
         var outline = _placementPill.gameObject.AddComponent<Outline>();
         outline.effectColor = new Color(1f, 1f, 1f, 0.15f);
         outline.effectDistance = new Vector2(1, -1);
 
-        _placementPillText = UIHelper.MakeLabel("Text", _placementPill, "Move your phone to find a flat surface", 17, Color.white, TextAlignmentOptions.Center, bold: true, wrap: false);
+        // Placement hint text: 32px — easily readable at arm's length
+        _placementPillText = UIHelper.MakeLabel("Text", _placementPill, "Move your phone to find a flat surface", 32, Color.white, TextAlignmentOptions.Center, bold: true, wrap: false);
+        _placementPillText.raycastTarget = false;
         UIHelper.Stretch(_placementPillText.GetComponent<RectTransform>(), 16, 16, 0, 0);
 
         _placementPill.gameObject.SetActive(false);
@@ -658,6 +867,7 @@ public class FireScenarioUIController : MonoBehaviour
         ringImg.sprite = CreateRingSprite(160, 5, Color.white);
         ringImg.color = new Color(1f, 1f, 1f, 0.90f);
         ringImg.type = Image.Type.Simple;
+        ringImg.raycastTarget = false;
 
         // Vertical Crosshair Line (extends through ring)
         var vLine = UIHelper.MakeRect("VLine", _placementReticle);
@@ -668,6 +878,7 @@ public class FireScenarioUIController : MonoBehaviour
         vLine.anchoredPosition = Vector2.zero;
         var vImg = vLine.gameObject.AddComponent<Image>();
         vImg.color = new Color(1f, 1f, 1f, 0.85f);
+        vImg.raycastTarget = false;
 
         // Horizontal Crosshair Line
         var hLine = UIHelper.MakeRect("HLine", _placementReticle);
@@ -678,6 +889,7 @@ public class FireScenarioUIController : MonoBehaviour
         hLine.anchoredPosition = Vector2.zero;
         var hImg = hLine.gameObject.AddComponent<Image>();
         hImg.color = new Color(1f, 1f, 1f, 0.85f);
+        hImg.raycastTarget = false;
 
         // Center Dot (mint)
         var dot = UIHelper.MakeRect("Dot", _placementReticle);
@@ -690,6 +902,7 @@ public class FireScenarioUIController : MonoBehaviour
         dotImg.color = Hex("#34D399"); // Mint dot
         dotImg.sprite = UIHelper.GetCircleSprite();
         dotImg.type = Image.Type.Simple;
+        dotImg.raycastTarget = false;
 
         _placementReticle.gameObject.SetActive(false);
     }
@@ -706,29 +919,87 @@ public class FireScenarioUIController : MonoBehaviour
         _targetIndicatorBox.anchorMin = new Vector2(0.5f, 0.5f);
         _targetIndicatorBox.anchorMax = new Vector2(0.5f, 0.5f);
         _targetIndicatorBox.pivot = new Vector2(0.5f, 0.5f);
-        _targetIndicatorBox.sizeDelta = new Vector2(260, 260);
+        _targetIndicatorBox.sizeDelta = new Vector2(280, 280); // was 260x260
         _targetIndicatorBox.anchoredPosition = new Vector2(0, 60);
 
-        // A. Floating Instruction Pill (e.g. "Look at the fire", "Tap to pull alarm", "Tap to pick up")
+        // Interactive button on target box for instant first-tap responsiveness
+        var boxImg = _targetIndicatorBox.gameObject.AddComponent<Image>();
+        boxImg.color = Color.clear;
+        boxImg.raycastTarget = true;
+
+        var boxBtn = _targetIndicatorBox.gameObject.AddComponent<Button>();
+        boxBtn.transition = Selectable.Transition.None;
+        boxBtn.onClick.AddListener(() =>
+        {
+            // Immediate authoritative step handling for 1st tap response
+            var flow = FireScenarioFlowManager.Instance;
+            if (_currentStepIndex == 4)
+            {
+                if (flow != null && flow.pinInteraction != null)
+                {
+                    flow.pinInteraction.RemovePin();
+                    return;
+                }
+            }
+            else if (_currentStepIndex == 1)
+            {
+                if (flow != null)
+                {
+                    flow.OnHazardIdentified();
+                    return;
+                }
+            }
+            else if (_currentStepIndex == 2)
+            {
+                if (flow != null && flow.alarmInteraction != null)
+                {
+                    flow.alarmInteraction.ActivateAlarm();
+                    return;
+                }
+            }
+            else if (_currentStepIndex == 3)
+            {
+                if (flow != null && flow.displayPickup != null)
+                {
+                    flow.displayPickup.Pickup();
+                    return;
+                }
+            }
+            else if (_currentStepIndex == 5)
+            {
+                if (flow != null)
+                {
+                    flow.OnAimConfirmed();
+                    return;
+                }
+            }
+
+            _currentActionCallback?.Invoke();
+        });
+
+        // A. Floating Instruction Pill — 280x52 (was 240x42), font 20px (was 16)
         _targetFloatingPillGO = new GameObject("FloatingPill");
         _targetFloatingPillGO.transform.SetParent(_targetIndicatorBox, false);
         var pillRT = _targetFloatingPillGO.AddComponent<RectTransform>();
         pillRT.anchorMin = new Vector2(0.5f, 1f);
         pillRT.anchorMax = new Vector2(0.5f, 1f);
         pillRT.pivot = new Vector2(0.5f, 0f);
-        pillRT.sizeDelta = new Vector2(240, 42);
+        pillRT.sizeDelta = new Vector2(360, 68); // was 340x64
         pillRT.anchoredPosition = new Vector2(0, 16);
 
         var pillImg = _targetFloatingPillGO.AddComponent<Image>();
-        pillImg.color = new Color(0.06f, 0.10f, 0.18f, 0.88f);
+        pillImg.color = new Color(0.04f, 0.35f, 0.25f, 0.95f); // Deep emerald green
         pillImg.sprite = UIHelper.GetWhiteSprite();
-        UIHelper.SetImageRoundedSprite(pillImg, 18);
+        pillImg.raycastTarget = false;
+        UIHelper.SetImageRoundedSprite(pillImg, 20);
 
         var pillOutline = _targetFloatingPillGO.AddComponent<Outline>();
-        pillOutline.effectColor = new Color(0.20f, 0.83f, 0.60f, 0.45f); // subtle mint outline
+        pillOutline.effectColor = new Color(0.20f, 0.83f, 0.60f, 0.65f); // Crisp mint/emerald outline
         pillOutline.effectDistance = new Vector2(1, -1);
 
-        _targetFloatingPillText = UIHelper.MakeLabel("PillText", _targetFloatingPillGO.transform, "Look at the fire", 16, Color.white, TextAlignmentOptions.Center, bold: true, wrap: false);
+        // Guidance pill text: 30px — readable in world space
+        _targetFloatingPillText = UIHelper.MakeLabel("PillText", _targetFloatingPillGO.transform, "Look at the fire", 30, Color.white, TextAlignmentOptions.Center, bold: true, wrap: false);
+        _targetFloatingPillText.raycastTarget = false;
         UIHelper.Stretch(_targetFloatingPillText.GetComponent<RectTransform>(), 14, 14, 0, 0);
 
         // B. Corner Brackets [ ] in safety green (Screens 2, 3, 4)
@@ -758,6 +1029,7 @@ public class FireScenarioUIController : MonoBehaviour
         handImg.color = Color.white;
         handImg.type = Image.Type.Simple;
         handImg.preserveAspect = true;
+        handImg.raycastTarget = false;
 
         // D. Circular Target Ring (Screen 5: Safety Pin) - Procedural vector ring
         _targetRingGO = new GameObject("TargetRing");
@@ -773,6 +1045,7 @@ public class FireScenarioUIController : MonoBehaviour
         pinRingImg.sprite = CreateRingSprite(96, 6, mintColor);
         pinRingImg.color = Color.white;
         pinRingImg.type = Image.Type.Simple;
+        pinRingImg.raycastTarget = false;
 
         // E. Concentric Crosshair Reticle ⌖ (Screen 6: Aim at Base)
         _targetCrosshairGO = new GameObject("CrosshairReticle");
@@ -789,6 +1062,7 @@ public class FireScenarioUIController : MonoBehaviour
         outerImg.sprite = CreateRingSprite(92, 5, Color.white);
         outerImg.color = Color.white;
         outerImg.type = Image.Type.Simple;
+        outerImg.raycastTarget = false;
 
         // Center dot
         var dot = UIHelper.MakeRect("CenterDot", crossRT);
@@ -800,6 +1074,7 @@ public class FireScenarioUIController : MonoBehaviour
         dotImg.color = Hex("#F59E0B"); // Safety Orange dot
         dotImg.sprite = UIHelper.GetCircleSprite();
         dotImg.type = Image.Type.Simple;
+        dotImg.raycastTarget = false;
 
         // Crosshair ticks
         CreateCrosshairTick("T_Top", crossRT, new Vector2(0, 36), new Vector2(2, 14));
@@ -821,6 +1096,7 @@ public class FireScenarioUIController : MonoBehaviour
         checkBg.color = Hex("#10B981"); // Green circle
         checkBg.sprite = UIHelper.GetCircleSprite();
         checkBg.type = Image.Type.Simple;
+        checkBg.raycastTarget = false;
 
         var checkIconGO = UIHelper.MakeRect("CheckIcon", checkRT);
         UIHelper.Stretch(checkIconGO, 22, 22, 22, 22);
@@ -829,8 +1105,9 @@ public class FireScenarioUIController : MonoBehaviour
         checkIconImg.color = Color.white;
         checkIconImg.type = Image.Type.Simple;
         checkIconImg.preserveAspect = true;
+        checkIconImg.raycastTarget = false;
 
-        _targetIndicatorBox.gameObject.SetActive(true);
+        _targetIndicatorBox.gameObject.SetActive(false);
     }
 
     private static void CreateCornerBracket(string name, Transform parent, Vector2 cornerAnchor, Color col, bool horizontalRight, bool verticalDown)
@@ -841,27 +1118,29 @@ public class FireScenarioUIController : MonoBehaviour
         rt.anchorMin = cornerAnchor;
         rt.anchorMax = cornerAnchor;
         rt.pivot = cornerAnchor;
-        rt.sizeDelta = new Vector2(32, 32);
+        rt.sizeDelta = new Vector2(36, 36); // was 32x32 — slightly larger indicator
 
-        // Horizontal line
+        // Horizontal line — 4px thick (was 3.5px)
         var hLine = UIHelper.MakeRect("H", rt);
         hLine.anchorMin = cornerAnchor;
         hLine.anchorMax = cornerAnchor;
         hLine.pivot = cornerAnchor;
-        hLine.sizeDelta = new Vector2(32, 3.5f);
+        hLine.sizeDelta = new Vector2(36, 4f);
         hLine.anchoredPosition = Vector2.zero;
         var hImg = hLine.gameObject.AddComponent<Image>();
         hImg.color = col;
+        hImg.raycastTarget = false;
 
-        // Vertical line
+        // Vertical line — 4px thick (was 3.5px)
         var vLine = UIHelper.MakeRect("V", rt);
         vLine.anchorMin = cornerAnchor;
         vLine.anchorMax = cornerAnchor;
         vLine.pivot = cornerAnchor;
-        vLine.sizeDelta = new Vector2(3.5f, 32);
+        vLine.sizeDelta = new Vector2(4f, 36);
         vLine.anchoredPosition = Vector2.zero;
         var vImg = vLine.gameObject.AddComponent<Image>();
         vImg.color = col;
+        vImg.raycastTarget = false;
     }
 
     private static void CreateCrosshairTick(string name, Transform parent, Vector2 pos, Vector2 size)
@@ -874,217 +1153,193 @@ public class FireScenarioUIController : MonoBehaviour
         tick.anchoredPosition = pos;
         var img = tick.gameObject.AddComponent<Image>();
         img.color = Color.white;
+        img.raycastTarget = false;
     }
 
     // ─────────────────────────────────────────────────────────────────
-    //  4. NORMAL BOTTOM CARD (White rounded card, Steps 1 - 5)
+    //  3B. COMPACT GUIDANCE PANEL (above bottom card — NEW)
     // ─────────────────────────────────────────────────────────────────
-    private void BuildNormalBottomCard(Transform parent)
+    //  4. SINGLE AUTHORITATIVE BOTTOM GUIDANCE CARD (Steps 1 - 6)
+    // ─────────────────────────────────────────────────────────────────
+    private void BuildGuidanceCard(Transform parent)
     {
-        _normalCard = UIHelper.MakeRect("NormalBottomCard", parent);
-        _normalCard.anchorMin = new Vector2(0.5f, 0f);
-        _normalCard.anchorMax = new Vector2(0.5f, 0f);
-        _normalCard.pivot = new Vector2(0.5f, 0f);
-        _normalCard.sizeDelta = new Vector2(980, 88);
-        _normalCard.anchoredPosition = new Vector2(0, 32);
+        _guidanceCard = UIHelper.MakeRect("GuidanceCard", parent);
+        _guidanceCard.anchorMin = new Vector2(0.04f, 0f);
+        _guidanceCard.anchorMax = new Vector2(0.96f, 0f);
+        _guidanceCard.pivot     = new Vector2(0.5f, 0f);
+        _guidanceCard.offsetMin = new Vector2(0, 36);
+        _guidanceCard.offsetMax = new Vector2(0, 250);
 
-        // Pure white card background
-        var cardImg = _normalCard.gameObject.AddComponent<Image>();
-        cardImg.color = Color.white;
+        // Crisp White Card Background — matches official SurakshaAR reference design
+        var cardImg = _guidanceCard.gameObject.AddComponent<Image>();
+        cardImg.color  = Color.white;
         cardImg.sprite = UIHelper.GetWhiteSprite();
-        UIHelper.SetImageRoundedSprite(cardImg, 22);
+        UIHelper.SetImageRoundedSprite(cardImg, 24);
 
-        var shadow = _normalCard.gameObject.AddComponent<Outline>();
-        shadow.effectColor = new Color(0, 0, 0, 0.20f);
-        shadow.effectDistance = new Vector2(1, -2);
+        // Soft subtle border
+        var outline = _guidanceCard.gameObject.AddComponent<Outline>();
+        outline.effectColor    = new Color(0.85f, 0.88f, 0.92f, 1f); // #E2E8F0 subtle slate border
+        outline.effectDistance = new Vector2(1.5f, -1.5f);
 
-        _normalCardBtn = _normalCard.gameObject.AddComponent<Button>();
-        _normalCardBtn.onClick.AddListener(() => _currentActionCallback?.Invoke());
-
-        var hlg = _normalCard.gameObject.AddComponent<HorizontalLayoutGroup>();
-        hlg.padding = new RectOffset(20, 20, 14, 14);
-        hlg.spacing = 18;
-        hlg.childAlignment = TextAnchor.MiddleLeft;
-        hlg.childControlWidth = true;
-        hlg.childControlHeight = true;
-        hlg.childForceExpandWidth = false;
-        hlg.childForceExpandHeight = false;
-
-        // Left: Red Rounded Square Icon Badge
-        var iconBadge = UIHelper.MakeRect("IconBadge", _normalCard);
-        iconBadge.sizeDelta = new Vector2(52, 52);
-        UIHelper.SetLayout(iconBadge.gameObject, preferredWidth: 52, minWidth: 52, preferredHeight: 52);
-        var iconBg = iconBadge.gameObject.AddComponent<Image>();
-        iconBg.color = Hex("#EF4444"); // Safety Red
-        iconBg.sprite = UIHelper.GetWhiteSprite();
-        UIHelper.SetImageRoundedSprite(iconBg, 14);
-
-        var iconInner = UIHelper.MakeRect("InnerIcon", iconBadge);
-        UIHelper.Stretch(iconInner, 10, 10, 10, 10);
-        _normalCardIconImg = iconInner.gameObject.AddComponent<Image>();
-        _normalCardIconImg.sprite = CreateProceduralIcon("flame");
-        _normalCardIconImg.color = Color.white;
-        _normalCardIconImg.type = Image.Type.Simple;
-        _normalCardIconImg.preserveAspect = true;
-
-        // Middle: Title & Subtitle Stack (Flexible width to fill card)
-        var textStack = UIHelper.MakeRect("TextStack", _normalCard);
-        UIHelper.SetLayout(textStack.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 56);
-
-        var vlg = textStack.gameObject.AddComponent<VerticalLayoutGroup>();
-        vlg.spacing = 2;
-        vlg.childAlignment = TextAnchor.MiddleLeft;
-        vlg.childControlWidth = true;
-        vlg.childControlHeight = false;
-        vlg.childForceExpandWidth = true;
+        var vlg = _guidanceCard.gameObject.AddComponent<VerticalLayoutGroup>();
+        vlg.padding              = new RectOffset(24, 24, 20, 20);
+        vlg.spacing              = 12;
+        vlg.childAlignment       = TextAnchor.UpperLeft;
+        vlg.childControlWidth    = true;
+        vlg.childControlHeight   = false;
+        vlg.childForceExpandWidth  = true;
         vlg.childForceExpandHeight = false;
 
-        _normalCardTitle = UIHelper.MakeLabel("Title", textStack, "Identify the Hazard", 36, Hex("#0F172A"), bold: true, wrap: false);
-        _normalCardTitle.overflowMode = TextOverflowModes.Ellipsis;
-        UIHelper.SetLayout(_normalCardTitle.gameObject, preferredHeight: 44);
+        var csf = _guidanceCard.gameObject.AddComponent<ContentSizeFitter>();
+        csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-        _normalCardSubtitle = UIHelper.MakeLabel("Subtitle", textStack, "Find the electrical fire.", 26, Hex("#64748B"), wrap: false);
-        _normalCardSubtitle.overflowMode = TextOverflowModes.Ellipsis;
-        UIHelper.SetLayout(_normalCardSubtitle.gameObject, preferredHeight: 34);
+        var le = _guidanceCard.gameObject.AddComponent<LayoutElement>();
+        le.minHeight = 150;
 
-        // Right: Chevron Arrow >
-        var arrow = UIHelper.MakeLabel("Arrow", _normalCard, "›", 32, Hex("#94A3B8"), TextAlignmentOptions.Center, bold: true, wrap: false);
-        arrow.overflowMode = TextOverflowModes.Overflow;
-        UIHelper.SetLayout(arrow.gameObject, preferredWidth: 36, minWidth: 36, preferredHeight: 52);
+        // ── 1. Header Row (Icon + Title + Listen Button) ─────────────
+        var headerRow = UIHelper.MakeRect("HeaderRow", _guidanceCard);
+        var headerHlg = headerRow.gameObject.AddComponent<HorizontalLayoutGroup>();
+        headerHlg.spacing              = 14;
+        headerHlg.childAlignment       = TextAnchor.MiddleLeft;
+        headerHlg.childControlWidth    = true;
+        headerHlg.childControlHeight   = true;
+        headerHlg.childForceExpandWidth  = false;
+        headerHlg.childForceExpandHeight = false;
+        UIHelper.SetLayout(headerRow.gameObject, preferredHeight: 60, minHeight: 52);
 
-        _normalCard.gameObject.SetActive(true);
-    }
+        // A. Left: Step Icon Badge (56x56 circular/rounded badge)
+        var iconBadgeGO = UIHelper.MakeRect("IconBadge", headerRow);
+        iconBadgeGO.sizeDelta = new Vector2(56, 56);
+        UIHelper.SetLayout(iconBadgeGO.gameObject, preferredWidth: 56, minWidth: 56, preferredHeight: 56);
+        _guidanceCardIconBadge = iconBadgeGO.gameObject.AddComponent<Image>();
+        _guidanceCardIconBadge.color  = Hex("#FEE2E2"); // Soft red tint default
+        _guidanceCardIconBadge.sprite = UIHelper.GetWhiteSprite();
+        UIHelper.SetImageRoundedSprite(_guidanceCardIconBadge, 28);
 
-    // ─────────────────────────────────────────────────────────────────
-    //  5. SPRAY TWO-TIER BOTTOM CARD (Step 6 in image)
-    // ─────────────────────────────────────────────────────────────────
-    private void BuildSprayTwoTierCard(Transform parent)
-    {
-        _sprayCardContainer = UIHelper.MakeRect("SprayTwoTierCard", parent);
-        _sprayCardContainer.anchorMin = new Vector2(0.5f, 0f);
-        _sprayCardContainer.anchorMax = new Vector2(0.5f, 0f);
-        _sprayCardContainer.pivot = new Vector2(0.5f, 0f);
-        _sprayCardContainer.sizeDelta = new Vector2(980, 166);
-        _sprayCardContainer.anchoredPosition = new Vector2(0, 32);
+        var iconInner = UIHelper.MakeRect("InnerIcon", iconBadgeGO);
+        UIHelper.Stretch(iconInner, 12, 12, 12, 12);
+        _guidanceCardIconImg = iconInner.gameObject.AddComponent<Image>();
+        _guidanceCardIconImg.sprite         = CreateProceduralIcon("flame");
+        _guidanceCardIconImg.color          = Hex("#EF4444"); // Red accent
+        _guidanceCardIconImg.type           = Image.Type.Simple;
+        _guidanceCardIconImg.preserveAspect = true;
 
-        var vlg = _sprayCardContainer.gameObject.AddComponent<VerticalLayoutGroup>();
-        vlg.spacing = 10;
-        vlg.childControlWidth = true;
-        vlg.childControlHeight = true;
-        vlg.childForceExpandWidth = true;
-        vlg.childForceExpandHeight = false;
+        // B. Center: Step Title (Dark Navy, bold, auto-wrapping)
+        _guidanceCardTitle = UIHelper.MakeLabel("StepTitle", headerRow,
+            "Identify Hazard", 36, Hex("#0F172A"), bold: true, wrap: true);
+        _guidanceCardTitle.overflowMode = TextOverflowModes.Overflow;
+        UIHelper.SetLayout(_guidanceCardTitle.gameObject, flexibleWidth: true, flexWidth: 1, minHeight: 48);
 
-        // Top Tier: Dark Progress Box
-        var topBox = UIHelper.MakeRect("TopProgressBox", _sprayCardContainer);
-        topBox.sizeDelta = new Vector2(980, 74);
-        UIHelper.SetLayout(topBox.gameObject, preferredWidth: 980, minWidth: 980, preferredHeight: 74);
+        // C. Right: Listen Audio Button (148x52) with real procedural speaker icon
+        var voicePillGO = new GameObject("VoiceGuidanceBtn");
+        voicePillGO.transform.SetParent(headerRow, false);
+        var voicePillRT = voicePillGO.AddComponent<RectTransform>();
+        voicePillRT.sizeDelta = new Vector2(148, 52);
+        UIHelper.SetLayout(voicePillRT.gameObject, preferredWidth: 148, minWidth: 130, preferredHeight: 52);
 
-        var topImg = topBox.gameObject.AddComponent<Image>();
-        topImg.color = new Color(0.06f, 0.10f, 0.18f, 0.90f);
-        topImg.sprite = UIHelper.GetWhiteSprite();
-        UIHelper.SetImageRoundedSprite(topImg, 18);
+        _voiceBtnBg = voicePillGO.AddComponent<Image>();
+        _voiceBtnBg.color  = Hex("#2563EB"); // Royal blue
+        _voiceBtnBg.sprite = UIHelper.GetWhiteSprite();
+        UIHelper.SetImageRoundedSprite(_voiceBtnBg, 20);
 
-        var topOutline = topBox.gameObject.AddComponent<Outline>();
-        topOutline.effectColor = new Color(1f, 1f, 1f, 0.12f);
-        topOutline.effectDistance = new Vector2(1, -1);
+        var voiceBtnHlg = voicePillGO.AddComponent<HorizontalLayoutGroup>();
+        voiceBtnHlg.padding = new RectOffset(14, 14, 8, 8);
+        voiceBtnHlg.spacing = 8;
+        voiceBtnHlg.childAlignment = TextAnchor.MiddleCenter;
+        voiceBtnHlg.childControlWidth = true;
+        voiceBtnHlg.childControlHeight = true;
+        voiceBtnHlg.childForceExpandWidth = false;
+        voiceBtnHlg.childForceExpandHeight = false;
 
-        var topVlg = topBox.gameObject.AddComponent<VerticalLayoutGroup>();
-        topVlg.padding = new RectOffset(20, 20, 12, 12);
-        topVlg.spacing = 8;
-        topVlg.childControlWidth = true;
-        topVlg.childControlHeight = true;
-        topVlg.childForceExpandWidth = true;
+        _voiceBtn = voicePillGO.AddComponent<Button>();
+        var voiceColors = ColorBlock.defaultColorBlock;
+        voiceColors.normalColor      = Color.white;
+        voiceColors.highlightedColor = new Color(0.90f, 0.90f, 0.90f, 1f);
+        voiceColors.pressedColor     = new Color(0.75f, 0.75f, 0.75f, 1f);
+        _voiceBtn.colors = voiceColors;
+        _voiceBtn.onClick.AddListener(OnVoiceButtonClicked);
 
-        // Row with status and timer
-        var statRow = UIHelper.MakeHorizontal("StatusRow", topBox, 10);
-        statRow.sizeDelta = new Vector2(940, 26);
-        UIHelper.SetLayout(statRow.gameObject, preferredWidth: 940, minWidth: 940, preferredHeight: 26);
-        var statHlg = statRow.GetComponent<HorizontalLayoutGroup>();
-        if (statHlg != null)
-        {
-            statHlg.childControlWidth = true;
-            statHlg.childControlHeight = true;
-            statHlg.childForceExpandWidth = false;
-            statHlg.childForceExpandHeight = false;
-        }
+        // Procedural Speaker Icon
+        var voiceIconGO = UIHelper.MakeRect("SpeakerIcon", voicePillGO.transform);
+        voiceIconGO.sizeDelta = new Vector2(24, 24);
+        UIHelper.SetLayout(voiceIconGO.gameObject, preferredWidth: 24, minWidth: 24, preferredHeight: 24);
+        _voiceBtnIcon = voiceIconGO.gameObject.AddComponent<Image>();
+        _voiceBtnIcon.sprite = CreateSpeakerSprite();
+        _voiceBtnIcon.color = Color.white;
+        _voiceBtnIcon.type = Image.Type.Simple;
+        _voiceBtnIcon.preserveAspect = true;
+        _voiceBtnIcon.raycastTarget = false;
 
-        _sprayStatusText = UIHelper.MakeLabel("Status", statRow, "Spraying...", 28, Color.white, bold: true, wrap: false);
-        _sprayStatusText.overflowMode = TextOverflowModes.Overflow;
-        UIHelper.SetLayout(_sprayStatusText.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 36);
+        _voiceBtnText = UIHelper.MakeLabel("VoiceBtnText", voicePillGO.transform,
+            Loc("fire.voice.listenBtn", "Listen"),
+            24, Color.white, TextAlignmentOptions.Center, bold: true, wrap: false);
+        _voiceBtnText.raycastTarget = false;
+        UIHelper.SetLayout(_voiceBtnText.gameObject, flexibleWidth: true, flexWidth: 1, minHeight: 28);
 
-        _sprayTimerText = UIHelper.MakeLabel("Timer", statRow, "6.5 / 10.0 s", 32, Hex("#E2E8F0"), TextAlignmentOptions.Right, bold: true, wrap: false);
-        _sprayTimerText.overflowMode = TextOverflowModes.Overflow;
-        UIHelper.SetLayout(_sprayTimerText.gameObject, preferredWidth: 260, minWidth: 240, preferredHeight: 36);
+        // ── 2. Body Instruction Text (Dark Slate, auto-wrapping) ───────
+        _guidanceCardBody = UIHelper.MakeLabel("StepBody", _guidanceCard,
+            "Look around your surroundings to locate the highlighted electrical fire and tap it in AR.",
+            28, Hex("#334155"), wrap: true);
+        _guidanceCardBody.overflowMode = TextOverflowModes.Overflow;
+        UIHelper.SetLayout(_guidanceCardBody.gameObject, flexibleWidth: true, flexWidth: 1, minHeight: 44);
 
-        // Progress Bar
-        var progTrack = UIHelper.MakeRect("Track", topBox);
-        UIHelper.SetLayout(progTrack.gameObject, preferredHeight: 12);
+        // ── 3. Step 6 Integrated Spray Progress Section ──────────────
+        _sprayProgressSection = UIHelper.MakeRect("SprayProgressSection", _guidanceCard);
+        UIHelper.SetLayout(_sprayProgressSection.gameObject, preferredHeight: 74, minHeight: 64);
 
+        var sprayBoxImg = _sprayProgressSection.gameObject.AddComponent<Image>();
+        sprayBoxImg.color  = Hex("#F8FAFC"); // Clean light background
+        sprayBoxImg.sprite = UIHelper.GetWhiteSprite();
+        UIHelper.SetImageRoundedSprite(sprayBoxImg, 12);
+
+        var sprayBoxOutline = _sprayProgressSection.gameObject.AddComponent<Outline>();
+        sprayBoxOutline.effectColor = new Color(0.85f, 0.88f, 0.92f, 1f);
+        sprayBoxOutline.effectDistance = new Vector2(1, -1);
+
+        var sprayVlg = _sprayProgressSection.gameObject.AddComponent<VerticalLayoutGroup>();
+        sprayVlg.padding            = new RectOffset(16, 16, 10, 10);
+        sprayVlg.spacing            = 8;
+        sprayVlg.childControlWidth  = true;
+        sprayVlg.childControlHeight = true;
+        sprayVlg.childForceExpandWidth = true;
+
+        var sprayStatRow = UIHelper.MakeHorizontal("SprayStatRow", _sprayProgressSection, 8);
+        UIHelper.SetLayout(sprayStatRow.gameObject, preferredHeight: 32);
+
+        _sprayStatusText = UIHelper.MakeLabel("SprayStatus", sprayStatRow,
+            "Spraying...", 28, Hex("#16A34A"), bold: true, wrap: false);
+        _sprayStatusText.overflowMode = TextOverflowModes.Ellipsis;
+        UIHelper.SetLayout(_sprayStatusText.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 32);
+
+        _sprayTimerText = UIHelper.MakeLabel("SprayTimer", sprayStatRow,
+            "10.0 / 10.0 s", 28, Hex("#475569"), TextAlignmentOptions.Right, bold: true, wrap: false);
+        _sprayTimerText.overflowMode = TextOverflowModes.Ellipsis;
+        UIHelper.SetLayout(_sprayTimerText.gameObject, preferredWidth: 260, minWidth: 200, preferredHeight: 32);
+
+        // Progress track & fill
+        var progTrack = UIHelper.MakeRect("SprayTrack", _sprayProgressSection);
+        UIHelper.SetLayout(progTrack.gameObject, preferredHeight: 8);
         var progTrackImg = progTrack.gameObject.AddComponent<Image>();
-        progTrackImg.color = Hex("#334155");
+        progTrackImg.color  = Hex("#E2E8F0");
         progTrackImg.sprite = UIHelper.GetWhiteSprite();
-        UIHelper.SetImageRoundedSprite(progTrackImg, 6);
+        UIHelper.SetImageRoundedSprite(progTrackImg, 4);
 
-        var progFillGO = new GameObject("Fill");
+        var progFillGO = new GameObject("SprayFill");
         progFillGO.transform.SetParent(progTrack, false);
         _sprayProgressFill = progFillGO.AddComponent<RectTransform>();
         _sprayProgressFill.anchorMin = Vector2.zero;
-        _sprayProgressFill.anchorMax = new Vector2(0.65f, 1f);
+        _sprayProgressFill.anchorMax = new Vector2(0f, 1f);
         _sprayProgressFill.offsetMin = Vector2.zero;
         _sprayProgressFill.offsetMax = Vector2.zero;
 
         var progFillImg = progFillGO.AddComponent<Image>();
-        progFillImg.color = Hex("#22C55E");
+        progFillImg.color  = Hex("#22C55E"); // Safety Green
         progFillImg.sprite = UIHelper.GetWhiteSprite();
-        UIHelper.SetImageRoundedSprite(progFillImg, 6);
+        UIHelper.SetImageRoundedSprite(progFillImg, 4);
 
-        // Bottom Tier: White Card
-        var bottomCard = UIHelper.MakeRect("BottomCard", _sprayCardContainer);
-        bottomCard.sizeDelta = new Vector2(980, 88);
-        UIHelper.SetLayout(bottomCard.gameObject, preferredWidth: 980, minWidth: 980, preferredHeight: 88);
+        _sprayProgressSection.gameObject.SetActive(false); // only enabled on step 6
 
-        var bottomImg = bottomCard.gameObject.AddComponent<Image>();
-        bottomImg.color = Color.white;
-        bottomImg.sprite = UIHelper.GetWhiteSprite();
-        UIHelper.SetImageRoundedSprite(bottomImg, 20);
-
-        _sprayCardBottomBtn = bottomCard.gameObject.AddComponent<Button>();
-        _sprayCardBottomBtn.onClick.AddListener(() => _currentActionCallback?.Invoke());
-
-        var bRow = bottomCard.gameObject.AddComponent<HorizontalLayoutGroup>();
-        bRow.padding = new RectOffset(16, 16, 12, 12);
-        bRow.spacing = 14;
-        bRow.childAlignment = TextAnchor.MiddleLeft;
-        bRow.childControlWidth = true;
-        bRow.childControlHeight = true;
-        bRow.childForceExpandWidth = false;
-        bRow.childForceExpandHeight = false;
-
-        var sBadge = UIHelper.MakeRect("Badge", bottomCard);
-        sBadge.sizeDelta = new Vector2(56, 56);
-        UIHelper.SetLayout(sBadge.gameObject, preferredWidth: 56, minWidth: 56, preferredHeight: 56);
-        var sBadgeImg = sBadge.gameObject.AddComponent<Image>();
-        sBadgeImg.color = Hex("#EF4444");
-        sBadgeImg.sprite = UIHelper.GetWhiteSprite();
-        UIHelper.SetImageRoundedSprite(sBadgeImg, 14);
-
-        var sInner = UIHelper.MakeRect("Inner", sBadge);
-        UIHelper.Stretch(sInner, 8, 8, 8, 8);
-        _sprayBadgeIconImg = sInner.gameObject.AddComponent<Image>();
-        _sprayBadgeIconImg.sprite = CreateProceduralIcon("extinguisher");
-        _sprayBadgeIconImg.color = Color.white;
-        _sprayBadgeIconImg.type = Image.Type.Simple;
-        _sprayBadgeIconImg.preserveAspect = true;
-
-        _sprayCardBottomTitle = UIHelper.MakeLabel("Title", bottomCard, "Keep spraying at the base", 34, Hex("#0F172A"), bold: true, wrap: false);
-        _sprayCardBottomTitle.overflowMode = TextOverflowModes.Ellipsis;
-        UIHelper.SetLayout(_sprayCardBottomTitle.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 42);
-
-        var bArrow = UIHelper.MakeLabel("Arrow", bottomCard, "›", 30, Hex("#94A3B8"), TextAlignmentOptions.Center, bold: true, wrap: false);
-        bArrow.overflowMode = TextOverflowModes.Overflow;
-        UIHelper.SetLayout(bArrow.gameObject, preferredWidth: 32, minWidth: 32, preferredHeight: 44);
-
-        _sprayCardContainer.gameObject.SetActive(false);
+        _guidanceCard.gameObject.SetActive(false); // hidden until step 1
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -1093,57 +1348,63 @@ public class FireScenarioUIController : MonoBehaviour
     private void BuildPlacementBottomCard(Transform parent)
     {
         _placementBottomCard = UIHelper.MakeRect("PlacementBottomCard", parent);
-        _placementBottomCard.anchorMin = new Vector2(0.5f, 0f);
-        _placementBottomCard.anchorMax = new Vector2(0.5f, 0f);
+        _placementBottomCard.anchorMin = new Vector2(0.05f, 0f);
+        _placementBottomCard.anchorMax = new Vector2(0.95f, 0f);
         _placementBottomCard.pivot = new Vector2(0.5f, 0f);
-        _placementBottomCard.sizeDelta = new Vector2(560, 68);
-        _placementBottomCard.anchoredPosition = new Vector2(0, 36);
+        _placementBottomCard.offsetMin = new Vector2(0, 60);
+        _placementBottomCard.offsetMax = new Vector2(0, 160); // height 100
 
         // Scanning pill
         var pillImg = _placementBottomCard.gameObject.AddComponent<Image>();
-        pillImg.color = new Color(0.06f, 0.10f, 0.18f, 0.85f);
+        pillImg.color = new Color(0.06f, 0.10f, 0.18f, 0.90f);
         pillImg.sprite = UIHelper.GetWhiteSprite();
-        UIHelper.SetImageRoundedSprite(pillImg, 24);
+        pillImg.raycastTarget = false;
+        UIHelper.SetImageRoundedSprite(pillImg, 26);
 
         var outline = _placementBottomCard.gameObject.AddComponent<Outline>();
-        outline.effectColor = new Color(1f, 1f, 1f, 0.15f);
+        outline.effectColor = new Color(1f, 1f, 1f, 0.18f);
         outline.effectDistance = new Vector2(1, -1);
 
         var hlg = _placementBottomCard.gameObject.AddComponent<HorizontalLayoutGroup>();
-        hlg.padding = new RectOffset(20, 20, 10, 10);
-        hlg.spacing = 12;
+        hlg.padding = new RectOffset(20, 20, 14, 14);
+        hlg.spacing = 16;
         hlg.childAlignment = TextAnchor.MiddleCenter;
         hlg.childControlWidth = true;
         hlg.childControlHeight = true;
         hlg.childForceExpandWidth = false;
         hlg.childForceExpandHeight = false;
 
-        // Radar Scan Icon
+        // Radar Scan Icon — 34x34
         var scanIconGO = UIHelper.MakeRect("ScanIcon", _placementBottomCard);
-        scanIconGO.sizeDelta = new Vector2(28, 28);
-        UIHelper.SetLayout(scanIconGO.gameObject, preferredWidth: 28, minWidth: 28, preferredHeight: 28);
+        scanIconGO.sizeDelta = new Vector2(34, 34);
+        UIHelper.SetLayout(scanIconGO.gameObject, preferredWidth: 34, minWidth: 34, preferredHeight: 34);
         var scanImg = scanIconGO.gameObject.AddComponent<Image>();
-        scanImg.sprite = CreateRingSprite(28, 4, Hex("#38BDF8"));
+        scanImg.sprite = CreateRingSprite(34, 5, Hex("#38BDF8"));
         scanImg.color = Color.white;
         scanImg.type = Image.Type.Simple;
+        scanImg.raycastTarget = false;
 
         var scanDot = UIHelper.MakeRect("ScanDot", scanIconGO);
         scanDot.anchorMin = new Vector2(0.5f, 0.5f);
         scanDot.anchorMax = new Vector2(0.5f, 0.5f);
         scanDot.pivot = new Vector2(0.5f, 0.5f);
-        scanDot.sizeDelta = new Vector2(8, 8);
+        scanDot.sizeDelta = new Vector2(10, 10);
         var scanDotImg = scanDot.gameObject.AddComponent<Image>();
         scanDotImg.sprite = UIHelper.GetCircleSprite();
         scanDotImg.color = Hex("#38BDF8");
         scanDotImg.type = Image.Type.Simple;
+        scanDotImg.raycastTarget = false;
 
-        _placementStatusText = UIHelper.MakeLabel("Status", _placementBottomCard, "Scanning for surface...", 18, Color.white, TextAlignmentOptions.Center, bold: true, wrap: false);
-        _placementStatusText.overflowMode = TextOverflowModes.Overflow;
-        UIHelper.SetLayout(_placementStatusText.gameObject, preferredWidth: 360, minWidth: 320, preferredHeight: 32);
+        // Status text: 32px, flexible
+        _placementStatusText = UIHelper.MakeLabel("Status", _placementBottomCard, "Scanning for surface...", 32, Color.white, TextAlignmentOptions.Left, bold: true, wrap: false);
+        _placementStatusText.overflowMode = TextOverflowModes.Ellipsis;
+        _placementStatusText.raycastTarget = false;
+        UIHelper.SetLayout(_placementStatusText.gameObject, flexibleWidth: true, flexWidth: 1, minWidth: 200, preferredHeight: 50);
 
-        _btnPlaceScenario = UIHelper.MakeButton("btn-place", _placementBottomCard, "Place", 18, Hex("#22C55E"), Color.white, 14);
-        _btnPlaceScenario.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 44);
-        UIHelper.SetLayout(_btnPlaceScenario.gameObject, preferredWidth: 100, minWidth: 100, preferredHeight: 44);
+        // Place button: 30px text, 70px height
+        _btnPlaceScenario = UIHelper.MakeButton("btn-place", _placementBottomCard, "Place", 30, Hex("#22C55E"), Color.white, 18);
+        _btnPlaceScenario.GetComponent<RectTransform>().sizeDelta = new Vector2(250, 70);
+        UIHelper.SetLayout(_btnPlaceScenario.gameObject, preferredWidth: 250, minWidth: 220, preferredHeight: 70);
         _btnPlaceScenario.onClick.AddListener(() => _placementCallback?.Invoke());
         _btnPlaceScenario.gameObject.SetActive(false);
 
@@ -1156,14 +1417,15 @@ public class FireScenarioUIController : MonoBehaviour
     private void BuildStartCard(Transform parent)
     {
         _startCard = UIHelper.MakeRect("StartGuidanceCard", parent);
-        _startCard.anchorMin = new Vector2(0.5f, 0f);
-        _startCard.anchorMax = new Vector2(0.5f, 0f);
+        _startCard.anchorMin = new Vector2(0.06f, 0f);
+        _startCard.anchorMax = new Vector2(0.94f, 0f);
         _startCard.pivot = new Vector2(0.5f, 0f);
-        _startCard.sizeDelta = new Vector2(980, 84);
-        _startCard.anchoredPosition = new Vector2(0, 36);
+        _startCard.offsetMin = new Vector2(0, 60);
+        _startCard.offsetMax = new Vector2(0, 188); // height 128
 
-        _btnStartTraining = UIHelper.MakeButton("btn-start-training", _startCard, "TAP TO START AR TRAINING", 20,
-            Hex("#1E3A8A"), Color.white, 20);
+        // Start CTA: 34px — prominent call to action comfortably above screen bottom
+        _btnStartTraining = UIHelper.MakeButton("btn-start-training", _startCard, "TAP TO START AR TRAINING", 34,
+            Hex("#1E3A8A"), Color.white, 24);
         UIHelper.Stretch(_btnStartTraining.GetComponent<RectTransform>(), 0, 0, 0, 0);
 
         var outline = _btnStartTraining.gameObject.AddComponent<Outline>();
@@ -1190,39 +1452,43 @@ public class FireScenarioUIController : MonoBehaviour
         _completionCard.anchorMin = new Vector2(0.5f, 0f);
         _completionCard.anchorMax = new Vector2(0.5f, 0f);
         _completionCard.pivot = new Vector2(0.5f, 0f);
-        _completionCard.sizeDelta = new Vector2(960, 380);
-        _completionCard.anchoredPosition = new Vector2(0, 48);
+        _completionCard.sizeDelta = new Vector2(960, 480);
+        _completionCard.anchoredPosition = new Vector2(0, 52);
 
         var img = _completionCard.gameObject.AddComponent<Image>();
         img.color = new Color(0.06f, 0.10f, 0.18f, 0.95f);
         img.sprite = UIHelper.GetWhiteSprite();
-        UIHelper.SetImageRoundedSprite(img, 28);
+        UIHelper.SetImageRoundedSprite(img, 30);
 
         var outline = _completionCard.gameObject.AddComponent<Outline>();
         outline.effectColor = new Color(1f, 1f, 1f, 0.15f);
         outline.effectDistance = new Vector2(1.5f, -1.5f);
 
         var vlg = _completionCard.gameObject.AddComponent<VerticalLayoutGroup>();
-        vlg.padding = new RectOffset(36, 36, 28, 28);
-        vlg.spacing = 14;
+        vlg.padding = new RectOffset(36, 36, 34, 34);
+        vlg.spacing = 18;
         vlg.childAlignment = TextAnchor.MiddleCenter;
         vlg.childControlWidth = false;
         vlg.childControlHeight = false;
         vlg.childForceExpandWidth = false;
         vlg.childForceExpandHeight = false;
 
-        _compTitle = UIHelper.MakeLabel("Title", _completionCard, "Fire Extinguished!", 28, Color.white, TextAlignmentOptions.Center, bold: true, wrap: false);
-        _compTitle.rectTransform.sizeDelta = new Vector2(880, 38);
-        UIHelper.SetLayout(_compTitle.gameObject, preferredWidth: 880, minWidth: 880, preferredHeight: 38);
+        // Completion title: 50px — clearly distinguishes completion state, wraps for localized titles
+        _compTitle = UIHelper.MakeLabel("Title", _completionCard, "Fire Extinguished!", 50, Color.white, TextAlignmentOptions.Center, bold: true, wrap: true);
+        _compTitle.overflowMode = TextOverflowModes.Overflow;
+        _compTitle.rectTransform.sizeDelta = new Vector2(880, 68);
+        UIHelper.SetLayout(_compTitle.gameObject, preferredWidth: 880, minWidth: 880, preferredHeight: 68);
 
-        _compSubtitle = UIHelper.MakeLabel("Subtitle", _completionCard, "Well Done!", 20, Hex("#4ADE80"), TextAlignmentOptions.Center, bold: true, wrap: false);
-        _compSubtitle.rectTransform.sizeDelta = new Vector2(880, 28);
-        UIHelper.SetLayout(_compSubtitle.gameObject, preferredWidth: 880, minWidth: 880, preferredHeight: 28);
+        // Completion subtitle: 34px
+        _compSubtitle = UIHelper.MakeLabel("Subtitle", _completionCard, "Well Done!", 34, Hex("#4ADE80"), TextAlignmentOptions.Center, bold: true, wrap: true);
+        _compSubtitle.overflowMode = TextOverflowModes.Overflow;
+        _compSubtitle.rectTransform.sizeDelta = new Vector2(880, 50);
+        UIHelper.SetLayout(_compSubtitle.gameObject, preferredWidth: 880, minWidth: 880, preferredHeight: 50);
 
         // Stats Row (Time + Score)
-        var statRow = UIHelper.MakeHorizontal("StatRow", _completionCard, 24);
-        statRow.sizeDelta = new Vector2(500, 36);
-        UIHelper.SetLayout(statRow.gameObject, preferredWidth: 500, minWidth: 500, preferredHeight: 36);
+        var statRow = UIHelper.MakeHorizontal("StatRow", _completionCard, 28);
+        statRow.sizeDelta = new Vector2(620, 50);
+        UIHelper.SetLayout(statRow.gameObject, preferredWidth: 620, minWidth: 500, preferredHeight: 50);
         var statHlg = statRow.GetComponent<HorizontalLayoutGroup>();
         if (statHlg != null)
         {
@@ -1231,27 +1497,29 @@ public class FireScenarioUIController : MonoBehaviour
             statHlg.childAlignment = TextAnchor.MiddleCenter;
         }
 
-        var timeLbl = UIHelper.MakeLabel("TimeLbl", statRow, "Time", 18, Hex("#94A3B8"), TextAlignmentOptions.Right, wrap: false);
-        timeLbl.rectTransform.sizeDelta = new Vector2(60, 32);
-        UIHelper.SetLayout(timeLbl.gameObject, preferredWidth: 60, minWidth: 60, preferredHeight: 32);
+        // Stat labels: 28px
+        var timeLbl = UIHelper.MakeLabel("TimeLbl", statRow, "Time", 28, Hex("#94A3B8"), TextAlignmentOptions.Right, wrap: false);
+        timeLbl.rectTransform.sizeDelta = new Vector2(90, 44);
+        UIHelper.SetLayout(timeLbl.gameObject, preferredWidth: 90, minWidth: 72, preferredHeight: 44);
 
-        _compTimeText = UIHelper.MakeLabel("TimeVal", statRow, "05:42", 20, Color.white, bold: true, wrap: false);
-        _compTimeText.rectTransform.sizeDelta = new Vector2(90, 32);
-        UIHelper.SetLayout(_compTimeText.gameObject, preferredWidth: 90, minWidth: 90, preferredHeight: 32);
+        // Stat values: 32px
+        _compTimeText = UIHelper.MakeLabel("TimeVal", statRow, "05:42", 32, Color.white, bold: true, wrap: false);
+        _compTimeText.rectTransform.sizeDelta = new Vector2(120, 44);
+        UIHelper.SetLayout(_compTimeText.gameObject, preferredWidth: 120, minWidth: 100, preferredHeight: 44);
 
-        var scoreLbl = UIHelper.MakeLabel("ScoreLbl", statRow, "Score", 18, Hex("#94A3B8"), TextAlignmentOptions.Right, wrap: false);
-        scoreLbl.rectTransform.sizeDelta = new Vector2(60, 32);
-        UIHelper.SetLayout(scoreLbl.gameObject, preferredWidth: 60, minWidth: 60, preferredHeight: 32);
+        var scoreLbl = UIHelper.MakeLabel("ScoreLbl", statRow, "Score", 28, Hex("#94A3B8"), TextAlignmentOptions.Right, wrap: false);
+        scoreLbl.rectTransform.sizeDelta = new Vector2(90, 44);
+        UIHelper.SetLayout(scoreLbl.gameObject, preferredWidth: 90, minWidth: 72, preferredHeight: 44);
 
-        _compScoreText = UIHelper.MakeLabel("ScoreVal", statRow, "100", 20, Color.white, bold: true, wrap: false);
-        _compScoreText.rectTransform.sizeDelta = new Vector2(80, 32);
-        UIHelper.SetLayout(_compScoreText.gameObject, preferredWidth: 80, minWidth: 80, preferredHeight: 32);
+        _compScoreText = UIHelper.MakeLabel("ScoreVal", statRow, "100", 32, Color.white, bold: true, wrap: false);
+        _compScoreText.rectTransform.sizeDelta = new Vector2(100, 44);
+        UIHelper.SetLayout(_compScoreText.gameObject, preferredWidth: 100, minWidth: 90, preferredHeight: 44);
 
-        // Primary Action CTA Button: "Continue to Assessment →"
-        _btnCompContinue = UIHelper.MakeButton("btn-assessment", _completionCard, "Continue to Assessment →", 20,
-            Hex("#1E3A8A"), Color.white, 16);
-        _btnCompContinue.GetComponent<RectTransform>().sizeDelta = new Vector2(880, 56);
-        UIHelper.SetLayout(_btnCompContinue.gameObject, preferredWidth: 880, minWidth: 880, preferredHeight: 56);
+        // Primary Action CTA Button — 34px text, 84px height
+        _btnCompContinue = UIHelper.MakeButton("btn-assessment", _completionCard, "Continue to Assessment →", 34,
+            Hex("#1E3A8A"), Color.white, 18);
+        _btnCompContinue.GetComponent<RectTransform>().sizeDelta = new Vector2(880, 84);
+        UIHelper.SetLayout(_btnCompContinue.gameObject, preferredWidth: 880, minWidth: 880, preferredHeight: 84);
         _btnCompContinue.onClick.AddListener(() => _homeCallback?.Invoke());
 
         _completionCard.gameObject.SetActive(false);
@@ -1263,18 +1531,19 @@ public class FireScenarioUIController : MonoBehaviour
     private void BuildFeedbackBanner(Transform parent)
     {
         _feedbackBanner = UIHelper.MakeRect("FeedbackBanner", parent);
-        _feedbackBanner.anchorMin = new Vector2(0.08f, 1f);
-        _feedbackBanner.anchorMax = new Vector2(0.92f, 1f);
+        _feedbackBanner.anchorMin = new Vector2(0.06f, 1f);
+        _feedbackBanner.anchorMax = new Vector2(0.94f, 1f);
         _feedbackBanner.pivot = new Vector2(0.5f, 1f);
-        _feedbackBanner.sizeDelta = new Vector2(0, 64);
-        _feedbackBanner.anchoredPosition = new Vector2(0, -145);
+        _feedbackBanner.sizeDelta = new Vector2(0, 92); // was 80 — taller warning banner
+        _feedbackBanner.anchoredPosition = new Vector2(0, -170); // offset increased for taller top bar
 
         _feedbackBg = _feedbackBanner.gameObject.AddComponent<Image>();
         _feedbackBg.color = UIColors.SafetyGreen;
         _feedbackBg.sprite = UIHelper.GetWhiteSprite();
-        UIHelper.SetImageRoundedSprite(_feedbackBg, 18);
+        UIHelper.SetImageRoundedSprite(_feedbackBg, 20);
 
-        _feedbackText = UIHelper.MakeLabel("FeedbackText", _feedbackBanner, "✓  Hazard Identified  +10", 20, Color.white, TextAlignmentOptions.Center, bold: true);
+        // Feedback/warning text: 36px — ARWarning semantic target, critical readability
+        _feedbackText = UIHelper.MakeLabel("FeedbackText", _feedbackBanner, "✓  Hazard Identified  +10", 36, Color.white, TextAlignmentOptions.Center, bold: true);
         UIHelper.Stretch(_feedbackText.GetComponent<RectTransform>(), 16, 16, 0, 0);
 
         _feedbackBanner.gameObject.SetActive(false);
@@ -1286,30 +1555,32 @@ public class FireScenarioUIController : MonoBehaviour
     private void BuildTransientToastModal(Transform parent)
     {
         _toastBox = UIHelper.MakeRect("TransientToastModal", parent);
-        _toastBox.anchorMin = new Vector2(0.1f, 0.62f);
-        _toastBox.anchorMax = new Vector2(0.9f, 0.62f);
+        _toastBox.anchorMin = new Vector2(0.08f, 0.62f);
+        _toastBox.anchorMax = new Vector2(0.92f, 0.62f);
         _toastBox.pivot = new Vector2(0.5f, 0.5f);
-        _toastBox.sizeDelta = new Vector2(0, 130);
+        _toastBox.sizeDelta = new Vector2(0, 172); // was 158
 
         var bg = _toastBox.gameObject.AddComponent<Image>();
         bg.color = new Color(0.06f, 0.10f, 0.18f, 0.92f);
         bg.sprite = UIHelper.GetWhiteSprite();
-        UIHelper.SetImageRoundedSprite(bg, 22);
+        UIHelper.SetImageRoundedSprite(bg, 24);
 
         var outline = _toastBox.gameObject.AddComponent<Outline>();
         outline.effectColor = Hex("#34D399");
         outline.effectDistance = new Vector2(1.5f, -1.5f);
 
         var vlg = _toastBox.gameObject.AddComponent<VerticalLayoutGroup>();
-        vlg.padding = new RectOffset(24, 24, 18, 18);
-        vlg.spacing = 6;
+        vlg.padding = new RectOffset(24, 24, 24, 24);
+        vlg.spacing = 8;
         vlg.childAlignment = TextAnchor.MiddleCenter;
 
-        _toastTitle = UIHelper.MakeLabel("ToastTitle", _toastBox, "Hazard Identified!", 24, Color.white, TextAlignmentOptions.Center, bold: true);
-        UIHelper.SetLayout(_toastTitle.gameObject, preferredHeight: 34);
+        // Toast step title: 36px
+        _toastTitle = UIHelper.MakeLabel("ToastTitle", _toastBox, "Hazard Identified!", 36, Color.white, TextAlignmentOptions.Center, bold: true);
+        UIHelper.SetLayout(_toastTitle.gameObject, preferredHeight: 48);
 
-        _toastSubtitle = UIHelper.MakeLabel("ToastSub", _toastBox, "Now activate the fire alarm", 18, Hex("#A7F3D0"), TextAlignmentOptions.Center);
-        UIHelper.SetLayout(_toastSubtitle.gameObject, preferredHeight: 26);
+        // Toast subtitle: 30px
+        _toastSubtitle = UIHelper.MakeLabel("ToastSub", _toastBox, "Now activate the fire alarm", 30, Hex("#A7F3D0"), TextAlignmentOptions.Center);
+        UIHelper.SetLayout(_toastSubtitle.gameObject, preferredHeight: 42);
 
         _toastBox.gameObject.SetActive(false);
     }
@@ -1337,18 +1608,21 @@ public class FireScenarioUIController : MonoBehaviour
         UIHelper.SetImageRoundedSprite(boxImg, 24);
 
         var vlg = box.gameObject.AddComponent<VerticalLayoutGroup>();
-        vlg.padding = new RectOffset(28, 28, 24, 24);
-        vlg.spacing = 14;
+        vlg.padding = new RectOffset(28, 28, 28, 28);
+        vlg.spacing = 16;
         vlg.childAlignment = TextAnchor.MiddleCenter;
 
-        var title = UIHelper.MakeLabel("Title", box, "⚠️ AR Tracking Paused", 24, Hex("#FDE68A"), TextAlignmentOptions.Center, bold: true);
-        UIHelper.SetLayout(title.gameObject, preferredHeight: 36);
+        // Tracking lost title: 40px
+        var title = UIHelper.MakeLabel("Title", box, "⚠️ AR Tracking Paused", 40, Hex("#FDE68A"), TextAlignmentOptions.Center, bold: true);
+        UIHelper.SetLayout(title.gameObject, preferredHeight: 52);
 
-        var desc = UIHelper.MakeLabel("Desc", box, "Move phone slowly toward a well-lit textured surface.", 18, Color.white, TextAlignmentOptions.Center, wrap: true);
-        UIHelper.SetLayout(desc.gameObject, preferredHeight: 52);
+        // Tracking lost desc: 32px
+        var desc = UIHelper.MakeLabel("Desc", box, "Move phone slowly toward a well-lit textured surface.", 32, Color.white, TextAlignmentOptions.Center, wrap: true);
+        UIHelper.SetLayout(desc.gameObject, preferredHeight: 80);
 
-        _btnTrackingRetry = UIHelper.MakeButton("btn-resume", box, "Resume Training", 20, Hex("#22C55E"), Color.white, 16);
-        UIHelper.SetLayout(_btnTrackingRetry.gameObject, preferredHeight: 52);
+        // Resume button: 32px text, 74px height
+        _btnTrackingRetry = UIHelper.MakeButton("btn-resume", box, "Resume Training", 32, Hex("#22C55E"), Color.white, 18);
+        UIHelper.SetLayout(_btnTrackingRetry.gameObject, preferredHeight: 74);
         _btnTrackingRetry.onClick.AddListener(() =>
         {
             _trackingLostModal.gameObject.SetActive(false);
@@ -1378,24 +1652,28 @@ public class FireScenarioUIController : MonoBehaviour
         UIHelper.SetImageRoundedSprite(boxImg, 24);
 
         var vlg = box.gameObject.AddComponent<VerticalLayoutGroup>();
-        vlg.padding = new RectOffset(24, 24, 20, 20);
-        vlg.spacing = 14;
+        vlg.padding = new RectOffset(24, 24, 24, 24);
+        vlg.spacing = 16;
         vlg.childAlignment = TextAnchor.MiddleCenter;
 
-        var title = UIHelper.MakeLabel("Title", box, "Restart Scenario?", 24, Color.white, TextAlignmentOptions.Center, bold: true);
-        UIHelper.SetLayout(title.gameObject, preferredHeight: 34);
+        // Reset modal title: 34px
+        var title = UIHelper.MakeLabel("Title", box, "Restart Scenario?", 34, Color.white, TextAlignmentOptions.Center, bold: true);
+        UIHelper.SetLayout(title.gameObject, preferredHeight: 46);
 
-        var desc = UIHelper.MakeLabel("Desc", box, "Your scenario placement and actions will reset to step 1.", 16, Hex("#94A3B8"), TextAlignmentOptions.Center, wrap: true);
-        UIHelper.SetLayout(desc.gameObject, preferredHeight: 44);
+        // Reset modal desc: 26px
+        var desc = UIHelper.MakeLabel("Desc", box, "Your scenario placement and actions will reset to step 1.", 26, Hex("#94A3B8"), TextAlignmentOptions.Center, wrap: true);
+        UIHelper.SetLayout(desc.gameObject, preferredHeight: 66);
 
-        var bRow = UIHelper.MakeHorizontal("BtnRow", box, 12);
-        UIHelper.SetLayout(bRow.gameObject, preferredHeight: 48);
+        // Button row: 70px height
+        var bRow = UIHelper.MakeHorizontal("BtnRow", box, 14);
+        UIHelper.SetLayout(bRow.gameObject, preferredHeight: 70);
 
-        _btnResetCancel = UIHelper.MakeButton("btn-cancel", bRow, "Cancel", 18, new Color(1, 1, 1, 0.15f), Color.white, 14);
+        // Modal buttons: 28px
+        _btnResetCancel = UIHelper.MakeButton("btn-cancel", bRow, "Cancel", 28, new Color(1, 1, 1, 0.15f), Color.white, 16);
         UIHelper.SetLayout(_btnResetCancel.gameObject, flexibleWidth: true, flexWidth: 1);
         _btnResetCancel.onClick.AddListener(() => _resetModal.gameObject.SetActive(false));
 
-        _btnResetConfirm = UIHelper.MakeButton("btn-restart", bRow, "Restart", 18, Hex("#EF4444"), Color.white, 14);
+        _btnResetConfirm = UIHelper.MakeButton("btn-restart", bRow, "Restart", 28, Hex("#EF4444"), Color.white, 16);
         UIHelper.SetLayout(_btnResetConfirm.gameObject, flexibleWidth: true, flexWidth: 1);
         _btnResetConfirm.onClick.AddListener(() =>
         {
@@ -1420,18 +1698,21 @@ public class FireScenarioUIController : MonoBehaviour
         UIHelper.SetImageRoundedSprite(img, 26);
 
         var vlg = _messageCard.gameObject.AddComponent<VerticalLayoutGroup>();
-        vlg.padding = new RectOffset(32, 32, 32, 32);
-        vlg.spacing = 16;
+        vlg.padding = new RectOffset(32, 32, 36, 36);
+        vlg.spacing = 18;
         vlg.childAlignment = TextAnchor.MiddleCenter;
 
-        _messageTitle = UIHelper.MakeLabel("Title", _messageCard, "SurakshaAR", 32, Color.white, TextAlignmentOptions.Center, bold: true);
-        UIHelper.SetLayout(_messageTitle.gameObject, preferredHeight: 44);
+        // Message title: 46px
+        _messageTitle = UIHelper.MakeLabel("Title", _messageCard, "SurakshaAR", 46, Color.white, TextAlignmentOptions.Center, bold: true);
+        UIHelper.SetLayout(_messageTitle.gameObject, preferredHeight: 60);
 
-        _messageBody = UIHelper.MakeLabel("Body", _messageCard, "AR Fire Safety Module", 20, Hex("#CBD5E1"), TextAlignmentOptions.Center, wrap: true);
+        // Message body: 34px
+        _messageBody = UIHelper.MakeLabel("Body", _messageCard, "AR Fire Safety Module", 34, Hex("#CBD5E1"), TextAlignmentOptions.Center, wrap: true);
         UIHelper.SetLayout(_messageBody.gameObject, flexibleHeight: true, flexHeight: 1);
 
-        _messageFooter = UIHelper.MakeLabel("Footer", _messageCard, "Tap anywhere to continue", 18, Hex("#4ADE80"), TextAlignmentOptions.Center, bold: true);
-        UIHelper.SetLayout(_messageFooter.gameObject, preferredHeight: 32);
+        // Message footer: 32px
+        _messageFooter = UIHelper.MakeLabel("Footer", _messageCard, "Tap anywhere to continue", 32, Hex("#4ADE80"), TextAlignmentOptions.Center, bold: true);
+        UIHelper.SetLayout(_messageFooter.gameObject, preferredHeight: 48);
 
         _messageCard.gameObject.SetActive(false);
     }
@@ -1441,62 +1722,84 @@ public class FireScenarioUIController : MonoBehaviour
     // =================================================================
     private void ResolveSceneTargets()
     {
+        var flow = FireScenarioFlowManager.Instance;
+
         // 1. Fire Transform
-        if (_fireTransform == null)
+        if (_fireTransform == null || !_fireTransform.gameObject.activeInHierarchy)
         {
-            var go = GameObject.Find("VFX_Fire_01_Small") ?? GameObject.Find("Flames") ?? GameObject.Find("Hazard") ?? GameObject.Find("Electric Box");
-            if (go != null)
+            if (flow != null && flow.fire != null) _fireTransform = flow.fire.transform;
+            if (_fireTransform == null || !_fireTransform.gameObject.activeInHierarchy)
             {
-                _fireTransform = go.transform;
-            }
-            else
-            {
-                var fireExt = FindAnyObjectByType<FireExtinguishable>();
-                if (fireExt != null)
+                var fireExt = FindAnyObjectByType<FireExtinguishable>(FindObjectsInactive.Include);
+                if (fireExt != null && fireExt.gameObject.activeInHierarchy)
+                {
                     _fireTransform = fireExt.transform;
+                }
+                else
+                {
+                    var go = GameObject.Find("VFX_Fire_01_Small") ?? GameObject.Find("Flames") ?? GameObject.Find("Hazard") ?? GameObject.Find("Electric Box");
+                    if (go != null) _fireTransform = go.transform;
+                }
             }
         }
 
         // 2. Alarm Transform
-        if (_alarmTransform == null)
+        if (_alarmTransform == null || !_alarmTransform.gameObject.activeInHierarchy)
         {
-            var alarm = FindAnyObjectByType<AlarmInteraction>();
-            if (alarm != null)
-                _alarmTransform = alarm.transform;
-            else
+            if (flow != null && flow.alarmInteraction != null) _alarmTransform = flow.alarmInteraction.transform;
+            if (_alarmTransform == null || !_alarmTransform.gameObject.activeInHierarchy)
             {
-                var go = GameObject.Find("FireAlarm") ?? GameObject.Find("EUfFireAlarm") ?? GameObject.Find("Alarm");
-                if (go != null) _alarmTransform = go.transform;
+                var alarm = FindAnyObjectByType<AlarmInteraction>(FindObjectsInactive.Include);
+                if (alarm != null)
+                    _alarmTransform = alarm.transform;
+                else
+                {
+                    var go = GameObject.Find("FireAlarm") ?? GameObject.Find("EUfFireAlarm") ?? GameObject.Find("Alarm");
+                    if (go != null) _alarmTransform = go.transform;
+                }
             }
         }
 
         // 3. Display Extinguisher Transform (for Step 3 selection ONLY)
-        if (_displayExtinguisherTransform == null)
+        if (_displayExtinguisherTransform == null || !_displayExtinguisherTransform.gameObject.activeInHierarchy)
         {
-            var dispGO = GameObject.Find("FireExt_display") ?? GameObject.Find("ExtinguisherDisplay");
-            if (dispGO != null) _displayExtinguisherTransform = dispGO.transform;
-            else
+            if (flow != null && flow.displayPickup != null) _displayExtinguisherTransform = flow.displayPickup.transform;
+            if (_displayExtinguisherTransform == null || !_displayExtinguisherTransform.gameObject.activeInHierarchy)
             {
                 var dispComp = FindAnyObjectByType<ExtinguisherDisplayPickup>(FindObjectsInactive.Include);
-                if (dispComp != null) _displayExtinguisherTransform = dispComp.transform;
+                if (dispComp != null)
+                    _displayExtinguisherTransform = dispComp.transform;
+                else
+                {
+                    var dispGO = GameObject.Find("FireExt_display") ?? GameObject.Find("ExtinguisherDisplay");
+                    if (dispGO != null) _displayExtinguisherTransform = dispGO.transform;
+                }
             }
         }
 
         // 4. Actual Picked-Up Extinguisher (for Steps 4, 5, 6)
         if (_actualExtinguisherTransform == null || !_actualExtinguisherTransform.gameObject.activeInHierarchy)
         {
-            var pickupComp = FindAnyObjectByType<ExtinguisherPickup>(FindObjectsInactive.Include);
-            if (pickupComp != null)
-                _actualExtinguisherTransform = pickupComp.transform;
-            else
+            if (flow != null && flow.originalPickup != null) _actualExtinguisherTransform = flow.originalPickup.transform;
+            if (_actualExtinguisherTransform == null)
             {
-                var go = GameObject.Find("FireExt");
-                if (go != null) _actualExtinguisherTransform = go.transform;
+                var pickupComp = FindAnyObjectByType<ExtinguisherPickup>(FindObjectsInactive.Include);
+                if (pickupComp != null)
+                    _actualExtinguisherTransform = pickupComp.transform;
+                else
+                {
+                    var go = GameObject.Find("FireExt");
+                    if (go != null) _actualExtinguisherTransform = go.transform;
+                }
             }
         }
 
         // 5. Actual Safety Pin on Picked-Up Extinguisher (Step 4)
-        if (_actualExtinguisherTransform != null)
+        if (flow != null && flow.pinInteraction != null)
+        {
+            _pinTransform = flow.pinInteraction.transform;
+        }
+        if (_pinTransform == null && _actualExtinguisherTransform != null)
         {
             var pin = _actualExtinguisherTransform.GetComponentInChildren<FirePinInteraction>(true);
             if (pin != null) _pinTransform = pin.transform;
@@ -1508,12 +1811,16 @@ public class FireScenarioUIController : MonoBehaviour
         }
         if (_pinTransform == null)
         {
-            var pinComp = FindAnyObjectByType<FirePinInteraction>();
+            var pinComp = FindAnyObjectByType<FirePinInteraction>(FindObjectsInactive.Include);
             if (pinComp != null) _pinTransform = pinComp.transform;
         }
 
-        // 6. Actual Operating Lever / Handle on Picked-Up Extinguisher (Step 6)
-        if (_actualExtinguisherTransform != null)
+        // 6. Actual Operating Lever / Handle on Picked-Up Extinguisher (Step 5 & 6)
+        if (flow != null && flow.gripInteraction != null)
+        {
+            _handleTransform = flow.gripInteraction.transform;
+        }
+        if (_handleTransform == null && _actualExtinguisherTransform != null)
         {
             var grip = _actualExtinguisherTransform.GetComponentInChildren<ExtinguisherGripInteraction>(true);
             if (grip != null) _handleTransform = grip.transform;
@@ -1525,7 +1832,7 @@ public class FireScenarioUIController : MonoBehaviour
         }
         if (_handleTransform == null)
         {
-            var gripComp = FindAnyObjectByType<ExtinguisherGripInteraction>();
+            var gripComp = FindAnyObjectByType<ExtinguisherGripInteraction>(FindObjectsInactive.Include);
             if (gripComp != null) _handleTransform = gripComp.transform;
         }
 
@@ -1542,18 +1849,112 @@ public class FireScenarioUIController : MonoBehaviour
         }
     }
 
+    private Vector3 GetTargetWorldPosition(Transform target, int step)
+    {
+        if (target == null && step != 1) return Vector3.zero;
+
+        // Step 1: Fire Hazard (Precise flame world position)
+        if (step == 1)
+        {
+            var flow = FireScenarioFlowManager.Instance;
+            if (flow != null && flow.fire != null)
+            {
+                return flow.fire.FireWorldPosition;
+            }
+            if (target != null)
+            {
+                var col = target.GetComponent<Collider>();
+                if (col != null) return col.bounds.center + Vector3.up * 0.15f;
+                return target.position + Vector3.up * 0.25f;
+            }
+            return Vector3.zero;
+        }
+
+        // Step 4: Safety Pin (Use pull-ring renderer center or BoxCollider center)
+        if (step == 4)
+        {
+            Transform pullRing = target.Find("SafetyPullRing");
+            if (pullRing != null && pullRing.gameObject.activeInHierarchy)
+            {
+                var r = pullRing.GetComponent<Renderer>();
+                if (r != null) return r.bounds.center;
+                return pullRing.position;
+            }
+
+            var col = target.GetComponent<Collider>();
+            if (col != null) return col.bounds.center;
+
+            var rend = target.GetComponentInChildren<Renderer>();
+            if (rend != null) return rend.bounds.center;
+
+            return target.position;
+        }
+
+        // Step 5: Operating Handle / Aim at Base of Fire
+        if (step == 5)
+        {
+            var flow = FireScenarioFlowManager.Instance;
+            if (flow != null && flow.fire != null)
+            {
+                return flow.fire.FireWorldPosition;
+            }
+            if (_fireTransform != null)
+            {
+                return _fireTransform.position;
+            }
+            var col = target.GetComponent<Collider>();
+            if (col != null) return col.bounds.center;
+
+            var rend = target.GetComponentInChildren<Renderer>();
+            if (rend != null) return rend.bounds.center;
+
+            return target.position;
+        }
+
+        // Step 2: Fire Alarm
+        if (step == 2)
+        {
+            var col = target.GetComponent<Collider>();
+            if (col != null) return col.bounds.center;
+            return target.position;
+        }
+
+        // Step 3: Extinguisher Display Prop
+        if (step == 3)
+        {
+            var col = target.GetComponent<Collider>();
+            if (col != null) return col.bounds.center;
+            return target.position + Vector3.up * 0.35f;
+        }
+
+        var generalCol = target.GetComponent<Collider>();
+        if (generalCol != null) return generalCol.bounds.center;
+
+        return target.position;
+    }
+
     private void UpdateWorldTargetPosition()
     {
         if (_targetIndicatorBox == null || _safeArea == null) return;
 
-        // Dynamically ensure targets are resolved on current active extinguisher
-        if (_currentStepIndex >= 4 && (_pinTransform == null || _handleTransform == null))
+        // Dynamically ensure targets are resolved for the active step
+        if ((_currentStepIndex == 1 && (_fireTransform == null || !_fireTransform.gameObject.activeInHierarchy)) ||
+            (_currentStepIndex == 2 && (_alarmTransform == null || !_alarmTransform.gameObject.activeInHierarchy)) ||
+            (_currentStepIndex == 3 && (_displayExtinguisherTransform == null || !_displayExtinguisherTransform.gameObject.activeInHierarchy)) ||
+            (_currentStepIndex >= 4 && (_pinTransform == null || _handleTransform == null)))
+        {
             ResolveSceneTargets();
+        }
 
         // Resolve active target based on current step
         switch (_currentStepIndex)
         {
             case 1:
+                if (_fireTransform == null)
+                {
+                    var flow = FireScenarioFlowManager.Instance;
+                    if (flow != null && flow.fire != null) _fireTransform = flow.fire.transform;
+                }
                 _activeTargetTransform = _fireTransform;
                 break;
             case 2:
@@ -1568,16 +1969,33 @@ public class FireScenarioUIController : MonoBehaviour
                 _activeTargetTransform = _pinTransform;
                 break;
             case 5:
-                // Step 5: Points to actual fire base
-                _activeTargetTransform = _fireTransform;
+                // Step 5: Grip / Aim -> Points to fire base target (or extinguisher handle)
+                if (_fireTransform == null)
+                {
+                    var flow = FireScenarioFlowManager.Instance;
+                    if (flow != null && flow.fire != null) _fireTransform = flow.fire.transform;
+                }
+                _activeTargetTransform = _fireTransform != null ? _fireTransform : (_handleTransform != null ? _handleTransform : _actualExtinguisherTransform);
                 break;
             case 6:
-                // Step 6: Points strictly to actual grip/handle on PICKED-UP extinguisher
-                _activeTargetTransform = _handleTransform != null ? _handleTransform : _actualExtinguisherTransform;
+                // Step 6: Spray step -> target the fire so green pill floats above fire
+                if (_fireTransform == null)
+                {
+                    var flow = FireScenarioFlowManager.Instance;
+                    if (flow != null && flow.fire != null) _fireTransform = flow.fire.transform;
+                }
+                _activeTargetTransform = _fireTransform;
                 break;
             default:
                 _activeTargetTransform = null;
                 break;
+        }
+
+        // If no active target or step 6, hide indicator box
+        if (_activeTargetTransform == null || _currentStepIndex == 6 || _currentStepIndex == 0)
+        {
+            _targetIndicatorBox.gameObject.SetActive(false);
+            return;
         }
 
         // If target is pin in Step 4 and it has been removed / deactivated, hide indicator
@@ -1588,18 +2006,12 @@ public class FireScenarioUIController : MonoBehaviour
         }
 
         Camera cam = Camera.main;
-        if (cam != null && _activeTargetTransform != null && !cam.orthographic)
+        if (cam != null && !cam.orthographic)
         {
-            Vector3 worldPos = _activeTargetTransform.position;
-
-            // Offset to center of visual object
-            if (_currentStepIndex == 1 || _currentStepIndex == 5)
-                worldPos += Vector3.up * 0.25f;
-            else if (_currentStepIndex == 6 && _handleTransform != null)
-                worldPos += Vector3.up * 0.05f;
-
+            Vector3 worldPos = GetTargetWorldPosition(_activeTargetTransform, _currentStepIndex);
             Vector3 screenPoint = cam.WorldToScreenPoint(worldPos);
 
+            // In front of camera
             if (screenPoint.z > 0.1f)
             {
                 // Convert screen point to SafeArea local coordinates
@@ -1616,29 +2028,102 @@ public class FireScenarioUIController : MonoBehaviour
                     return;
                 }
             }
+            else
+            {
+                // Behind camera: hide indicator rather than placing at screen center
+                _targetIndicatorBox.gameObject.SetActive(false);
+                return;
+            }
         }
 
-        // Mock / Editor preview fallback: anchor at reference center
-        if (HasCompletionPanel)
-        {
-            _targetIndicatorBox.anchoredPosition = new Vector2(0, 180);
-            _targetIndicatorBox.gameObject.SetActive(true);
-        }
-        else
+        // In Editor preview when not in AR:
+        if (!Application.isPlaying)
         {
             _targetIndicatorBox.anchoredPosition = new Vector2(0, 60);
             _targetIndicatorBox.gameObject.SetActive(!_isPlacementMode);
         }
+        else
+        {
+            _targetIndicatorBox.gameObject.SetActive(false);
+        }
     }
 
     // =================================================================
-    //  STEP GUIDANCE & STATE TRANSITIONS (Matches Reference Image)
+    //  VOICE GUIDANCE AUDIO PLAYBACK
+    // =================================================================
+    private void OnVoiceButtonClicked()
+    {
+        AppLanguage lang = GetCurrentLanguage();
+
+        if (VoiceGuidanceManager.Instance == null) return;
+
+        if (VoiceGuidanceManager.Instance.IsSpeaking)
+        {
+            VoiceGuidanceManager.Instance.StopSpeaking();
+            SetVoiceButtonIdle();
+            return;
+        }
+
+        if (lang == AppLanguage.Santali && !VoiceGuidanceManager.Instance.IsAvailableFor(AppLanguage.Santali, _currentStepIndex))
+        {
+            // Genuine Santali handling: Do NOT substitute Hindi/English audio.
+            if (_voiceFeedbackRoutine != null) StopCoroutine(_voiceFeedbackRoutine);
+            string pendingMsg = Loc("fire.voice.santaliPending", "Santali voice guidance pending recording");
+            _voiceFeedbackRoutine = StartCoroutine(VoiceButtonPulseRoutine(pendingMsg));
+            ShowFeedback(pendingMsg, FeedbackType.Correct, 0);
+            return;
+        }
+
+        SetVoiceButtonActive();
+        VoiceGuidanceManager.Instance.PlayStepVoice(_currentStepIndex, lang);
+
+        VoiceGuidanceManager.Instance.OnSpeakingChanged -= HandleVoiceSpeakingChanged;
+        VoiceGuidanceManager.Instance.OnSpeakingChanged += HandleVoiceSpeakingChanged;
+    }
+
+    private void HandleVoiceSpeakingChanged(bool isSpeaking)
+    {
+        if (isSpeaking)
+            SetVoiceButtonActive();
+        else
+            SetVoiceButtonIdle();
+    }
+
+    private void SetVoiceButtonActive()
+    {
+        _voiceActive = true;
+        if (_voiceBtnBg   != null) _voiceBtnBg.color   = Hex("#DC2626");  // red active
+        if (_voiceBtnText != null) _voiceBtnText.text   = Loc("fire.voice.stopBtn", "Stop");
+        if (_voiceBtnIcon != null) _voiceBtnIcon.sprite = CreateStopSprite();
+    }
+
+    private void SetVoiceButtonIdle()
+    {
+        _voiceActive = false;
+        if (_voiceBtnBg   != null) _voiceBtnBg.color   = Hex("#2563EB");  // royal blue idle
+        if (_voiceBtnText != null) _voiceBtnText.text   = Loc("fire.voice.listenBtn", "Listen");
+        if (_voiceBtnIcon != null) _voiceBtnIcon.sprite = CreateSpeakerSprite();
+    }
+
+    private System.Collections.IEnumerator VoiceButtonPulseRoutine(string pulseText = null)
+    {
+        if (_voiceBtnBg != null) _voiceBtnBg.color = Hex("#F59E0B"); // amber
+        if (_voiceBtnText != null) _voiceBtnText.text = !string.IsNullOrEmpty(pulseText) ? pulseText : Loc("fire.voice.comingSoon", "Coming soon...");
+        yield return new WaitForSeconds(1.8f);
+        SetVoiceButtonIdle();
+    }
+
+    // =================================================================
+    //  STEP GUIDANCE & STATE TRANSITIONS (Single Authoritative Card)
     // =================================================================
     public void SetModuleInfo(string moduleTitle, int currentStep, int totalSteps)
     {
         _currentStepIndex = currentStep;
         _totalSteps = totalSteps > 0 ? totalSteps : 6;
         _isPlacementMode = (currentStep == 0);
+
+        // Always resolve scene targets on step transition
+        ResolveSceneTargets();
 
         if (_moduleTitleText != null) _moduleTitleText.text = moduleTitle;
 
@@ -1650,7 +2135,9 @@ public class FireScenarioUIController : MonoBehaviour
             }
             else
             {
-                _stepCounterText.text = $"Step {currentStep} of 6";
+                // Localized: "Step X of 6"
+                string template = Loc("fire.ar.stepOf", "Step {0} of {1}");
+                _stepCounterText.text = string.Format(template, currentStep, _totalSteps);
             }
         }
 
@@ -1673,6 +2160,9 @@ public class FireScenarioUIController : MonoBehaviour
 
         // Update target overlay visual components
         ApplyTargetOverlayForStep(currentStep);
+
+        // Update single guidance card
+        UpdateGuidanceCardForStep(currentStep);
     }
 
     private void ApplyTargetOverlayForStep(int step)
@@ -1694,46 +2184,133 @@ public class FireScenarioUIController : MonoBehaviour
         switch (step)
         {
             case 1: // Identify Hazard
-                if (_targetFloatingPillText != null) _targetFloatingPillText.text = "Tap to identify the fire";
+                if (_targetFloatingPillText != null) _targetFloatingPillText.text = Loc("fire.actionHint.step1", "Tap on Fire");
                 if (_targetBracketsGO != null) _targetBracketsGO.SetActive(true);
                 if (_targetHandIconGO != null) _targetHandIconGO.SetActive(true);
-                _targetIndicatorBox.sizeDelta = new Vector2(230, 230);
+                _targetIndicatorBox.sizeDelta = new Vector2(250, 250);
                 break;
 
             case 2: // Activate Alarm
-                if (_targetFloatingPillText != null) _targetFloatingPillText.text = "Tap to pull alarm";
+                if (_targetFloatingPillText != null) _targetFloatingPillText.text = Loc("fire.actionHint.step2", "Tap Alarm");
                 if (_targetBracketsGO != null) _targetBracketsGO.SetActive(true);
                 if (_targetHandIconGO != null) _targetHandIconGO.SetActive(true);
-                _targetIndicatorBox.sizeDelta = new Vector2(200, 220);
+                _targetIndicatorBox.sizeDelta = new Vector2(220, 240);
                 break;
 
             case 3: // Select Extinguisher
-                if (_targetFloatingPillText != null) _targetFloatingPillText.text = "Tap to pick up";
+                if (_targetFloatingPillText != null) _targetFloatingPillText.text = Loc("fire.actionHint.step3", "Select CO₂ Extinguisher");
                 if (_targetBracketsGO != null) _targetBracketsGO.SetActive(true);
                 if (_targetHandIconGO != null) _targetHandIconGO.SetActive(true);
-                _targetIndicatorBox.sizeDelta = new Vector2(160, 310);
+                _targetIndicatorBox.sizeDelta = new Vector2(180, 330);
                 break;
 
             case 4: // Remove Safety Pin
-                if (_targetFloatingPillText != null) _targetFloatingPillText.text = "Tap to remove pin";
+                if (_targetFloatingPillText != null) _targetFloatingPillText.text = Loc("fire.actionHint.step4", "Pull Safety Pin");
                 if (_targetRingGO != null) _targetRingGO.SetActive(true);
                 if (_targetHandIconGO != null) _targetHandIconGO.SetActive(true);
-                _targetIndicatorBox.sizeDelta = new Vector2(180, 180);
+                _targetIndicatorBox.sizeDelta = new Vector2(200, 200);
                 break;
 
-            case 5: // Aim at Base
-                if (_targetFloatingPillText != null) _targetFloatingPillText.text = "Aim at the base";
+            case 5: // Grip / Aim
+                if (_targetFloatingPillText != null) _targetFloatingPillText.text = Loc("fire.actionHint.step5", "Aim Horn at Base");
                 if (_targetCrosshairGO != null) _targetCrosshairGO.SetActive(true);
-                _targetIndicatorBox.sizeDelta = new Vector2(180, 180);
+                if (_targetRingGO != null) _targetRingGO.SetActive(false);
+                if (_targetHandIconGO != null) _targetHandIconGO.SetActive(false);
+                _targetIndicatorBox.sizeDelta = new Vector2(200, 200);
                 break;
 
-            case 6: // Spray & Extinguish (Guidance pointing to handle)
-                if (_targetFloatingPillText != null) _targetFloatingPillText.text = "Press and hold to spray";
-                if (_targetHandIconGO != null) _targetHandIconGO.SetActive(true);
-                if (_targetRingGO != null) _targetRingGO.SetActive(true);
-                _targetIndicatorBox.sizeDelta = new Vector2(160, 160);
+            case 6: // Spray & Extinguish
+                if (_targetFloatingPillText != null) _targetFloatingPillText.text = Loc("fire.actionHint.step6", "Press & Hold to Spray");
+                if (_targetFloatingPillGO != null) _targetFloatingPillGO.SetActive(true);
+                if (_targetRingGO != null) _targetRingGO.SetActive(false);
+                if (_targetHandIconGO != null) _targetHandIconGO.SetActive(false);
+                if (_targetCrosshairGO != null) _targetCrosshairGO.SetActive(false);
+                if (_targetBracketsGO != null) _targetBracketsGO.SetActive(false);
+                _targetIndicatorBox.sizeDelta = new Vector2(260, 60);
                 break;
         }
+    }
+
+    private void UpdateGuidanceCardForStep(int step)
+    {
+        bool showCard = (step >= 1 && step <= 6) && !HasCompletionPanel && !_isPlacementMode;
+        if (_guidanceCard != null) _guidanceCard.gameObject.SetActive(showCard);
+        if (!showCard) return;
+
+        string iconType = "flame";
+        Color badgeColor = Hex("#FEE2E2");
+        Color iconColor  = Hex("#EF4444");
+        string title    = "";
+        string body     = "";
+
+        switch (step)
+        {
+            case 1:
+                iconType   = "flame";
+                badgeColor = Hex("#FEE2E2");
+                iconColor  = Hex("#EF4444");
+                title      = Loc("fire.sop.step1.title", "Identify Hazard");
+                body       = Loc("fire.sop.step1.desc", "Look around your surroundings to locate the highlighted electrical fire and tap it in AR.");
+                break;
+            case 2:
+                iconType   = "alarm";
+                badgeColor = Hex("#FEE2E2");
+                iconColor  = Hex("#EF4444");
+                title      = Loc("fire.sop.step2.title", "Activate Fire Alarm");
+                body       = Loc("fire.sop.step2.desc", "Locate the fire alarm and tap it to activate the alarm as instructed.");
+                break;
+            case 3:
+                iconType   = "extinguisher";
+                badgeColor = Hex("#FEE2E2");
+                iconColor  = Hex("#EF4444");
+                title      = Loc("fire.sop.step3.title", "Select Correct Extinguisher");
+                body       = Loc("fire.sop.step3.desc", "Choose the correct extinguisher for the electrical fire.");
+                break;
+            case 4:
+                iconType   = "pin";
+                badgeColor = Hex("#FEE2E2");
+                iconColor  = Hex("#EF4444");
+                title      = Loc("fire.sop.step4.title", "Pull Safety Pin");
+                body       = Loc("fire.sop.step4.desc", "Locate the extinguisher safety pin and pull it out before operating the extinguisher.");
+                break;
+            case 5:
+                iconType   = "target";
+                badgeColor = Hex("#DBEAFE");
+                iconColor  = Hex("#2563EB");
+                title      = Loc("fire.sop.step5.title", "Aim at Base of Fire");
+                body       = Loc("fire.sop.step5.desc", "Hold the insulated discharge horn. Aim directly at the fuel base of the fire, not at the high flames.");
+                break;
+            case 6:
+                iconType   = "spray";
+                badgeColor = Hex("#E0F2FE");
+                iconColor  = Hex("#0284C7");
+                title      = Loc("fire.sop.step6.title", "Press Handle & Spray");
+                body       = Loc("fire.sop.step6.desc", "Press and hold the handle and maintain valid spray on the base of the fire until the fire is extinguished.");
+                break;
+        }
+
+        if (_guidanceCardIconBadge != null)
+            _guidanceCardIconBadge.color = badgeColor;
+
+        if (_guidanceCardIconImg != null)
+        {
+            _guidanceCardIconImg.sprite = CreateProceduralIcon(iconType);
+            _guidanceCardIconImg.color  = iconColor;
+        }
+
+        if (_guidanceCardTitle != null) _guidanceCardTitle.text = title;
+        if (_guidanceCardBody  != null) _guidanceCardBody.text  = body;
+
+        // Step 6 progress section toggle
+        if (_sprayProgressSection != null)
+            _sprayProgressSection.gameObject.SetActive(step == 6);
+
+        // Stop previous audio and reset button with proper speaker icon & localized label
+        if (VoiceGuidanceManager.Instance != null && VoiceGuidanceManager.Instance.IsSpeaking)
+        {
+            VoiceGuidanceManager.Instance.StopSpeaking();
+        }
+        SetVoiceButtonIdle();
     }
 
     public void ShowGuidance(string stepBadge, string title, string body, string hint,
@@ -1745,8 +2322,7 @@ public class FireScenarioUIController : MonoBehaviour
 
         if (_isPlacementMode || _currentStepIndex == 0)
         {
-            if (_normalCard != null) _normalCard.gameObject.SetActive(false);
-            if (_sprayCardContainer != null) _sprayCardContainer.gameObject.SetActive(false);
+            if (_guidanceCard != null) _guidanceCard.gameObject.SetActive(false);
 
             bool isIntro = (ctaLabel != null && ctaLabel.ToLower().Contains("start")) || 
                            (stepBadge != null && stepBadge.ToLower().Contains("surakshaar"));
@@ -1773,7 +2349,7 @@ public class FireScenarioUIController : MonoBehaviour
                 {
                     _placementBottomCard.gameObject.SetActive(true);
                     if (_placementStatusText != null)
-                        _placementStatusText.text = "Scanning for surface...";
+                        _placementStatusText.text = Loc("fire.ar.placementPrompt", "Scanning for surface...");
                 }
             }
             return;
@@ -1785,58 +2361,19 @@ public class FireScenarioUIController : MonoBehaviour
         if (_placementReticle != null) _placementReticle.gameObject.SetActive(false);
         if (_placementBottomCard != null) _placementBottomCard.gameObject.SetActive(false);
 
-        if (_currentStepIndex == 6)
+        // Show single guidance card
+        if (_guidanceCard != null)
         {
-            // Step 6: Two-Tier Spray Progress Card
-            if (_normalCard != null) _normalCard.gameObject.SetActive(false);
-            if (_sprayCardContainer != null)
-            {
-                _sprayCardContainer.gameObject.SetActive(true);
-                if (_sprayCardBottomTitle != null) _sprayCardBottomTitle.text = "Keep spraying at the base.";
-            }
-        }
-        else
-        {
-            // Steps 1 to 5: Compact White Rounded Card
-            if (_sprayCardContainer != null) _sprayCardContainer.gameObject.SetActive(false);
-            if (_normalCard != null)
-            {
-                _normalCard.gameObject.SetActive(true);
+            _guidanceCard.gameObject.SetActive(true);
 
-                // Configure Icon & Text matching reference image
-                switch (_currentStepIndex)
-                {
-                    case 1:
-                        if (_normalCardIconImg != null) _normalCardIconImg.sprite = CreateProceduralIcon("flame");
-                        _normalCardTitle.text = "Identify the Hazard";
-                        _normalCardSubtitle.text = "Find the electrical fire.";
-                        break;
-                    case 2:
-                        if (_normalCardIconImg != null) _normalCardIconImg.sprite = CreateProceduralIcon("alarm");
-                        _normalCardTitle.text = "Activate the Alarm";
-                        _normalCardSubtitle.text = "Pull the emergency alarm.";
-                        break;
-                    case 3:
-                        if (_normalCardIconImg != null) _normalCardIconImg.sprite = CreateProceduralIcon("extinguisher");
-                        _normalCardTitle.text = "Select CO<sub>2</sub> Extinguisher";
-                        _normalCardSubtitle.text = "Pick the correct CO<sub>2</sub> extinguisher.";
-                        break;
-                    case 4:
-                        if (_normalCardIconImg != null) _normalCardIconImg.sprite = CreateProceduralIcon("pin");
-                        _normalCardTitle.text = "Remove Safety Pin";
-                        _normalCardSubtitle.text = "Pull the safety pin.";
-                        break;
-                    case 5:
-                        if (_normalCardIconImg != null) _normalCardIconImg.sprite = CreateProceduralIcon("target");
-                        _normalCardTitle.text = "Aim at Base";
-                        _normalCardSubtitle.text = "Point the nozzle at the base of the fire.";
-                        break;
-                    default:
-                        _normalCardTitle.text = title;
-                        _normalCardSubtitle.text = body;
-                        break;
-                }
-            }
+            if (!string.IsNullOrEmpty(title) && _guidanceCardTitle != null)
+                _guidanceCardTitle.text = title;
+
+            if (!string.IsNullOrEmpty(body) && _guidanceCardBody != null)
+                _guidanceCardBody.text = body;
+
+            if (_sprayProgressSection != null)
+                _sprayProgressSection.gameObject.SetActive(_currentStepIndex == 6);
         }
 
         HasCard = true;
@@ -1845,11 +2382,14 @@ public class FireScenarioUIController : MonoBehaviour
     public void HideGuidance()
     {
         if (_startCard != null) _startCard.gameObject.SetActive(false);
-        if (_normalCard != null) _normalCard.gameObject.SetActive(false);
-        if (_sprayCardContainer != null) _sprayCardContainer.gameObject.SetActive(false);
         if (_placementBottomCard != null) _placementBottomCard.gameObject.SetActive(false);
         if (_placementPill != null) _placementPill.gameObject.SetActive(false);
         if (_placementReticle != null) _placementReticle.gameObject.SetActive(false);
+        if (_guidanceCard != null) _guidanceCard.gameObject.SetActive(false);
+        if (VoiceGuidanceManager.Instance != null && VoiceGuidanceManager.Instance.IsSpeaking)
+        {
+            VoiceGuidanceManager.Instance.StopSpeaking();
+        }
         HasCard = false;
     }
 
@@ -1860,7 +2400,7 @@ public class FireScenarioUIController : MonoBehaviour
     }
 
     // ─────────────────────────────────────────────────────────────────
-    //  STEP 6 SPRAY PROGRESS CONTROL
+    //  STEP 6 SPRAY PROGRESS CONTROL (Integrated inside Single Card)
     // ─────────────────────────────────────────────────────────────────
     public void ShowProgress(float value01, string label)
     {
@@ -1869,10 +2409,10 @@ public class FireScenarioUIController : MonoBehaviour
 
     public void ShowProgress(float value01, float elapsedSeconds, float totalSeconds, string label)
     {
-        if (_sprayCardContainer != null)
+        if (_guidanceCard != null && _sprayProgressSection != null)
         {
-            _sprayCardContainer.gameObject.SetActive(true);
-            if (_normalCard != null) _normalCard.gameObject.SetActive(false);
+            _guidanceCard.gameObject.SetActive(true);
+            _sprayProgressSection.gameObject.SetActive(true);
 
             float clamped = Mathf.Clamp01(value01);
             if (_sprayProgressFill != null)
@@ -1880,24 +2420,25 @@ public class FireScenarioUIController : MonoBehaviour
 
             float total = totalSeconds > 0f ? totalSeconds : 10f;
             float elapsed = Mathf.Clamp(elapsedSeconds, 0f, total);
+            float remaining = Mathf.Max(0f, total - elapsed);
             if (_sprayTimerText != null)
-                _sprayTimerText.text = $"{elapsed:F1} / {total:F1} s";
+                _sprayTimerText.text = $"{remaining:F1}s left ({elapsed:F1}/{total:F1}s)";
 
             if (_sprayStatusText != null)
             {
-                if (label != null && label.ToLower().Contains("off target"))
+                if (label != null && (label.ToLower().Contains("off target") || label.ToLower().Contains("paused")))
                 {
-                    _sprayStatusText.text = "Off Target";
+                    _sprayStatusText.text  = Loc("fire.ar.sprayPaused", "Off Target (Paused)");
                     _sprayStatusText.color = Hex("#F59E0B"); // Amber
                 }
-                else if (elapsed > 0.05f)
+                else if (label != null && label.ToLower().Contains("spraying"))
                 {
-                    _sprayStatusText.text = "Spraying...";
+                    _sprayStatusText.text  = Loc("fire.ar.spraying", "Spraying...");
                     _sprayStatusText.color = Hex("#4ADE80"); // Mint Green
                 }
                 else
                 {
-                    _sprayStatusText.text = "Ready to Spray";
+                    _sprayStatusText.text  = Loc("fire.ar.readyToSpray", "Ready to Spray");
                     _sprayStatusText.color = Color.white;
                 }
             }
@@ -1906,8 +2447,8 @@ public class FireScenarioUIController : MonoBehaviour
 
     public void HideProgress()
     {
-        if (_sprayCardContainer != null)
-            _sprayCardContainer.gameObject.SetActive(false);
+        if (_sprayProgressSection != null)
+            _sprayProgressSection.gameObject.SetActive(false);
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -1935,9 +2476,9 @@ public class FireScenarioUIController : MonoBehaviour
 
         if (_completionCard != null)
         {
-            if (_compTitle != null) _compTitle.text = "Fire Extinguished!";
-            if (_compSubtitle != null) _compSubtitle.text = "Well Done!";
-            if (_compTimeText != null) _compTimeText.text = string.IsNullOrEmpty(timeTaken) ? "05:42" : timeTaken;
+            if (_compTitle    != null) _compTitle.text    = Loc("fire.ar.completionTitle", "Fire Extinguished!");
+            if (_compSubtitle != null) _compSubtitle.text = Loc("fire.ar.completionSub",   "Excellent work! Proceed to assessment.");
+            if (_compTimeText  != null) _compTimeText.text  = string.IsNullOrEmpty(timeTaken) ? "05:42" : timeTaken;
             if (_compScoreText != null) _compScoreText.text = $"{score}";
 
             _homeCallback = onContinue;
@@ -1953,7 +2494,7 @@ public class FireScenarioUIController : MonoBehaviour
 
     public void ShowCompletion(string body, UnityAction retry, UnityAction home)
     {
-        ShowCompletion("Fire Extinguished!", body, 100, "05:42", home);
+        ShowCompletion(Loc("fire.ar.completionTitle", "Fire Extinguished!"), body, 100, "05:42", home);
     }
 
     public void HideCompletion()
@@ -2032,8 +2573,7 @@ public class FireScenarioUIController : MonoBehaviour
 
     private IEnumerator DoTransientToast(string title, string subtitle, float duration, System.Action onDismiss)
     {
-        HideGuidance();
-
+        // DO NOT hide guidance card: toast banner is displayed in the upper area (0.62f) while guidance is at the bottom (0.04f).
         if (SurakshaAR.Core.AudioManager.Instance != null)
             SurakshaAR.Core.AudioManager.Instance.PlayCorrect();
 
@@ -2049,6 +2589,12 @@ public class FireScenarioUIController : MonoBehaviour
         if (_toastBox != null)
             _toastBox.gameObject.SetActive(false);
 
+        // Ensure current step guidance card remains visible and active after toast dismisses
+        if (_currentStepIndex >= 1 && _currentStepIndex <= 6 && !HasCompletionPanel && !_isPlacementMode)
+        {
+            UpdateGuidanceCardForStep(_currentStepIndex);
+        }
+
         onDismiss?.Invoke();
     }
 
@@ -2057,7 +2603,12 @@ public class FireScenarioUIController : MonoBehaviour
     // ─────────────────────────────────────────────────────────────────
     public void SetScore(int score, int delta = 0)
     {
-        if (_scoreText != null) _scoreText.text = $"Score: {score}";
+        if (_scoreText != null)
+        {
+            // Localized "Score:" label followed by numeric value
+            string scoreLabel = Loc("fire.ar.score", "Score:");
+            _scoreText.text = $"{scoreLabel} {score}";
+        }
 
         if (delta != 0 && _scoreDeltaText != null)
         {
@@ -2123,15 +2674,14 @@ public class FireScenarioUIController : MonoBehaviour
             {
                 _btnPlaceScenario.gameObject.SetActive(planeDetected);
                 var btnTxt = _btnPlaceScenario.GetComponentInChildren<TextMeshProUGUI>();
-                if (btnTxt != null) btnTxt.text = "PLACE TRAINING SCENARIO";
+                if (btnTxt != null) btnTxt.text = "PLACE SCENARIO";
                 var btnRT = _btnPlaceScenario.GetComponent<RectTransform>();
-                if (btnRT != null) btnRT.sizeDelta = new Vector2(230, 44);
+                if (btnRT != null) btnRT.sizeDelta = new Vector2(250, 70);
             }
         }
 
         if (_targetIndicatorBox != null) _targetIndicatorBox.gameObject.SetActive(false);
-        if (_normalCard != null) _normalCard.gameObject.SetActive(false);
-        if (_sprayCardContainer != null) _sprayCardContainer.gameObject.SetActive(false);
+        if (_guidanceCard != null) _guidanceCard.gameObject.SetActive(false);
     }
 
     // ─────────────────────────────────────────────────────────────────

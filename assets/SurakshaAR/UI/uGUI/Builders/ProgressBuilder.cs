@@ -16,8 +16,8 @@ namespace SurakshaAR.UI.Builders
     /// </summary>
     public static class ProgressBuilder
     {
-        private const float NAV_H = 200f;
-        private const float HDR_H = 200f;
+        private const float NAV_H = 204f;
+        private const float HDR_H = 210f;
         private static Color Hex(string h) => UIColors.Hex(h);
 
         public static GameObject Build()
@@ -48,28 +48,28 @@ namespace SurakshaAR.UI.Builders
             headerImg.color  = Hex("#0A3C36");
             headerImg.sprite = UIHelper.GetWhiteSprite();
 
-            var headerRow = UIHelper.MakeHorizontal("Row", header, 18,
-                new RectOffset(28, 28, 24, 20),
+            var headerRow = UIHelper.MakeHorizontal("Row", header, 20,
+                new RectOffset(32, 32, 28, 24),
                 childForceWidth: false, childForceHeight: false);
             UIHelper.Stretch(headerRow, 0, 0, 0, 0);
             headerRow.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
-            var backBtn = UIHelper.MakeButton("btn-back", headerRow, "‹", 44,
+            var backBtn = UIHelper.MakeButton("btn-back", headerRow, "‹", 48,
                 new Color(1, 1, 1, 0.18f), Color.white, 24);
-            UIHelper.SetLayout(backBtn.gameObject, preferredWidth: 72, minWidth: 72,
-                preferredHeight: 72, minHeight: 72);
+            UIHelper.SetLayout(backBtn.gameObject, preferredWidth: 76, minWidth: 76,
+                preferredHeight: 76, minHeight: 76);
 
             var titleCol = UIHelper.MakeVertical("TitleCol", headerRow, 6);
             UIHelper.SetLayout(titleCol.gameObject, flexibleWidth: true, flexWidth: 1);
             titleCol.GetComponent<VerticalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
             var titleLbl = UIHelper.MakeLabel("label-title", titleCol,
-                "Training Progress", 38, Color.white, TextAlignmentOptions.Left, bold: true);
-            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 48, minHeight: 48);
+                "Training Progress", 52, Color.white, TextAlignmentOptions.Left, bold: true);
+            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 64, minHeight: 60);
 
             var subLbl = UIHelper.MakeLabel("label-sub", titleCol,
-                "Track Your Learning Journey", 24, Hex("#A7F3D0"), TextAlignmentOptions.Left);
-            UIHelper.SetLayout(subLbl.gameObject, preferredHeight: 32, minHeight: 32);
+                "Track Your Learning Journey", 32, Hex("#A7F3D0"), TextAlignmentOptions.Left);
+            UIHelper.SetLayout(subLbl.gameObject, preferredHeight: 40, minHeight: 38);
 
             // ── 3. Scrollable Body ────────────────────────────────────────
             var scrollRoot = UIHelper.MakeRect("ScrollArea", root.transform);
@@ -115,8 +115,8 @@ namespace SurakshaAR.UI.Builders
 
             // ── Section: Module Status Breakdown ──────────────────────────
             var secBreakdown = UIHelper.MakeLabel("label-sec-breakdown", content,
-                "Module Status Breakdown", 32, UIColors.TextPrimary, bold: true);
-            UIHelper.SetLayout(secBreakdown.gameObject, preferredHeight: 44, minHeight: 44);
+                "Module Status Breakdown", 44, UIColors.TextPrimary, bold: true);
+            UIHelper.SetLayout(secBreakdown.gameObject, preferredHeight: 56, minHeight: 54);
 
             // Module rows (names/icons set by controller at runtime)
             BuildModuleRow(content, "row-fire",       "Fire & Explosion Response",
@@ -134,8 +134,8 @@ namespace SurakshaAR.UI.Builders
 
             // ── Section: Knowledge Retention Tracking ─────────────────────
             var secRetention = UIHelper.MakeLabel("label-sec-retention", content,
-                "Knowledge Retention Tracking", 32, UIColors.TextPrimary, bold: true);
-            UIHelper.SetLayout(secRetention.gameObject, preferredHeight: 44, minHeight: 44);
+                "Knowledge Retention Tracking", 44, UIColors.TextPrimary, bold: true);
+            UIHelper.SetLayout(secRetention.gameObject, preferredHeight: 56, minHeight: 54);
 
             BuildRetentionTable(content);
 
@@ -149,12 +149,12 @@ namespace SurakshaAR.UI.Builders
         {
             var card = new GameObject("SummaryCard");
             card.transform.SetParent(parent, false);
-            UIHelper.SetLayout(card, preferredHeight: 240, minHeight: 240);
+            UIHelper.SetLayout(card, preferredHeight: 330, minHeight: 310);
 
             var cardImg = card.AddComponent<Image>();
             cardImg.color  = Color.white;
             cardImg.sprite = UIHelper.GetWhiteSprite();
-            UIHelper.SetImageRoundedSprite(cardImg, 24);
+            UIHelper.SetImageRoundedSprite(cardImg, 26);
 
             var shadow = card.AddComponent<Shadow>();
             shadow.effectColor    = new Color(0, 0, 0, 0.06f);
@@ -168,20 +168,20 @@ namespace SurakshaAR.UI.Builders
             // Top row: "X of Y Modules Completed" + percent label
             var headRow = UIHelper.MakeHorizontal("HeadRow", inner, 12,
                 childForceWidth: false, childForceHeight: false);
-            UIHelper.SetLayout(headRow.gameObject, preferredHeight: 56, minHeight: 56);
+            UIHelper.SetLayout(headRow.gameObject, preferredHeight: 64, minHeight: 58);
             headRow.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
             var sumTitle = UIHelper.MakeLabel("label-modules-summary", headRow,
-                "0 of 0 Modules Completed", 32, UIColors.TextPrimary,
+                "0 of 0 Modules Completed", 44, UIColors.TextPrimary,
                 TextAlignmentOptions.Left, bold: true);
             sumTitle.textWrappingMode = TextWrappingModes.Normal;
             UIHelper.SetLayout(sumTitle.gameObject, flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 56, minHeight: 56);
+                preferredHeight: 60, minHeight: 48);
 
             var pctLbl = UIHelper.MakeLabel("label-percentage", headRow,
-                "0%", 44, Hex("#059669"), TextAlignmentOptions.Right, bold: true);
+                "0%", 64, Hex("#059669"), TextAlignmentOptions.Right, bold: true);
             UIHelper.SetLayout(pctLbl.gameObject,
-                preferredWidth: 110, minWidth: 110, preferredHeight: 56, minHeight: 56);
+                preferredWidth: 150, minWidth: 120, preferredHeight: 66, minHeight: 52);
 
             // Progress bar track
             var track = UIHelper.MakeRect("Track", inner);
@@ -204,9 +204,10 @@ namespace SurakshaAR.UI.Builders
             // Subtitle
             var subTip = UIHelper.MakeLabel("label-summary-tip", inner,
                 "Complete all modules to build a safer and stronger tomorrow.",
-                22, UIColors.TextSecondary, TextAlignmentOptions.Left);
+                34, UIColors.TextSecondary, TextAlignmentOptions.Left);
+            subTip.lineSpacing = 3f;
             subTip.textWrappingMode = TextWrappingModes.Normal;
-            UIHelper.SetLayout(subTip.gameObject, preferredHeight: 60, minHeight: 60);
+            UIHelper.SetLayout(subTip.gameObject, preferredHeight: 88, minHeight: 64);
         }
 
         // =================================================================
@@ -220,35 +221,35 @@ namespace SurakshaAR.UI.Builders
         {
             var item = new GameObject(rowName);
             item.transform.SetParent(parent, false);
-            UIHelper.SetLayout(item, preferredHeight: 160, minHeight: 150);
+            UIHelper.SetLayout(item, preferredHeight: 260, minHeight: 220);
 
             var itemImg = item.AddComponent<Image>();
             itemImg.color  = locked ? Hex("#F8FAFC") : Color.white;
             itemImg.sprite = UIHelper.GetWhiteSprite();
-            UIHelper.SetImageRoundedSprite(itemImg, 20);
+            UIHelper.SetImageRoundedSprite(itemImg, 24);
 
             var outline = item.AddComponent<Outline>();
             outline.effectColor    = Hex("#E2E8F0");
             outline.effectDistance = new Vector2(1.5f, -1.5f);
 
             var inner = UIHelper.MakeHorizontal("Inner", item.transform, 18,
-                new RectOffset(20, 20, 16, 16),
+                new RectOffset(22, 22, 18, 18),
                 childForceWidth: false, childForceHeight: false);
             UIHelper.Stretch(inner, 0, 0, 0, 0);
             inner.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
-            // Icon box (72×72)
+            // Icon box (104×104)
             var iconBox = UIHelper.MakeRect("IconBox", inner);
             UIHelper.SetLayout(iconBox.gameObject,
-                preferredWidth: 72, minWidth: 72, preferredHeight: 72, minHeight: 72);
+                preferredWidth: 104, minWidth: 104, preferredHeight: 104, minHeight: 104);
             var iconBoxImg = iconBox.gameObject.AddComponent<Image>();
             iconBoxImg.color  = iconBg;
-            UIHelper.SetImageRoundedSprite(iconBoxImg, 18);
+            UIHelper.SetImageRoundedSprite(iconBoxImg, 20);
 
             if (iconSprite != null)
             {
                 var iconGO  = UIHelper.MakeRect("Icon", iconBox);
-                UIHelper.AnchorCenter(iconGO, 48, 48);
+                UIHelper.AnchorCenter(iconGO, 60, 60);
                 var iconImg = iconGO.gameObject.AddComponent<Image>();
                 iconImg.sprite         = iconSprite;
                 iconImg.preserveAspect = true;
@@ -259,50 +260,52 @@ namespace SurakshaAR.UI.Builders
             // Text column
             var textCol = UIHelper.MakeVertical("TextCol", inner, 6);
             UIHelper.SetLayout(textCol.gameObject, flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 120, minHeight: 80);
+                preferredHeight: 190, minHeight: 130);
             textCol.GetComponent<VerticalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
             var titleColor = Hex("#0F172A");
             var descColor  = Hex("#64748B");
 
             var titleLbl = UIHelper.MakeLabel($"label-title-{rowName}", textCol,
-                title, 28, titleColor, TextAlignmentOptions.Left, bold: true);
+                title, 42, titleColor, TextAlignmentOptions.Left, bold: true);
+            titleLbl.lineSpacing = 2f;
             titleLbl.textWrappingMode = TextWrappingModes.Normal;
-            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 56, minHeight: 36);
+            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 68, minHeight: 48);
 
             var descLbl = UIHelper.MakeLabel($"label-desc-{rowName}", textCol,
-                desc, 20, descColor, TextAlignmentOptions.Left);
+                desc, 32, descColor, TextAlignmentOptions.Left);
+            descLbl.lineSpacing = 3f;
             descLbl.textWrappingMode = TextWrappingModes.Normal;
-            UIHelper.SetLayout(descLbl.gameObject, preferredHeight: 48, minHeight: 32);
+            UIHelper.SetLayout(descLbl.gameObject, preferredHeight: 88, minHeight: 56);
 
             // Right side: status + chevron horizontal row
             var rightRow = UIHelper.MakeHorizontal("RightRow", inner, 12,
                 new RectOffset(0, 0, 0, 0),
                 childForceWidth: false, childForceHeight: false);
-            UIHelper.SetLayout(rightRow.gameObject, preferredWidth: 260, minWidth: 200,
+            UIHelper.SetLayout(rightRow.gameObject, preferredWidth: 270, minWidth: 210,
                 preferredHeight: 60);
             rightRow.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleRight;
 
             if (locked)
             {
                 var notStartedLbl = UIHelper.MakeLabel($"label-status-{rowName}", rightRow,
-                    "Not Started", 24, Hex("#64748B"), TextAlignmentOptions.Right, bold: true);
-                UIHelper.SetLayout(notStartedLbl.gameObject, preferredHeight: 36, minHeight: 36);
+                    "Not Started", 30, Hex("#64748B"), TextAlignmentOptions.Right, bold: true);
+                UIHelper.SetLayout(notStartedLbl.gameObject, preferredHeight: 42, minHeight: 40);
             }
             else
             {
                 // Placeholder — will be overwritten by controller with real data
                 var statusLbl = UIHelper.MakeLabel($"label-status-{rowName}", rightRow,
-                    "—", 24, Hex("#059669"), TextAlignmentOptions.Right, bold: true);
-                UIHelper.SetLayout(statusLbl.gameObject, preferredHeight: 36, minHeight: 36);
+                    "—", 30, Hex("#059669"), TextAlignmentOptions.Right, bold: true);
+                UIHelper.SetLayout(statusLbl.gameObject, preferredHeight: 42, minHeight: 40);
             }
 
             // Arrow chevron
             var arrowColor = Hex("#94A3B8");
             var arrowLbl   = UIHelper.MakeLabel($"arrow-{rowName}", rightRow,
-                ">", 32, arrowColor, TextAlignmentOptions.Right, bold: false);
+                ">", 44, arrowColor, TextAlignmentOptions.Right, bold: false);
             UIHelper.SetLayout(arrowLbl.gameObject,
-                preferredWidth: 24, minWidth: 24, preferredHeight: 36, minHeight: 36);
+                preferredWidth: 28, minWidth: 24, preferredHeight: 42, minHeight: 40);
         }
 
         // =================================================================
@@ -312,12 +315,12 @@ namespace SurakshaAR.UI.Builders
         {
             var card = new GameObject("RetentionCard");
             card.transform.SetParent(parent, false);
-            UIHelper.SetLayout(card, preferredHeight: 520, minHeight: 400);
+            UIHelper.SetLayout(card, preferredHeight: 620, minHeight: 500);
 
             var cardImg = card.AddComponent<Image>();
             cardImg.color  = Color.white;
             cardImg.sprite = UIHelper.GetWhiteSprite();
-            UIHelper.SetImageRoundedSprite(cardImg, 24);
+            UIHelper.SetImageRoundedSprite(cardImg, 26);
 
             var shadow = card.AddComponent<Shadow>();
             shadow.effectColor    = new Color(0, 0, 0, 0.06f);
@@ -354,20 +357,20 @@ namespace SurakshaAR.UI.Builders
             var row = UIHelper.MakeHorizontal("HeaderRow", parent, 12,
                 new RectOffset(0, 0, 0, 16),
                 childForceWidth: false, childForceHeight: false);
-            UIHelper.SetLayout(row.gameObject, preferredHeight: 48, minHeight: 48);
+            UIHelper.SetLayout(row.gameObject, preferredHeight: 54, minHeight: 52);
             row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
             var modLbl = UIHelper.MakeLabel("HeaderModule", row,
-                "Module", 24, Hex("#64748B"), TextAlignmentOptions.Left, bold: true);
-            UIHelper.SetLayout(modLbl.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 36);
+                "Module", 32, Hex("#64748B"), TextAlignmentOptions.Left, bold: true);
+            UIHelper.SetLayout(modLbl.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 40);
 
             var dateLbl = UIHelper.MakeLabel("HeaderDate", row,
-                "Last Assessment", 24, Hex("#64748B"), TextAlignmentOptions.Center, bold: true);
-            UIHelper.SetLayout(dateLbl.gameObject, preferredWidth: 260, minWidth: 220, preferredHeight: 36);
+                "Last Assessment", 32, Hex("#64748B"), TextAlignmentOptions.Center, bold: true);
+            UIHelper.SetLayout(dateLbl.gameObject, preferredWidth: 260, minWidth: 220, preferredHeight: 40);
 
             var scoreLbl = UIHelper.MakeLabel("HeaderScore", row,
-                "Retention Score", 24, Hex("#059669"), TextAlignmentOptions.Right, bold: true);
-            UIHelper.SetLayout(scoreLbl.gameObject, preferredWidth: 260, minWidth: 220, preferredHeight: 36);
+                "Retention Score", 32, Hex("#059669"), TextAlignmentOptions.Right, bold: true);
+            UIHelper.SetLayout(scoreLbl.gameObject, preferredWidth: 260, minWidth: 220, preferredHeight: 40);
         }
 
         private static void BuildRetentionDataRow(
@@ -380,26 +383,26 @@ namespace SurakshaAR.UI.Builders
             var row = UIHelper.MakeHorizontal($"Row-{dateLabelName}", parent, 8,
                 new RectOffset(0, 0, 18, 18),
                 childForceWidth: false, childForceHeight: false);
-            UIHelper.SetLayout(row.gameObject, preferredHeight: 68, minHeight: 56);
+            UIHelper.SetLayout(row.gameObject, preferredHeight: 108, minHeight: 84);
             row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
             var nameColor = locked ? Hex("#94A3B8") : Hex("#1E293B");
 
             var modLbl = UIHelper.MakeLabel($"label-ret-module-{dateLabelName}", row,
-                moduleName, 24, nameColor, TextAlignmentOptions.Left);
+                moduleName, 32, nameColor, TextAlignmentOptions.Left);
             modLbl.textWrappingMode = TextWrappingModes.Normal;
-            UIHelper.SetLayout(modLbl.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 60);
+            UIHelper.SetLayout(modLbl.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 76);
 
             // Date cell
             var dateLbl = UIHelper.MakeLabel(dateLabelName, row,
-                locked ? "–" : "Not Available", 24, Hex("#64748B"), TextAlignmentOptions.Center);
-            UIHelper.SetLayout(dateLbl.gameObject, preferredWidth: 260, minWidth: 220, preferredHeight: 36);
+                locked ? "–" : "Not Available", 28, Hex("#64748B"), TextAlignmentOptions.Center);
+            UIHelper.SetLayout(dateLbl.gameObject, preferredWidth: 260, minWidth: 220, preferredHeight: 40);
 
             // Score cell
             var scoreColor = locked ? Hex("#94A3B8") : Hex("#94A3B8");
             var scoreLbl   = UIHelper.MakeLabel(scoreLabelName, row,
-                "Not Available", 24, scoreColor, TextAlignmentOptions.Right, bold: false);
-            UIHelper.SetLayout(scoreLbl.gameObject, preferredWidth: 260, minWidth: 220, preferredHeight: 36);
+                "Not Available", 30, scoreColor, TextAlignmentOptions.Right, bold: true);
+            UIHelper.SetLayout(scoreLbl.gameObject, preferredWidth: 260, minWidth: 220, preferredHeight: 40);
         }
 
         private static void BuildDivider(Transform parent, Color color)
@@ -445,15 +448,15 @@ namespace SurakshaAR.UI.Builders
 
             MakeNavItem(navRT, "nav-home",         "Home",         UIHelper.GetHomeSprite(),  false);
             MakeNavItem(navRT, "nav-learn",        "Learn",        UIHelper.GetBookSprite(),  false);
-            MakeNavItem(navRT, "nav-progress",     "Progress",     UIHelper.GetChartSprite(), true);
+            MakeNavItem(navRT, "nav-progress",     "My Progress",  UIHelper.GetChartSprite(), true);
             MakeNavItem(navRT, "nav-certificates", "Certificates", UIHelper.GetMedalSprite(), false);
         }
 
         private static void MakeNavItem(Transform parent, string name,
             string label, Sprite iconSprite, bool active)
         {
-            var activeColor = active ? Hex("#059669") : Hex("#94A3B8");
-            var fontSize    = 28f;
+            var activeColor = active ? Hex("#16A34A") : Hex("#94A3B8");
+            var fontSize    = 30f;
 
             var btn = UIHelper.MakeButton(name, parent, "", 14,
                 UIColors.Transparent, Color.white, 0);
@@ -466,22 +469,23 @@ namespace SurakshaAR.UI.Builders
 
             var iconBox = UIHelper.MakeRect("IconBox", col);
             UIHelper.SetLayout(iconBox.gameObject,
-                preferredWidth: 68, minWidth: 68, preferredHeight: 68, minHeight: 68);
+                preferredWidth: 58, minWidth: 58, preferredHeight: 58, minHeight: 58);
             var iconImg = iconBox.gameObject.AddComponent<Image>();
             iconImg.sprite        = iconSprite;
             iconImg.color         = activeColor;
             iconImg.preserveAspect = true;
 
             var lbl = UIHelper.MakeLabel($"label-{name}", col, label,
-                fontSize, activeColor, TextAlignmentOptions.Center, bold: active);
-            UIHelper.SetLayout(lbl.gameObject, preferredHeight: 36, minHeight: 36);
+                fontSize, activeColor, TextAlignmentOptions.Center, bold: true);
+            UIHelper.SetLayout(lbl.gameObject, preferredHeight: 46, minHeight: 46);
 
             var indRow = UIHelper.MakeRect("IndRow", col);
-            UIHelper.SetLayout(indRow.gameObject, preferredHeight: 5, minHeight: 5);
+            UIHelper.SetLayout(indRow.gameObject,
+                preferredWidth: 54, minWidth: 54, preferredHeight: 6, minHeight: 6);
             if (active)
             {
                 var indImg = indRow.gameObject.AddComponent<Image>();
-                indImg.color  = Hex("#059669");
+                indImg.color  = Hex("#16A34A");
                 indImg.sprite = UIHelper.GetWhiteSprite();
                 UIHelper.SetImageRoundedSprite(indImg, 3);
             }

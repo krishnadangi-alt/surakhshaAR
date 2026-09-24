@@ -1,20 +1,81 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FilterBar } from '../components/common/FilterBar';
 import { DataTable } from '../components/common/DataTable';
 import type { Column } from '../components/common/DataTable';
 import { StatusBadge } from '../components/common/StatusBadge';
 import { AssignRetrainingModal } from '../components/modals/AssignRetrainingModal';
-import { mockRetrainingRecords, mockWorkers } from '../mockData';
+import { fetchDashboardAssessments, fetchDashboardWorkers } from '../services/api';
 import type { RetrainingRecord, Worker } from '../types';
 import { TrendingUp, Plus } from 'lucide-react';
-import { MOCK_TODAY_ISO } from '../utils/dateRange';
+import { getTodayIso } from '../utils/dateRange';
 
 export const RetrainingScreen: React.FC = () => {
-  const [records, setRecords] = useState<RetrainingRecord[]>(mockRetrainingRecords);
+  const [records, setRecords] = useState<RetrainingRecord[]>([]);
+  const [workers, setWorkers] = useState<Worker[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [selectedWorker, setSelectedWorker] = useState<Worker | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadData = () => {
+      Promise.all([fetchDashboardAssessments(), fetchDashboardWorkers()]).then(([assessments, liveWorkers]) => {
+        if (!isMounted) return;
+        if (liveWorkers) {
+          const mappedWorkers: Worker[] = liveWorkers.map((w) => ({
+            id: `w-${w.id}`,
+            employeeId: w.employee_id,
+            name: w.name,
+            sector: 'Dhanbad Region-1',
+            plant: 'Jharia Shaft Mine #4',
+            role: w.role,
+            email: `${w.name.toLowerCase().replace(/[^a-z0-9]/g, '.')}@mining.jh.gov.in`,
+            phone: '+91 98765 43210',
+            joinedDate: '2026-01-15',
+            safetyOfficer: 'Inspector R. K. Soren',
+            overallStatus: w.certified_modules.length > 0 ? 'Certified' : 'In Training',
+            modulesCompleted: w.certified_modules.length,
+            latestScore: 80,
+            overallCompetency: 'Competent',
+            lastAssessmentDate: '2026-09-17',
+            certificatesCount: w.certified_modules.length,
+            retrainingStatus: 'Completed',
+            moduleProgressList: [],
+            weakAreas: [],
+            retentionDay1: 'Completed',
+            retentionDay7: 'Scheduled',
+            retentionDay30: 'Scheduled',
+          }));
+          setWorkers(mappedWorkers);
+        }
+        const derived: RetrainingRecord[] = (assessments || [])
+          .filter((a) => a.passFail === 'Fail' || a.criticalErrors > 0)
+          .map((a, idx) => ({
+            id: `ret-${idx + 1}`,
+            workerId: a.workerId,
+            workerName: a.workerName,
+            employeeId: a.employeeId,
+            sector: 'Dhanbad Region-1',
+            moduleId: a.moduleId,
+            moduleName: a.moduleName,
+            weakArea: a.criticalErrorDetails || 'SOP Procedure Compliance / Technique',
+            recommendation: 'Mandatory AR SOP refresher & supervised drill',
+            status: 'Recommended' as const,
+            assignedDate: a.dateTime ? a.dateTime.slice(0, 10) : getTodayIso(),
+            initialScore: a.score,
+          }));
+        setRecords(derived);
+      });
+    };
+
+    loadData();
+    const interval = setInterval(loadData, 3000);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, []);
 
   // Filter logic
   const filteredRecords = records.filter((r) => {
@@ -127,7 +188,7 @@ export const RetrainingScreen: React.FC = () => {
 
         <button
           onClick={() => {
-            setSelectedWorker(mockWorkers[1]);
+            if (workers.length > 0) setSelectedWorker(workers[0]);
             setIsModalOpen(true);
           }}
           className="flex items-center gap-1.5 rounded-lg bg-suraksha-blue px-3.5 py-2 text-xs font-bold text-white hover:bg-suraksha-blueHover transition shadow-subtle"
@@ -201,7 +262,7 @@ export const RetrainingScreen: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onAssign={(data) => {
-          const worker = mockWorkers.find((w) => w.id === data.workerId);
+          const worker = workers.find((w) => w.id === data.workerId);
           if (!worker) return;
           const moduleName =
             data.moduleId === 'm-fire'
@@ -221,7 +282,7 @@ export const RetrainingScreen: React.FC = () => {
               weakArea: data.weakArea,
               recommendation: 'Individualized remedial AR path assigned',
               status: 'Assigned',
-              assignedDate: MOCK_TODAY_ISO,
+              assignedDate: getTodayIso(),
               initialScore: worker.latestScore,
             },
             ...prev,

@@ -1,5 +1,4 @@
-"""Dashboard endpoints."""
-
+import os
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -15,6 +14,7 @@ from app.schemas.certificate import CertificateOut
 from app.schemas.dashboard import (
     CommonWeaknessOut,
     DashboardAssessmentItemOut,
+    DashboardCertificateItemOut,
     DashboardSummaryOut,
     DashboardWorkerDetailOut,
     DashboardWorkerListOut,
@@ -312,3 +312,38 @@ def dashboard_assessments_list(
             )
         )
     return result
+
+
+@router.get("/certificates", response_model=list[DashboardCertificateItemOut])
+def dashboard_certificates_list(
+    admin: AuthUser = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    rows = (
+        db.query(Certificate, Worker, Module)
+        .join(Worker, Certificate.worker_id == Worker.id)
+        .join(Module, Certificate.module_id == Module.id)
+        .order_by(Certificate.issued_at.desc())
+        .all()
+    )
+    return [
+        DashboardCertificateItemOut(
+            id=c.id,
+            certificate_number=c.certificate_number,
+            worker_id=w.id,
+            worker_name=w.name,
+            employee_id=w.employee_id,
+            module_id=m.id,
+            module_name=m.name,
+            module_code=m.code,
+            issued_at=c.issued_at.isoformat() if c.issued_at else "",
+            valid_until=c.valid_until.isoformat() if c.valid_until else "",
+            status=c.status,
+            score=c.score_snapshot if c.score_snapshot is not None else 90.0,
+            competency_status=c.competency_snapshot or "Grade A (Competent)",
+            public_image_url=c.public_image_url,
+            has_image=bool(c.image_path and os.path.exists(c.image_path)),
+            has_pdf=bool(c.pdf_path and os.path.exists(c.pdf_path)),
+        )
+        for c, w, m in rows
+    ]

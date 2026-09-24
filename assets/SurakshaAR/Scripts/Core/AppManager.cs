@@ -13,13 +13,24 @@ namespace SurakshaAR.Core
     [RequireComponent(typeof(UIManager))]
     public class AppManager : MonoBehaviour
     {
-        public static AppManager Instance { get; private set; }
+        public static AppManager Instance { get; set; }
 
         public UIManager UIManager { get; private set; }
         public UIController UIController { get; private set; }
-        public AppState AppState { get; private set; }
-        public LocalizationManager Localization { get; private set; }
-        public FontManager FontManager { get; private set; }
+        public AppState AppState { get; set; }
+        public LocalizationManager Localization { get; set; }
+        public FontManager FontManager { get; set; }
+
+        public void InitializeForTesting(AppLanguage language = AppLanguage.Hindi)
+        {
+            Instance = this;
+            AppState = GetComponent<AppState>() ?? gameObject.AddComponent<AppState>();
+            FontManager = FontManager.Instance;
+            Localization = new LocalizationManager();
+            Localization.SetLanguage(language);
+            CurrentProfile = UserProfileData.Load();
+            Modules = ModuleCatalog.BuildDefaultCatalog();
+        }
         public ARModuleLauncher ARLauncher { get; private set; }
         public AudioManager Audio { get; private set; }
         public AssessmentTelemetryManager Telemetry { get; private set; }
@@ -42,7 +53,7 @@ namespace SurakshaAR.Core
             }
 
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            if (Application.isPlaying) DontDestroyOnLoad(gameObject);
 
             UIManager = GetComponent<UIManager>() ?? gameObject.AddComponent<UIManager>();
             UIController = GetComponent<UIController>() ?? gameObject.AddComponent<UIController>();

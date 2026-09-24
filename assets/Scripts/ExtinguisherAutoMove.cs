@@ -13,12 +13,21 @@ public class ExtinguisherAutoMove : MonoBehaviour
 
     public void MoveToTarget()
     {
+        // Guard: If the extinguisher is held by the worker (ExtinguisherPickup.IsHeld()),
+        // DO NOT allow ExtinguisherAutoMove to fight or override camera attachment.
+        var pickup = GetComponent<ExtinguisherPickup>() ?? GetComponentInParent<ExtinguisherPickup>();
+        if (pickup != null && pickup.IsHeld())
+        {
+            Debug.Log("[ExtinguisherAutoMove] Extinguisher is held by camera. Skipping auto-move to preserve camera attachment.");
+            return;
+        }
+
         if (hasMoved)
             return;
 
         if (extinguisherTarget == null)
         {
-            Debug.LogError("Extinguisher Target is not assigned.");
+            Debug.LogWarning("[ExtinguisherAutoMove] Extinguisher Target is not assigned. Skipping auto-move.");
             return;
         }
 

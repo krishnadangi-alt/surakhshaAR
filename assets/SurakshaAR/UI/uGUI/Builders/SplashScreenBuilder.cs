@@ -36,33 +36,37 @@ namespace SurakshaAR.UI.Builders
                 bg.sprite = UIHelper.GetWhiteSprite();
             }
 
-            // 2. Training description subtitle located right under the 4 badges
+            // Make splash tap-to-advance
+            var tapBtn = root.AddComponent<Button>();
+            tapBtn.transition = Selectable.Transition.None;
+
+            // 2. Training description subtitle located right under the 4 badges (30px SemiBold)
             var subGO = UIHelper.MakeRect("label-tagline", root.transform);
             subGO.anchorMin = new Vector2(0.5f, 0.47f);
             subGO.anchorMax = new Vector2(0.5f, 0.47f);
             subGO.pivot = new Vector2(0.5f, 0.5f);
-            subGO.sizeDelta = new Vector2(700f, 70f);
+            subGO.sizeDelta = new Vector2(820f, 100f);
 
             var subTMP = UIHelper.AddTMP(subGO.gameObject);
             subTMP.text = "AR-Based Safety Training\nfor Industrial Workers";
-            subTMP.fontSize = 28f;
-            subTMP.fontStyle = FontStyles.Normal;
+            subTMP.fontSize = 34f;
+            subTMP.fontStyle = FontStyles.Bold;
             subTMP.color = UIColors.Hex("#475569");
             subTMP.alignment = TextAlignmentOptions.Center;
-            subTMP.lineSpacing = 10f;
+            subTMP.lineSpacing = 12f;
             subTMP.raycastTarget = false;
 
-            // 3. Frosted Pill Loading Bar (matching Reference 3 Left)
+            // 3. Frosted Pill Loading Bar (matching Reference 3 Left, 52px high)
             var barArea = UIHelper.MakeRect("ProgressBarArea", root.transform);
             barArea.anchorMin = new Vector2(0.5f, 0.165f);
             barArea.anchorMax = new Vector2(0.5f, 0.165f);
             barArea.pivot = new Vector2(0.5f, 0.5f);
-            barArea.sizeDelta = new Vector2(560f, 44f);
+            barArea.sizeDelta = new Vector2(620f, 52f);
 
             var barBg = barArea.gameObject.AddComponent<Image>();
             barBg.color = new Color(1f, 1f, 1f, 0.55f);
             barBg.sprite = UIHelper.GetWhiteSprite();
-            UIHelper.SetImageRoundedSprite(barBg, 22);
+            UIHelper.SetImageRoundedSprite(barBg, 26);
 
             var barBorder = barArea.gameObject.AddComponent<Outline>();
             barBorder.effectColor = new Color(1f, 1f, 1f, 0.85f);
@@ -77,7 +81,7 @@ namespace SurakshaAR.UI.Builders
             var barFillImg = barFillRT.gameObject.AddComponent<Image>();
             barFillImg.color = UIColors.Hex("#0B1B32"); // Dark Navy
             barFillImg.sprite = UIHelper.GetWhiteSprite();
-            UIHelper.SetImageRoundedSprite(barFillImg, 16);
+            UIHelper.SetImageRoundedSprite(barFillImg, 20);
 
             return root;
         }

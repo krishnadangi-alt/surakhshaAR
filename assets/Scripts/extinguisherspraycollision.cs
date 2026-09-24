@@ -31,13 +31,14 @@ using UnityEngine;
 public class ExtinguisherSprayCollision : MonoBehaviour
 {
     [Header("Particle System References")]
-    [Tooltip("Visual particle system - collision is strictly disabled")]
+    [Tooltip("Visual particle system - sends collision messages without culling or bouncing particles")]
     [SerializeField] private ParticleSystem visualParticles;
     [Tooltip("Invisible collision probe - collision is enabled")]
     [SerializeField] private ParticleSystem collisionParticles;
 
-    [Header("Nozzle Origin")]
+    [Header("Nozzle Origin & Spray Source")]
     [SerializeField] private Transform sprayOrigin;
+    [SerializeField] private DryPowderSpray powderSpray;
 
     [Header("Fire Targets")]
     [SerializeField] private FireExtinguishable fireExtinguishable;
@@ -45,18 +46,22 @@ public class ExtinguisherSprayCollision : MonoBehaviour
 
     [Header("Extinguishing Settings")]
     [SerializeField] private float requiredTime = 10f;
-    [Tooltip("Grace period in seconds for momentary single-frame optical tracking jitter.")]
-    [SerializeField] private float collisionGracePeriod = 0.35f;
+    [Tooltip("Grace period in seconds for mobile AR frame pacing and sweep transitions.")]
+    [SerializeField] private float collisionGracePeriod = 2.5f;
 
-    [Header("Aim Detection (Nozzle to FireBase Cone)")]
-    [SerializeField] private float aimMaxDistance = 5.0f;
-    [SerializeField] private float aimMaxAngleDeg = 35.0f;
+    [Header("Aim Detection (Nozzle & Camera to Fire Base)")]
+    [SerializeField] private float aimMaxDistance = 25.0f;
+    [SerializeField] private float aimMaxAngleDeg = 65.0f;
 
     // Runtime state
     private float contactTimer = 0f;
     private float lastHitTime = -999f;
+    private float timeSinceContactLost = 0f;
     private bool isTouchingFire = false;
     private bool isExtinguished = false;
+    // Previous-frame contact state for transition detection
+    private bool _wasTouchingFire = false;
+    private bool _interruptionEventRaised = false;
 
     private Transform fireTargetTransform;
     private Transform cameraTransform;
@@ -73,6 +78,9 @@ public class ExtinguisherSprayCollision : MonoBehaviour
 
     private void Awake()
     {
+        requiredTime = 10f;
+        aimMaxDistance = Mathf.Max(aimMaxDistance, 25.0f);
+        aimMaxAngleDeg = Mathf.Max(aimMaxAngleDeg, 65.0f);
         ResolveParticlesAndOrigin();
         ConfigureCollisionDetector();
     }
@@ -84,12 +92,20 @@ public class ExtinguisherSprayCollision : MonoBehaviour
             fireExtinguishable.RegisterSprayCollision(this);
     }
 
-    private void OnEnable()
+    public void ResetCollisionTimer()
     {
         isExtinguished = false;
         contactTimer = 0f;
+        timeSinceContactLost = 0f;
         isTouchingFire = false;
         lastHitTime = -999f;
+        if (fireExtinguishable != null)
+            fireExtinguishable.NotifyParticleCollision(false, 0f, requiredTime);
+    }
+
+    private void OnEnable()
+    {
+        ResetCollisionTimer();
     }
 
     private void Update()
@@ -97,34 +113,134 @@ public class ExtinguisherSprayCollision : MonoBehaviour
         if (isExtinguished)
             return;
 
-        if (fireExtinguishable == null || fireTargetTransform == null || pinInteraction == null || gripInteraction == null)
+        if (fireExtinguishable == null || fireTargetTransform == null || pinInteraction == null || gripInteraction == null || powderSpray == null)
             ResolveReferences();
 
-        // 5-Point Continuous Contact Rule:
-        // 1. Safety pin removed
-        bool pinRemoved = pinInteraction == null || pinInteraction.IsPinRemoved();
-
-        // 2. Extinguisher handle pressed/held
-        bool handleHeld = gripInteraction == null || gripInteraction.IsGripHeld;
-
-        // 3. Spray particles actively emitting
+        // 1. Spray particles actively emitting:
+        // Check visual particles, collision probe, DryPowderSpray, or children
         bool isSpraying = (visualParticles != null && visualParticles.isPlaying) ||
-                          (collisionParticles != null && collisionParticles.isPlaying);
+                          (collisionParticles != null && collisionParticles.isPlaying) ||
+                          (powderSpray != null && powderSpray.IsSpraying());
 
-        // 4. Physical particle collision within grace period (0.35s)
-        bool physicsHit = isSpraying && (Time.time - lastHitTime <= collisionGracePeriod);
+        if (!isSpraying && sprayOrigin != null)
+        {
+            var allPS = sprayOrigin.GetComponentsInChildren<ParticleSystem>(true);
+            foreach (var ps in allPS)
+            {
+                if (ps != null && ps.isPlaying)
+                {
+                    isSpraying = true;
+                    break;
+                }
+            }
+        }
 
-        // 5. Directional aim cone hit from actual nozzle to fire base
-        bool aimHit = isSpraying && CheckAimAtFire();
+        var flow = FireScenarioFlowManager.Instance ?? FindAnyObjectByType<FireScenarioFlowManager>(FindObjectsInactive.Include);
 
-        // VALID EXTINGUISHING = PIN REMOVED + HANDLE HELD + SPRAY ACTIVE + (PHYSICS HIT OR CORRECT AIM)
-        bool validContact = pinRemoved && handleHeld && isSpraying && (physicsHit || aimHit);
+        // 2. Extinguisher handle pressed/held:
+        bool handleHeld = false;
+        if (gripInteraction != null)
+        {
+            handleHeld = gripInteraction.IsGripHeld;
+        }
+        else if (flow != null && flow.gripInteraction != null)
+        {
+            handleHeld = flow.gripInteraction.IsGripHeld;
+        }
+        else
+        {
+            var g = FindAnyObjectByType<ExtinguisherGripInteraction>(FindObjectsInactive.Include);
+            if (g != null) handleHeld = g.IsGripHeld;
+            else handleHeld = isSpraying;
+        }
+
+        // Active discharge: if handle is held OR spray particles active
+        bool isActivelyDischarging = isSpraying || handleHeld;
+        if (handleHeld && powderSpray != null && !powderSpray.IsSpraying())
+        {
+            powderSpray.StartSpray();
+            isSpraying = true;
+        }
+
+        // 3. Safety pin removed:
+        bool pinRemoved = false;
+        if (pinInteraction != null)
+        {
+            pinRemoved = pinInteraction.IsPinRemoved();
+        }
+        else
+        {
+            var p = FindAnyObjectByType<FirePinInteraction>(FindObjectsInactive.Include);
+            if (p != null) pinRemoved = p.IsPinRemoved();
+            else pinRemoved = (flow != null && (int)flow.CurrentStage >= (int)FireScenarioFlowManager.Stage.Step5_AimBase);
+        }
+        if (!pinRemoved && isActivelyDischarging)
+        {
+            pinRemoved = true;
+        }
+
+        // 4. Directional aim cone or camera viewport hit on fire base
+        bool aimHit = isActivelyDischarging && CheckAimAtFire();
+
+        // If user is in Step5_AimBase and starts spraying towards the fire, auto-confirm aim
+        if (flow != null && flow.CurrentStage == FireScenarioFlowManager.Stage.Step5_AimBase && isActivelyDischarging && aimHit)
+        {
+            flow.OnAimConfirmed();
+        }
+
+        // 5. Physical particle collision within grace period
+        bool physicsHit = isActivelyDischarging && (Time.time - lastHitTime <= collisionGracePeriod);
+
+        // VALID EXTINGUISHING CONTACT:
+        // True if user is actively discharging/pressing towards the fire (aim hit or physics collision)
+        bool validContact = isActivelyDischarging && (physicsHit || aimHit);
+
+        // ── Contact State Transition Events ─────────────────────────────────────
+        if (validContact && !_wasTouchingFire)
+        {
+            // false → true: spray contact established
+            _interruptionEventRaised = false;
+            var fireFlow = flow ?? FindAnyObjectByType<FireScenarioFlowManager>(FindObjectsInactive.Include);
+            fireFlow?.EnsureFireAdapterPublic()?.RecordSprayContactValid();
+        }
+        else if (!validContact && _wasTouchingFire && !_interruptionEventRaised)
+        {
+            // true → false: contact lost, grace period starts
+            _interruptionEventRaised = true;
+            var fireFlow = flow ?? FindAnyObjectByType<FireScenarioFlowManager>(FindObjectsInactive.Include);
+            fireFlow?.EnsureFireAdapterPublic()?.RecordSprayInterrupted();
+        }
+        _wasTouchingFire = validContact;
         isTouchingFire = validContact;
 
-        // 10-Second Continuous contact accumulation & reset
-        if (validContact)
+        // ── 10-Second Continuous Timer & Grip Reset ────────────────────────────────
+        // If grip is released before 10s: timer resets to 0.0s immediately!
+        // If grip is kept pressed for 10s and pointed towards fire: fire goes off!
+        if (!handleHeld && !isSpraying)
         {
+            // GRIP RELEASED BEFORE 10 SECONDS: Reset timer immediately!
+            if (contactTimer > 0f)
+            {
+                contactTimer = 0f;
+                var fireFlow = flow ?? FindAnyObjectByType<FireScenarioFlowManager>(FindObjectsInactive.Include);
+                fireFlow?.EnsureFireAdapterPublic()?.RecordSprayContactReset();
+                Debug.Log("[ExtinguisherSprayCollision] Grip released before 10s -> Timer reset to 0.0s");
+            }
+            timeSinceContactLost = 0f;
+            isTouchingFire = false;
+
+            if (fireExtinguishable != null)
+                fireExtinguishable.NotifyParticleCollision(false, 0f, requiredTime);
+        }
+        else if (validContact)
+        {
+            // GRIP HELD & POINTED AT FIRE: Accumulate continuous timer towards 10.0s!
+            timeSinceContactLost = 0f;
             contactTimer += Time.deltaTime;
+
+            if (fireExtinguishable != null)
+                fireExtinguishable.NotifyParticleCollision(true, contactTimer, requiredTime);
+
             if (contactTimer >= requiredTime)
             {
                 contactTimer = requiredTime;
@@ -134,13 +250,13 @@ public class ExtinguisherSprayCollision : MonoBehaviour
         }
         else
         {
-            // Contact broken: timer resets to 0 according to continuous extinguishing requirement
-            contactTimer = 0f;
-        }
+            // GRIP HELD BUT AIMED AWAY: Pause timer accumulation while grip is held
+            timeSinceContactLost += Time.deltaTime;
+            isTouchingFire = false;
 
-        // Notify FireExtinguishable so HUD displays live continuous timer & progress
-        if (fireExtinguishable != null)
-            fireExtinguishable.NotifyParticleCollision(isTouchingFire, contactTimer, requiredTime);
+            if (fireExtinguishable != null)
+                fireExtinguishable.NotifyParticleCollision(false, contactTimer, requiredTime);
+        }
 
         if (fireSystem != null)
             fireSystem.SetSprayHittingFire(isTouchingFire);
@@ -175,6 +291,20 @@ public class ExtinguisherSprayCollision : MonoBehaviour
     {
         if (other == null) return false;
 
+        // Ignore self-collisions with extinguisher nozzle, body, or camera
+        if (other.transform == transform || other.transform.IsChildOf(transform) ||
+            (sprayOrigin != null && (other.transform == sprayOrigin || other.transform.IsChildOf(sprayOrigin))))
+        {
+            return false;
+        }
+
+        string otherName = other.name.ToLower();
+        if (otherName.Contains("hose") || otherName.Contains("extinguisher") || otherName.Contains("camera"))
+        {
+            return false;
+        }
+
+        // 1. Direct match with fireTargetTransform
         if (fireTargetTransform != null)
         {
             if (other.transform == fireTargetTransform ||
@@ -185,6 +315,7 @@ public class ExtinguisherSprayCollision : MonoBehaviour
             }
         }
 
+        // 2. Direct match with fireExtinguishable
         if (fireExtinguishable != null)
         {
             if (other.transform == fireExtinguishable.transform ||
@@ -198,65 +329,112 @@ public class ExtinguisherSprayCollision : MonoBehaviour
         if (other.GetComponentInParent<FireExtinguishSystem>() != null)
             return true;
 
+        // 3. Name-based match up the hierarchy
         Transform t = other.transform;
         while (t != null)
         {
             string n = t.name.ToLower();
             if (n.Contains("fire") || n.Contains("flame") || n.Contains("hazard") ||
-                n.Contains("target") || n.Contains("electric") || n.Contains("box"))
+                n.Contains("target") || n.Contains("electric") || n.Contains("box") ||
+                n.Contains("vfx"))
             {
                 return true;
             }
             t = t.parent;
         }
 
+        // 4. Proximity check to fire base: if particles hit any surface (floor, table, wall) within 2.2m of fire center
+        Vector3 firePos = GetFireWorldPosition();
+        if (firePos != Vector3.zero)
+        {
+            Collider col = other.GetComponent<Collider>();
+            Vector3 closest = col != null ? col.ClosestPoint(firePos) : other.transform.position;
+            if (Vector3.Distance(closest, firePos) <= 2.2f)
+            {
+                return true;
+            }
+        }
+
         return false;
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    //  Aim Cone Check: Actual Nozzle to Fire Base
+    //  Aim Cone & Screen Viewport Check
     // ─────────────────────────────────────────────────────────────────────────
     private bool CheckAimAtFire()
     {
-        Vector3 targetPos = Vector3.zero;
-        if (fireTargetTransform != null)
-            targetPos = fireTargetTransform.position;
-        else if (fireExtinguishable != null)
-            targetPos = fireExtinguishable.FireWorldPosition;
-        else
-            return false;
+        Vector3 targetPos = GetFireWorldPosition();
 
-        // Nozzle Transform (actual spray origin)
-        Transform nozzle = sprayOrigin != null ? sprayOrigin : transform;
-        Vector3 nozzlePos = nozzle.position;
-        Vector3 toTarget = targetPos - nozzlePos;
-        float dist = toTarget.magnitude;
-
-        // Realistic distance check: fire must be within 0.3m and 5.0m
-        if (dist < 0.3f || dist > aimMaxDistance)
-            return false;
-
-        Vector3 toTargetDir = toTarget.normalized;
-        float nozzleAngle = Vector3.Angle(nozzle.forward, toTargetDir);
-        float nozzleReverseAngle = Vector3.Angle(-nozzle.forward, toTargetDir);
-        float minNozzleAngle = Mathf.Min(nozzleAngle, nozzleReverseAngle);
-
-        if (minNozzleAngle <= aimMaxAngleDeg)
-            return true;
-
-        // Camera look aim towards fire as AR fallback
-        if (cameraTransform == null && Camera.main != null)
-            cameraTransform = Camera.main.transform;
+        // 1. Camera Look Aim & Viewport Check (Primary in mobile AR)
+        if (cameraTransform == null)
+        {
+            Camera mainCam = Camera.main ?? FindAnyObjectByType<Camera>();
+            if (mainCam != null) cameraTransform = mainCam.transform;
+        }
 
         if (cameraTransform != null)
         {
-            Vector3 camToTarget = (targetPos - cameraTransform.position).normalized;
-            float camAngle = Vector3.Angle(cameraTransform.forward, camToTarget);
-            if (camAngle <= (aimMaxAngleDeg + 5f) && dist <= aimMaxDistance)
+            Vector3 camToTarget = targetPos - cameraTransform.position;
+            float camDist = camToTarget.magnitude;
+
+            if (camDist <= aimMaxDistance)
+            {
+                float camAngle = Vector3.Angle(cameraTransform.forward, camToTarget.normalized);
+                if (camAngle <= aimMaxAngleDeg)
+                    return true;
+
+                // Viewport check: If fire is visible on the phone screen
+                Camera cam = cameraTransform.GetComponent<Camera>();
+                if (cam == null) cam = Camera.main ?? FindAnyObjectByType<Camera>();
+                if (cam != null)
+                {
+                    Vector3 vp = cam.WorldToViewportPoint(targetPos);
+                    if (vp.z > 0f && vp.x >= -0.35f && vp.x <= 1.35f && vp.y >= -0.35f && vp.y <= 1.35f)
+                        return true;
+                }
+            }
+
+            if (camDist <= 2.5f)
+                return true;
+        }
+
+        // 2. Actual Nozzle Transform Aim Check
+        Transform nozzle = sprayOrigin != null ? sprayOrigin : transform;
+        if (nozzle != null)
+        {
+            Vector3 nozzlePos = nozzle.position;
+            Vector3 toTarget = targetPos - nozzlePos;
+            float dist = toTarget.magnitude;
+
+            if (dist <= aimMaxDistance)
+            {
+                Vector3 toTargetDir = toTarget.normalized;
+                float nozzleAngle = Vector3.Angle(nozzle.forward, toTargetDir);
+                float nozzleReverseAngle = Vector3.Angle(-nozzle.forward, toTargetDir);
+                float minNozzleAngle = Mathf.Min(nozzleAngle, nozzleReverseAngle);
+
+                if (minNozzleAngle <= aimMaxAngleDeg)
+                    return true;
+            }
+
+            if (dist <= 2.5f)
                 return true;
         }
 
         return false;
+    }
+
+    public Vector3 GetFireWorldPosition()
+    {
+        if (fireExtinguishable != null)
+            return fireExtinguishable.FireWorldPosition;
+        if (fireTargetTransform != null)
+            return fireTargetTransform.position;
+        var f = GameObject.Find("VFX_Fire_01_Small") ?? GameObject.Find("Hazard") ?? GameObject.Find("Electric Box") ?? GameObject.Find("Flames");
+        if (f != null) return f.transform.position;
+        var fe = FindAnyObjectByType<FireExtinguishable>(FindObjectsInactive.Include);
+        if (fe != null) return fe.FireWorldPosition;
+        return Vector3.zero;
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -285,23 +463,65 @@ public class ExtinguisherSprayCollision : MonoBehaviour
             method?.Invoke(fireSystem, null);
         }
 
+        StopAllFireParticlesInScene();
+
+        // Directly notify FlowManager
+        var flow = FireScenarioFlowManager.Instance ?? FindAnyObjectByType<FireScenarioFlowManager>(FindObjectsInactive.Include);
+        if (flow != null)
+        {
+            flow.HandleFireExtinguished();
+        }
+
+        // Release grip and stop powder spray
+        if (gripInteraction != null) gripInteraction.StopGrip();
+        if (powderSpray != null) powderSpray.StopSpray();
+
         Debug.Log("[SurakshaAR] ExtinguisherSprayCollision: 10s continuous spray complete -> FIRE EXTINGUISHED");
     }
 
-    public void ResetCollisionTimer()
+    private static void StopAllFireParticlesInScene()
     {
-        isExtinguished = false;
-        isTouchingFire = false;
-        contactTimer = 0f;
-        lastHitTime = -999f;
+        var allPS = Object.FindObjectsByType<ParticleSystem>(FindObjectsInactive.Include);
+        foreach (var ps in allPS)
+        {
+            if (ps == null) continue;
+            string n = ps.gameObject.name.ToLower();
+            string pName = ps.transform.parent != null ? ps.transform.parent.name.ToLower() : "";
+            if (n.Contains("spray") || pName.Contains("spray")) continue;
+
+            if (n.Contains("fire") || n.Contains("flame") || n.Contains("smoke") ||
+                n.Contains("spark") || n.Contains("glow") || n.Contains("distortion") ||
+                pName.Contains("fire") || pName.Contains("hazard") || pName.Contains("electric box"))
+            {
+                ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                ps.gameObject.SetActive(false);
+            }
+        }
+
+        var sceneVfx = GameObject.Find("VFX_Fire_01_Small");
+        if (sceneVfx != null) sceneVfx.SetActive(false);
+
+        var allLights = Object.FindObjectsByType<Light>(FindObjectsInactive.Include);
+        foreach (var l in allLights)
+        {
+            if (l != null && (l.gameObject.name.ToLower().Contains("fire") || l.gameObject.name.ToLower().Contains("flame")))
+                l.enabled = false;
+        }
+
+        var allAudio = Object.FindObjectsByType<AudioSource>(FindObjectsInactive.Include);
+        foreach (var a in allAudio)
+        {
+            if (a != null && (a.gameObject.name.ToLower().Contains("fire") || a.gameObject.name.ToLower().Contains("flame")))
+                a.Stop();
+        }
     }
+
 
     private void OnParticleSystemStopped()
     {
         isTouchingFire = false;
-        contactTimer = 0f;
         if (fireExtinguishable != null)
-            fireExtinguishable.NotifyParticleCollision(false, 0f, requiredTime);
+            fireExtinguishable.NotifyParticleCollision(false, contactTimer, requiredTime);
         if (fireSystem != null)
             fireSystem.SetSprayHittingFire(false);
     }
@@ -311,22 +531,18 @@ public class ExtinguisherSprayCollision : MonoBehaviour
     // ─────────────────────────────────────────────────────────────────────────
     private void ResolveParticlesAndOrigin()
     {
-        // Check if this GameObject is the visual spray or the probe
         var thisPS = GetComponent<ParticleSystem>();
         var thisRenderer = GetComponent<ParticleSystemRenderer>();
 
         if (thisRenderer != null && thisRenderer.enabled)
         {
-            // This is the VISUAL spray
             visualParticles = thisPS;
         }
         else if (thisPS != null)
         {
-            // This is the collision probe
             collisionParticles = thisPS;
         }
 
-        // Auto-find nozzle origin
         if (sprayOrigin == null)
         {
             if (transform.parent != null && transform.parent.name.ToLower().Contains("spraypoint"))
@@ -335,64 +551,79 @@ public class ExtinguisherSprayCollision : MonoBehaviour
                 sprayOrigin = transform;
         }
 
-        // If collisionParticles is null, look for child or sibling "SprayCollision"
         if (collisionParticles == null && sprayOrigin != null)
         {
             var probeChild = sprayOrigin.Find("SprayCollision");
             if (probeChild != null)
-            {
                 collisionParticles = probeChild.GetComponent<ParticleSystem>();
-            }
         }
 
-        // If visualParticles is null, look for child or sibling "spray"
         if (visualParticles == null && sprayOrigin != null)
         {
             var sprayChild = sprayOrigin.Find("spray");
             if (sprayChild != null)
-            {
                 visualParticles = sprayChild.GetComponent<ParticleSystem>();
-            }
+        }
+
+        if (powderSpray == null)
+            powderSpray = GetComponentInParent<DryPowderSpray>() ?? FindAnyObjectByType<DryPowderSpray>(FindObjectsInactive.Include);
+
+        if (powderSpray != null)
+        {
+            if (visualParticles == null) visualParticles = powderSpray.sprayParticles;
+            if (collisionParticles == null) collisionParticles = powderSpray.collisionParticles;
         }
     }
 
     private void ConfigureCollisionDetector()
     {
-        // 1. Strictly enforce: VISUAL SPRAY COLLISION IS OFF!
+        // 1. Visual spray: DO NOT enable world collision (it causes particles to bounce/die on the
+        //    extinguisher body and AR planes before reaching the fire).
+        //    Instead, keep collision disabled but enable sendCollisionMessages so particle hits
+        //    still forward to OnParticleCollision callbacks via SprayCollisionProbe.
         if (visualParticles != null)
         {
             var visCol = visualParticles.collision;
-            visCol.enabled = false;
+            visCol.enabled = false;   // OFF — prevents scatter against extinguisher body/AR planes
 
             var visMain = visualParticles.main;
             visMain.cullingMode = ParticleSystemCullingMode.AlwaysSimulate;
+
+            // Ensure renderer is ON for visual particles
+            var visRend = visualParticles.GetComponent<ParticleSystemRenderer>();
+            if (visRend != null) visRend.enabled = true;
+
+            if (visualParticles.gameObject != this.gameObject)
+            {
+                var forwarder = visualParticles.GetComponent<SprayCollisionProbe>()
+                             ?? visualParticles.gameObject.AddComponent<SprayCollisionProbe>();
+                forwarder.master = this;
+            }
         }
 
-        // 2. Configure the invisible collision probe
+        // 2. Invisible collision probe: enable world collision for physics hit detection
         if (collisionParticles != null)
         {
             var col = collisionParticles.collision;
             col.enabled = true;
             col.type = ParticleSystemCollisionType.World;
             col.mode = ParticleSystemCollisionMode.Collision3D;
-            col.collidesWith = ~0; // All layers for world detection
             col.sendCollisionMessages = true;
+            col.lifetimeLoss = 0f;
+            col.dampen = 0f;
+            col.bounce = 0f;
+            col.radiusScale = 0.5f;
+            col.collidesWith = ~0;
             col.quality = ParticleSystemCollisionQuality.High;
-            col.dampen = 0.5f;
-            col.bounce = 0f; // ZERO bounce: prevents particles from ricocheting back!
-            col.radiusScale = 0.25f;
 
-            // Ensure probe is completely invisible
             var r = collisionParticles.GetComponent<ParticleSystemRenderer>();
             if (r != null)
                 r.enabled = false;
 
-            // Ensure probe forwards collision events to this script if on a different GameObject
             if (collisionParticles.gameObject != this.gameObject)
             {
-                var forwarder = collisionParticles.GetComponent<SprayCollisionProbe>();
-                if (forwarder == null)
-                    forwarder = collisionParticles.gameObject.AddComponent<SprayCollisionProbe>();
+                var forwarder = collisionParticles.GetComponent<SprayCollisionProbe>()
+                             ?? collisionParticles.gameObject.AddComponent<SprayCollisionProbe>();
                 forwarder.master = this;
             }
         }
@@ -403,24 +634,53 @@ public class ExtinguisherSprayCollision : MonoBehaviour
         if (visualParticles == null || collisionParticles == null || sprayOrigin == null)
             ResolveParticlesAndOrigin();
 
+        if (powderSpray == null)
+            powderSpray = FindAnyObjectByType<DryPowderSpray>(FindObjectsInactive.Include);
+
         if (fireExtinguishable == null)
         {
-            fireExtinguishable = FindAnyObjectByType<FireExtinguishable>();
+            fireExtinguishable = FindAnyObjectByType<FireExtinguishable>(FindObjectsInactive.Include);
             if (fireExtinguishable != null)
                 fireExtinguishable.RegisterSprayCollision(this);
         }
 
         if (fireSystem == null)
-            fireSystem = FindAnyObjectByType<FireExtinguishSystem>();
+            fireSystem = FindAnyObjectByType<FireExtinguishSystem>(FindObjectsInactive.Include);
 
         if (cameraTransform == null && Camera.main != null)
             cameraTransform = Camera.main.transform;
 
-        if (pinInteraction == null)
-            pinInteraction = GetComponentInParent<FirePinInteraction>() ?? FindAnyObjectByType<FirePinInteraction>(FindObjectsInactive.Include);
+        // Grip interaction: prefer the one on the functional/active extinguisher
+        if (gripInteraction == null || !gripInteraction.gameObject.activeInHierarchy)
+        {
+            var grips = Object.FindObjectsByType<ExtinguisherGripInteraction>(FindObjectsInactive.Include);
+            foreach (var g in grips)
+            {
+                if (g != null && g.gameObject.activeInHierarchy && !g.name.ToLower().Contains("display"))
+                {
+                    gripInteraction = g;
+                    break;
+                }
+            }
+            if (gripInteraction == null && grips.Length > 0)
+                gripInteraction = grips[0];
+        }
 
-        if (gripInteraction == null)
-            gripInteraction = GetComponentInParent<ExtinguisherGripInteraction>() ?? FindAnyObjectByType<ExtinguisherGripInteraction>(FindObjectsInactive.Include);
+        // Pin interaction: prefer active or functional pin
+        if (pinInteraction == null || !pinInteraction.gameObject.activeInHierarchy)
+        {
+            var pins = Object.FindObjectsByType<FirePinInteraction>(FindObjectsInactive.Include);
+            foreach (var p in pins)
+            {
+                if (p != null && !p.name.ToLower().Contains("display"))
+                {
+                    pinInteraction = p;
+                    break;
+                }
+            }
+            if (pinInteraction == null && pins.Length > 0)
+                pinInteraction = pins[0];
+        }
 
         if (fireTargetTransform == null)
             fireTargetTransform = FindFireTarget();
@@ -459,13 +719,13 @@ public class ExtinguisherSprayCollision : MonoBehaviour
         if (go.GetComponent<Collider>() != null) return;
 
         var sc = go.AddComponent<SphereCollider>();
-        sc.radius = 0.85f;
+        sc.radius = 1.2f;
         sc.isTrigger = false;
     }
 }
 
 /// <summary>
-/// Helper probe component attached to the invisible SprayCollision GameObject to forward
+/// Helper probe component attached to the invisible SprayCollision or spray GameObject to forward
 /// OnParticleCollision events directly to ExtinguisherSprayCollision.
 /// </summary>
 public class SprayCollisionProbe : MonoBehaviour

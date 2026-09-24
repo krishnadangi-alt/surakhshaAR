@@ -4,8 +4,7 @@ import { DataTable } from '../components/common/DataTable';
 import type { Column } from '../components/common/DataTable';
 import { StatusBadge } from '../components/common/StatusBadge';
 import { AssignRetrainingModal } from '../components/modals/AssignRetrainingModal';
-import { mockWorkers, getWorkerCertificateStatus } from '../mockData';
-import { fetchDashboardWorkers } from '../services/api';
+import { fetchDashboardWorkers, fetchDashboardAssessments } from '../services/api';
 import type { Worker } from '../types';
 import { UserPlus, Download, Eye, RotateCcw } from 'lucide-react';
 import { downloadCsv } from '../utils/export';
@@ -28,46 +27,69 @@ export const WorkersScreen: React.FC<WorkersScreenProps> = ({ onSelectWorker }) 
   const [liveWorkers, setLiveWorkers] = useState<Worker[]>([]);
 
   useEffect(() => {
-    fetchDashboardWorkers().then((items) => {
-      if (items && items.length > 0) {
-        const mapped: Worker[] = items.map((w) => ({
-          id: `w-${w.id}`,
-          employeeId: w.employee_id,
-          name: w.name,
-          sector: 'Dhanbad Region-1',
-          plant: 'Jharia Deep Shaft Mine #4',
-          role: w.role,
-          email: `${w.name.toLowerCase().replace(/\s+/g, '.')}@mining.jh.gov.in`,
-          phone: '+91 98765 43210',
-          joinedDate: '2026-01-15',
-          safetyOfficer: 'Inspector R. K. Soren',
-          overallStatus: w.certified_modules.length > 0 ? 'Certified' : 'In Training',
-          modulesCompleted: w.certified_modules.length,
-          latestScore: 85,
-          overallCompetency: w.certified_modules.length > 0 ? 'Competent' : 'Needs Retraining',
-          lastAssessmentDate: '2026-09-16',
-          certificatesCount: w.certified_modules.length,
-          retrainingStatus: 'Completed',
-          moduleProgressList: w.progress.map((p) => ({
-            moduleId: p.module_code,
-            moduleName: p.module_name,
-            stage: p.stage,
-            status: p.status === 'completed' ? 'Completed' : 'In Progress',
-            completionPercentage: p.status === 'completed' ? 100 : 50,
-            score: 85,
-            lastUpdated: p.last_updated || '2026-09-16',
-          })),
-          weakAreas: [],
-          retentionDay1: 'Completed',
-          retentionDay7: 'Scheduled',
-          retentionDay30: 'Scheduled',
-        }));
-        setLiveWorkers(mapped);
-      }
-    });
+    let isMounted = true;
+    const loadWorkers = () => {
+      Promise.all([fetchDashboardWorkers(), fetchDashboardAssessments()]).then(([items, liveAssessments]) => {
+        if (!isMounted) return;
+        if (items && items.length > 0) {
+          const mapped: Worker[] = items.map((w) => {
+            const workerAssessments = (liveAssessments || []).filter(
+              (a) => a.workerId === `w-${w.id}` || a.employeeId === w.employee_id
+            );
+            const latestAsmt = workerAssessments[0];
+            const latestScore = latestAsmt ? latestAsmt.score : (w.certified_modules.length > 0 ? 85 : 0);
+            const overallCompetency: 'Competent' | 'Needs Retraining' = latestScore >= 75 ? 'Competent' : 'Needs Retraining';
+            const lastDate = latestAsmt ? latestAsmt.dateTime : '2026-09-16';
+            const weakAreas = latestAsmt && latestAsmt.wrongActions > 0 ? ['PASS Extinguisher Technique'] : [];
+
+            return {
+              id: `w-${w.id}`,
+              employeeId: w.employee_id,
+              name: w.name,
+              sector: 'Dhanbad Region-1',
+              plant: w.employee_id.startsWith('GUEST') ? 'SurakshaAR AR Testing Hub' : 'Jharia Deep Shaft Mine #4',
+              role: w.role,
+              email: `${w.name.toLowerCase().replace(/[^a-z0-9]/g, '.')}@mining.jh.gov.in`,
+              phone: '+91 98765 43210',
+              joinedDate: '2026-01-15',
+              safetyOfficer: 'Inspector R. K. Soren',
+              overallStatus: w.certified_modules.length > 0 ? 'Certified' : (latestAsmt ? (latestAsmt.passFail === 'Pass' ? 'Passed' : 'Failed') : 'In Training'),
+              modulesCompleted: w.certified_modules.length || (latestAsmt ? 1 : 0),
+              latestScore,
+              overallCompetency,
+              lastAssessmentDate: lastDate,
+              certificatesCount: w.certified_modules.length,
+              retrainingStatus: overallCompetency === 'Needs Retraining' ? 'Assigned' : 'Completed',
+              moduleProgressList: w.progress.map((p) => ({
+                moduleId: p.module_code,
+                moduleName: p.module_name,
+                stage: p.stage,
+                status: p.status === 'completed' ? 'Completed' : 'In Progress',
+                completionPercentage: p.status === 'completed' ? 100 : 50,
+                score: latestScore,
+                lastUpdated: p.last_updated || lastDate,
+              })),
+              weakAreas,
+              retentionDay1: 'Completed',
+              retentionDay7: 'Scheduled',
+              retentionDay30: 'Scheduled',
+            };
+          });
+          setLiveWorkers(mapped);
+        }
+      });
+    };
+
+    loadWorkers();
+    const interval = setInterval(loadWorkers, 3000);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, []);
 
-  const workersSource = liveWorkers.length > 0 ? liveWorkers : mockWorkers;
+  const getWorkerCertStatus = (w: Worker) => (w.certificatesCount > 0 ? 'Active' : 'Pending');
+  const workersSource = liveWorkers;
 
   // Filter logic
   const filteredWorkers = workersSource.filter((w) => {
@@ -80,7 +102,7 @@ export const WorkersScreen: React.FC<WorkersScreenProps> = ({ onSelectWorker }) 
     const matchesStatus = statusFilter === 'ALL' || w.overallStatus === statusFilter;
     const matchesCompetency = competencyFilter === 'ALL' || w.overallCompetency === competencyFilter;
     const matchesRetraining = retrainingFilter === 'ALL' || w.retrainingStatus === retrainingFilter;
-    const matchesCert = certFilter === 'ALL' || getWorkerCertificateStatus(w.id) === certFilter;
+    const matchesCert = certFilter === 'ALL' || getWorkerCertStatus(w) === certFilter;
 
     return (
       matchesSearch &&
@@ -108,7 +130,7 @@ export const WorkersScreen: React.FC<WorkersScreenProps> = ({ onSelectWorker }) 
         w.overallStatus,
         w.overallCompetency,
         w.retrainingStatus,
-        getWorkerCertificateStatus(w.id),
+        getWorkerCertStatus(w),
         w.lastAssessmentDate,
       ]),
     );
@@ -184,7 +206,7 @@ const columns: Column<Worker>[] = [
       key: 'certificate',
       header: 'Certificate',
       sortable: true,
-      render: (w) => <StatusBadge status={getWorkerCertificateStatus(w.id)} size="sm" />,
+      render: (w) => <StatusBadge status={getWorkerCertStatus(w)} size="sm" />,
     },
     {
       key: 'lastAssessmentDate',
@@ -288,7 +310,7 @@ const columns: Column<Worker>[] = [
             label: 'Plant',
             value: plantFilter,
             onChange: setPlantFilter,
-            options: Array.from(new Set(mockWorkers.map((w) => w.plant))).map((p) => ({ label: p, value: p })),
+            options: Array.from(new Set(workersSource.map((w) => w.plant))).map((p) => ({ label: p, value: p })),
           },
           {
             key: 'status',

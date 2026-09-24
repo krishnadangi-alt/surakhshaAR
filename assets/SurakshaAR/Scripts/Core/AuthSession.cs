@@ -44,7 +44,7 @@ namespace SurakshaAR.Core
             }
 
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            if (Application.isPlaying) DontDestroyOnLoad(gameObject);
             LoadCachedSession();
         }
 

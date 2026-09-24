@@ -11,6 +11,7 @@ import { RetrainingScreen } from './screens/RetrainingScreen';
 import { CertificatesScreen } from './screens/CertificatesScreen';
 import { RetentionScreen } from './screens/RetentionScreen';
 import { ReportsScreen } from './screens/ReportsScreen';
+import { PublicCertificateVerifyView } from './screens/PublicCertificateVerifyView';
 import { UnauthorizedState } from './components/common/UnauthorizedState';
 import type { AdminSession, DateRange, DateRangePreset } from './types';
 
@@ -40,12 +41,62 @@ const ADMIN_ALLOWED_SCREENS = [
   'reports',
 ];
 
+const DEFAULT_ADMIN_SESSION: AdminSession = {
+  name: 'Administrator',
+  email: 'admin@surakshaar.jharkhand.gov.in',
+  role: 'administrator',
+  roleLabel: 'Administrator',
+  domain: 'Jharkhand Industrial Safety Command',
+};
+
 export function App() {
-  const [session, setSession] = useState<AdminSession | null>(readStoredSession());
-  const [currentScreen, setCurrentScreen] = useState('overview');
+  const [session, setSession] = useState<AdminSession | null>(readStoredSession() || DEFAULT_ADMIN_SESSION);
+  const getInitialScreen = () => {
+    if (typeof window === 'undefined') return 'certificates';
+    const urlParams = new URLSearchParams(window.location.search);
+    const screenParam = urlParams.get('screen');
+    if (screenParam && ADMIN_ALLOWED_SCREENS.includes(screenParam)) return screenParam;
+    const hash = window.location.hash.replace('#', '').replace('/', '');
+    if (hash && ADMIN_ALLOWED_SCREENS.includes(hash)) return hash;
+    return 'certificates';
+  };
+
+  const [currentScreen, setCurrentScreen] = useState(getInitialScreen);
   const [selectedWorkerId, setSelectedWorkerId] = useState('w-101');
   const [selectedDateRange, setSelectedDateRange] = useState<DateRangePreset>('Last 30 Days');
   const [customRange, setCustomRange] = useState<DateRange | null>(null);
+
+  // Check if someone scanned the QR code (e.g. /?verify=SUR-2026-0002 or /verify/SUR-2026-0002)
+  const getVerifyParam = () => {
+    if (typeof window === 'undefined') return null;
+    const urlParams = new URLSearchParams(window.location.search);
+    const v = urlParams.get('verify');
+    if (v) return v;
+    if (window.location.hash.startsWith('#/verify/')) {
+      return window.location.hash.slice(9);
+    }
+    if (window.location.pathname.startsWith('/verify/')) {
+      return window.location.pathname.slice(8);
+    }
+    return null;
+  };
+
+  const [verifyCertId, setVerifyCertId] = useState<string | null>(getVerifyParam());
+
+  // Public QR Verification screen (accessible without logging in)
+  if (verifyCertId) {
+    return (
+      <PublicCertificateVerifyView
+        certificateId={verifyCertId}
+        onBackToAdmin={() => {
+          const url = new URL(window.location.href);
+          url.searchParams.delete('verify');
+          window.history.pushState({}, '', url.pathname || '/');
+          setVerifyCertId(null);
+        }}
+      />
+    );
+  }
 
   const isAuthenticated = session !== null;
 

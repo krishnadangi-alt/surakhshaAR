@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FileSpreadsheet, Download, FileText, Filter, CheckCircle2, RefreshCw } from 'lucide-react';
 import { DateRangePicker } from '../components/common/DateRangePicker';
-import { mockWorkers, mockAssessments, mockCertificates, mockRetrainingRecords, mockRetentionRecords, getWorkerCertificateStatus } from '../mockData';
-import type { DateRange, DateRangePreset } from '../types';
+import { fetchDashboardWorkers, fetchDashboardAssessments, fetchDashboardCertificates } from '../services/api';
+import type { Worker, Assessment, Certificate, RetrainingRecord, RetentionRecord, DateRange, DateRangePreset } from '../types';
 import { filterAssessmentsByRange } from '../utils/dateRange';
 import { downloadCsv } from '../utils/export';
 
@@ -32,32 +32,108 @@ export const ReportsScreen: React.FC = () => {
   const [retentionFilter, setRetentionFilter] = useState('ALL');
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedSuccess, setGeneratedSuccess] = useState(false);
-  
-    
+  const [workers, setWorkers] = useState<Worker[]>([]);
+  const [assessments, setAssessments] = useState<Assessment[]>([]);
+  const [certificates, setCertificates] = useState<Certificate[]>([]);
 
-  // Date + filter scoped datasets (mock preview only).
-  const filteredWorkers = mockWorkers.filter(
+  useEffect(() => {
+    Promise.all([fetchDashboardWorkers(), fetchDashboardAssessments(), fetchDashboardCertificates()]).then(
+      ([rawWorkers, rawAssessments, rawCerts]) => {
+        if (rawAssessments) setAssessments(rawAssessments);
+        if (rawCerts) setCertificates(rawCerts);
+        if (rawWorkers) {
+          const mapped: Worker[] = rawWorkers.map((w) => {
+            const wAsmts = (rawAssessments || []).filter((a) => a.workerId === `w-${w.id}` || a.employeeId === w.employee_id);
+            const latestAsmt = wAsmts[0];
+            const latestScore = latestAsmt ? latestAsmt.score : (w.certified_modules.length > 0 ? 85 : 0);
+            return {
+              id: `w-${w.id}`,
+              employeeId: w.employee_id,
+              name: w.name,
+              sector: 'Dhanbad Region-1',
+              plant: 'Jharia Shaft Mine #4',
+              role: w.role,
+              email: `${w.name.toLowerCase().replace(/[^a-z0-9]/g, '.')}@mining.jh.gov.in`,
+              phone: '+91 98765 43210',
+              joinedDate: '2026-01-15',
+              safetyOfficer: 'Inspector R. K. Soren',
+              overallStatus: w.certified_modules.length > 0 ? 'Certified' : (latestAsmt ? (latestAsmt.passFail === 'Pass' ? 'Passed' : 'Failed') : 'In Training'),
+              modulesCompleted: w.certified_modules.length,
+              latestScore,
+              overallCompetency: latestScore >= 75 ? 'Competent' : 'Needs Retraining',
+              lastAssessmentDate: latestAsmt ? latestAsmt.dateTime : '2026-09-17',
+              certificatesCount: w.certified_modules.length,
+              retrainingStatus: latestScore < 75 ? 'Assigned' : 'Completed',
+              moduleProgressList: [],
+              weakAreas: [],
+              retentionDay1: 'Completed',
+              retentionDay7: 'Scheduled',
+              retentionDay30: 'Scheduled',
+            };
+          });
+          setWorkers(mapped);
+        }
+      }
+    );
+  }, []);
+
+  const getWorkerCertStatus = (w: Worker) => (w.certificatesCount > 0 ? 'Active' : 'Pending');
+
+  // Filter scoped live datasets
+  const filteredWorkers = workers.filter(
     (w) =>
       (sector === 'ALL' || w.sector === sector) &&
-      (moduleFilter === 'ALL' || w.moduleProgressList.some((m) => m.moduleId === moduleFilter)) &&
       (statusFilter === 'ALL' || w.overallStatus === statusFilter) &&
       (competencyFilter === 'ALL' || w.overallCompetency === competencyFilter) &&
       (retrainingFilter === 'ALL' || w.retrainingStatus === retrainingFilter) &&
-      (certFilter === 'ALL' || getWorkerCertificateStatus(w.id) === certFilter) &&
+      (certFilter === 'ALL' || getWorkerCertStatus(w) === certFilter) &&
       (workerFilter === 'ALL' || w.name === workerFilter || w.employeeId === workerFilter),
   );
 
-  const filteredAssessments = filterAssessmentsByRange(mockAssessments, selectedDateRange, customRange ?? undefined).filter(
+  const filteredAssessments = filterAssessmentsByRange(assessments, selectedDateRange, customRange ?? undefined).filter(
     (a) => (moduleFilter === 'ALL' || a.moduleId === moduleFilter) && (passFailFilter === 'ALL' || a.passFail === passFailFilter),
   );
 
-  const filteredCerts = mockCertificates.filter(
+  const filteredCerts = certificates.filter(
     (c) => (certFilter === 'ALL' || c.status === certFilter) && (sector === 'ALL' || c.sector === sector),
   );
 
-  const filteredRetraining = mockRetrainingRecords.filter((r) => retrainingFilter === 'ALL' || r.status === retrainingFilter);
+  const liveRetraining: RetrainingRecord[] = assessments
+    .filter((a) => a.passFail === 'Fail' || a.criticalErrors > 0)
+    .map((a, idx) => ({
+      id: `ret-${idx + 1}`,
+      workerId: a.workerId,
+      workerName: a.workerName,
+      employeeId: a.employeeId,
+      sector: 'Dhanbad Region-1',
+      moduleId: a.moduleId,
+      moduleName: a.moduleName,
+      weakArea: a.criticalErrorDetails || 'SOP Compliance',
+      recommendation: 'Targeted AR SOP Retraining',
+      status: 'Recommended' as const,
+      assignedDate: a.dateTime ? a.dateTime.slice(0, 10) : '',
+      initialScore: a.score,
+    }));
 
-  const filteredRetention = mockRetentionRecords.filter((r) => {
+  const filteredRetraining = liveRetraining.filter((r) => retrainingFilter === 'ALL' || r.status === retrainingFilter);
+
+  const liveRetention: RetentionRecord[] = workers.map((w) => ({
+    id: w.id,
+    workerId: w.id,
+    workerName: w.name,
+    employeeId: w.employeeId,
+    sector: w.sector,
+    moduleName: 'Fire & Explosion Response',
+    lastTrainingDate: w.lastAssessmentDate || '2026-09-17',
+    day1Status: 'Completed',
+    day1Score: w.latestScore,
+    day7Status: w.latestScore >= 80 ? 'Completed' : 'Scheduled',
+    day7Score: w.latestScore >= 80 ? w.latestScore : undefined,
+    day30Status: 'Scheduled',
+    auditCleared: w.latestScore >= 80,
+  }));
+
+  const filteredRetention = liveRetention.filter((r) => {
     if (retentionFilter === 'ALL') return true;
     const cleared = r.day1Status === 'Completed' && r.day7Status === 'Completed' && r.day30Status === 'Completed';
     return retentionFilter === 'Completed' ? cleared : !cleared;
@@ -204,7 +280,7 @@ return (
                     className="w-full rounded-lg border border-suraksha-border bg-suraksha-surface px-3 py-2 text-xs font-medium text-white focus:border-suraksha-blue focus:outline-none"
                   >
                     <option value="ALL">All Workers</option>
-                    {mockWorkers.map((w) => (
+                    {workers.map((w) => (
                       <option key={w.id} value={w.name}>
                         {w.name}
                       </option>

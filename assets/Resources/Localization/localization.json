@@ -1,0 +1,3164 @@
+{
+  "entries": [
+    {
+      "key": "assessment.confirmSubmit",
+      "en": "Are you sure you want to submit your assessment?",
+      "hi": "क्या आप निश्चित रूप से अपना मूल्यांकन जमा करना चाहते हैं?",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱰᱟᱹᱣ ᱡᱚᱢᱟ ᱞᱟᱹᱜᱤᱫ ᱥᱟᱹᱨᱤ ᱜᱮ ᱨᱮᱵᱮᱱ ᱢᱮᱱᱟᱢᱟ?",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.finishAndCertify",
+      "en": "Submit Assessment & View Certificate ✓",
+      "hi": "मूल्यांकन जमा करें और प्रमाणपत्र देखें ✓",
+      "hi_roman": "",
+      "sat": "ᱛᱮᱞᱟ ᱡᱚᱢᱟ ᱟᱨ ᱥᱟᱨᱴᱤᱯᱷᱤᱠᱮᱴ ᱧᱮᱞ ᱢᱮ ✓",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.nextQuestion",
+      "en": "Next Question ➔",
+      "hi": "अगला प्रश्न ➔",
+      "hi_roman": "",
+      "sat": "ᱫᱚᱥᱟᱨ ᱠᱩᱠᱞᱤ ➔",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question1.desc",
+      "en": "A 415V live electrical panel fire is a CLASS C hazard. Select the ONLY agent that is electrically non-conductive and safe. Water and foam conduct electricity — DO NOT use them on live equipment.",
+      "hi": "415V चालू विद्युत पैनल में आग वर्ग C का खतरा है। केवल वही माध्यम चुनें जो विद्युत कुचालक और सुरक्षित हो। पानी और झाग बिजली का संचालन करते हैं — चालू उपकरणों पर उनका उपयोग न करें।",
+      "hi_roman": "",
+      "sat": "415V ᱵᱤᱡᱽᱞᱤ ᱯᱮᱱᱟᱞ ᱥᱮᱸᱜᱮᱞ ᱫᱚ ᱠᱞᱟᱥ C ᱵᱚᱛᱚᱨ ᱠᱟᱱᱟ ᱾ ᱠᱷᱟᱹᱞᱤ ᱵᱤᱡᱽᱞᱤ ᱵᱟᱝ ᱯᱟᱨᱚᱢᱚᱜ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱤᱬᱤᱡᱤᱡ ᱵᱟᱪᱷᱟᱣ ᱢᱮ ᱾ ᱫᱟᱜ ᱟᱨ ᱯᱷᱮᱱ ᱫᱚ ᱵᱤᱡᱽᱞᱤ ᱯᱟᱨᱚᱢᱟ — ᱵᱤᱡᱽᱞᱤ ᱥᱟᱢᱟᱱ ᱨᱮ ᱟᱞᱚᱢ ᱵᱮᱵᱷᱟᱨᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question1.hintBtn",
+      "en": "Hint",
+      "hi": "संकेत",
+      "hi_roman": "",
+      "sat": "ᱫᱤᱥᱟᱹ",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question1.opt1",
+      "en": "CO₂ Extinguisher (Class C/Electrical)",
+      "hi": "CO₂ अग्निशामक (वर्ग C/विद्युत)",
+      "hi_roman": "",
+      "sat": "CO₂ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡᱤᱡ (ᱠᱞᱟᱥ C/ᱵᱤᱡᱽᱞᱤ)",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question1.opt2",
+      "en": "Water Hose Reel (Class A only)",
+      "hi": "वाटर होज़ रील (केवल वर्ग A)",
+      "hi_roman": "",
+      "sat": "ᱫᱟᱜ ᱦᱳᱡᱽ (ᱠᱷᱟᱹᱞᱤ ᱠᱞᱟᱥ A)",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question1.opt3",
+      "en": "Dry Powder Extinguisher (Multipurpose)",
+      "hi": "ड्राई पाउडर अग्निशामक (बहुउद्देश्यीय)",
+      "hi_roman": "",
+      "sat": "ᱨᱚᱦᱚᱲ ᱜᱩᱸᱰᱟᱹ ᱤᱬᱤᱡᱤᱡ (ᱡᱚᱛᱚ ᱞᱮᱠᱟᱱ)",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question1.opt4",
+      "en": "Foam Extinguisher (Flammable Liquids)",
+      "hi": "फोम अग्निशामक (ज्वलनशील तरल)",
+      "hi_roman": "",
+      "sat": "ᱯᱷᱮᱱ ᱤᱬᱤᱡᱤᱡ (ᱡᱩᱞᱩᱜ ᱫᱟᱜ ᱡᱤᱱᱤᱥ)",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question1.title",
+      "en": "Which extinguisher is correct for an electrical panel fire?",
+      "hi": "विद्युत पैनल की आग बुझाने के लिए कौन सा अग्निशामक सही है?",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱡᱽᱞᱤ ᱯᱮᱱᱟᱞ ᱥᱮᱸᱜᱮᱞ ᱞᱟᱹᱜᱤᱫ ᱚᱠᱟ ᱤᱬᱤᱡᱤᱡ ᱴᱷᱤᱠ ᱜᱮᱭᱟ?",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question2.desc",
+      "en": "PASS is the standard 4-step sequence: Pull safety pin, Aim nozzle at base of fire, Squeeze operating lever, and Sweep side-to-side across the hazard.",
+      "hi": "PASS 4 चरणों का मानक क्रम है: सुरक्षा पिन निकालें (Pull), आग के आधार पर निशाना लगाएँ (Aim), लीवर दबाएँ (Squeeze), और दोनों तरफ घुमाएँ (Sweep)।",
+      "hi_roman": "",
+      "sat": "PASS ᱫᱚ ᱔ ᱛᱷᱚᱠ ᱨᱮᱱᱟᱜ ᱱᱤᱭᱚᱢ ᱠᱟᱱᱟ: ᱯᱤᱱ ᱚᱨ ᱚᱰᱚᱠ (Pull), ᱥᱮᱸᱜᱮᱞ ᱵᱩᱴᱟᱹ ᱨᱮ ᱴᱟᱨᱜᱮᱴ (Aim), ᱞᱤᱵᱷᱟᱨ ᱞᱤᱱ (Squeeze), ᱟᱨ ᱦᱟᱱᱛᱮ ᱱᱷᱟᱛᱮ ᱦᱤᱞᱟᱹᱣ (Sweep) ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question2.hintBtn",
+      "en": "Hint",
+      "hi": "संकेत",
+      "hi_roman": "",
+      "sat": "ᱫᱤᱥᱟᱹ",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question2.opt1",
+      "en": "Pull pin, Aim at base, Squeeze lever, Sweep side-to-side",
+      "hi": "पिन निकालें, आधार पर निशाना लगाएँ, लीवर दबाएँ, दोनों तरफ घुमाएँ",
+      "hi_roman": "",
+      "sat": "ᱯᱤᱱ ᱚᱨ ᱚᱰᱚᱠ, ᱵᱩᱴᱟᱹ ᱨᱮ ᱴᱟᱨᱜᱮᱴ, ᱞᱤᱵᱷᱟᱨ ᱞᱤᱱ, ᱦᱟᱱᱛᱮ ᱱᱷᱟᱛᱮ ᱦᱤᱞᱟᱹᱣ",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question2.opt2",
+      "en": "Push handle, Aim at flames, Spray direct, Step back",
+      "hi": "हैंडल दबाएं, लपटों पर निशाना लगाएं, सीधे स्प्रे करें, पीछे हटें",
+      "hi_roman": "",
+      "sat": "ᱦᱮᱱᱰᱮᱞ ᱴᱷᱮᱞᱟᱣ, ᱥᱮᱸᱜᱮᱞ ᱞᱟᱯᱟᱴ ᱨᱮ ᱥᱯᱨᱮ, ᱛᱟᱭᱚᱢ ᱥᱮᱱ ᱚᱰᱚᱠ",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question2.opt3",
+      "en": "Press valve, Activate horn, Squeeze trigger, Stop",
+      "hi": "वाल्व दबाएं, हॉर्न चालू करें, ट्रिगर दबाएं, रुकें",
+      "hi_roman": "",
+      "sat": "ᱵᱷᱟᱞᱵᱽ ᱞᱤᱱ, ᱦᱚᱨᱱ ᱪᱟᱹᱞᱩ, ᱴᱨᱤᱜᱟᱨ ᱞᱤᱱ, ᱛᱷᱟᱢᱵᱷᱟᱣ",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question2.opt4",
+      "en": "Pull pin, Aim at top smoke, Squeeze valve, Shake cylinder",
+      "hi": "पिन खींचें, ऊपर धुएं पर निशाना लगाएं, वाल्व दबाएं, सिलेंडर हिलाएं",
+      "hi_roman": "",
+      "sat": "ᱯᱤᱱ ᱚᱨ ᱚᱰᱚᱠ, ᱪᱮᱛᱟᱱ ᱫᱷᱩᱶᱟᱹ ᱨᱮ ᱥᱯᱨᱮ, ᱵᱷᱟᱞᱵᱽ ᱞᱤᱱ, ᱥᱤᱞᱤᱱᱰᱟᱨ ᱦᱤᱞᱟᱹᱣ",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question2.title",
+      "en": "What does the official PASS fire extinguisher protocol stand for?",
+      "hi": "आधिकारिक PASS अग्निशामक संचालन प्रोटोकॉल का क्या अर्थ है?",
+      "hi_roman": "",
+      "sat": "ᱥᱚᱨᱠᱟᱨᱤ PASS ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱱᱤᱭᱚᱢ ᱨᱮᱱᱟᱜ ᱢᱮᱱᱮᱛ ᱫᱚ ᱪᱮᱫ?",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question3.desc",
+      "en": "DGMS safety rules require sounding the mine emergency alarm to alert crew and switching off / isolating the main power supply before approaching.",
+      "hi": "DGMS सुरक्षा नियमों के अनुसार अग्निशामक चलाने से पहले आपातकालीन अलार्म बजाना और मुख्य बिजली आपूर्ति बंद करना अनिवार्य है।",
+      "hi_roman": "",
+      "sat": "DGMS ᱨᱩᱠᱷᱤᱭᱟᱹ ᱱᱤᱭᱚᱢ ᱞᱮᱠᱟᱛᱮ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱢᱟᱬᱟᱝ ᱨᱮ ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱟᱨ ᱢᱩᱬᱩᱛ ᱵᱤᱡᱽᱞᱤ ᱠᱟᱴᱟᱣ ᱞᱟᱹᱠᱛᱤ ᱜᱮᱭᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question3.hintBtn",
+      "en": "Hint",
+      "hi": "संकेत",
+      "hi_roman": "",
+      "sat": "ᱫᱤᱥᱟᱹ",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question3.opt1",
+      "en": "Sound emergency alarm and isolate electrical power supply",
+      "hi": "आपातकालीन अलार्म बजाएं और विद्युत मुख्य बिजली आपूर्ति बंद करें",
+      "hi_roman": "",
+      "sat": "ᱮᱢᱟᱨᱡᱮᱱᱥᱤ ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱟᱨ ᱵᱤᱡᱽᱞᱤ ᱨᱮᱱᱟᱜ ᱢᱩᱬᱩᱛ ᱥᱟᱯᱞᱟᱭ ᱵᱚᱸᱫᱽ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question3.opt2",
+      "en": "Immediately throw dry sand into panel vents without alerting others",
+      "hi": "दूसरों को सूचित किए बिना तुरंत पैनल में सूखी रेत फेंकें",
+      "hi_roman": "",
+      "sat": "ᱵᱟᱝ ᱞᱟᱹᱭ ᱠᱟᱛᱮ ᱞᱚᱜᱚᱱ ᱯᱮᱱᱟᱞ ᱨᱮ ᱨᱚᱦᱚᱲ ᱵᱟᱹᱞᱤ ᱪᱷᱟᱴᱠᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question3.opt3",
+      "en": "Open cabinet doors to inspect internal wiring connections",
+      "hi": "आंतरिक तारों की जांच करने के लिए कैबिनेट के दरवाजे खोलें",
+      "hi_roman": "",
+      "sat": "ᱵᱷᱤᱛᱨᱤ ᱛᱟᱨ ᱧᱮᱞ ᱞᱟᱹᱜᱤᱫ ᱠᱮᱵᱤᱱᱮᱴ ᱫᱩᱣᱟᱹᱨ ᱡᱷᱤᱡᱽ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question3.opt4",
+      "en": "Wait 10 minutes to see if the fire extinguishes on its own",
+      "hi": "10 मिनट प्रतीक्षा करें कि क्या आग अपने आप बुझ जाएगी",
+      "hi_roman": "",
+      "sat": "᱑᱐ ᱢᱤᱱᱤᱴ ᱛᱟᱺᱜᱤ ᱢᱮ ᱥᱮᱸᱜᱮᱞ ᱟᱡ ᱛᱮ ᱤᱬᱤᱡᱚᱜ ᱠᱟᱱᱟ ᱥᱮ ᱵᱟᱝ",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.question3.title",
+      "en": "What is the critical first action upon discovering an electrical fire before suppression?",
+      "hi": "बिजली की आग लगने पर बुझाने से पहले सबसे पहला महत्वपूर्ण कदम क्या है?",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱡᱽᱞᱤ ᱥᱮᱸᱜᱮᱞ ᱧᱮᱞ ᱠᱟᱛᱮ ᱤᱬᱤᱡ ᱢᱟᱬᱟᱝ ᱨᱮ ᱡᱚᱛᱚ ᱠᱷᱚᱱ ᱯᱩᱭᱞᱩ ᱠᱟᱹᱢᱤ ᱫᱚ ᱪᱮᱫ?",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.questionProgress",
+      "en": "{0} of {1}",
+      "hi": "{0} का {1}",
+      "hi_roman": "",
+      "sat": "{1} ᱢᱩᱫᱽ ᱨᱮ {0}",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.selectOne",
+      "en": "Select one option to continue",
+      "hi": "आगे बढ़ने के लिए एक विकल्प का चयन करें",
+      "hi_roman": "",
+      "sat": "ᱢᱤᱫᱴᱟᱹᱝ ᱴᱷᱤᱠ ᱛᱮᱞᱟ ᱵᱟᱪᱷᱟᱣ ᱢᱮ:",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.submit",
+      "en": "Submit Assessment Response",
+      "hi": "मूल्यांकन उत्तर जमा करें",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱰᱟᱹᱣ ᱨᱮᱱᱟᱜ ᱛᱮᱞᱟ ᱡᱚᱢᱟ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.subtitle",
+      "en": "Fire Safety Knowledge & SOP Test",
+      "hi": "अग्नि सुरक्षा ज्ञान एवं SOP मूल्यांकन",
+      "hi_roman": "",
+      "sat": "ᱟᱢᱟᱜ ᱥᱮᱪᱮᱫ ᱯᱚᱨᱚᱠ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "assessment.title",
+      "en": "Fire Safety Assessment",
+      "hi": "अग्नि सुरक्षा मूल्यांकन",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱵᱤᱰᱟᱹᱣ",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.assessmentStatus",
+      "en": "Assessment Status:",
+      "hi": "मूल्यांकन स्थिति:",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱰᱟᱹᱣ ᱦᱟᱞᱚᱛ:",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.awaitingIssuance",
+      "en": "Awaiting Issuance",
+      "hi": "प्रमाणपत्र जारी होना प्रतीक्षित",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱮᱢ ᱛᱟᱺᱜᱤ ᱨᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.certId",
+      "en": "Certificate Number:",
+      "hi": "प्रमाणपत्र संख्या:",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱮᱞ:",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.certIdPending",
+      "en": "Certificate Number: Pending Official Decision",
+      "hi": "प्रमाणपत्र संख्या: आधिकारिक अनुमोदन लंबित",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱮᱞ: ᱥᱚᱨᱠᱟᱨᱤ ᱯᱷᱟᱹᱭᱥᱟᱞᱟ ᱛᱟᱺᱜᱤ ᱨᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.competencyGrade",
+      "en": "Competency Grade:",
+      "hi": "दक्षता श्रेणी:",
+      "hi_roman": "",
+      "sat": "ᱫᱟᱲᱮ ᱜᱨᱮᱰ: {0}",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.criticalErrors",
+      "en": "Critical Errors:",
+      "hi": "गंभीर त्रुटियाँ:",
+      "hi_roman": "",
+      "sat": "ᱵᱟᱹᱲᱤᱡ ᱵᱷᱩᱞ ᱠᱚ:",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.dateIssued",
+      "en": "Date Issued:",
+      "hi": "जारी करने की तिथि:",
+      "hi_roman": "",
+      "sat": "ᱮᱢ ᱟᱠᱟᱱ ᱢᱟᱹᱦᱤᱛ:",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.govTitle",
+      "en": "GOVERNMENT OF INDIA",
+      "hi": "भारत सरकार",
+      "hi_roman": "",
+      "sat": "ᱥᱤᱧᱚᱛ ᱥᱚᱨᱠᱟᱨ — ᱠᱷᱟᱫᱟᱱ ᱢᱚᱱᱛᱨᱟᱲᱚᱭ",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.guestWorker",
+      "en": "Guest Trainee",
+      "hi": "अतिथि शिक्षार्थी",
+      "hi_roman": "",
+      "sat": "ᱯᱮᱲᱟ ᱠᱟᱹᱢᱤᱭᱟᱹ (ᱥᱮᱪᱮᱫᱤᱭᱟᱹ)",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.idLabel",
+      "en": "ID:",
+      "hi": "आईडी:",
+      "hi_roman": "",
+      "sat": "ᱠᱟᱹᱢᱤᱭᱟᱹ ᱩᱯᱨᱩᱢ: {0}",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.invalid",
+      "en": "Invalid",
+      "hi": "अमान्य",
+      "hi_roman": "",
+      "sat": "ᱵᱟᱝ ᱴᱷᱤᱠ",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.mineWorker",
+      "en": "Mine Worker",
+      "hi": "खान कार्यकर्ता",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱹᱵᱤᱛ ᱠᱷᱟᱫᱟᱱ ᱠᱟᱹᱢᱤᱭᱟᱹ",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.notAttempted",
+      "en": "Not Attempted",
+      "hi": "प्रयास नहीं किया गया",
+      "hi_roman": "",
+      "sat": "ᱵᱟᱝ ᱠᱩᱨᱩᱢᱩᱴᱩ ᱟᱠᱟᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.qrVerify",
+      "en": "Scan QR Code for Official Verification",
+      "hi": "आधिकारिक सत्यापन के लिए क्यूआर कोड स्कैन करें",
+      "hi_roman": "",
+      "sat": "ᱯᱚᱨᱚᱠ ᱞᱟᱹᱜᱤᱫ ᱠᱤᱣ.ᱟᱨ. ᱠᱳᱰ ᱥᱠᱮᱱ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.qualified",
+      "en": "Qualified (Certified)",
+      "hi": "योग्य (प्रमाणित)",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱹᱵᱤᱛ ᱟᱠᱟᱱᱟ (QUALIFIED)",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.retrainingRequired",
+      "en": "Retraining Required",
+      "hi": "पुनः प्रशिक्षण आवश्यक",
+      "hi_roman": "",
+      "sat": "ᱫᱚᱦᱲᱟ ᱥᱮᱪᱮᱫ ᱞᱟᱹᱠᱛᱤᱭᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.score",
+      "en": "Score:",
+      "hi": "स्कोर:",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱰᱟᱹᱣ ᱮᱞ: {0}%",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.title",
+      "en": "Official Safety Certificate",
+      "hi": "आधिकारिक सुरक्षा प्रमाणपत्र",
+      "hi_roman": "",
+      "sat": "ᱥᱚᱨᱠᱟᱨᱤ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.valid",
+      "en": "Valid",
+      "hi": "मान्य",
+      "hi_roman": "",
+      "sat": "ᱴᱷᱤᱠ ᱜᱮᱭᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.verificationInProgress",
+      "en": "Verification: In Progress",
+      "hi": "सत्यापन: जारी है",
+      "hi_roman": "",
+      "sat": "ᱯᱚᱨᱚᱠ: ᱪᱟᱞᱟᱜ ᱠᱟᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "cert.verifiedOfficial",
+      "en": "Verified per DGMS Industrial Safety Standards",
+      "hi": "खान सुरक्षा महानिदेशालय (DGMS) मानकों के अनुरूप सत्यापित",
+      "hi_roman": "",
+      "sat": "DGMS ᱠᱷᱟᱫᱟᱱ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱱᱤᱭᱟᱹᱢ ᱞᱮᱠᱟᱛᱮ ᱥᱟᱹᱵᱤᱛ ᱟᱠᱟᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "certificate.allCredentials",
+      "en": "All Safety Credentials",
+      "hi": "सभी सुरक्षा प्रमाणपत्र",
+      "hi_roman": "",
+      "sat": "ᱡᱚᱛᱚ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱠᱚ",
+      "sat_roman": ""
+    },
+    {
+      "key": "certificate.assessmentCompletedDesc",
+      "en": "Your fire response assessment has been submitted. Official certificate issuance is pending review by the safety administrator.",
+      "hi": "आपका अग्नि सुरक्षा मूल्यांकन जमा कर दिया गया है। आधिकारिक प्रमाणपत्र जारी करने के लिए सुरक्षा प्रशासक की समीक्षा लंबित है।",
+      "hi_roman": "",
+      "sat": "ᱟᱢᱟᱜ ᱥᱮᱸᱜᱮᱞ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱵᱤᱰᱟᱹᱣ ᱡᱚᱢᱟ ᱮᱱᱟ ᱾ ᱟᱹᱢᱟᱹᱞᱤᱭᱟᱹ ᱧᱮᱞ ᱯᱩᱨᱟᱹᱣ ᱛᱟᱭᱚᱢ ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱮᱢᱚᱜ ᱦᱩᱭᱩᱜᱼᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "certificate.assessmentCompletedTitle",
+      "en": "Assessment Completed",
+      "hi": "मूल्यांकन संपन्न",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱰᱟᱹᱣ ᱯᱩᱨᱟᱹᱣ ᱮᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "certificate.awardedTo",
+      "en": "This certificate is proudly awarded to",
+      "hi": "यह प्रमाणपत्र निष्ठापूर्वक प्रदान किया जाता है",
+      "hi_roman": "",
+      "sat": "ᱱᱚᱣᱟ ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱫᱚ ᱢᱟᱹᱱ ᱥᱟᱞᱟᱜ ᱮᱢ ᱦᱩᱭᱩᱜ ᱠᱟᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "certificate.downloadPdf",
+      "en": "Download Official PDF",
+      "hi": "आधिकारिक PDF डाउनलोड करें",
+      "hi_roman": "",
+      "sat": "ᱥᱚᱨᱠᱟᱨᱤ PDF ᱰᱟᱣᱩᱱᱞᱳᱰ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "certificate.emptyDesc",
+      "en": "Complete the practical AR training and assessment. Once reviewed and approved by a safety officer, your official certificate will appear here.",
+      "hi": "प्रायोगिक AR प्रशिक्षण और मूल्यांकन पूरा करें। सुरक्षा अधिकारी द्वारा समीक्षा और अनुमोदन के बाद, आपका आधिकारिक प्रमाणपत्र यहाँ दिखाई देगा।",
+      "hi_roman": "",
+      "sat": "ᱮ.ᱟᱨ. ᱴᱨᱮᱱᱤᱝ ᱟᱨ ᱵᱤᱰᱟᱹᱣ ᱯᱩᱨᱟᱹᱣ ᱢᱮ ᱾ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱟᱹᱢᱟᱹᱞᱤᱭᱟᱹ ᱧᱮᱞ ᱠᱟᱛᱮ ᱮᱢ ᱞᱮᱠᱷᱟᱱ, ᱱᱚᱰᱮ ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱧᱮᱞᱚᱜᱼᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "certificate.emptyTitle",
+      "en": "No Issued Certificates Yet",
+      "hi": "अभी तक कोई प्रमाणपत्र जारी नहीं हुआ",
+      "hi_roman": "",
+      "sat": "ᱱᱤᱛ ᱫᱷᱟᱹᱵᱤᱡ ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱵᱟᱝ ᱮᱢ ᱟᱠᱟᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "certificate.latestBadge",
+      "en": "★ LATEST ISSUED CREDENTIAL",
+      "hi": "★ नवीनतम जारी प्रमाणपत्र",
+      "hi_roman": "",
+      "sat": "★ ᱱᱟᱣᱟ ᱮᱢ ᱟᱠᱟᱱ ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ",
+      "sat_roman": ""
+    },
+    {
+      "key": "certificate.qrSub",
+      "en": "Scan this QR code using Google Lens or any smartphone camera to view official compliance certificate directly.",
+      "hi": "आधिकारिक प्रमाणपत्र देखने के लिए Google Lens या किसी भी स्मार्टफ़ोन कैमरे से यह क्यूआर कोड स्कैन करें।",
+      "hi_roman": "",
+      "sat": "ᱥᱚᱨᱠᱟᱨᱤ ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱧᱮᱞ ᱞᱟᱹᱜᱤᱫ ᱱᱚᱣᱟ QR ᱠᱳᱰ ᱥᱠᱮᱱ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "certificate.qrTitle",
+      "en": "Scan to Verify Credential",
+      "hi": "प्रमाणपत्र सत्यापन के लिए स्कैन करें",
+      "hi_roman": "",
+      "sat": "ᱯᱚᱨᱚᱠ ᱞᱟᱹᱜᱤᱫ ᱥᱠᱮᱱ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "certificate.refreshCerts",
+      "en": "Sync & Refresh Certificates",
+      "hi": "प्रमाणपत्र सिंक एवं रीफ़्रेश करें",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱥᱤᱝᱠ ᱟᱨ ᱨᱤᱯᱷᱨᱮᱥ",
+      "sat_roman": ""
+    },
+    {
+      "key": "certificate.returnHome",
+      "en": "Return to Dashboard",
+      "hi": "डैशबोर्ड पर लौटें",
+      "hi_roman": "",
+      "sat": "ᱰᱮᱥᱵᱚᱨᱰ ᱛᱮ ᱨᱩᱣᱟᱹᱲ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "certificate.title",
+      "en": "My Safety Certificates",
+      "hi": "मेरे सुरक्षा प्रमाणपत्र",
+      "hi_roman": "",
+      "sat": "ᱤᱧᱟᱜ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱠᱚ",
+      "sat_roman": ""
+    },
+    {
+      "key": "certificate.verifyOnline",
+      "en": "Verify Online",
+      "hi": "ऑनलाइन सत्यापित करें",
+      "hi_roman": "",
+      "sat": "ᱚᱱᱞᱟᱭᱤᱱ ᱨᱮ ᱯᱚᱨᱚᱠ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "certificate.viewImage",
+      "en": "Open Certificate Image ↗",
+      "hi": "प्रमाणपत्र चित्र देखें ↗",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱪᱤᱛᱟᱹᱨ ᱧᱮᱞ ᱢᱮ ↗",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.back",
+      "en": "Back",
+      "hi": "वापस",
+      "hi_roman": "",
+      "sat": "ᱛᱟᱭᱚᱢ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.cancel",
+      "en": "Cancel",
+      "hi": "रद्द करें",
+      "hi_roman": "",
+      "sat": "ᱵᱟᱹᱛᱤᱞ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.certificates",
+      "en": "Certificates",
+      "hi": "प्रमाणपत्र",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱠᱚ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.close",
+      "en": "Close",
+      "hi": "बंद करें",
+      "hi_roman": "",
+      "sat": "ᱵᱚᱱᱫᱚ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.connectionRestored",
+      "en": "Network connection restored.",
+      "hi": "नेटवर्क कनेक्शन वापस आ गया है।",
+      "hi_roman": "",
+      "sat": "ᱱᱮᱴᱣᱚᱨᱠ ᱡᱚᱲᱟᱣ ᱫᱚᱦᱲᱟ ᱮᱦᱚᱵ ᱮᱱᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.continue",
+      "en": "Continue",
+      "hi": "जारी रखें",
+      "hi_roman": "",
+      "sat": "ᱞᱟᱦᱟᱜ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.done",
+      "en": "Done",
+      "hi": "पूरा हुआ",
+      "hi_roman": "",
+      "sat": "ᱦᱩᱭᱮᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.error",
+      "en": "Error",
+      "hi": "त्रुटि",
+      "hi_roman": "",
+      "sat": "ᱵᱷᱩᱞ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.exit",
+      "en": "Exit",
+      "hi": "बाहर निकलें",
+      "hi_roman": "",
+      "sat": "ᱚᱰᱚᱠ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.home",
+      "en": "Home",
+      "hi": "होम",
+      "hi_roman": "",
+      "sat": "ᱢᱩᱞ ᱥᱟᱦᱴᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.learn",
+      "en": "Learn",
+      "hi": "सीखें",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.loading",
+      "en": "Loading...",
+      "hi": "लोड हो रहा है...",
+      "hi_roman": "",
+      "sat": "ᱞᱟᱫᱮᱜ ᱠᱟᱱᱟ...",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.myProgress",
+      "en": "My Progress",
+      "hi": "मेरी प्रगति",
+      "hi_roman": "",
+      "sat": "ᱤᱧᱟᱜ ᱞᱟᱦᱟᱱᱛᱤ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.networkUnavailable",
+      "en": "Network connection unavailable.",
+      "hi": "नेटवर्क कनेक्शन उपलब्ध नहीं है।",
+      "hi_roman": "",
+      "sat": "ᱱᱮᱴᱣᱚᱨᱠ ᱡᱚᱲᱟᱣ ᱵᱟᱹᱱᱩᱜᱼᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.next",
+      "en": "Next",
+      "hi": "आगे",
+      "hi_roman": "",
+      "sat": "ᱞᱟᱦᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.noData",
+      "en": "No data available.",
+      "hi": "कोई डेटा उपलब्ध नहीं है।",
+      "hi_roman": "",
+      "sat": "ᱪᱮᱫ ᱰᱟᱴᱟ ᱦᱚᱸ ᱵᱟᱹᱱᱩᱜᱼᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.offlineMode",
+      "en": "Offline Mode",
+      "hi": "ऑफ़लाइन मोड",
+      "hi_roman": "",
+      "sat": "ᱚᱯᱷᱞᱟᱭᱤᱱ ᱢᱚᱰ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.ok",
+      "en": "OK",
+      "hi": "ठीक है",
+      "hi_roman": "",
+      "sat": "ᱴᱷᱤᱠ ᱜᱮᱭᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.retry",
+      "en": "Retry",
+      "hi": "फिर कोशिश करें",
+      "hi_roman": "",
+      "sat": "ᱫᱚᱦᱲᱟ ᱪᱮᱥᱴᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.save",
+      "en": "Save",
+      "hi": "सहेजें",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱧᱪᱟᱣ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.somethingWentWrong",
+      "en": "Something went wrong. Please try again.",
+      "hi": "कुछ गड़बड़ हो गई। कृपया फिर कोशिश करें।",
+      "hi_roman": "",
+      "sat": "ᱡᱟᱦᱟᱸᱱᱟᱜ ᱵᱷᱩᱞ ᱦᱩᱭᱮᱱᱟ ᱾ ᱫᱚᱦᱲᱟ ᱪᱮᱥᱴᱟᱭ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.start",
+      "en": "Start",
+      "hi": "शुरू करें",
+      "hi_roman": "",
+      "sat": "ᱮᱦᱚᱵ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.submit",
+      "en": "Submit",
+      "hi": "जमा करें",
+      "hi_roman": "",
+      "sat": "ᱡᱚᱢᱟ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.success",
+      "en": "Success",
+      "hi": "सफलता",
+      "hi_roman": "",
+      "sat": "ᱫᱟᱲᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.syncFailed",
+      "en": "Data synchronization failed.",
+      "hi": "डेटा सिंक्रनाइज़ेशन विफल रहा।",
+      "hi_roman": "",
+      "sat": "ᱰᱟᱴᱟ ᱥᱤᱝᱠ ᱵᱟᱝ ᱜᱟᱱ ᱞᱮᱱᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.syncSuccess",
+      "en": "Data synchronized successfully.",
+      "hi": "डेटा सफलतापूर्वक सिंक्रनाइज़ हो गया।",
+      "hi_roman": "",
+      "sat": "ᱰᱟᱴᱟ ᱥᱤᱝᱠ ᱥᱟᱹᱛ ᱮᱱᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.viewAll",
+      "en": "View All",
+      "hi": "सभी देखें",
+      "hi_roman": "",
+      "sat": "ᱡᱚᱛᱚ ᱧᱮᱞ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "common.warning",
+      "en": "Warning",
+      "hi": "चेतावनी",
+      "hi_roman": "",
+      "sat": "ᱦᱩᱥᱤᱭᱟᱹᱨ",
+      "sat_roman": ""
+    },
+    {
+      "key": "difficulty.advanced",
+      "en": "Advanced Level",
+      "hi": "उन्नत स्तर",
+      "hi_roman": "",
+      "sat": "ᱞᱟᱦᱟᱱᱛᱤ",
+      "sat_roman": ""
+    },
+    {
+      "key": "difficulty.beginner",
+      "en": "Beginner Level",
+      "hi": "शुरुआती स्तर",
+      "hi_roman": "",
+      "sat": "ᱮᱛᱚᱦᱚᱵᱤᱡ",
+      "sat_roman": ""
+    },
+    {
+      "key": "difficulty.intermediate",
+      "en": "Intermediate Level",
+      "hi": "मध्यम स्तर",
+      "hi_roman": "",
+      "sat": "ᱛᱟᱞᱟᱢᱟᱞᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.actionHint.step1",
+      "en": "Tap on Fire",
+      "hi": "आग पर टैप करें",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱨᱮ ᱚᱛᱟᱭ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.actionHint.step2",
+      "en": "Tap Alarm",
+      "hi": "अलार्म पर टैप करें",
+      "hi_roman": "",
+      "sat": "ᱮᱞᱟᱨᱢ ᱨᱮ ᱚᱛᱟᱭ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.actionHint.step3",
+      "en": "Select CO₂ Extinguisher",
+      "hi": "CO₂ अग्निशामक चुनें",
+      "hi_roman": "",
+      "sat": "CO2 ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱵᱟᱪᱷᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.actionHint.step4",
+      "en": "Pull Safety Pin",
+      "hi": "सुरक्षा पिन निकालें",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱯᱤᱱ ᱚᱨ ᱚᱰᱚᱠ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.actionHint.step5",
+      "en": "Aim Horn at Base",
+      "hi": "आग के आधार पर निशाना लगाएँ",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱵᱩᱴᱟᱹ ᱥᱮᱫ ᱫᱷᱮᱭᱟᱱ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.actionHint.step6",
+      "en": "Press & Hold to Spray",
+      "hi": "स्प्रे करने के लिए दबाकर रखें",
+      "hi_roman": "",
+      "sat": "ᱞᱤᱢᱵᱩᱫ ᱠᱟᱛᱮ ᱪᱟᱞᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.ar.completionSub",
+      "en": "Excellent work! Proceed to assessment.",
+      "hi": "शाबाश! मूल्यांकन के लिए आगे बढ़ें।",
+      "hi_roman": "",
+      "sat": "ᱟᱹᱰᱤ ᱱᱟᱯᱟᱭ ᱠᱟᱹᱢᱤ ! ᱵᱤᱰᱟᱹᱣ ᱞᱟᱹᱜᱤᱫ ᱞᱟᱦᱟᱜ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.ar.completionTitle",
+      "en": "Fire Extinguished!",
+      "hi": "आग बुझ गई!",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱤᱨᱤᱡ ᱮᱱᱟ!",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.ar.placementPrompt",
+      "en": "Scanning for surface...",
+      "hi": "सतह खोज रहे हैं...",
+      "hi_roman": "",
+      "sat": "ᱚᱛ ᱥᱮᱸᱫᱽᱨᱟᱜ ᱠᱟᱱᱟ...",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.ar.readyToSpray",
+      "en": "Ready to Spray",
+      "hi": "स्प्रे के लिए तैयार",
+      "hi_roman": "",
+      "sat": "ᱪᱷᱤᱴᱠᱟᱹᱣ ᱞᱟᱹᱜᱤᱫ ᱥᱟᱯᱲᱟᱣ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.ar.score",
+      "en": "Score:",
+      "hi": "स्कोर:",
+      "hi_roman": "",
+      "sat": "ᱢᱟᱨᱥᱟᱞ:",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.ar.sprayPaused",
+      "en": "Off Target (Paused)",
+      "hi": "लक्ष्य से बाहर (रुका)",
+      "hi_roman": "",
+      "sat": "ᱡᱚᱥ ᱠᱷᱚᱱ ᱵᱟᱦᱨᱮ (ᱛᱷᱟᱯᱚᱱ ᱟᱠᱟᱱᱟ)",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.ar.spraying",
+      "en": "Spraying...",
+      "hi": "स्प्रे हो रहा है...",
+      "hi_roman": "",
+      "sat": "ᱤᱨᱤᱡ ᱪᱟᱞᱟᱜ ᱠᱟᱱᱟ...",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.ar.stepOf",
+      "en": "Step {0} of {1}",
+      "hi": "चरण {0} / {1}",
+      "hi_roman": "",
+      "sat": "ᱪᱟᱸᱜ {0} / {1}",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.evac.action",
+      "en": "Exit Reached — Complete Evacuation",
+      "hi": "निकास बिंदु पर पहुँचे — निकासी पूर्ण करें",
+      "hi_roman": "",
+      "sat": "ᱚᱰᱚᱠ ᱡᱟᱭᱜᱟ ᱨᱮ ᱥᱮᱴᱮᱨ ᱮᱱᱟ — ᱚᱰᱚᱠ ᱯᱩᱨᱟᱹᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.evac.desc",
+      "en": "Follow the green EXIT signs to the emergency assembly point. Do not attempt to re-enter.",
+      "hi": "आपातकालीन असेंबली बिंदु तक पहुँचने के लिए हरे निकास संकेतों का पालन करें। दोबारा प्रवेश करने का प्रयास न करें।",
+      "hi_roman": "",
+      "sat": "ᱦᱟᱹᱨᱭᱟᱹᱲ EXIT ᱪᱤᱱᱦᱟᱹ ᱯᱟᱸᱡᱟ ᱠᱟᱛᱮ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱡᱟᱭᱜᱟ ᱛᱮ ᱪᱟᱞᱟᱜ ᱢᱮ ᱾ ᱫᱚᱦᱲᱟ ᱵᱚᱞᱚᱱ ᱟᱞᱚᱢ ᱪᱮᱥᱴᱟᱭᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.evac.hint",
+      "en": "Inform emergency services of fire location, fuel type, and any personnel still inside.",
+      "hi": "आपातकालीन सेवाओं को आग के स्थान, ईंधन के प्रकार और अंदर मौजूद कर्मियों की सूचना दें।",
+      "hi_roman": "",
+      "sat": "ᱟᱯᱚᱛᱠᱟᱲᱤᱱ ᱠᱟᱹᱢᱤᱭᱟᱹ ᱠᱚ ᱥᱮᱸᱜᱮᱞ ᱡᱟᱭᱜᱟ ᱟᱨ ᱵᱷᱤᱛᱨᱤ ᱨᱮ ᱦᱚᱲ ᱢᱮᱱᱟᱜ ᱠᱚ ᱠᱷᱟᱱ ᱠᱷᱚᱵᱚᱨ ᱮᱢᱟᱠᱚ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.evac.title",
+      "en": "Evacuate the Hazard Zone",
+      "hi": "खतरे के क्षेत्र से सुरक्षित बाहर निकलें",
+      "hi_roman": "",
+      "sat": "ᱵᱚᱛᱚᱨ ᱡᱟᱭᱜᱟ ᱠᱷᱚᱱ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱚᱰᱚᱠ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.feedback.activateAlarmFirst",
+      "en": "Activate the fire alarm before selecting the extinguisher.",
+      "hi": "अग्निशामक चुनने से पहले फायर अलार्म बजाएँ।",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡᱤᱡ ᱵᱟᱪᱷᱟᱣ ᱢᱟᱲᱟᱝ ᱥᱮᱸᱜᱮᱞ ᱟᱞᱟᱨᱢ ᱪᱟᱹᱞᱩᱭ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.feedback.aimAtBase",
+      "en": "Aim the nozzle at the base of the fire.",
+      "hi": "नोज़ल को आग के आधार की ओर रखें।",
+      "hi_roman": "",
+      "sat": "ᱱᱳᱡᱚᱞ ᱫᱚ ᱥᱮᱸᱜᱮᱞ ᱨᱮᱱᱟᱜ ᱵᱩᱰᱟᱹ ᱨᱮ ᱡᱚᱥ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.feedback.contactReset",
+      "en": "Contact lost. Start spraying again.",
+      "hi": "संपर्क टूट गया। स्प्रे फिर से शुरू करें।",
+      "hi_roman": "",
+      "sat": "ᱡᱚᱲᱟᱣ ᱛᱚᱯᱟᱜ ᱮᱱᱟ ᱾ ᱫᱚᱦᱲᱟ ᱪᱷᱤᱴᱠᱟᱹᱣ ᱮᱦᱚᱵ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.feedback.contactValid",
+      "en": "Good contact! Keep spraying.",
+      "hi": "सही निशाना! स्प्रे जारी रखें।",
+      "hi_roman": "",
+      "sat": "ᱴᱷᱤᱠ ᱡᱚᱲᱟᱣ ! ᱪᱷᱤᱴᱠᱟᱹᱣ ᱪᱟᱞᱩ ᱫᱚᱦᱚᱭ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.feedback.gripActivated",
+      "en": "Grip activated. Keep spraying.",
+      "hi": "हैंडल दब गया। स्प्रे जारी रखें।",
+      "hi_roman": "",
+      "sat": "ᱞᱤᱵᱷᱟᱨ ᱪᱟᱹᱞᱩ ᱮᱱᱟ ᱾ ᱪᱷᱤᱴᱠᱟᱹᱣ ᱪᱟᱞᱩ ᱫᱚᱦᱚᱭ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.feedback.identifyHazardFirst",
+      "en": "Identify the fire hazard first.",
+      "hi": "पहले आग के खतरे की पहचान करें।",
+      "hi_roman": "",
+      "sat": "ᱢᱟᱲᱟᱝ ᱥᱮᱸᱜᱮᱞ ᱵᱚᱛᱚᱨ ᱪᱤᱱᱦᱟᱹᱣ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.feedback.prematureSpray",
+      "en": "Remove the safety pin before spraying.",
+      "hi": "स्प्रे करने से पहले सुरक्षा पिन निकालें।",
+      "hi_roman": "",
+      "sat": "ᱪᱷᱤᱴᱠᱟᱹᱣ ᱢᱟᱲᱟᱝ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱯᱤᱱ ᱚᱰᱚᱠ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.feedback.removePinBeforeHandle",
+      "en": "Remove the safety pin before using the handle.",
+      "hi": "लीवर दबाने से पहले सुरक्षा पिन निकालें।",
+      "hi_roman": "",
+      "sat": "ᱦᱮᱱᱰᱮᱞ ᱵᱮᱵᱷᱟᱨ ᱢᱟᱲᱟᱝ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱯᱤᱱ ᱚᱰᱚᱠ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.feedback.removePinFirst",
+      "en": "Remove the safety pin first.",
+      "hi": "पहले सुरक्षा पिन निकालें।",
+      "hi_roman": "",
+      "sat": "ᱢᱟᱲᱟᱝ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱯᱤᱱ ᱚᱰᱚᱠ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.feedback.selectExtinguisherFirst",
+      "en": "Select the CO₂ extinguisher first.",
+      "hi": "पहले CO₂ अग्निशामक का चयन करें।",
+      "hi_roman": "",
+      "sat": "ᱢᱟᱲᱟᱝ CO₂ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡᱤᱡ ᱵᱟᱪᱷᱟᱣ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.feedback.sprayContactInterrupted",
+      "en": "Continuous spray interrupted! Keep aiming at the base.",
+      "hi": "स्प्रे संपर्क टूट गया! आग के आधार पर निशाना बनाए रखें।",
+      "hi_roman": "",
+      "sat": "ᱞᱮᱛᱟᱲ ᱪᱷᱤᱴᱠᱟᱹᱣ ᱛᱚᱯᱟᱜ ᱮᱱᱟ ! ᱥᱮᱸᱜᱮᱞ ᱵᱩᱰᱟᱹ ᱨᱮ ᱡᱚᱥ ᱫᱚᱦᱚᱭ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.feedback.sprayInterrupted",
+      "en": "Spray interrupted. Re-aim and spray.",
+      "hi": "स्प्रे रुक गया। फिर से निशाना लगाएँ और स्प्रे करें।",
+      "hi_roman": "",
+      "sat": "ᱪᱷᱤᱴᱠᱟᱹᱣ ᱛᱚᱯᱟᱜ ᱮᱱᱟ ᱾ ᱫᱚᱦᱲᱟ ᱡᱚᱥ ᱠᱟᱛᱮ ᱪᱷᱤᱴᱠᱟᱹᱣ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.guidance.completion.body",
+      "en": "Well done. The fire has been safely extinguished.",
+      "hi": "शाबाश! आग सुरक्षित रूप से बुझा दी गई है।",
+      "hi_roman": "",
+      "sat": "ᱟᱹᱰᱤ ᱵᱷᱟᱹᱜᱤ ᱾ ᱥᱮᱸᱜᱮᱞ ᱫᱚ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱛᱮ ᱤᱬᱤᱡ ᱮᱱᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.guidance.spray.progress",
+      "en": "{0:F1} / {1:F1} s",
+      "hi": "{0:F1} / {1:F1} से.",
+      "hi_roman": "",
+      "sat": "{0:F1} / {1:F1} ᱴᱤᱯᱤᱡ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.guidance.step1.body",
+      "en": "Find the highlighted electrical fire and tap it.",
+      "hi": "अपने आसपास देखें और विद्युत आग को पहचानें। आग दिखाई देने पर उस पर टैप करें।",
+      "hi_roman": "",
+      "sat": "ᱪᱤᱱᱦᱟᱹᱣ ᱟᱠᱟᱱ ᱵᱤᱡᱽᱞᱤ ᱥᱮᱸᱜᱮᱞ ᱯᱟᱱᱛᱮ ᱠᱟᱛᱮ ᱚᱛᱟᱭ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.guidance.step2.body",
+      "en": "Find the fire alarm and tap it to alert everyone.",
+      "hi": "दीवार पर लगे लाल फायर अलार्म स्टेशन का पता लगाएँ और सभी को सूचित करने के लिए इसे टैप करें।",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱟᱞᱟᱨᱢ ᱯᱟᱱᱛᱮ ᱠᱟᱛᱮ ᱡᱚᱛᱚ ᱦᱚᱲ ᱵᱟᱰᱟᱭ ᱦᱚᱪᱚ ᱞᱟᱹᱜᱤᱫ ᱚᱛᱟᱭ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.guidance.step3.body",
+      "en": "Tap the highlighted CO\\u2082 extinguisher to pick it up.",
+      "hi": "जलते हुए उपकरण की जाँच करें और विद्युत आग के लिए सही CO₂ अग्निशामक चुनें।",
+      "hi_roman": "",
+      "sat": "ᱪᱤᱱᱦᱟᱹᱣ ᱟᱠᱟᱱ CO₂ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡᱤᱡ ᱛᱩᱞ ᱞᱟᱹᱜᱤᱫ ᱚᱛᱟᱭ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.guidance.step4.body",
+      "en": "Tap and pull the safety pin out before using the handle.",
+      "hi": "हैंडल अनलॉक करने के लिए सुरक्षा पिन निकालें।",
+      "hi_roman": "",
+      "sat": "ᱦᱮᱱᱰᱮᱞ ᱵᱮᱵᱷᱟᱨ ᱢᱟᱲᱟᱝ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱯᱤᱱ ᱚᱨ ᱚᱰᱚᱠ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.guidance.step5.body",
+      "en": "Aim the nozzle at the base of the fire, not the flames.",
+      "hi": "इंसुलेटेड हॉर्न को पकड़ें। लपटों पर नहीं, सीधे आग के आधार पर निशाना लगाएँ।",
+      "hi_roman": "",
+      "sat": "ᱱᱳᱡᱚᱞ ᱫᱚ ᱥᱮᱸᱜᱮᱞ ᱞᱟᱴᱷᱟ ᱨᱮ ᱵᱟᱝ, ᱵᱩᱰᱟᱹ ᱨᱮ ᱡᱚᱥ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.guidance.step6.body",
+      "en": "Keep the nozzle at the base and spray continuously.",
+      "hi": "हैंडल दबाकर रखें और आग बुझने तक उसके आधार पर दायें-बायें स्प्रे करें।",
+      "hi_roman": "",
+      "sat": "ᱱᱳᱡᱚᱞ ᱫᱚ ᱵᱩᱰᱟᱹ ᱨᱮ ᱫᱚᱦᱚ ᱠᱟᱛᱮ ᱞᱮᱛᱟᱲ ᱪᱷᱤᱴᱠᱟᱹᱣ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.intro.action",
+      "en": "Start AR Training",
+      "hi": "AR प्रशिक्षण शुरू करें",
+      "hi_roman": "",
+      "sat": "ᱮ.ᱟᱨ. ᱥᱮᱪᱮᱫ ᱮᱦᱚᱵ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.intro.desc",
+      "en": "In this scenario, an electrical equipment fire breaks out in a mining facility.\nFollow standard operating procedures (SOP) to safely respond and evacuate.",
+      "hi": "इस परिदृश्य में, खनन परिसर के विद्युत उपकरण में आग लग जाती है।\nसुरक्षित बचाव और निकासी के लिए मानक संचालन प्रक्रिया (SOP) का पालन करें।",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱤᱨᱤᱡ ᱨᱮᱱᱟᱜ PASS ᱱᱤᱭᱟᱹᱢ ᱥᱮᱪᱮᱫ ᱢᱮ: ᱚᱨ, ᱫᱷᱮᱭᱟᱱ, ᱞᱤᱢᱵᱩᱫ, ᱟᱨ ᱟᱹᱪᱩᱨ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.intro.hint",
+      "en": "Scan the floor and tap the reticle to anchor the 3D training scenario.",
+      "hi": "फर्श को स्कैन करें और 3D प्रशिक्षण परिदृश्य स्थापित करने के लिए रेटिकल पर टैप करें।",
+      "hi_roman": "",
+      "sat": "᱓ᱰᱤ ᱥᱮᱪᱮᱫ ᱯᱚᱨᱚᱠ ᱛᱷᱟᱯᱚᱱ ᱞᱟᱹᱜᱤᱫ ᱚᱛ ᱥᱠᱮᱱ ᱢᱮ ᱟᱨ ᱨᱮᱴᱤᱠᱟᱞ ᱨᱮ ᱚᱛᱟᱭ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.intro.title",
+      "en": "Industrial Fire Response Training",
+      "hi": "औद्योगिक आग से निपटने का प्रशिक्षण",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱮᱪᱮᱫ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.scan.action",
+      "en": "Simulate Placement",
+      "hi": "यहाँ रखें",
+      "hi_roman": "",
+      "sat": "ᱛᱷᱟᱯᱚᱱ ᱯᱚᱨᱚᱠ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.scan.desc",
+      "en": "Move your phone slowly to scan the ground.\nWhen the placement reticle appears, tap anywhere to place the industrial scenario.",
+      "hi": "सतह स्कैन करने के लिए अपने फ़ोन को धीरे-धीरे घुमाएँ।\nनिशान दिखाई देने पर प्रशिक्षण शुरू करने के लिए टैप करें।",
+      "hi_roman": "",
+      "sat": "ᱚᱛ ᱥᱠᱮᱱ ᱞᱟᱹᱜᱤᱫ ᱟᱢᱟᱜ ᱯᱷᱳᱱ ᱵᱟᱹᱭ-ᱵᱟᱹᱭ ᱛᱮ ᱟᱹᱪᱩᱨ ᱢᱮ ᱾\nᱡᱚᱠᱷᱚᱱ ᱨᱮᱴᱤᱠᱟᱞ ᱧᱮᱞᱚᱜᱼᱟ, ᱯᱚᱨᱚᱠ ᱛᱷᱟᱯᱚᱱ ᱞᱟᱹᱜᱤᱫ ᱚᱛᱟᱭ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.scan.hint",
+      "en": "Ensure adequate ambient lighting for optical feature tracking.",
+      "hi": "ऑप्टिकल फीचर ट्रैकिंग के लिए पर्याप्त प्रकाश सुनिश्चित करें।",
+      "hi_roman": "",
+      "sat": "ᱢᱮᱫ ᱪᱤᱱᱦᱟᱹᱣ ᱞᱟᱹᱜᱤᱫ ᱴᱷᱤᱠ ᱢᱟᱨᱥᱟᱞ ᱢᱮᱱᱟᱜᱼᱟ ᱥᱮ ᱵᱟᱝ ᱧᱮᱞ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.scan.title",
+      "en": "Select Flat Surface",
+      "hi": "समतल सतह चुनें",
+      "hi_roman": "",
+      "sat": "ᱥᱚᱢᱟᱱ ᱚᱛ ᱵᱟᱪᱷᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step1.action",
+      "en": "I Have Identified Fire Source",
+      "hi": "मैंने आग पहचान ली है",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱟᱨ ᱚᱰᱚᱠ ᱰᱟᱦᱟᱨ ᱧᱮᱞ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step1.desc",
+      "en": "Look around your surroundings to locate the electrical fire. Aim your camera at the flames or tap directly on the fire in AR.",
+      "hi": "अपने आसपास देखें और विद्युत आग को पहचानें। आग दिखाई देने पर उस पर टैप करें।",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱡᱽᱞᱤ ᱥᱮᱸᱜᱮᱞ ᱯᱟᱱᱛᱮ ᱧᱟᱢ ᱞᱟᱹᱜᱤᱫ ᱟᱢ ᱟᱰᱮᱯᱟᱥᱮ ᱧᱮᱞ ᱢᱮ ᱾ ᱠᱮᱢᱮᱨᱟ ᱥᱮᱸᱜᱮᱞ ᱥᱮᱫ ᱟᱹᱪᱩᱨ ᱢᱮ ᱟᱨ ᱮ.ᱟᱨ. ᱨᱮ ᱥᱮᱸᱜᱮᱞ ᱨᱮ ᱚᱛᱟᱭ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step1.hint",
+      "en": "Look for sparks, dark smoke, and electrical panel indicators.",
+      "hi": "चिंगारी, काले धुएँ और विद्युत पैनल के संकेतों की जाँच करें।",
+      "hi_roman": "",
+      "sat": "ᱪᱤᱱᱜᱟᱹᱨᱤ, ᱦᱮᱸᱫᱮ ᱫᱷᱩᱶᱟᱹ ᱟᱨ ᱵᱤᱡᱽᱞᱤ ᱯᱮᱱᱮᱞ ᱪᱤᱱᱦᱟᱹ ᱠᱚ ᱧᱮᱞ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step1.title",
+      "en": "Identify Hazard",
+      "hi": "आग पहचानें",
+      "hi_roman": "",
+      "sat": "ᱦᱟᱞᱚᱛ ᱧᱮᱞ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step2.action",
+      "en": "Activate Fire Alarm",
+      "hi": "अलार्म सक्रिय करें",
+      "hi_roman": "",
+      "sat": "ᱥᱩᱨ ᱨᱮᱱᱟᱜ ᱮᱞᱟᱨᱢ ᱚᱛᱟᱭ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step2.desc",
+      "en": "Locate the red fire alarm pull station on the wall and tap it to alert all personnel in the facility.",
+      "hi": "दीवार पर लगे लाल फायर अलार्म स्टेशन का पता लगाएँ और सभी को सूचित करने के लिए इसे टैप करें।",
+      "hi_roman": "",
+      "sat": "ᱵᱷᱤᱛ ᱨᱮ ᱟᱨᱟᱜ ᱥᱮᱸᱜᱮᱞ ᱮᱞᱟᱨᱢ ᱥᱴᱮᱥᱚᱱ ᱯᱟᱱᱛᱮ ᱧᱟᱢ ᱢᱮ ᱟᱨ ᱠᱟᱹᱢᱤᱭᱟᱹ ᱠᱚ ᱦᱩᱥᱤᱭᱟᱹᱨ ᱞᱟᱹᱜᱤᱫ ᱚᱛᱟᱭ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step2.hint",
+      "en": "Always alert others before attempting to fight a fire alone. Never skip the alarm.",
+      "hi": "अकेले आग बुझाने का प्रयास करने से पहले हमेशा दूसरों को सतर्क करें। अलार्म को कभी न छोड़ें।",
+      "hi_roman": "",
+      "sat": "ᱮᱠᱞᱟ ᱥᱮᱸᱜᱮᱞ ᱤᱨᱤᱡ ᱞᱟᱦᱟᱨᱮ ᱮᱴᱟᱜ ᱦᱚᱲ ᱦᱩᱥᱤᱭᱟᱹᱨ ᱠᱚ ᱢᱮ ᱾ ᱮᱞᱟᱨᱢ ᱚᱛᱟ ᱟᱞᱚᱢ ᱵᱟᱹᱜᱤᱭᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step2.title",
+      "en": "Activate Fire Alarm",
+      "hi": "फायर अलार्म सक्रिय करें",
+      "hi_roman": "",
+      "sat": "ᱮᱞᱟᱨᱢ ᱚᱛᱟᱭ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step3.action",
+      "en": "Equip CO₂ Extinguisher",
+      "hi": "CO₂ अग्निशामक चुनें",
+      "hi_roman": "",
+      "sat": "ᱴᱷᱤᱠ ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱵᱟᱪᱷᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step3.desc",
+      "en": "Examine the burning equipment. Tap on the CO2 Extinguisher (Black band) in your surroundings to equip it.",
+      "hi": "जलते हुए उपकरण की जाँच करें और विद्युत आग के लिए सही CO₂ अग्निशामक चुनें।",
+      "hi_roman": "",
+      "sat": "ᱡᱩᱞᱩᱜ ᱠᱟᱱ ᱥᱟᱢᱟᱱ ᱧᱮᱞ ᱢᱮ ᱾ ᱵᱤᱡᱽᱞᱤ ᱥᱮᱸᱜᱮᱞ ᱞᱟᱹᱜᱤᱫ CO2 ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ (ᱦᱮᱸᱫᱮ ᱯᱟᱹᱴᱤ) ᱵᱟᱪᱷᱟᱣ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step3.hint",
+      "en": "DANGER: Never use Water or Foam on live electrical panels! Electrocution hazard.",
+      "hi": "खतरा: चालू विद्युत पैनलों पर कभी भी पानी या फोम का उपयोग न करें! करंट लगने का गंभीर जोखिम है।",
+      "hi_roman": "",
+      "sat": "ᱵᱚᱛᱚᱨ: ᱵᱤᱡᱽᱞᱤ ᱥᱟᱢᱟᱱ ᱨᱮ ᱫᱟᱜ ᱟᱨ ᱯᱷᱳᱢ ᱟᱞᱚᱢ ᱫᱩᱞᱟ! ᱠᱟᱨᱮᱱᱴ ᱞᱟᱜᱟᱣ ᱨᱮᱱᱟᱜ ᱵᱚᱛᱚᱨ ᱢᱮᱱᱟᱜᱼᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step3.title",
+      "en": "Select CO₂ Extinguisher",
+      "hi": "सही अग्निशामक यंत्र चुनें",
+      "hi_roman": "",
+      "sat": "ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱵᱟᱪᱷᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step4.action",
+      "en": "Pull Safety Pin",
+      "hi": "सुरक्षा पिन निकालें",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱯᱤᱱ ᱚᱨ ᱚᱰᱚᱠ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step4.desc",
+      "en": "Tap the safety pin on the extinguisher handle to break the tamper seal and unlock the lever.",
+      "hi": "हैंडल अनलॉक करने के लिए सुरक्षा पिन निकालें।",
+      "hi_roman": "",
+      "sat": "ᱥᱤᱞ ᱨᱟᱹᱯᱩᱫ ᱞᱟᱹᱜᱤᱫ ᱟᱨ ᱞᱤᱵᱷᱟᱨ ᱠᱷᱩᱞᱟᱹ ᱞᱟᱹᱜᱤᱫ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱯᱤᱱ ᱚᱨ ᱚᱰᱚᱠ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step4.hint",
+      "en": "Twist slightly and pull firmly. Do not squeeze the lever while pulling.",
+      "hi": "पिन को थोड़ा घुमाएँ और मजबूती से बाहर खींचें। खींचते समय लीवर को न दबाएँ।",
+      "hi_roman": "",
+      "sat": "ᱯᱤᱱ ᱱᱟᱥᱮ ᱟᱹᱪᱩᱨ ᱠᱟᱛᱮ ᱠᱮᱴᱮᱡ ᱛᱮ ᱚᱨ ᱢᱮ ᱾ ᱚᱨ ᱚᱠᱛᱚ ᱞᱤᱵᱷᱟᱨ ᱟᱞᱚᱢ ᱞᱤᱢᱵᱩᱫᱼᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step4.title",
+      "en": "Remove Safety Pin",
+      "hi": "सुरक्षा पिन निकालें",
+      "hi_roman": "",
+      "sat": "ᱯᱤᱱ ᱚᱨ ᱢᱮ (P)",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step5.action",
+      "en": "Aim Horn at Base",
+      "hi": "आग के आधार पर निशाना लगाएँ",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱵᱩᱴᱟᱹ ᱥᱮᱫ ᱫᱷᱮᱭᱟᱱ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step5.desc",
+      "en": "Hold the insulated discharge horn. Aim directly at the fuel base of the fire, not at the high flames.",
+      "hi": "इंसुलेटेड हॉर्न को पकड़ें। लपटों पर नहीं, सीधे आग के आधार पर निशाना लगाएँ।",
+      "hi_roman": "",
+      "sat": "ᱦᱚᱨᱱ ᱥᱟᱵ ᱢᱮ ᱾ ᱪᱮᱛᱟᱱ ᱞᱟᱯᱟᱴ ᱵᱟᱝ ᱠᱟᱛᱮ ᱥᱮᱸᱜᱮᱞ ᱨᱮᱱᱟᱜ ᱵᱩᱴᱟᱹ (ᱤᱸᱫᱷᱚᱱ) ᱥᱮᱫ ᱫᱷᱮᱭᱟᱱ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step5.hint",
+      "en": "Aiming at the flames allows the fire to continue feeding from the combustible base.",
+      "hi": "लपटों पर निशाना साधने से आग आधार से सुलगती रहती है।",
+      "hi_roman": "",
+      "sat": "ᱞᱟᱯᱟᱴ ᱥᱮᱫ ᱫᱷᱮᱭᱟᱱ ᱞᱮᱠᱷᱟᱱ ᱵᱩᱴᱟᱹ ᱠᱷᱚᱱ ᱥᱮᱸᱜᱮᱞ ᱡᱩᱞ ᱛᱮᱜᱮ ᱛᱟᱦᱮᱸᱱᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step5.title",
+      "en": "Aim at Base of Fire",
+      "hi": "आग के आधार पर निशाना लगाएँ",
+      "hi_roman": "",
+      "sat": "ᱫᱷᱮᱭᱟᱱ ᱢᱮ (A)",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step6.action",
+      "en": "Press Handle & Spray",
+      "hi": "हैंडल दबाकर स्प्रे करें",
+      "hi_roman": "",
+      "sat": "ᱞᱤᱢᱵᱩᱫ ᱠᱟᱛᱮ ᱪᱟᱞᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step6.actionStop",
+      "en": "Release Handle (Stop Spray)",
+      "hi": "हैंडल छोड़ें (स्प्रे रोकें)",
+      "hi_roman": "",
+      "sat": "ᱤᱨᱤᱡ ᱦᱩᱭᱮᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step6.desc",
+      "en": "Squeeze the operating lever or tap the button below to discharge spray. Sweep side-to-side across the fuel base until the fire is completely out.",
+      "hi": "हैंडल दबाकर रखें और आग बुझने तक उसके आधार पर दायें-बायें स्प्रे करें।",
+      "hi_roman": "",
+      "sat": "ᱞᱤᱵᱷᱟᱨ ᱞᱤᱢᱵᱩᱫ ᱢᱮ ᱟᱨ ᱞᱟᱛᱟᱨ ᱵᱟᱴᱚᱱ ᱚᱛᱟᱭ ᱢᱮ ᱾ ᱥᱮᱸᱜᱮᱞ ᱵᱟᱝ ᱤᱨᱤᱡᱚᱜ ᱫᱷᱟᱹᱵᱤᱡ ᱵᱩᱴᱟᱹ ᱨᱮ ᱱᱚᱣᱟ ᱠᱷᱚᱱ ᱦᱟᱱᱛᱮ ᱟᱹᱪᱩᱨ ᱠᱟᱛᱮ ᱤᱨᱤᱡ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step6.hint",
+      "en": "Maintain continuous discharge for 10 seconds until all flames and smoke cease.",
+      "hi": "आग और धुआँ पूरी तरह समाप्त होने तक लगातार 10 सेकंड स्प्रे करते रहें।",
+      "hi_roman": "",
+      "sat": "ᱞᱟᱯᱟᱴ ᱟᱨ ᱫᱷᱩᱶᱟᱹ ᱵᱟᱝ ᱪᱟᱵᱟᱜ ᱫᱷᱟᱹᱵᱤᱡ ᱑᱐ ᱥᱮᱠᱮᱱᱰ ᱞᱮᱛᱟᱲ ᱤᱨᱤᱡ ᱪᱟᱞᱟᱣ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step6.sprayingDesc",
+      "en": "Spraying active! Sweep side-to-side across the fuel base. Keep particles directly on the fire.",
+      "hi": "स्प्रे जारी है! आग के आधार पर दायें-बायें स्वीप करें। स्प्रे को सीधे आग पर रखें।",
+      "hi_roman": "",
+      "sat": "ᱤᱨᱤᱡ ᱪᱟᱞᱟᱜ ᱠᱟᱱᱟ! ᱥᱮᱸᱜᱮᱞ ᱵᱩᱴᱟᱹ ᱨᱮ ᱱᱚᱣᱟ ᱠᱷᱚᱱ ᱦᱟᱱᱛᱮ ᱟᱹᱪᱩᱨ ᱢᱮ ᱾ ᱤᱨᱤᱡ ᱫᱟᱜ ᱥᱮᱸᱜᱮᱞ ᱨᱮ ᱫᱚᱦᱚᱭ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step6.title",
+      "en": "Extinguish the Fire (PASS)",
+      "hi": "हैंडल दबाकर स्प्रे करें",
+      "hi_roman": "",
+      "sat": "ᱞᱤᱢᱵᱩᱫ ᱟᱨ ᱟᱹᱪᱩᱨ (S-S)",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step7.action",
+      "en": "Proceed to Emergency Exit",
+      "hi": "आपातकालीन निकास की ओर बढ़ें",
+      "hi_roman": "",
+      "sat": "ᱟᱯᱚᱛᱠᱟᱲᱤᱱ ᱚᱰᱚᱠ ᱰᱟᱦᱟᱨ ᱛᱮ ᱞᱟᱦᱟᱜ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step7.desc",
+      "en": "The fire is suppressed. Back away slowly while keeping visual contact. Follow the emergency EXIT signs to the assembly point.",
+      "hi": "आग बुझा दी गई है। निरंतर नजर रखते हुए धीरे-धीरे पीछे हटें और आपातकालीन निकास संकेतों का पालन करते हुए सुरक्षित स्थान पर जाएँ।",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱤᱨᱤᱡ ᱮᱱᱟ ᱾ ᱥᱮᱸᱜᱮᱞ ᱧᱮᱞ ᱛᱩᱞᱩᱡ ᱵᱟᱹᱭ-ᱵᱟᱹᱭ ᱛᱮ ᱛᱟᱭᱚᱢᱚᱜ ᱢᱮ ᱟᱨ ᱟᱯᱚᱛᱠᱟᱲᱤᱱ ᱚᱰᱚᱠ ᱰᱟᱦᱟᱨ ᱛᱮ ᱥᱟᱺᱜᱤᱧ ᱡᱟᱭᱜᱟ ᱛᱮ ᱪᱟᱞᱟᱜ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step7.hint",
+      "en": "Never turn your back on a suppressed fire due to re-ignition risk.",
+      "hi": "पुनः आग भड़कने के जोखिम के कारण कभी भी बुझी हुई आग की ओर पीठ न करें।",
+      "hi_roman": "",
+      "sat": "ᱫᱚᱦᱲᱟ ᱡᱩᱞᱩᱜ ᱵᱚᱛᱚᱨ ᱠᱷᱟᱹᱛᱤᱨ ᱤᱨᱤᱡ ᱟᱠᱟᱱ ᱥᱮᱸᱜᱮᱞ ᱥᱮᱫ ᱛᱟᱭᱚᱢ ᱟᱞᱚᱢ ᱠᱚᱭᱚᱜᱼᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step7.title",
+      "en": "Safe Evacuation",
+      "hi": "सुरक्षित निकासी",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱚᱰᱚᱠ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.timeout.action",
+      "en": "Proceed to Emergency Exit",
+      "hi": "आपातकालीन निकास की ओर बढ़ें",
+      "hi_roman": "",
+      "sat": "ᱟᱯᱚᱛᱠᱟᱲᱤᱱ ᱚᱰᱚᱠ ᱰᱟᱦᱟᱨ ᱛᱮ ᱞᱟᱦᱟᱜ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.timeout.desc",
+      "en": "The 7-minute time limit has been reached. The fire was not suppressed in time. You must now evacuate via the emergency exit.",
+      "hi": "निर्धारित समय सीमा समाप्त हो गई है। आग समय पर नहीं बुझाई जा सकी। अब आपको आपातकालीन निकास से सुरक्षित बाहर निकलना होगा।",
+      "hi_roman": "",
+      "sat": "᱗ ᱢᱤᱱᱤᱴ ᱚᱠᱛᱚ ᱪᱟᱵᱟ ᱮᱱᱟ ᱾ ᱥᱮᱸᱜᱮᱞ ᱚᱠᱛᱚ ᱨᱮ ᱵᱟᱝ ᱤᱨᱤᱡ ᱞᱮᱱᱟ ᱾ ᱱᱤᱛ ᱟᱯᱚᱛᱠᱟᱲᱤᱱ ᱰᱟᱦᱟᱨ ᱛᱮ ᱚᱰᱚᱠᱚᱜ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.timeout.hint",
+      "en": "Safety first: Never remain in a hazard zone once the emergency timeout is reached.",
+      "hi": "सुरक्षा सर्वोपरि: आपातकालीन समय समाप्त होने पर खतरे के क्षेत्र में कभी न रहें।",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱯᱩᱭᱞᱩ: ᱚᱠᱛᱚ ᱪᱟᱵᱟ ᱞᱮᱱᱠᱷᱟᱱ ᱵᱚᱛᱚᱨ ᱡᱟᱭᱜᱟ ᱨᱮ ᱟᱞᱚᱢ ᱛᱟᱦᱮᱸᱱᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.timeout.title",
+      "en": "Training Time Expired",
+      "hi": "प्रशिक्षण समय सीमा समाप्त",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ ᱚᱠᱛᱚ ᱪᱟᱵᱟ ᱮᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.toast.aim.sub",
+      "en": "Ready for sweep discharge.",
+      "hi": "स्प्रे और स्वीप के लिए तैयार।",
+      "hi_roman": "",
+      "sat": "ᱤᱨᱤᱡ ᱞᱟᱹᱜᱤᱫ ᱥᱟᱯᱲᱟᱣ ᱮᱱᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.toast.aim.title",
+      "en": "Nozzle Aimed at Base!",
+      "hi": "आधार पर निशाना लगाया गया!",
+      "hi_roman": "",
+      "sat": "ᱵᱩᱴᱟᱹ ᱥᱮᱫ ᱫᱷᱮᱭᱟᱱ ᱮᱱᱟ!",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.toast.alarm.sub",
+      "en": "Facility evacuation warning issued.",
+      "hi": "परिसर खाली करने की चेतावनी जारी की गई।",
+      "hi_roman": "",
+      "sat": "ᱡᱟᱭᱜᱟ ᱠᱷᱟᱹᱞᱤ ᱞᱟᱹᱜᱤᱫ ᱦᱩᱥᱤᱭᱟᱹᱨ ᱠᱷᱚᱵᱚᱨ ᱮᱢ ᱮᱱᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.toast.alarm.title",
+      "en": "Fire Alarm Activated!",
+      "hi": "अलार्म सक्रिय हुआ!",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱮᱞᱟᱨᱢ ᱪᱟᱞᱟᱣ ᱮᱱᱟ!",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.toast.ext.sub",
+      "en": "Prepare extinguisher for operation.",
+      "hi": "अग्निशामक को संचालन के लिए तैयार करें।",
+      "hi_roman": "",
+      "sat": "ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱪᱟᱞᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱥᱟᱯᱲᱟᱣ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.toast.ext.title",
+      "en": "CO₂ Extinguisher Equipped!",
+      "hi": "CO₂ अग्निशामक चयनित!",
+      "hi_roman": "",
+      "sat": "CO2 ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱵᱟᱪᱷᱟᱣ ᱮᱱᱟ!",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.toast.extinguished.sub",
+      "en": "Proceed to emergency exit safely.",
+      "hi": "अब आपातकालीन निकास की ओर सुरक्षित बढ़ें।",
+      "hi_roman": "",
+      "sat": "ᱱᱤᱛ ᱟᱯᱚᱛᱠᱟᱲᱤᱱ ᱚᱰᱚᱠ ᱰᱟᱦᱟᱨ ᱛᱮ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱛᱮ ᱞᱟᱦᱟᱜ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.toast.extinguished.title",
+      "en": "Fire Extinguished!",
+      "hi": "आग पूरी तरह बुझ गई!",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱤᱨᱤᱡ ᱮᱱᱟ!",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.toast.hazard.sub",
+      "en": "Activate the fire alarm immediately!",
+      "hi": "तुरंत फायर अलार्म सक्रिय करें!",
+      "hi_roman": "",
+      "sat": "ᱞᱚᱜᱚᱱ ᱥᱮᱸᱜᱮᱞ ᱮᱞᱟᱨᱢ ᱚᱛᱟᱭ ᱢᱮ!",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.toast.hazard.title",
+      "en": "Hazard Identified!",
+      "hi": "खतरे की पहचान की गई!",
+      "hi_roman": "",
+      "sat": "ᱵᱚᱛᱚᱨ ᱪᱤᱱᱦᱟᱹᱣ ᱮᱱᱟ!",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.toast.pin.sub",
+      "en": "Handle unlocked. Extinguisher is armed and ready.",
+      "hi": "लीवर अनलॉक हुआ। अग्निशामक उपयोग के लिए तैयार है।",
+      "hi_roman": "",
+      "sat": "ᱞᱤᱵᱷᱟᱨ ᱠᱷᱩᱞᱟᱹ ᱮᱱᱟ ᱾ ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱥᱟᱯᱲᱟᱣ ᱢᱮᱱᱟᱜᱼᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.toast.pin.title",
+      "en": "Safety Pin Removed!",
+      "hi": "सुरक्षा पिन निकाली गई!",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱯᱤᱱ ᱚᱰᱚᱠ ᱮᱱᱟ!",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.voice.comingSoon",
+      "en": "Voice guidance coming soon",
+      "hi": "वॉयस गाइडेंस जल्द आएगी",
+      "hi_roman": "",
+      "sat": "ᱟᱲᱟᱝ ᱫᱤᱥᱟᱹ-ᱩᱫᱩᱜ ᱞᱚᱜᱚᱱ ᱜᱮ ᱦᱤᱡᱩᱜ ᱠᱟᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.voice.listenBtn",
+      "en": "Listen",
+      "hi": "सुनें",
+      "hi_roman": "",
+      "sat": "ᱟᱧᱡᱚᱢ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.voice.santaliPending",
+      "en": "Santali voice guidance pending recording",
+      "hi": "संथाली वॉयस गाइडेंस रिकॉर्डिंग लंबित है",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱱᱛᱟᱲᱤ ᱟᱲᱟᱝ ᱫᱤᱥᱟᱹ-ᱩᱫᱩᱜ ᱨᱮᱠᱳᱨᱰᱤᱝ ᱵᱟᱹᱠᱤ ᱢᱮᱱᱟᱜᱼᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.voice.speaking",
+      "en": "Speaking...",
+      "hi": "बोल रहे हैं...",
+      "hi_roman": "",
+      "sat": "ᱨᱚᱲ ᱠᱟᱱᱟᱭ...",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.voice.stopBtn",
+      "en": "Stop",
+      "hi": "रोकें",
+      "hi_roman": "",
+      "sat": "ᱛᱷᱟᱢᱟᱠ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.comingSoon",
+      "en": "Coming Soon",
+      "hi": "शीघ्र उपलब्ध होगा",
+      "hi_roman": "",
+      "sat": "ᱞᱚᱜᱚᱱ ᱜᱮ ᱦᱤᱡᱩᱜ ᱠᱟᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.defaultRole",
+      "en": "Mine Safety Trainee",
+      "hi": "खान कार्यकर्ता",
+      "hi_roman": "",
+      "sat": "ᱠᱷᱟᱫᱟᱱ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱮᱪᱮᱫᱤᱭᱟᱹ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.fire.subtitle",
+      "en": "Electrical Fire, Extinguisher & Evacuation SOP",
+      "hi": "खतरों की पहचान, अग्निशामक यंत्र का उपयोग\nऔर सुरक्षित निकासी",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱡᱽᱞᱤ ᱥᱮᱸᱜᱮᱞ, ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱟᱨ ᱚᱰᱚᱠ SOP",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.fire.title",
+      "en": "Fire & Explosion Response",
+      "hi": "आग एवं विस्फोट से निपटने की प्रक्रिया",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱟᱨ ᱵᱷᱚᱢ ᱯᱚᱨᱚᱠ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.gas.subtitle",
+      "en": "Hazardous Gas Detection & PPE Protocol",
+      "hi": "खतरनाक गैसों की पहचान और PPE का उपयोग",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱥ ᱜᱮᱥ ᱯᱟᱱᱛᱮ ᱟᱨ PPE ᱱᱤᱭᱟᱹᱢ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.gas.title",
+      "en": "Gas Leak & Confined Space",
+      "hi": "गैस रिसाव एवं सीमित स्थान",
+      "hi_roman": "",
+      "sat": "ᱜᱮᱥ ᱞᱤᱠ ᱟᱨ ᱥᱟᱸᱜᱷᱟᱨ ᱡᱟᱭᱜᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.greeting",
+      "en": "Welcome,",
+      "hi": "नमस्ते,",
+      "hi_roman": "",
+      "sat": "ᱡᱚᱦᱟᱨ, {0}",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.heroTitle",
+      "en": "Worker Safety, National Prosperity",
+      "hi": "श्रमिक सुरक्षा, राष्ट्र समृद्धि",
+      "hi_roman": "",
+      "sat": "ᱠᱟᱹᱢᱤᱭᱟᱹ ᱨᱩᱠᱷᱤᱭᱟᱹ, ᱫᱤᱥᱚᱢ ᱞᱟᱦᱟᱱᱛᱤ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.idLabel",
+      "en": "ID:",
+      "hi": "आईडी:",
+      "hi_roman": "",
+      "sat": "ᱩᱯᱨᱩᱢ:",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.machinery.subtitle",
+      "en": "Moving Parts, Lockout/Tagout & Safe Ops",
+      "hi": "मशीनों का सुरक्षित उपयोग, लॉकआउट/टैगआउट\nऔर सुरक्षित संचालन",
+      "hi_roman": "",
+      "sat": "ᱞᱟᱲᱟᱣ ᱦᱟᱹᱴᱤᱧ, ᱞᱚᱠ-ᱟᱣᱩᱴ ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱠᱟᱹᱢᱤ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.machinery.title",
+      "en": "Machinery Safety",
+      "hi": "मशीनरी सुरक्षा",
+      "hi_roman": "",
+      "sat": "ᱢᱟᱹᱥᱤᱱ ᱨᱩᱠᱷᱤᱭᱟᱹ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.mineFacility",
+      "en": "Mining Facility",
+      "hi": "खनन परिसर",
+      "hi_roman": "",
+      "sat": "ᱠᱷᱟᱫᱟᱱ ᱡᱟᱭᱜᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.modulesCompleted",
+      "en": "{0} of {1} Modules Completed",
+      "hi": "{1} में से {0} मॉड्यूल पूरा",
+      "hi_roman": "",
+      "sat": "{1} ᱨᱮ {0} ᱢᱚᱰᱩᱞ ᱯᱩᱨᱟᱹᱣ ᱮᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.modulesSection",
+      "en": "Training Modules",
+      "hi": "प्रशिक्षण मॉड्यूल",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ ᱢᱚᱰᱩᱞ ᱠᱚ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.navCertificates",
+      "en": "Certificates",
+      "hi": "प्रमाणपत्र",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱠᱚ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.navHome",
+      "en": "Home",
+      "hi": "होम",
+      "hi_roman": "",
+      "sat": "ᱢᱩᱞ ᱥᱟᱦᱴᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.navLearn",
+      "en": "Learn",
+      "hi": "सीखें",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.navProgress",
+      "en": "My Progress",
+      "hi": "मेरी प्रगति",
+      "hi_roman": "",
+      "sat": "ᱤᱧᱟᱜ ᱞᱟᱦᱟᱱᱛᱤ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.overallProgress",
+      "en": "Overall Progress",
+      "hi": "कुल प्रगति",
+      "hi_roman": "",
+      "sat": "ᱢᱩᱴᱷᱟᱹᱱ ᱞᱟᱦᱟᱱᱛᱤ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.roleLabel",
+      "en": "Mine Worker",
+      "hi": "खान कार्यकर्ता",
+      "hi_roman": "",
+      "sat": "ᱠᱷᱟᱫᱟᱱ ᱠᱟᱹᱢᱤᱭᱟᱹ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.startTraining",
+      "en": "Start Training",
+      "hi": "शुरू करें >",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ ᱮᱦᱚᱵ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.sync.allDataSynced",
+      "en": "Sync: All Data Synced (Live)",
+      "hi": "सिंक: सभी डेटा सिंक्रनाइज़ है",
+      "hi_roman": "",
+      "sat": "ᱥᱤᱝᱠ: ᱡᱚᱛᱚ ᱰᱟᱴᱟ ᱥᱤᱝᱠ ᱟᱠᱟᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.sync.pendingTitle",
+      "en": "Offline Assessment Ready",
+      "hi": "ऑफ़लाइन मूल्यांकन तैयार",
+      "hi_roman": "",
+      "sat": "ᱚᱯᱷᱞᱟᱭᱤᱱ ᱵᱤᱰᱟᱹᱣ ᱥᱟᱯᱲᱟᱣ ᱢᱮᱱᱟᱜᱼᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.sync.retry",
+      "en": "RETRY SYNC >",
+      "hi": "फिर कोशिश करें >",
+      "hi_roman": "",
+      "sat": "ᱫᱚᱦᱲᱟ ᱪᱮᱥᱴᱟᱭ ᱢᱮ >",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.sync.syncNow",
+      "en": "SYNC NOW >",
+      "hi": "अभी सिंक करें >",
+      "hi_roman": "",
+      "sat": "ᱱᱤᱛ ᱥᱤᱝᱠ ᱢᱮ >",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.sync.synced",
+      "en": "SYNCED",
+      "hi": "सिंक्रनाइज़ेशन पूरा हुआ",
+      "hi_roman": "",
+      "sat": "ᱥᱤᱝᱠ ᱮᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.sync.syncing",
+      "en": "SYNCING",
+      "hi": "डेटा सिंक्रनाइज़ हो रहा है",
+      "hi_roman": "",
+      "sat": "ᱥᱤᱝᱠᱚᱜ ᱠᱟᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "home.viewAll",
+      "en": "View All",
+      "hi": "सभी देखें >",
+      "hi_roman": "",
+      "sat": "ᱡᱚᱛᱚ ᱧᱮᱞ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "lang.santali",
+      "en": "Santali",
+      "hi": "संथाली",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱱᱛᱟᱲᱤ",
+      "sat_roman": ""
+    },
+    {
+      "key": "lang.santali_proceed",
+      "en": "Proceed in Santali",
+      "hi": "संथाली में आगे बढ़ें",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱱᱛᱟᱲᱤ ᱛᱮ ᱞᱟᱦᱟᱜ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "lang.santali_script",
+      "en": "Ol Chiki",
+      "hi": "ओल चिकी",
+      "hi_roman": "",
+      "sat": "ᱚᱞ ᱪᱤᱠᱤ",
+      "sat_roman": ""
+    },
+    {
+      "key": "language.bannerQuote",
+      "en": "Learn together for a safer tomorrow",
+      "hi": "सुरक्षित भविष्य के लिए साथ मिलकर सीखें",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱜᱟᱯᱟ ᱞᱟᱹᱜᱤᱫ ᱢᱤᱫ ᱛᱮ ᱥᱮᱪᱮᱫᱚᱜ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "language.continue",
+      "en": "Continue",
+      "hi": "जारी रखें",
+      "hi_roman": "",
+      "sat": "ᱞᱟᱦᱟᱜ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "language.skip",
+      "en": "Skip",
+      "hi": "छोड़ें",
+      "hi_roman": "",
+      "sat": "ᱵᱟᱹᱜᱤ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "language.subtitle",
+      "en": "Choose your preferred language to continue",
+      "hi": "आगे बढ़ने के लिए अपनी पसंदीदा भाषा चुनें",
+      "hi_roman": "",
+      "sat": "ᱟᱢᱟᱜ ᱠᱩᱥᱤ ᱯᱟᱹᱨᱥᱤ ᱵᱟᱪᱷᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "language.title",
+      "en": "Select Language",
+      "hi": "भाषा चुनें",
+      "hi_roman": "",
+      "sat": "ᱯᱟᱹᱨᱥᱤ ᱵᱟᱪᱷᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.continueAsGuest",
+      "en": "Continue as Guest",
+      "hi": "अतिथि के रूप में जारी रखें",
+      "hi_roman": "",
+      "sat": "ᱯᱮᱲᱟ ᱞᱮᱠᱟᱛᱮ ᱞᱟᱦᱟᱜ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.employeeId",
+      "en": "Employee ID",
+      "hi": "कर्मचारी आईडी",
+      "hi_roman": "",
+      "sat": "ᱠᱟᱹᱢᱤᱭᱟᱹ ᱩᱯᱨᱩᱢ ᱮᱞ",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.employeeIdPlaceholder",
+      "en": "Enter your Employee ID",
+      "hi": "अपनी कर्मचारी आईडी दर्ज करें",
+      "hi_roman": "",
+      "sat": "ᱟᱢᱟᱜ ᱠᱟᱹᱢᱤᱭᱟᱹ ᱩᱯᱨᱩᱢ ᱮᱞ ᱚᱞ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.emptyEmployeeError",
+      "en": "Please enter an Employee ID.",
+      "hi": "कृपया कर्मचारी आईडी दर्ज करें।",
+      "hi_roman": "",
+      "sat": "ᱫᱟᱭᱟ ᱠᱟᱛᱮ ᱠᱟᱹᱢᱤᱭᱟᱹ ᱩᱯᱨᱩᱢ ᱮᱞ ᱚᱞ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.emptyGuestError",
+      "en": "Please enter a Guest ID.",
+      "hi": "कृपया अतिथि आईडी दर्ज करें।",
+      "hi_roman": "",
+      "sat": "ᱫᱟᱭᱟ ᱠᱟᱛᱮ ᱯᱮᱲᱟ ᱩᱯᱨᱩᱢ ᱮᱞ ᱚᱞ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.forgotPassword",
+      "en": "Forgot Password?",
+      "hi": "पासवर्ड भूल गए?",
+      "hi_roman": "",
+      "sat": "ᱯᱟᱥᱣᱚᱨᱰ ᱦᱤᱲᱤᱧ ᱮᱱᱟ?",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.forgotPasswordMessage",
+      "en": "Please contact your Mine Safety Administrator or Site Supervisor to reset your PIN.",
+      "hi": "कृपया अपना पिन रीसेट करने के लिए अपने खान सुरक्षा प्रशासक या साइट पर्यवेक्षक से संपर्क करें।",
+      "hi_roman": "",
+      "sat": "ᱟᱢᱟᱜ ᱯᱤᱱ ᱨᱤᱥᱮᱴ ᱞᱟᱹᱜᱤᱫ ᱟᱢᱤᱡ ᱠᱷᱟᱫᱟᱱ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱟᱹᱢᱟᱹᱞᱤᱭᱟᱹ ᱥᱟᱶ ᱡᱚᱯᱲᱟᱣ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.guestIdLabel",
+      "en": "Guest ID",
+      "hi": "अतिथि आईडी",
+      "hi_roman": "",
+      "sat": "ᱯᱮᱲᱟ ᱩᱯᱨᱩᱢ ᱮᱞ",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.guestIdPlaceholder",
+      "en": "Enter your Guest ID (e.g. GUEST-12345)",
+      "hi": "अपनी अतिथि आईडी दर्ज करें (उदा. GUEST-12345)",
+      "hi_roman": "",
+      "sat": "ᱟᱢᱟᱜ ᱯᱮᱲᱟ ᱩᱯᱨᱩᱢ ᱮᱞ ᱚᱞ ᱢᱮ (ᱞᱮᱠᱟ: GUEST-12345)",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.guestMode",
+      "en": "Guest Mode",
+      "hi": "अतिथि मोड",
+      "hi_roman": "",
+      "sat": "ᱯᱮᱲᱟ ᱢᱚᱰ",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.invalidCredentials",
+      "en": "Invalid credentials. Please check your Employee ID and password.",
+      "hi": "अमान्य क्रेडेंशियल। कृपया अपनी कर्मचारी आईडी और पासवर्ड जांचें।",
+      "hi_roman": "",
+      "sat": "ᱵᱟᱝ ᱴᱷᱤᱠ ᱩᱯᱨᱩᱢ ᱾ ᱫᱟᱭᱟ ᱠᱟᱛᱮ ᱠᱟᱹᱢᱤᱭᱟᱹ ᱩᱯᱨᱩᱢ ᱮᱞ ᱟᱨ ᱯᱟᱥᱣᱚᱨᱰ ᱧᱮᱞ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.or",
+      "en": "OR",
+      "hi": "अथवा",
+      "hi_roman": "",
+      "sat": "ᱵᱟᱝᱠᱷᱟᱱ",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.password",
+      "en": "Password / PIN",
+      "hi": "पासवर्ड / पिन",
+      "hi_roman": "",
+      "sat": "ᱯᱟᱥᱣᱚᱨᱰ / ᱯᱤᱱ",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.passwordPlaceholder",
+      "en": "Enter your password",
+      "hi": "अपना पासवर्ड दर्ज करें",
+      "hi_roman": "",
+      "sat": "ᱟᱢᱟᱜ ᱯᱟᱥᱣᱚᱨᱰ ᱚᱞ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.qrCode",
+      "en": "Login with QR Code",
+      "hi": "क्यूआर कोड द्वारा लॉगिन करें",
+      "hi_roman": "",
+      "sat": "ᱠᱤᱣ.ᱟᱨ. ᱠᱳᱰ ᱛᱮ ᱵᱚᱞᱚᱱ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.rememberMe",
+      "en": "Remember me",
+      "hi": "मुझे याद रखें",
+      "hi_roman": "",
+      "sat": "ᱤᱧ ᱩᱭᱦᱟᱹᱨ ᱤᱧ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.submit",
+      "en": "Login",
+      "hi": "लॉगिन करें",
+      "hi_roman": "",
+      "sat": "ᱵᱚᱞᱚᱱ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.tagline",
+      "en": "Safe Mines, Empowered Nation",
+      "hi": "सुरक्षित खनन, समृद्ध राष्ट्र",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱠᱷᱟᱫᱟᱱ, ᱫᱟᱲᱮᱭᱟᱱ ᱫᱤᱥᱚᱢ",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.title",
+      "en": "Worker Access",
+      "hi": "श्रमिक प्रवेश",
+      "hi_roman": "",
+      "sat": "ᱠᱟᱹᱢᱤᱭᱟᱹ ᱵᱚᱞᱚᱱ",
+      "sat_roman": ""
+    },
+    {
+      "key": "login.workerLogin",
+      "en": "Worker Login",
+      "hi": "श्रमिक लॉगिन",
+      "hi_roman": "",
+      "sat": "ᱠᱟᱹᱢᱤᱭᱟᱹ ᱞᱚᱜᱤᱱ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.electrical.description",
+      "en": "Identify electrical hazards, high-voltage risks, insulation integrity, and grounding safety procedures.",
+      "hi": "विद्युत संबंधी खतरों की पहचान करना, लॉकआउट/टैगआउट प्रक्रियाओं का पालन करना और कार्यस्थल पर सुरक्षित व्यवहार अपनाना।",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱡᱽᱞᱤ ᱵᱚᱛᱚᱨ ᱪᱤᱱᱦᱟᱹᱣ ᱢᱮ, ᱞᱚᱠ-ᱟᱣᱩᱴ ᱱᱤᱭᱟᱹᱢ ᱯᱟᱸᱡᱟᱭ ᱢᱮ ᱟᱨ ᱠᱟᱹᱢᱤ ᱡᱟᱭᱜᱟ ᱨᱮ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱫᱚᱦᱚᱭ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.electrical.title",
+      "en": "Electrical Safety",
+      "hi": "विद्युत सुरक्षा",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱡᱽᱞᱤ ᱨᱩᱠᱷᱤᱭᱟᱹ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.fire.description",
+      "en": "Learn to identify fire hazards, use extinguishers, activate alarms and evacuate safely in industrial environments.",
+      "hi": "आग के खतरों की पहचान करना, अग्निशामक यंत्र का उपयोग करना, फायर अलार्म सक्रिय करना और आपात स्थिति में सुरक्षित तरीके से निकासी करना।",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱵᱚᱛᱚᱨ ᱪᱤᱱᱦᱟᱹᱣ, ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱵᱮᱵᱷᱟᱨ, ᱮᱞᱟᱨᱢ ᱪᱟᱞᱟᱣ ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱛᱮ ᱚᱰᱚᱠᱚᱜ ᱥᱮᱪᱮᱫ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.fire.learn.1",
+      "en": "Identify various classes of fire hazards",
+      "hi": "विभिन्न श्रेणियों के अग्नि खतरों की पहचान करें",
+      "hi_roman": "",
+      "sat": "ᱟᱭᱢᱟ ᱞᱮᱠᱟᱱ ᱥᱮᱸᱜᱮᱞ ᱵᱚᱛᱚᱨ ᱪᱤᱱᱦᱟᱹᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.fire.learn.2",
+      "en": "Locate and operate appropriate safety equipment",
+      "hi": "उपयुक्त अग्निशामक का चयन एवं संचालन करें",
+      "hi_roman": "",
+      "sat": "ᱴᱷᱤᱠ ᱥᱮᱸᱜᱮᱞ ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱵᱟᱪᱷᱟᱣ ᱟᱨ ᱪᱟᱞᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.fire.learn.3",
+      "en": "Follow the PASS technique and safety procedures",
+      "hi": "PASS तकनीक और सुरक्षा प्रक्रियाओं का पालन करें",
+      "hi_roman": "",
+      "sat": "PASS ᱱᱤᱭᱟᱹᱢ ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱰᱟᱦᱟᱨ ᱯᱟᱸᱡᱟᱭ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.fire.learn.4",
+      "en": "Navigate emergency evacuation routes safely",
+      "hi": "आपातकालीन निकास मार्गों का सुरक्षित अनुसरण करें",
+      "hi_roman": "",
+      "sat": "ᱟᱯᱚᱛᱠᱟᱲᱤᱱ ᱚᱰᱚᱠ ᱰᱟᱦᱟᱨ ᱛᱮ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱛᱮ ᱚᱰᱚᱠᱚᱜ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.fire.learn.5",
+      "en": "Report hazards and near-misses to supervisors",
+      "hi": "खतरों तथा दुर्घटना की आशंका की सूचना पर्यवेक्षक को दें",
+      "hi_roman": "",
+      "sat": "ᱵᱚᱛᱚᱨ ᱟᱨ ᱜᱷᱚᱴᱚᱱ ᱨᱮᱱᱟᱜ ᱠᱷᱚᱵᱚᱨ ᱥᱩᱯᱚᱨᱵᱷᱟᱭᱤᱡᱚᱨ ᱮᱢᱟᱭ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.fire.subtitle",
+      "en": "Electrical Fire, Extinguisher & Evacuation SOP",
+      "hi": "खतरों की पहचान, अग्निशामक यंत्र का उपयोग और सुरक्षित निकासी",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱡᱽᱞᱤ ᱥᱮᱸᱜᱮᱞ, ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱟᱨ ᱚᱰᱚᱠ SOP",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.fire.title",
+      "en": "Fire & Explosion Response",
+      "hi": "आग एवं विस्फोट से निपटने की प्रक्रिया",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱟᱨ ᱵᱷᱚᱢ ᱯᱚᱨᱚᱠ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.gas.description",
+      "en": "Identify hazardous gases, follow confined-space procedures, and select proper Personal Protective Equipment (PPE).",
+      "hi": "खतरनाक गैसों की पहचान करना, सीमित स्थानों में सुरक्षा प्रक्रियाओं का पालन करना और व्यक्तिगत सुरक्षा उपकरण (PPE) का सही उपयोग करना।",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱥ ᱜᱮᱥ ᱪᱤᱱᱦᱟᱹᱣ, ᱥᱟᱸᱜᱷᱟᱨ ᱡᱟᱭᱜᱟ ᱨᱮ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱱᱤᱭᱟᱹᱢ ᱢᱟᱱᱟᱣ ᱟᱨ PPE ᱵᱮᱵᱷᱟᱨ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.gas.learn.1",
+      "en": "Recognize gas leak indicators and use detectors",
+      "hi": "गैस रिसाव के संकेतों तथा गैस डिटेक्टर का उपयोग समझें",
+      "hi_roman": "",
+      "sat": "ᱜᱮᱥ ᱞᱤᱠ ᱪᱤᱱᱦᱟᱹ ᱟᱨ ᱜᱮᱥ ᱰᱤᱴᱮᱠᱴᱚᱨ ᱵᱮᱵᱷᱟᱨ ᱵᱩᱡᱷᱟᱹᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.gas.learn.2",
+      "en": "Inspect and wear respiratory protection properly",
+      "hi": "श्वसन सुरक्षा उपकरण (SCBA/मास्क) की जाँच एवं उपयोग करें",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱦᱮᱫ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱢᱟᱱ (SCBA/ᱢᱟᱥᱠ) ᱧᱮᱞ ᱟᱨ ᱦᱚᱨᱚᱜ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.gas.learn.3",
+      "en": "Follow confined space entry permit protocols",
+      "hi": "सीमित स्थान प्रवेश परमिट और वेंटिलेशन प्रक्रियाओं का पालन करें",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱸᱜᱷᱟᱨ ᱡᱟᱭᱜᱟ ᱵᱚᱞᱚᱱ ᱪᱷᱟᱹᱲ ᱟᱨ ᱦᱚᱭ ᱦᱤᱥᱤᱫ ᱱᱤᱭᱟᱹᱢ ᱢᱟᱱᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.gas.learn.4",
+      "en": "Evacuate safely and sound emergency alarms",
+      "hi": "सुरक्षित रूप से बाहर निकलें तथा आपातकालीन अलार्म सक्रिय करें",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱛᱮ ᱚᱰᱚᱠᱚᱜ ᱢᱮ ᱟᱨ ᱟᱯᱚᱛᱠᱟᱲᱤᱱ ᱮᱞᱟᱨᱢ ᱚᱛᱟᱭ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.gas.title",
+      "en": "Gas Leak & Confined Space",
+      "hi": "गैस रिसाव एवं सीमित स्थान",
+      "hi_roman": "",
+      "sat": "ᱜᱮᱥ ᱞᱤᱠ ᱟᱨ ᱥᱟᱸᱜᱷᱟᱨ ᱡᱟᱭᱜᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.machinery.description",
+      "en": "Understand machine guarding, lockout/tagout procedures, and safe operational distances around moving parts.",
+      "hi": "औद्योगिक मशीनों से संबंधित खतरों की पहचान करना और सुरक्षित संचालन प्रक्रियाओं का पालन करना।",
+      "hi_roman": "",
+      "sat": "ᱢᱟᱹᱥᱤᱱ ᱨᱮᱱᱟᱜ ᱞᱟᱲᱟᱣ ᱦᱟᱹᱴᱤᱧ ᱵᱚᱛᱚᱨ ᱵᱩᱡᱷᱟᱹᱣ ᱢᱮ ᱟᱨ ᱞᱚᱠ-ᱟᱣᱩᱴ ᱱᱤᱭᱟᱹᱢ ᱢᱟᱱᱟᱣ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.machinery.learn.1",
+      "en": "Identify machine guarding and emergency stop controls",
+      "hi": "मशीनरी गार्डिंग तथा आपातकालीन स्टॉप नियंत्रण की पहचान करें",
+      "hi_roman": "",
+      "sat": "ᱢᱟᱹᱥᱤᱱ ᱜᱟᱨᱰ ᱟᱨ ᱟᱯᱚᱛᱠᱟᱲᱤᱱ ᱛᱷᱟᱢᱵᱷᱟᱣ ᱪᱤᱱᱦᱟᱹᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.machinery.learn.2",
+      "en": "Apply lockout/tagout (LOTO) before maintenance",
+      "hi": "रखरखाव से पूर्व लॉकआउट/टैगआउट (LOTO) प्रक्रिया लागू करें",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱡᱟᱣ ᱞᱟᱦᱟᱨᱮ ᱞᱚᱠ-ᱟᱣᱩᱴ/ᱴᱮᱜ-ᱟᱣᱩᱴ (LOTO) ᱱᱤᱭᱟᱹᱢ ᱞᱟᱜᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.machinery.learn.3",
+      "en": "Maintain safe clearance from moving parts",
+      "hi": "गतिशील एवं घूर्णनशील पुर्जों से सुरक्षित दूरी बनाए रखें",
+      "hi_roman": "",
+      "sat": "ᱞᱟᱲᱟᱣ ᱦᱟᱹᱴᱤᱧ ᱠᱷᱚᱱ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱺᱜᱤᱧ ᱨᱮ ᱛᱟᱦᱮᱸᱱ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.machinery.learn.4",
+      "en": "Wear mandatory Personal Protective Equipment (PPE)",
+      "hi": "उचित व्यक्तिगत सुरक्षा उपकरण (PPE) का अनिवार्य उपयोग करें",
+      "hi_roman": "",
+      "sat": "ᱞᱟᱹᱠᱛᱤᱭᱟᱱ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱢᱟᱱ (PPE) ᱞᱟᱜᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.machinery.learn.5",
+      "en": "Report damaged or malfunctioning equipment immediately",
+      "hi": "क्षतिग्रस्त मशीनरी एवं उपकरणों की तत्काल रिपोर्ट करें",
+      "hi_roman": "",
+      "sat": "ᱵᱟᱹᱲᱤᱡ ᱢᱟᱹᱥᱤᱱ ᱟᱨ ᱥᱟᱢᱟᱱ ᱠᱚ ᱞᱚᱜᱚᱱ ᱜᱮ ᱠᱷᱚᱵᱚᱨ ᱮᱢ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.machinery.title",
+      "en": "Machinery Safety",
+      "hi": "मशीनरी सुरक्षा",
+      "hi_roman": "",
+      "sat": "ᱢᱟᱹᱥᱤᱱ ᱨᱩᱠᱷᱤᱭᱟᱹ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.minehazard.description",
+      "en": "Identify mining-specific hazards, roof fall risks, ventilation checks, and industrial environmental protection.",
+      "hi": "खनन-विशिष्ट खतरों की पहचान करना तथा औद्योगिक खनन में पर्यावरण संरक्षण प्रक्रियाओं का पालन करना।",
+      "hi_roman": "",
+      "sat": "ᱠᱷᱟᱫᱟᱱ ᱨᱮᱱᱟᱜ ᱵᱚᱛᱚᱨ ᱠᱚ ᱪᱤᱱᱦᱟᱹᱣ ᱢᱮ ᱟᱨ ᱠᱟᱹᱨᱜᱟᱲ ᱠᱷᱟᱫᱟᱱ ᱨᱮ ᱯᱚᱨᱤᱵᱮᱥ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱱᱤᱭᱟᱹᱢ ᱢᱟᱱᱟᱣ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.minehazard.title",
+      "en": "Mining Hazards & Environmental Safety",
+      "hi": "खनन संबंधी खतरे एवं पर्यावरण सुरक्षा",
+      "hi_roman": "",
+      "sat": "ᱠᱷᱟᱫᱟᱱ ᱵᱚᱛᱚᱨ ᱟᱨ ᱯᱚᱨᱤᱵᱮᱥ ᱨᱩᱠᱷᱤᱭᱟᱹ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.statusAvailable",
+      "en": "AVAILABLE",
+      "hi": "उपलब्ध",
+      "hi_roman": "",
+      "sat": "ᱧᱟᱢᱚᱜ ᱠᱟᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.statusComingSoon",
+      "en": "COMING SOON",
+      "hi": "जल्द आ रहा है",
+      "hi_roman": "",
+      "sat": "ᱞᱚᱜᱚᱱ ᱦᱤᱡᱩᱜ ᱠᱟᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.statusLocked",
+      "en": "LOCKED",
+      "hi": "प्रतिबंधित",
+      "hi_roman": "",
+      "sat": "ᱵᱚᱱᱫᱚ ᱢᱮᱱᱟᱜᱼᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.statusTheoryOnly",
+      "en": "THEORY / ASSESSMENT",
+      "hi": "सावधानी / मूल प्रशिक्षण",
+      "hi_roman": "",
+      "sat": "ᱛᱷᱤᱭᱚᱨᱤ / ᱵᱤᱰᱟᱹᱣ",
+      "sat_roman": ""
+    },
+    {
+      "key": "module.trainingModule",
+      "en": "TRAINING MODULE",
+      "hi": "प्रशिक्षण मॉड्यूल",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ ᱢᱚᱰᱩᱞ",
+      "sat_roman": ""
+    },
+    {
+      "key": "moduleDetail.duration",
+      "en": "15–20 min",
+      "hi": "15–20 मिनट",
+      "hi_roman": "",
+      "sat": "᱑᱕–᱒᱐ ᱢᱤᱱᱤᱴ",
+      "sat_roman": ""
+    },
+    {
+      "key": "moduleDetail.learnPoint1",
+      "en": "Step-by-step SOP for live electrical panel fires",
+      "hi": "चालू विद्युत पैनल की आग के लिए चरणबद्ध एसओपी",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱡᱽᱞᱤ ᱯᱮᱱᱟᱞ ᱥᱮᱸᱜᱮᱞ ᱞᱟᱹᱜᱤᱫ ᱫᱷᱟᱯ-ᱫᱷᱟᱯ ᱮᱥ.ᱳ.ᱯᱤ.",
+      "sat_roman": ""
+    },
+    {
+      "key": "moduleDetail.learnPoint2",
+      "en": "Class C extinguisher selection and safety pin operation",
+      "hi": "वर्ग C अग्निशामक का चयन और सुरक्षा पिन संचालन",
+      "hi_roman": "",
+      "sat": "ᱠᱞᱟᱥ C ᱤᱬᱤᱡᱤᱡ ᱵᱟᱪᱷᱟᱣ ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱯᱤᱱ ᱚᱰᱚᱠ",
+      "sat_roman": ""
+    },
+    {
+      "key": "moduleDetail.learnPoint3",
+      "en": "PASS method: Pull, Aim, Squeeze, Sweep technique",
+      "hi": "PASS विधि: पिन खींचना, निशाना लगाना, दबाना और झाड़ना",
+      "hi_roman": "",
+      "sat": "PASS ᱛᱚᱦᱚᱨ: ᱚᱨ, ᱡᱚᱥ, ᱚᱛᱟ, ᱯᱷᱟᱭᱞᱟᱣ",
+      "sat_roman": ""
+    },
+    {
+      "key": "moduleDetail.learnPoint4",
+      "en": "Post-extinguishment thermal re-ignition prevention",
+      "hi": "आग बुझाने के बाद पुनः आग भड़कने से रोकथाम",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱛᱟᱭᱚᱢ ᱫᱚᱦᱲᱟ ᱡᱩᱞᱩᱜ ᱵᱟᱧᱪᱟᱣ",
+      "sat_roman": ""
+    },
+    {
+      "key": "moduleDetail.learnTitle",
+      "en": "What you'll learn",
+      "hi": "आप क्या सीखेंगे",
+      "hi_roman": "",
+      "sat": "ᱟᱢ ᱪᱮᱫ ᱮᱢ ᱥᱮᱪᱮᱫᱚᱜᱼᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "moduleDetail.safetyNoteDesc",
+      "en": "Never attempt to fight a fire if evacuation routes are compromised. Always alert colleagues first before responding.",
+      "hi": "यदि निकास मार्ग अवरुद्ध हो तो कभी भी आग बुझाने का प्रयास न करें। कार्रवाई करने से पहले हमेशा साथियों को सतर्क करें।",
+      "hi_roman": "",
+      "sat": "ᱡᱩᱫᱤ ᱚᱰᱚᱠᱚᱜ ᱦᱚᱨ ᱵᱚᱱᱫᱚ ᱛᱟᱦᱮᱸᱱᱟ ᱛᱚᱵᱮ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱟᱞᱚᱢ ᱪᱮᱥᱴᱟᱭᱟ ᱾ ᱢᱟᱲᱟᱝ ᱥᱟᱶᱛᱮᱱ ᱠᱚ ᱦᱩᱥᱤᱭᱟᱹᱨ ᱠᱚᱣᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "moduleDetail.safetyNoteTitle",
+      "en": "SAFETY NOTE",
+      "hi": "सुरक्षा निर्देश",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱫᱤᱥᱟᱹ",
+      "sat_roman": ""
+    },
+    {
+      "key": "moduleDetail.scenarios",
+      "en": "Scenarios",
+      "hi": "परिदृश्य",
+      "hi_roman": "",
+      "sat": "ᱯᱚᱨᱚᱠ ᱠᱚ",
+      "sat_roman": ""
+    },
+    {
+      "key": "moduleDetail.startModule",
+      "en": "Start Module",
+      "hi": "प्रशिक्षण शुरू करें",
+      "hi_roman": "",
+      "sat": "ᱢᱚᱰᱩᱞ ᱮᱦᱚᱵ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "moduleDetail.subtitleLearn",
+      "en": "Learn • Practice • Assess",
+      "hi": "सीखें • अभ्यास करें • मूल्यांकन करें",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ • ᱪᱮᱥᱴᱟ • ᱵᱤᱰᱟᱹᱣ",
+      "sat_roman": ""
+    },
+    {
+      "key": "moduleDetail.whatYouLearn",
+      "en": "What You Will Learn:",
+      "hi": "प्रशिक्षण के मुख्य बिंदु:",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ ᱨᱮᱱᱟᱜ ᱢᱩᱞ ᱠᱟᱛᱷᱟ:",
+      "sat_roman": ""
+    },
+    {
+      "key": "moduleSelection.subtitle",
+      "en": "Choose an industrial safety module to begin practical AR training",
+      "hi": "व्यावहारिक AR प्रशिक्षण शुरू करने के लिए कोई मॉड्यूल चुनें",
+      "hi_roman": "",
+      "sat": "ᱮ.ᱟᱨ. ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱮᱪᱮᱫ ᱮᱦᱚᱵ ᱞᱟᱹᱜᱤᱫ ᱢᱚᱰᱩᱞ ᱵᱟᱪᱷᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "moduleSelection.title",
+      "en": "Select Training Module",
+      "hi": "प्रशिक्षण मॉड्यूल चुनें",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ ᱢᱚᱰᱩᱞ ᱵᱟᱪᱷᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "notif.caughtUp",
+      "en": "You're all caught up!",
+      "hi": "आप पूरी तरह अपडेट हैं!",
+      "hi_roman": "",
+      "sat": "ᱟᱢ ᱡᱚᱛᱚᱣᱟᱜ ᱧᱮᱞ ᱯᱩᱨᱟᱹᱣ ᱠᱮᱫᱟᱢ !",
+      "sat_roman": ""
+    },
+    {
+      "key": "notif.emptySub",
+      "en": "You currently have no pending alerts or safety notices.",
+      "hi": "आपके पास वर्तमान में कोई लंबित अलर्ट या सुरक्षा सूचना नहीं है।",
+      "hi_roman": "",
+      "sat": "ᱟᱢ ᱴᱷᱮᱱ ᱱᱤᱛ ᱫᱷᱟᱹᱵᱤᱡ ᱪᱮᱫ ᱦᱚᱸ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱦᱩᱥᱤᱭᱟᱹᱨ ᱵᱟᱹᱱᱩᱜᱼᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "notif.markAllRead",
+      "en": "Mark All as Read",
+      "hi": "सभी को पढ़ा हुआ चिह्नित करें",
+      "hi_roman": "",
+      "sat": "ᱡᱚᱛᱚ ᱯᱟᱲᱦᱟᱣ ᱟᱠᱟᱱ ᱪᱤᱱᱦᱟᱹᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "notif.noNew",
+      "en": "No new notifications",
+      "hi": "कोई नई सूचना नहीं है",
+      "hi_roman": "",
+      "sat": "ᱱᱟᱣᱟ ᱠᱷᱚᱵᱚᱨ ᱵᱟᱹᱱᱩᱜᱼᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "notif.read",
+      "en": "Read",
+      "hi": "पढ़ी गई",
+      "hi_roman": "",
+      "sat": "ᱯᱟᱲᱦᱟᱣ ᱮᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "notif.title",
+      "en": "Notifications",
+      "hi": "सूचनाएँ",
+      "hi_roman": "",
+      "sat": "ᱵᱟᱰᱟᱭ ᱡᱚᱝ ᱠᱷᱚᱵᱚᱨ",
+      "sat_roman": ""
+    },
+    {
+      "key": "notif.unread",
+      "en": "Unread",
+      "hi": "अपठित",
+      "hi_roman": "",
+      "sat": "ᱵᱟᱝ ᱯᱟᱲᱦᱟᱣ ᱟᱠᱟᱱ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.appSettings",
+      "en": "App Settings",
+      "hi": "ऐप सेटिंग्स",
+      "hi_roman": "",
+      "sat": "ᱮᱯ ᱥᱟᱡᱟᱣ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.appSettingsSub",
+      "en": "Sound, Privacy, Help",
+      "hi": "ध्वनि, गोपनीयता, सहायता",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱰᱮ, ᱩᱠᱩ, ᱜᱚᱲᱚ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.close",
+      "en": "Close",
+      "hi": "बंद करें",
+      "hi_roman": "",
+      "sat": "ᱵᱚᱱᱫᱚ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.completedLabel",
+      "en": "Modules Completed",
+      "hi": "पूर्ण किए गए मॉड्यूल",
+      "hi_roman": "",
+      "sat": "ᱯᱩᱨᱟᱹᱣ ᱟᱠᱟᱱ ᱢᱚᱰᱩᱞ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.contact",
+      "en": "Contact",
+      "hi": "संपर्क",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱹᱜᱟᱹᱭ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.defaultRole",
+      "en": "Mining Safety Personnel",
+      "hi": "खनन सुरक्षा कर्मचारी",
+      "hi_roman": "",
+      "sat": "ᱠᱷᱟᱫᱟᱱ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱠᱟᱹᱢᱤᱭᱟᱹ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.defaultSite",
+      "en": "Industrial Mining Facility",
+      "hi": "औद्योगिक खनन परिसर",
+      "hi_roman": "",
+      "sat": "ᱠᱟᱹᱨᱜᱟᱲ ᱠᱷᱟᱫᱟᱱ ᱡᱟᱭᱜᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.department",
+      "en": "Department",
+      "hi": "विभाग",
+      "hi_roman": "",
+      "sat": "ᱦᱟᱹᱴᱤᱧ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.earnedLabel",
+      "en": "Certificates Earned",
+      "hi": "अर्जित प्रमाणपत्र",
+      "hi_roman": "",
+      "sat": "ᱦᱟᱢᱮᱴ ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.edit",
+      "en": "Edit",
+      "hi": "संपादित करें",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱯᱲᱟᱣ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.employeeIdLabel",
+      "en": "Employee ID",
+      "hi": "कर्मचारी आईडी",
+      "hi_roman": "",
+      "sat": "ᱠᱟᱹᱢᱤᱭᱟᱹ ᱩᱯᱨᱩᱢ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.experience",
+      "en": "Experience (Years)",
+      "hi": "कार्य अनुभव (वर्ष)",
+      "hi_roman": "",
+      "sat": "ᱠᱟᱹᱢᱤ ᱦᱩᱱᱟᱹᱨ (ᱥᱮᱨᱢᱟ)",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.fullName",
+      "en": "Full Name",
+      "hi": "पूरा नाम",
+      "hi_roman": "",
+      "sat": "ᱯᱩᱨᱟᱹ ᱧᱩᱛᱩᱢ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.guestIdLabel",
+      "en": "Guest ID",
+      "hi": "अतिथि आईडी",
+      "hi_roman": "",
+      "sat": "ᱯᱮᱲᱟ ᱩᱯᱨᱩᱢ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.hoursLabel",
+      "en": "Training Hours",
+      "hi": "प्रशिक्षण के कुल घंटे",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ ᱜᱷᱟᱱᱴᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.logout",
+      "en": "Logout",
+      "hi": "लॉगआउट",
+      "hi_roman": "",
+      "sat": "ᱞᱚᱜᱽ ᱟᱣᱩᱴ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.logoutSub",
+      "en": "Sign out from this device",
+      "hi": "इस उपकरण से साइन आउट करें",
+      "hi_roman": "",
+      "sat": "ᱱᱚᱣᱟ ᱥᱟᱫᱷᱚᱱ ᱠᱷᱚᱱ ᱚᱰᱚᱠᱚᱜ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.myCertificates",
+      "en": "My Certificates",
+      "hi": "मेरे प्रमाणपत्र",
+      "hi_roman": "",
+      "sat": "ᱤᱧᱟᱜ ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.myCertificatesSub",
+      "en": "View and download your certificates",
+      "hi": "प्रमाणपत्र देखें एवं डाउनलोड करें",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱧᱮᱞ ᱟᱨ ᱰᱟᱣᱩᱱᱞᱳᱰ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.next",
+      "en": "Next",
+      "hi": "आगे",
+      "hi_roman": "",
+      "sat": "ᱞᱟᱦᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.notAvailable",
+      "en": "Not Available",
+      "hi": "उपलब्ध नहीं है",
+      "hi_roman": "",
+      "sat": "ᱵᱟᱹᱱᱩᱜᱼᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.notProvided",
+      "en": "Not Provided",
+      "hi": "प्रदान नहीं किया गया है",
+      "hi_roman": "",
+      "sat": "ᱵᱟᱝ ᱮᱢ ᱟᱠᱟᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.personalInfo",
+      "en": "Personal Information",
+      "hi": "व्यक्तिगत विवरण",
+      "hi_roman": "",
+      "sat": "ᱟᱯᱱᱟᱨ ᱵᱤᱵᱚᱨᱚᱱ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.personalInfoSub",
+      "en": "Name, Contact, Department",
+      "hi": "नाम, संपर्क, विभाग",
+      "hi_roman": "",
+      "sat": "ᱧᱩᱛᱩᱢ, ᱥᱟᱹᱜᱟᱹᱭ, ᱦᱟᱹᱴᱤᱧ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.safetyPreferences",
+      "en": "Safety Preferences",
+      "hi": "सुरक्षा प्राथमिकताएँ",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱠᱩᱥᱤ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.safetyPreferencesSub",
+      "en": "Language, Notifications",
+      "hi": "भाषा, सूचनाएँ",
+      "hi_roman": "",
+      "sat": "ᱯᱟᱹᱨᱥᱤ, ᱠᱷᱚᱵᱚᱨ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.save",
+      "en": "Save Changes",
+      "hi": "परिवर्तन सहेजें",
+      "hi_roman": "",
+      "sat": "ᱵᱚᱫᱚᱞ ᱥᱟᱧᱪᱟᱣ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.saveSuccess",
+      "en": "Profile updated successfully.",
+      "hi": "प्रोफ़ाइल सफलतापूर्वक अपडेट की गई।",
+      "hi_roman": "",
+      "sat": "ᱯᱷᱨᱳᱯᱷᱟᱭᱤᱞ ᱵᱮᱥᱛᱮ ᱵᱚᱫᱚᱞ ᱮᱱᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.sector",
+      "en": "Industrial Sector",
+      "hi": "औद्योगिक क्षेत्र",
+      "hi_roman": "",
+      "sat": "ᱠᱟᱹᱨᱜᱟᱲ ᱦᱟᱹᱴᱤᱧ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.subtitle",
+      "en": "Personnel information and safety training records",
+      "hi": "व्यक्तिगत विवरण एवं सुरक्षा प्रशिक्षण अभिलेख",
+      "hi_roman": "",
+      "sat": "ᱠᱟᱹᱢᱤᱭᱟᱹ ᱵᱤᱵᱚᱨᱚᱱ ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱮᱪᱮᱫ ᱨᱮᱠᱚᱨᱰ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.title",
+      "en": "Worker Profile",
+      "hi": "श्रमिक प्रोफ़ाइल",
+      "hi_roman": "",
+      "sat": "ᱠᱟᱹᱢᱤᱭᱟᱹ ᱯᱷᱨᱳᱯᱷᱟᱭᱤᱞ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.trainingHistory",
+      "en": "Training History",
+      "hi": "प्रशिक्षण इतिहास",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ ᱱᱟᱜᱟᱢ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.trainingHistorySub",
+      "en": "Completed modules and scores",
+      "hi": "पूर्ण किए गए मॉड्यूल एवं अंक",
+      "hi_roman": "",
+      "sat": "ᱯᱩᱨᱟᱹᱣ ᱟᱠᱟᱱ ᱢᱚᱰᱩᱞ ᱟᱨ ᱱᱚᱢᱵᱚᱨ",
+      "sat_roman": ""
+    },
+    {
+      "key": "profile.workerId",
+      "en": "Worker ID",
+      "hi": "श्रमिक आईडी",
+      "hi_roman": "",
+      "sat": "ᱠᱟᱹᱢᱤᱭᱟᱹ ᱩᱯᱨᱩᱢ",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.drillsCompleted",
+      "en": "Completed Drills",
+      "hi": "पूर्ण की गई अभ्यास ड्रिल",
+      "hi_roman": "",
+      "sat": "ᱯᱩᱨᱟᱹᱣ ᱟᱠᱟᱱ ᱰᱨᱤᱞ",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.electrical.desc",
+      "en": "Complete training on electrical hazard identification and safe operational procedures.",
+      "hi": "विद्युत खतरों की पहचान और सुरक्षित कार्य प्रक्रियाओं से संबंधित प्रशिक्षण पूरा करें।",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱡᱽᱞᱤ ᱵᱚᱛᱚᱨ ᱩᱨᱩᱢ ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱠᱟᱹᱢᱤ ᱦᱚᱨᱟ ᱥᱮᱪᱮᱫ ᱯᱩᱨᱟᱹᱣ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.fire.desc",
+      "en": "Complete practical training on hazard identification, extinguisher usage and safe evacuation.",
+      "hi": "खतरों की पहचान, अग्निशामक यंत्र का उपयोग और सुरक्षित निकासी से संबंधित प्रशिक्षण पूरा करें।",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱵᱚᱛᱚᱨ ᱩᱨᱩᱢ, ᱤᱬᱤᱡᱤᱡ ᱵᱮᱵᱷᱟᱨ ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱚᱰᱚᱠ ᱥᱮᱪᱮᱫ ᱯᱩᱨᱟᱹᱣ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.gas.desc",
+      "en": "Complete training on toxic gas detection, confined space procedures and PPE usage.",
+      "hi": "खतरनाक गैसों की पहचान, सीमित स्थानों की सुरक्षा प्रक्रियाएं और PPE के उपयोग से संबंधित प्रशिक्षण पूरा करें।",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱥ ᱦᱚᱭ ᱩᱨᱩᱢ, ᱥᱤᱢᱤᱛ ᱡᱟᱭᱜᱟ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱱᱤᱭᱚᱢ ᱟᱨ PPE ᱵᱮᱵᱷᱟᱨ ᱥᱮᱪᱮᱫ ᱯᱩᱨᱟᱹᱣ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.headerLastAssessment",
+      "en": "Last Assessment",
+      "hi": "अंतिम मूल्यांकन",
+      "hi_roman": "",
+      "sat": "ᱢᱩᱪᱟᱹᱫ ᱵᱤᱰᱟᱹᱣ",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.headerModule",
+      "en": "Module",
+      "hi": "मॉड्यूल",
+      "hi_roman": "",
+      "sat": "ᱢᱚᱰᱩᱞ",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.headerRetentionScore",
+      "en": "Retention Score",
+      "hi": "प्रतिधारण स्कोर",
+      "hi_roman": "",
+      "sat": "ᱫᱚᱦᱚ ᱮᱞ",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.hoursSpent",
+      "en": "Training Hours",
+      "hi": "प्रशिक्षण के कुल घंटे",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ ᱜᱷᱟᱱᱴᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.inProgress",
+      "en": "In Progress",
+      "hi": "प्रगति पर",
+      "hi_roman": "",
+      "sat": "ᱪᱟᱞᱟᱜ ᱠᱟᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.machinery.desc",
+      "en": "Complete training on safe machine operation, guarding and maintenance protocols.",
+      "hi": "मशीनों के सुरक्षित उपयोग और रखरखाव से संबंधित प्रशिक्षण पूरा करें।",
+      "hi_roman": "",
+      "sat": "ᱢᱤᱥᱤᱱ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱵᱮᱵᱷᱟᱨ ᱟᱨ ᱡᱚᱛᱚᱱ ᱥᱮᱪᱮᱫ ᱯᱩᱨᱟᱹᱣ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.moduleStatusBreakdown",
+      "en": "Module Status Breakdown",
+      "hi": "मॉड्यूल प्रगति विवरण",
+      "hi_roman": "",
+      "sat": "ᱢᱚᱰᱩᱞ ᱦᱟᱞᱚᱛ ᱵᱤᱵᱚᱨᱚᱱ",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.modulesSummary",
+      "en": "{0} of {1} Modules Completed",
+      "hi": "{1} में से {0} मॉड्यूल पूरा",
+      "hi_roman": "",
+      "sat": "{1} ᱨᱮ {0} ᱢᱚᱰᱩᱞ ᱯᱩᱨᱟᱹᱣ ᱮᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.notAvailable",
+      "en": "Not Available",
+      "hi": "उपलब्ध नहीं है",
+      "hi_roman": "",
+      "sat": "ᱵᱟᱹᱱᱩᱜᱼᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.notStarted",
+      "en": "Not Started",
+      "hi": "अभी शुरू नहीं किया गया",
+      "hi_roman": "",
+      "sat": "ᱵᱟᱝ ᱮᱦᱚᱵ ᱟᱠᱟᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.overallScore",
+      "en": "Average Safety Score",
+      "hi": "औसत सुरक्षा स्कोर",
+      "hi_roman": "",
+      "sat": "ᱜᱩᱸᱴ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱮᱞ",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.passedStatus",
+      "en": "Passed (Qualified)",
+      "hi": "सफल (उत्तीर्ण)",
+      "hi_roman": "",
+      "sat": "ᱯᱟᱥ ᱮᱱᱟ (ᱥᱟᱹᱵᱤᱛ)",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.retentionTableTitle",
+      "en": "Knowledge Retention & Performance",
+      "hi": "सुझाव और अगला कदम",
+      "hi_roman": "",
+      "sat": "ᱜᱮᱭᱟᱱ ᱫᱚᱦᱚ ᱟᱨ ᱠᱟᱹᱢᱤ ᱦᱚᱨᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.subtitle",
+      "en": "Review safety competencies, module completions, and assessment scores",
+      "hi": "अपने प्रशिक्षण की प्रगति देखें और अगले चरण की ओर बढ़ते रहें",
+      "hi_roman": "",
+      "sat": "ᱟᱢᱟᱜ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱫᱟᱲᱮ, ᱢᱚᱰᱩᱞ ᱯᱩᱨᱟᱹᱣ ᱟᱨ ᱵᱤᱰᱟᱹᱣ ᱮᱞ ᱠᱚ ᱧᱮᱞ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.summaryTip",
+      "en": "Recommendation: Re-practice modules within 30 days for annual safety recertification.",
+      "hi": "सभी मॉड्यूल पूरा करके अपनी सुरक्षा जागरूकता और कौशल को और मजबूत बनाएं।",
+      "hi_roman": "",
+      "sat": "ᱫᱤᱥᱟᱹ: ᱥᱮᱨᱢᱟᱠᱤᱭᱟᱹ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱞᱟᱹᱜᱤᱫ ᱓᱐ ᱢᱟᱦᱟᱸ ᱵᱷᱤᱛᱨᱤ ᱨᱮ ᱫᱚᱦᱲᱟ ᱨᱤᱦᱟᱨᱥᱟᱞ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "progress.title",
+      "en": "Training Progress",
+      "hi": "मेरी प्रगति",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ ᱞᱟᱦᱟᱱᱛᱤ",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.accuracyLabel",
+      "en": "Accuracy",
+      "hi": "सटीकता",
+      "hi_roman": "",
+      "sat": "ᱴᱷᱤᱠ ᱦᱟᱹᱴᱤᱧ",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.competencyBreakdown",
+      "en": "Competency Breakdown",
+      "hi": "दक्षता विवरण",
+      "hi_roman": "",
+      "sat": "ᱫᱟᱲᱮ ᱵᱤᱵᱚᱨᱚᱬ",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.competent",
+      "en": "Competent & Qualified",
+      "hi": "योग्य एवं सक्षम",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱹᱵᱤᱛ ᱠᱟᱹᱢᱤᱭᱟᱹ",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.continuousImprovement",
+      "en": "Continuous Safety Improvement",
+      "hi": "निरंतर सुरक्षा सुधार",
+      "hi_roman": "",
+      "sat": "ᱞᱮᱛᱟᱲ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱩᱫᱷᱟᱹᱨ",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.criticalErrorsLabel",
+      "en": "Critical Errors",
+      "hi": "गंभीर त्रुटियाँ",
+      "hi_roman": "",
+      "sat": "ᱵᱟᱹᱲᱤᱡ ᱵᱷᱩᱞ ᱠᱚ",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.criticalViolation",
+      "en": "Critical safety violation recorded ({0}). Mandatory re-practice required.",
+      "hi": "गंभीर सुरक्षा उल्लंघन दर्ज ({0})। मानक संचालन के अनुसार अनिवार्य पुनः अभ्यास आवश्यक है।",
+      "hi_roman": "",
+      "sat": "ᱵᱟᱹᱲᱤᱡ ᱵᱷᱩᱞ: {0}",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.passed",
+      "en": "Assessment Passed!",
+      "hi": "मूल्यांकन में सफल!",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱰᱟᱹᱣ ᱨᱮ ᱯᱟᱥ ᱮᱱᱟ!",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.recommendation",
+      "en": "Recommendation",
+      "hi": "अनुशंसा",
+      "hi_roman": "",
+      "sat": "ᱫᱤᱥᱟᱹ ᱩᱫᱩᱜ",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.repeatedMistakes",
+      "en": "Repeated Mistakes",
+      "hi": "बार-बार की गई गलतियाँ",
+      "hi_roman": "",
+      "sat": "ᱵᱟᱨ ᱵᱟᱨ ᱦᱩᱭ ᱟᱠᱟᱱ ᱵᱷᱩᱞ",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.retrain",
+      "en": "Retraining Required",
+      "hi": "पुनः प्रशिक्षण आवश्यक",
+      "hi_roman": "",
+      "sat": "ᱫᱚᱦᱲᱟ ᱥᱮᱪᱮᱫ ᱞᱟᱹᱠᱛᱤᱭᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.retrainingRequired",
+      "en": "Retraining Required",
+      "hi": "पुनः प्रशिक्षण आवश्यक",
+      "hi_roman": "",
+      "sat": "ᱫᱚᱦᱲᱟ ᱥᱮᱪᱮᱫ ᱞᱟᱹᱠᱛᱤᱭᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.returnHome",
+      "en": "Return to Dashboard",
+      "hi": "डैशबोर्ड पर लौटें",
+      "hi_roman": "",
+      "sat": "ᱰᱮᱥᱵᱚᱨᱰ ᱛᱮ ᱨᱩᱣᱟᱹᱲ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.scoreBelowThreshold",
+      "en": "Score below 80% threshold. Targeted drill practice recommended.",
+      "hi": "प्राप्तांक 80% की न्यूनतम योग्यता सीमा से कम है। लक्षित ड्रिल अभ्यास की अनुशंसा की जाती है।",
+      "hi_roman": "",
+      "sat": "ᱮᱞ ᱫᱚ ᱯᱟᱥ ᱮᱞ (75%) ᱠᱷᱚᱱ ᱠᱚᱢ ᱜᱮᱭᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.scoreLabel",
+      "en": "Score",
+      "hi": "स्कोर",
+      "hi_roman": "",
+      "sat": "ᱯᱨᱟᱯᱛᱟᱝᱠ",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.sopCompliance",
+      "en": "Demonstrated compliance with Ministry of Mines Industrial Safety SOP.",
+      "hi": "खान मंत्रालय एवं औद्योगिक सुरक्षा मानक संचालन प्रक्रिया (SOP) का पूर्ण अनुपालन प्रदर्शित किया गया।",
+      "hi_roman": "",
+      "sat": "SOP ᱢᱟᱱᱟᱣ: {0}%",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.startRetraining",
+      "en": "Start Retraining Drill",
+      "hi": "पुनः प्रशिक्षण शुरू करें",
+      "hi_roman": "",
+      "sat": "ᱫᱚᱦᱲᱟ ᱥᱮᱪᱮᱫ ᱮᱦᱚᱵ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.strongAreas",
+      "en": "Strong Areas",
+      "hi": "सुदृढ़ क्षेत्र",
+      "hi_roman": "",
+      "sat": "ᱠᱮᱴᱮᱡ ᱦᱟᱹᱴᱤᱧ",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.timeSpentLabel",
+      "en": "Time Elapsed",
+      "hi": "कुल समय",
+      "hi_roman": "",
+      "sat": "ᱯᱟᱨᱚᱢ ᱮᱱ ᱚᱠᱛᱚ",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.title",
+      "en": "Assessment Result",
+      "hi": "मूल्यांकन परिणाम",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱰᱟᱹᱣ ᱚᱨᱡᱚ",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.viewCertificate",
+      "en": "View Certificate",
+      "hi": "प्रमाणपत्र देखें",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱧᱮᱞ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.viewOfficialCertificate",
+      "en": "View Official Certificate",
+      "hi": "आधिकारिक प्रमाणपत्र देखें",
+      "hi_roman": "",
+      "sat": "ᱥᱚᱨᱠᱟᱨᱤ ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱧᱮᱞ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.weakAreas",
+      "en": "Areas for Improvement",
+      "hi": "सुधार की आवश्यकता वाले क्षेत्र",
+      "hi_roman": "",
+      "sat": "ᱥᱩᱫᱷᱟᱹᱨ ᱞᱟᱹᱠᱛᱤ ᱦᱟᱹᱴᱤᱧ",
+      "sat_roman": ""
+    },
+    {
+      "key": "result.zeroCriticalErrors",
+      "en": "Zero critical errors maintained across all industrial procedures.",
+      "hi": "सभी औद्योगिक प्रक्रियाओं में शून्य गंभीर त्रुटियां रखी गईं।",
+      "hi_roman": "",
+      "sat": "ᱡᱚᱛᱚ ᱠᱟᱹᱨᱜᱟᱲ ᱠᱟᱹᱢᱤ ᱨᱮ ᱢᱤᱫᱴᱟᱝ ᱦᱚᱸ ᱵᱷᱩᱞ ᱵᱟᱝ ᱦᱩᱭ ᱟᱠᱟᱱᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.s1.title",
+      "en": "1. Electrical Panel Fire",
+      "hi": "1. विद्युत पैनल में आग",
+      "hi_roman": "",
+      "sat": "᱑. ᱵᱤᱡᱽᱞᱤ ᱯᱮᱱᱮᱞ ᱨᱮ ᱥᱮᱸᱜᱮᱞ",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.s2.title",
+      "en": "2. Chemical Storage Fire",
+      "hi": "2. रासायनिक भंडारण में आग",
+      "hi_roman": "",
+      "sat": "2. ᱨᱟᱥᱟᱭᱚᱱᱤᱠ ᱫᱚᱦᱚ ᱴᱷᱟᱶ ᱨᱮ ᱥᱮᱸᱜᱮᱞ",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.s3.title",
+      "en": "3. Conveyor Belt Fire",
+      "hi": "3. कन्वेयर बेल्ट में आग",
+      "hi_roman": "",
+      "sat": "3. ᱠᱚᱱᱵᱷᱮᱭᱟᱨ ᱵᱮᱞᱴ ᱨᱮ ᱥᱮᱸᱜᱮᱞ",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.tip",
+      "en": "Tip: For best results, start with Scenario 1.",
+      "hi": "सुझाव: सर्वोत्तम अभ्यास के लिए परिदृश्य 1 से शुरुआत करें।",
+      "hi_roman": "",
+      "sat": "ᱫᱤᱥᱟᱹ: ᱵᱷᱟᱹᱜᱤ ᱥᱮᱪᱮᱫ ᱞᱟᱹᱜᱤᱫ, ᱯᱚᱨᱚᱠ ᱑ ᱠᱷᱚᱱ ᱮᱦᱚᱵ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.title",
+      "en": "Select Practice Scenario",
+      "hi": "अभ्यास परिदृश्य चुनें",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ ᱯᱚᱨᱚᱠ ᱵᱟᱪᱷᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenarioSelection.bannerDesc",
+      "en": "Select an emergency situation below to begin mobile AR assessment. Zero critical errors are required for compliance certification.",
+      "hi": "मोबाइल एआर मूल्यांकन शुरू करने के लिए नीचे दी गई आपातकालीन स्थिति का चयन करें। अनुपालन प्रमाणन के लिए शून्य गंभीर त्रुटियां अनिवार्य हैं।",
+      "hi_roman": "",
+      "sat": "ᱢᱚᱵᱟᱭᱤᱞ ᱮ.ᱟᱨ. ᱵᱤᱰᱟᱹᱣ ᱮᱦᱚᱵ ᱞᱟᱹᱜᱤᱫ ᱞᱟᱛᱟᱨ ᱨᱮᱱᱟᱜ ᱵᱚᱛᱚᱨ ᱯᱚᱨᱤᱥᱛᱷᱤᱛᱤ ᱵᱟᱪᱷᱟᱣ ᱢᱮ ᱾ ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱧᱟᱢ ᱞᱟᱹᱜᱤᱫ ᱢᱤᱫᱴᱟᱝ ᱦᱚᱸ ᱵᱷᱩᱞ ᱵᱟᱝ ᱦᱩᱭᱩᱜ ᱞᱟᱹᱠᱛᱤ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenarioSelection.bannerTitle",
+      "en": "Standard Industrial Scenarios",
+      "hi": "मानक औद्योगिक परिदृश्य",
+      "hi_roman": "",
+      "sat": "ᱢᱟᱱᱚᱠ ᱠᱟᱹᱨᱜᱟᱲ ᱯᱚᱨᱤᱥᱛᱷᱤᱛᱤ",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenarioSelection.title",
+      "en": "Select Scenario",
+      "hi": "परिदृश्य चुनें",
+      "hi_roman": "",
+      "sat": "ᱯᱚᱨᱤᱥᱛᱷᱤᱛᱤ ᱵᱟᱪᱷᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "settings.audioAlerts",
+      "en": "Safety Audio Alerts",
+      "hi": "सुरक्षा ध्वनि अलर्ट",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱰᱮ ᱦᱩᱥᱤᱭᱟᱹᱨ",
+      "sat_roman": ""
+    },
+    {
+      "key": "settings.autoSync",
+      "en": "Auto-Sync when Online",
+      "hi": "ऑनलाइन होने पर स्वतः सिंक करें",
+      "hi_roman": "",
+      "sat": "ᱚᱱᱞᱟᱭᱤᱱ ᱨᱮ ᱟᱯᱱᱟᱨᱛᱮ ᱥᱤᱝᱠ",
+      "sat_roman": ""
+    },
+    {
+      "key": "settings.haptics",
+      "en": "Haptic Feedback",
+      "hi": "हैप्टिक कंपन",
+      "hi_roman": "",
+      "sat": "ᱦᱟᱯᱴᱤᱠ ᱞᱟᱲᱟᱣ",
+      "sat_roman": ""
+    },
+    {
+      "key": "settings.highContrast",
+      "en": "High Contrast Mode",
+      "hi": "उच्च कंट्रास्ट मोड",
+      "hi_roman": "",
+      "sat": "ᱩᱥᱩᱞ ᱠᱚᱱᱴᱨᱟᱥᱴ ᱢᱳᱰ",
+      "sat_roman": ""
+    },
+    {
+      "key": "settings.privacyNote",
+      "en": "All training records are stored securely on-device with offline-first encryption.",
+      "hi": "सभी प्रशिक्षण रिकॉर्ड ऑफलाइन-प्रथम एन्क्रिप्शन के साथ डिवाइस पर सुरक्षित संग्रहीत हैं।",
+      "hi_roman": "",
+      "sat": "ᱡᱚᱛᱚ ᱥᱮᱪᱮᱫ ᱨᱮᱠᱚᱨᱰ ᱱᱚᱣᱟ ᱥᱟᱫᱷᱚᱱ ᱨᱮ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱢᱮᱱᱟᱜᱼᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "settings.title",
+      "en": "App Settings",
+      "hi": "ऐप सेटिंग्स",
+      "hi_roman": "",
+      "sat": "ᱮᱯ ᱥᱟᱡᱟᱣ",
+      "sat_roman": ""
+    },
+    {
+      "key": "settings.version",
+      "en": "SurakshaAR v1.0.0 (Build 6000.6)",
+      "hi": "SurakshaAR v1.0.0 (बिल्ड 6000.6)",
+      "hi_roman": "",
+      "sat": "ᱥᱩᱨᱚᱠᱷᱟ ᱮ.ᱟᱨ. v1.0.0 (ᱵᱤᱞᱰ 6000.6)",
+      "sat_roman": ""
+    },
+    {
+      "key": "splash.appName",
+      "en": "SurakshaAR",
+      "hi": "सुरक्षाAR",
+      "hi_roman": "",
+      "sat": "ᱥᱩᱨᱚᱠᱷᱟ ᱮ.ᱟᱨ.",
+      "sat_roman": ""
+    },
+    {
+      "key": "splash.footer",
+      "en": "SAFE WORKERS, STRONGER INDIA",
+      "hi": "सुरक्षित श्रमिक, सशक्त भारत",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱠᱟᱹᱢᱤᱭᱟᱹ, ᱠᱮᱴᱮᱡ ᱥᱤᱧᱚᱛ",
+      "sat_roman": ""
+    },
+    {
+      "key": "splash.tagline",
+      "en": "AR-Based Safety Training for Industrial Workers",
+      "hi": "औद्योगिक श्रमिकों के लिए एआर-आधारित सुरक्षा प्रशिक्षण",
+      "hi_roman": "",
+      "sat": "ᱠᱷᱟᱫᱟᱱ ᱟᱨ ᱠᱟᱹᱨᱜᱟᱲ ᱠᱟᱹᱢᱤᱭᱟᱹ ᱠᱚ ᱞᱟᱹᱜᱤᱫ ᱮ.ᱟᱨ. ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱮᱪᱮᱫ",
+      "sat_roman": ""
+    }
+  ]
+}

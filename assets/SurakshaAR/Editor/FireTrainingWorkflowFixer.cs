@@ -23,8 +23,123 @@ namespace SurakshaAR.Editor
             if (File.Exists(TriggerFile))
             {
                 try { File.Delete(TriggerFile); } catch {}
+                AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
                 FixAndAlignARWorkflow();
             }
+        }
+
+        public static void FixFireTrainingWorkflowBatch()
+        {
+            try
+            {
+                FixAndAlignARWorkflow();
+                EditorApplication.Exit(0);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[FixFireTrainingWorkflowBatch] Failed: {ex}");
+                EditorApplication.Exit(1);
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        // MENU: Restore FireExt Editor Visibility
+        // Run this whenever FireExt appears invisible/grey in Scene view.
+        // ─────────────────────────────────────────────────────────────────
+        [MenuItem("SurakshaAR/Restore FireExt Editor Visibility")]
+        public static void RestoreFireExtEditorVisibility()
+        {
+            var fireExt = GameObject.Find("FireExt");
+            if (fireExt == null)
+            {
+                foreach (var go in UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects())
+                {
+                    fireExt = FindDeep(go.transform, "FireExt");
+                    if (fireExt != null) break;
+                }
+            }
+
+            if (fireExt == null)
+            {
+                Debug.LogError("[FireTrainingWorkflowFixer] FireExt not found in scene. Is FireTraining.unity open?");
+                EditorUtility.DisplayDialog("Restore FireExt Visibility",
+                    "FireExt was NOT found.\nPlease open Assets/AR_Fire_foundation/scenes/FireTraining.unity first.", "OK");
+                return;
+            }
+
+            int rendererCount = 0, colliderCount = 0, particleCount = 0;
+
+            // Force-enable all Renderers (MeshRenderer + ParticleSystemRenderer)
+            foreach (var r in fireExt.GetComponentsInChildren<Renderer>(true))
+            {
+                r.enabled = true;
+                rendererCount++;
+                EditorUtility.SetDirty(r);
+            }
+
+            // Force-enable all Colliders
+            foreach (var c in fireExt.GetComponentsInChildren<Collider>(true))
+            {
+                c.enabled = true;
+                colliderCount++;
+                EditorUtility.SetDirty(c);
+            }
+
+            // Force-enable interaction scripts
+            foreach (var p in fireExt.GetComponentsInChildren<FirePinInteraction>(true))
+            { p.enabled = true; EditorUtility.SetDirty(p); }
+            foreach (var g in fireExt.GetComponentsInChildren<ExtinguisherGripInteraction>(true))
+            { g.enabled = true; EditorUtility.SetDirty(g); }
+
+            // ── SPRAY / PARTICLE SYSTEMS ──────────────────────────────────────────
+            // Re-enable ParticleSystemRenderer, restore emission, and simulate
+            // so spray is visible in Scene view without entering Play Mode.
+            foreach (var ps in fireExt.GetComponentsInChildren<ParticleSystem>(true))
+            {
+                if (ps == null) continue;
+
+                // Enable the renderer
+                var psRend = ps.GetComponent<ParticleSystemRenderer>();
+                if (psRend != null) { psRend.enabled = true; EditorUtility.SetDirty(psRend); }
+
+                // Restore emission module
+                var em = ps.emission;
+                em.enabled = true;
+
+                // Simulate 1 second so particles are visible immediately in Scene view
+                ps.Simulate(1.0f, true, true);
+                ps.Play(true);
+
+                particleCount++;
+                EditorUtility.SetDirty(ps);
+            }
+
+            // Make sure the GameObject itself is active
+            fireExt.SetActive(true);
+            EditorUtility.SetDirty(fireExt);
+
+            // Mark scene dirty and save
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(fireExt.scene);
+            UnityEditor.SceneManagement.EditorSceneManager.SaveOpenScenes();
+
+            Debug.Log($"[FireTrainingWorkflowFixer] ✅ FireExt + Spray restored: {rendererCount} renderers, {colliderCount} colliders, {particleCount} particle systems re-enabled.");
+            EditorUtility.DisplayDialog("Restore FireExt + Spray Visibility",
+                $"✅ FireExt and Spray are now visible in Scene view!\n\n" +
+                $"  Renderers enabled:        {rendererCount}\n" +
+                $"  Colliders enabled:         {colliderCount}\n" +
+                $"  Particle systems restored: {particleCount}\n\n" +
+                "Scene has been saved.", "OK");
+        }
+
+        private static GameObject FindDeep(Transform root, string name)
+        {
+            if (root.name == name) return root.gameObject;
+            foreach (Transform child in root)
+            {
+                var found = FindDeep(child, name);
+                if (found != null) return found;
+            }
+            return null;
         }
 
         [MenuItem("SurakshaAR/Fix AR Fire Training Scene & Objects")]
@@ -208,7 +323,39 @@ namespace SurakshaAR.Editor
                 }
 
                 SetupPinWithRing(fireExt, "Equipped FireExt");
-                SetupPinWithRing(fireExtDisplay, "Display FireExt_display");
+
+                // CRITICAL CORRECTION: FireExt_display is STRICTLY the display prop!
+                // It must NOT have FirePinInteraction, ExtinguisherGripInteraction, HoseInteraction, or ExtinguisherPickup!
+                if (fireExtDisplay != null)
+                {
+                    var displayPins = fireExtDisplay.GetComponentsInChildren<FirePinInteraction>(true);
+                    foreach (var p in displayPins) UnityEngine.Object.DestroyImmediate(p);
+
+                    var displayGrips = fireExtDisplay.GetComponentsInChildren<ExtinguisherGripInteraction>(true);
+                    foreach (var g in displayGrips) UnityEngine.Object.DestroyImmediate(g);
+
+                    var displayPickups = fireExtDisplay.GetComponentsInChildren<ExtinguisherPickup>(true);
+                    foreach (var pu in displayPickups) UnityEngine.Object.DestroyImmediate(pu);
+
+                    var displayHoses = fireExtDisplay.GetComponentsInChildren<HoseInteraction>(true);
+                    foreach (var h in displayHoses) UnityEngine.Object.DestroyImmediate(h);
+
+                    var displayRings = fireExtDisplay.GetComponentsInChildren<Transform>(true);
+                    foreach (var t in displayRings)
+                    {
+                        if (t != null && t.name == "SafetyPullRing")
+                        {
+                            UnityEngine.Object.DestroyImmediate(t.gameObject);
+                        }
+                    }
+
+                    var dispCol = fireExtDisplay.GetComponent<BoxCollider>();
+                    if (dispCol == null) dispCol = fireExtDisplay.AddComponent<BoxCollider>();
+                    dispCol.center = new Vector3(0f, 0.35f, 0f);
+                    dispCol.size = new Vector3(0.40f, 0.75f, 0.40f);
+
+                    sb.AppendLine("[DISPLAY] Cleaned operational components from FireExt_display. Preserved pure display prop.");
+                }
 
                 // -------------------------------------------------------------
                 // 5. CONFIGURE EXTINGUISHER HOLD POSITION & NOZZLE FORWARD
@@ -411,15 +558,59 @@ namespace SurakshaAR.Editor
                         alignment.fireAlarmPosition = new Vector3(1.2f, 1.25f, 0.4f);
                         alignment.fireAlarmRotation = new Vector3(0f, 180f, 0f);
                     }
+                    if (fireExt != null) alignment.fireExtinguisher = fireExt.transform;
+                    if (fireExtDisplay != null) alignment.extinguisherDisplay = fireExtDisplay.transform;
                     alignment.ApplyAlignment();
                     sb.AppendLine("[ALIGNMENT] Updated FireScenarioAlignment references & applied alignment.");
+                }
+
+                if (fireExtDisplay != null)
+                {
+                    var disp = fireExtDisplay.GetComponent<ExtinguisherDisplayPickup>();
+                    if (disp == null) disp = fireExtDisplay.AddComponent<ExtinguisherDisplayPickup>();
+                    if (fireExt != null) disp.originalExtinguisher = fireExt;
+                    if (Camera.main != null) disp.arCamera = Camera.main.transform;
+                    sb.AppendLine("[DISPLAY] Configured ExtinguisherDisplayPickup on FireExt_display.");
                 }
 
                 var flow = UnityEngine.Object.FindAnyObjectByType<FireScenarioFlowManager>();
                 if (flow != null)
                 {
-                    flow.SendMessage("ResolveReferences", SendMessageOptions.DontRequireReceiver);
+                    if (fireExtDisplay != null)
+                        flow.displayPickup = fireExtDisplay.GetComponent<ExtinguisherDisplayPickup>();
+                    if (fireExt != null)
+                        flow.originalPickup = fireExt.GetComponent<ExtinguisherPickup>();
+                    var resolveMethod = flow.GetType().GetMethod("ResolveReferences", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public);
+                    resolveMethod?.Invoke(flow, null);
                     sb.AppendLine("[FLOW] Invoked ResolveReferences on FireScenarioFlowManager.");
+                }
+
+                // CRITICAL REQUIREMENT: FireExt MUST be ACTIVE in the scene asset so it is visible and editable in Scene view!
+                // FireExt_display MUST also be ACTIVE initially in the scene asset!
+                if (fireExt != null)
+                {
+                    fireExt.SetActive(true);
+                    sb.AppendLine("[FIREEXT] Set original FireExt to ACTIVE (true) in scene asset for Scene view editing.");
+                }
+                if (fireExtDisplay != null)
+                {
+                    fireExtDisplay.SetActive(true);
+                    sb.AppendLine("[FIREEXT_DISPLAY] Set FireExt_display to ACTIVE (true) in scene asset.");
+                }
+
+                // Cleanup any stray TempCaptureCamera objects that may have leaked
+                int removedCams = 0;
+                foreach (var go in scene.GetRootGameObjects())
+                {
+                    if (go.name.Contains("TempCaptureCamera"))
+                    {
+                        UnityEngine.Object.DestroyImmediate(go);
+                        removedCams++;
+                    }
+                }
+                if (removedCams > 0)
+                {
+                    sb.AppendLine($"[CLEANUP] Destroyed {removedCams} leaked TempCaptureCamera objects.");
                 }
 
                 // Save scene

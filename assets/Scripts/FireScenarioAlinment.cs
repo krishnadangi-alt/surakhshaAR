@@ -80,9 +80,9 @@ public class FireScenarioAlignment : MonoBehaviour
 
     [Header("EXIT")]
 
-    // Right side and farther away
+    // Left side on the floor (exact opposite of previous position)
     public Vector3 exitSignPosition =
-        new Vector3(4.5f, 2.0f, 6.0f);
+        new Vector3(-4.5f, 0.0f, 6.0f);
 
     public Vector3 exitSignRotation =
         new Vector3(0f, 0f, 0f);
@@ -136,17 +136,71 @@ public class FireScenarioAlignment : MonoBehaviour
 
     public void ApplyAlignment()
     {
+        if (scenarioRoot == null)
+            scenarioRoot = transform;
+
+        if (extinguisherDisplay == null)
+        {
+            var dispComp = FindAnyObjectByType<ExtinguisherDisplayPickup>(FindObjectsInactive.Include);
+            if (dispComp != null)
+            {
+                extinguisherDisplay = dispComp.transform;
+            }
+            else
+            {
+                var disp = GameObject.Find("FireExt_display");
+                if (disp != null) extinguisherDisplay = disp.transform;
+            }
+        }
+
+        if (fireExtinguisher == null)
+        {
+            var pickupComp = FindAnyObjectByType<ExtinguisherPickup>(FindObjectsInactive.Include);
+            if (pickupComp != null)
+            {
+                fireExtinguisher = pickupComp.transform;
+            }
+            else
+            {
+                var ext = GameObject.Find("FireExt");
+                if (ext != null) fireExtinguisher = ext.transform;
+            }
+        }
+
+        // CRITICAL REQUIREMENT: Original FireExt MUST remain hidden before selection!
+        if (fireExtinguisher != null)
+        {
+            var pickup = fireExtinguisher.GetComponent<ExtinguisherPickup>();
+            if (pickup == null || !pickup.IsHeld())
+            {
+                if (pickup != null)
+                {
+                    pickup.SetRuntimeVisibility(false);
+                }
+                else
+                {
+                    fireExtinguisher.gameObject.SetActive(false);
+                }
+            }
+        }
+
+        // Display extinguisher MUST be active and visible initially
+        if (extinguisherDisplay != null)
+        {
+            var disp = extinguisherDisplay.GetComponent<ExtinguisherDisplayPickup>();
+            if (disp == null || !disp.IsPickedUp)
+            {
+                extinguisherDisplay.gameObject.SetActive(true);
+            }
+        }
+
         SetTransform(
             electricalBox,
             electricalBoxPosition,
             electricalBoxRotation
         );
 
-        SetTransform(
-            fireExtinguisher,
-            fireExtinguisherPosition,
-            fireExtinguisherRotation
-        );
+        // NOTE: Preserve original FireExt scene transform! Do NOT overwrite fireExtinguisher transform.
 
         SetTransform(
             fireAlarm,
@@ -173,6 +227,30 @@ public class FireScenarioAlignment : MonoBehaviour
             SyncAnchor(fireAlarmPoint, fireAlarm);
             SyncAnchor(exitPoint, exitSign);
         }
+
+        // Ensure fire particles on the hazard are active and playing
+        var fireExt = FindAnyObjectByType<FireExtinguishable>(FindObjectsInactive.Include);
+        if (fireExt != null)
+        {
+            fireExt.EnsureFireVisualsActive();
+        }
+        else
+        {
+            var hazard = electricalBox != null ? electricalBox.gameObject : (GameObject.Find("Hazard") ?? GameObject.Find("Electric Box"));
+            if (hazard != null)
+            {
+                var vfx = hazard.transform.Find("Electric Box/VFX_Fire_01_Small") ?? hazard.transform.Find("VFX_Fire_01_Small");
+                if (vfx != null)
+                {
+                    vfx.gameObject.SetActive(true);
+                    foreach (var ps in vfx.GetComponentsInChildren<ParticleSystem>(true))
+                    {
+                        ps.gameObject.SetActive(true);
+                        if (!ps.isPlaying) ps.Play();
+                    }
+                }
+            }
+        }
     }
 
 
@@ -188,20 +266,16 @@ public class FireScenarioAlignment : MonoBehaviour
     {
         if (target == null)
         {
-            Debug.LogWarning(
-                "FireScenarioAlignment: " +
-                "An object is not assigned."
-            );
-
             return;
         }
 
-        // IMPORTANT:
-        // Do NOT change the parent.
-        //
-        // This preserves your existing hierarchy,
-        // including Hose, spraypoint, hosepivot,
-        // Fire particles, etc.
+        // CRITICAL PROTECTION: If this target is an extinguisher currently held by the worker,
+        // do NOT overwrite its held position or parent relative to the camera!
+        var pickup = target.GetComponent<ExtinguisherPickup>();
+        if (pickup != null && pickup.IsHeld())
+        {
+            return;
+        }
 
         target.localPosition =
             position;

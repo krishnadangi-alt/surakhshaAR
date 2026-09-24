@@ -48,7 +48,7 @@ public class FireExtinguishSystem : MonoBehaviour
         }
         else
         {
-            timer = 0f;
+            // Pause timer when spray moves off target (preserves accumulated progress)
         }
     }
 

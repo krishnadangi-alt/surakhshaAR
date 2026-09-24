@@ -1,4 +1,4 @@
-﻿"""Shared API dependencies - DB session plus authentication / RBAC (Day 4)."""
+"""Shared API dependencies - DB session plus authentication / RBAC (Day 4)."""
 
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
@@ -13,9 +13,26 @@ __all__ = [
     "get_current_user",
     "require_admin",
     "ensure_worker_access",
+    "get_optional_current_user",
 ]
 
 bearer_scheme = HTTPBearer(auto_error=False)
+
+
+def get_optional_current_user(
+    credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
+    db: Session = Depends(get_db),
+) -> AuthUser | None:
+    """Optionally resolve authenticated user if token is provided."""
+    if credentials is None or not credentials.credentials:
+        return None
+    claims = decode_access_token(credentials.credentials)
+    if claims is None:
+        return None
+    user = db.query(AuthUser).filter(AuthUser.username == claims.get("sub")).first()
+    if user is None or not user.is_active:
+        return None
+    return user
 
 
 def get_current_user(

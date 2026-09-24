@@ -1,4 +1,4 @@
-﻿"""Sync request/response schemas.
+"""Sync request/response schemas.
 
 Offline sessions that include behavioural ``events`` (assessments recorded
 offline) are scored server-side by the ML competency engine on sync and stored
@@ -33,11 +33,16 @@ class SyncSession(BaseModel):
             "the same worker+module+key is skipped on re-sync."
         ),
     )
+    guest_id: str | None = Field(None, max_length=64)
+    attempt_id: str | None = Field(None, max_length=64)
     events: list[AssessmentEvent] = Field(default_factory=list, max_length=2000)
 
 
 class SyncCreate(BaseModel):
-    worker_id: int = Field(..., ge=1)
+    worker_id: int | None = Field(None, ge=0)
+    guest_id: str | None = Field(None, max_length=64)
+    employee_id: str | None = Field(None, max_length=64)
+    employee_name: str | None = Field(None, max_length=120)
     device_id: str = Field(..., min_length=1, max_length=128)
     batch_id: str | None = Field(
         None,

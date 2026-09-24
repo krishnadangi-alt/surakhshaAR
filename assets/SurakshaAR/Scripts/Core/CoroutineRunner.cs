@@ -25,5 +25,13 @@ namespace SurakshaAR.Core
             }
             return _instance.StartCoroutine(routine);
         }
+
+        public static void Stop(Coroutine routine)
+        {
+            if (routine != null && _instance != null)
+            {
+                _instance.StopCoroutine(routine);
+            }
+        }
     }
 }

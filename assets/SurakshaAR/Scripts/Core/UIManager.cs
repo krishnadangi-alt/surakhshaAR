@@ -30,6 +30,9 @@ namespace SurakshaAR.Core
         public ScreenId PreviousScreen { get; private set; }
         public bool HasPreviousScreen { get; private set; }
 
+        // Stores the last param passed to ShowScreen so we can re-call OnShow on language change
+        private object _activeScreenParam;
+
         // ── Internal canvas hierarchy ─────────────────────────────────
         private Canvas _mainCanvas;
         private Image _canvasBg;
@@ -45,7 +48,7 @@ namespace SurakshaAR.Core
         {
             if (Instance != null && Instance != this)
             {
-                Destroy(gameObject);
+                UI.UIHelper.SafeDestroy(gameObject);
                 return;
             }
             Instance = this;
@@ -58,6 +61,38 @@ namespace SurakshaAR.Core
 
             // EventSystem (required for uGUI input)
             EnsureEventSystem();
+
+            // Subscribe to language change — refresh active screen text immediately
+            StartCoroutine(SubscribeToLocalizationWhenReady());
+        }
+
+        // ──────────────────────────────────────────────────────────────
+        //  LOCALIZATION SUBSCRIPTION
+        // ──────────────────────────────────────────────────────────────
+        private System.Collections.IEnumerator SubscribeToLocalizationWhenReady()
+        {
+            // Wait until AppManager is initialized (it sets Localization in Awake)
+            int maxWait = 60;
+            while (AppManager.Instance?.Localization == null && maxWait-- > 0)
+                yield return null;
+
+            if (AppManager.Instance?.Localization != null)
+            {
+                AppManager.Instance.Localization.OnLanguageChanged += OnLanguageChanged;
+                Debug.Log("[UIManager] Subscribed to OnLanguageChanged.");
+            }
+        }
+
+        private void OnLanguageChanged(SurakshaAR.Data.AppLanguage lang)
+        {
+            Debug.Log($"[UIManager] Language changed to {lang} — refreshing screen.");
+            RefreshCurrentScreen();
+        }
+
+        private void OnDestroy()
+        {
+            if (AppManager.Instance?.Localization != null)
+                AppManager.Instance.Localization.OnLanguageChanged -= OnLanguageChanged;
         }
 
         // ──────────────────────────────────────────────────────────────
@@ -71,7 +106,7 @@ namespace SurakshaAR.Core
 
             if (_activeScreenGO != null)
             {
-                Destroy(_activeScreenGO);
+                UI.UIHelper.SafeDestroy(_activeScreenGO);
                 _activeScreenGO = null;
             }
 
@@ -103,15 +138,11 @@ namespace SurakshaAR.Core
                 LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
             }
 
-            // Synchronize menu font across all text components on every screen
-            var menuFont = UI.UIHelper.GetDefaultFont();
-            if (menuFont != null)
-            {
-                foreach (var tmp in screenGO.GetComponentsInChildren<TMPro.TextMeshProUGUI>(true))
-                {
-                    tmp.font = menuFont;
-                }
-            }
+            // Synchronize font for active language across all text components on every screen
+            var currentLang = AppState.Instance != null
+                ? AppState.Instance.CurrentLanguage
+                : (Localization.LocalizationManager.Instance?.CurrentLanguage ?? AppLanguage.English);
+            ApplyLanguageFonts(screenGO, currentLang);
 
             // Track navigation history
             if (_hasShownAnyScreen)
@@ -124,8 +155,153 @@ namespace SurakshaAR.Core
 
             // Bind controller
             _activeController = CreateController(screenId);
+            _activeScreenParam = param;
             _activeController?.OnShow(screenGO, param);
+
+            // Re-apply fonts to catch any dynamically created UI elements created during OnShow
+            ApplyLanguageFonts(screenGO, currentLang);
         }
+
+        // ──────────────────────────────────────────────────────────────
+        //  LANGUAGE REFRESH — Re-renders the active screen in-place
+        // ──────────────────────────────────────────────────────────────
+        /// <summary>
+        /// Called when the language changes. Re-invokes OnShow on the
+        /// current screen controller so all text refreshes immediately
+        /// without a scene reload or screen transition.
+        /// </summary>
+        public void RefreshCurrentScreen()
+        {
+            if (_activeController != null && _activeScreenGO != null)
+            {
+                try
+                {
+                    var currentLang = AppState.Instance != null
+                        ? AppState.Instance.CurrentLanguage
+                        : (Localization.LocalizationManager.Instance?.CurrentLanguage ?? AppLanguage.English);
+                    ApplyLanguageFonts(_activeScreenGO, currentLang);
+                    _activeController.OnShow(_activeScreenGO, _activeScreenParam);
+                    ApplyLanguageFonts(_activeScreenGO, currentLang);
+                    Canvas.ForceUpdateCanvases();
+                    foreach (var fitter in _activeScreenGO.GetComponentsInChildren<ContentSizeFitter>(true))
+                    {
+                        LayoutRebuilder.ForceRebuildLayoutImmediate(fitter.GetComponent<RectTransform>());
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogWarning($"[UIManager] RefreshCurrentScreen error: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Applies the language-appropriate font (Devanagari for Hindi, Ol Chiki for Santali, Latin for English)
+        /// to all TextMeshProUGUI components within the given root hierarchy.
+        /// Strictly enforces Left-to-Right (LTR) rendering path, eliminating any RTL mirroring,
+        /// inverted scaleX (-1), or character reversals for Santali (Ol Chiki) and all supported languages.
+        /// </summary>
+        public void ApplyLanguageFonts(GameObject screenGO, AppLanguage lang)
+        {
+            if (screenGO == null) return;
+
+            // 1. Enforce strict Left-to-Right layout across the whole screen hierarchy
+            EnforceStrictLtrLayout(screenGO);
+
+            var font = UI.UIHelper.GetFontForLanguage(lang);
+            if (font == null) return;
+
+            foreach (var tmp in screenGO.GetComponentsInChildren<TMPro.TextMeshProUGUI>(true))
+            {
+                try
+                {
+                    // Strict LTR guarantee: never allow TextMeshPro RTL reversal for Santali, Hindi, or English
+                    tmp.isRightToLeftText = false;
+
+                    // Ensure RectTransform horizontal scale is positive (never inverted/mirrored)
+                    var tmpRT = tmp.rectTransform;
+                    if (tmpRT != null && tmpRT.localScale.x < 0f)
+                    {
+                        var s = tmpRT.localScale;
+                        s.x = Mathf.Abs(s.x);
+                        tmpRT.localScale = s;
+                    }
+
+                    // On language selection screen, protect each individual language card's title/subtitle so they always display in their own native script
+                    var parentCard = tmp.GetComponentInParent<Button>();
+                    if (parentCard != null)
+                    {
+                        if (parentCard.name == "row-hindi")
+                        {
+                            var hiFont = UI.UIHelper.GetDevanagariFont();
+                            if (hiFont != null) tmp.font = hiFont;
+                            continue;
+                        }
+                        if (parentCard.name == "row-santali")
+                        {
+                            var satFont = UI.UIHelper.GetSantaliFont();
+                            if (satFont != null) tmp.font = satFont;
+                            continue;
+                        }
+                        if (parentCard.name == "row-english")
+                        {
+                            var enFont = UI.UIHelper.GetDefaultFont();
+                            if (enFont != null) tmp.font = enFont;
+                            continue;
+                        }
+                    }
+
+                    tmp.font = font;
+
+                    if (lang == AppLanguage.Hindi && !string.IsNullOrEmpty(tmp.text) && UI.DevanagariShaper.HasDevanagari(tmp.text))
+                    {
+                        tmp.text = UI.DevanagariShaper.Shape(tmp.text);
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogWarning($"[UIManager] Failed to apply language font to {tmp.name}: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Traverses all RectTransforms, HorizontalLayoutGroups, and Text components
+        /// in the hierarchy, guaranteeing that scaleX is never negative (-1),
+        /// child arrangement is never reversed, and text direction is strictly Left-to-Right.
+        /// Santali (Ol Chiki), Hindi (Devanagari), and English (Latin) are strictly Left-to-Right.
+        /// </summary>
+        public void EnforceStrictLtrLayout(GameObject root)
+        {
+            if (root == null) return;
+
+            // 1. Ensure all RectTransforms have strictly positive localScale.x (never -1 / mirrored)
+            foreach (var rt in root.GetComponentsInChildren<RectTransform>(true))
+            {
+                var s = rt.localScale;
+                if (s.x < 0f)
+                {
+                    s.x = Mathf.Abs(s.x);
+                    rt.localScale = s;
+                }
+            }
+
+            // 2. Ensure all HorizontalLayoutGroups flow normally Left-to-Right (reverseArrangement = false)
+            foreach (var hlg in root.GetComponentsInChildren<HorizontalLayoutGroup>(true))
+            {
+                if (hlg.reverseArrangement)
+                {
+                    hlg.reverseArrangement = false;
+                }
+            }
+
+            // 3. Ensure all TextMeshProUGUI components have isRightToLeftText = false
+            foreach (var tmp in root.GetComponentsInChildren<TMPro.TextMeshProUGUI>(true))
+            {
+                tmp.isRightToLeftText = false;
+            }
+        }
+
 
         // ──────────────────────────────────────────────────────────────
         //  SET UI VISIBLE  (called by ARModuleLauncher)
@@ -200,8 +376,10 @@ namespace SurakshaAR.Core
             switch (screenId)
             {
                 case ScreenId.Splash:
-                case ScreenId.Login:
                     _canvasBg.color = UIColors.PrimaryDark;
+                    break;
+                case ScreenId.Login:
+                    _canvasBg.color = UIColors.Hex("#CAE4F5");
                     break;
                 case ScreenId.Assessment:
                     _canvasBg.color = UIColors.Hex("#0A1926");
@@ -248,7 +426,7 @@ namespace SurakshaAR.Core
                 // InputSystemUIInputModule auto-assigns DefaultInputActions
                 // in its OnEnable, so it works out of the box.
                 esGO.AddComponent<InputSystemUIInputModule>();
-                DontDestroyOnLoad(esGO);
+                if (Application.isPlaying) DontDestroyOnLoad(esGO);
             }
         }
 

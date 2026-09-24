@@ -50,6 +50,40 @@ namespace SurakshaAR.Networking
 
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            if (PlayerPrefs.HasKey("SurakshaAR_BackendUrl"))
+            {
+                string stored = PlayerPrefs.GetString("SurakshaAR_BackendUrl").TrimEnd('/');
+                if (stored.Contains("10.92.194.110") || stored.Contains("172.16.48.160"))
+                {
+#if !UNITY_EDITOR
+                    baseUrl = "http://192.168.137.1:8000/api/v1";
+#else
+                    baseUrl = "http://127.0.0.1:8000/api/v1";
+#endif
+                }
+                else
+                {
+                    baseUrl = stored.EndsWith("/api/v1") ? stored : stored + "/api/v1";
+                }
+            }
+            else
+            {
+#if !UNITY_EDITOR
+                baseUrl = "http://192.168.137.1:8000/api/v1";
+#else
+                baseUrl = "http://127.0.0.1:8000/api/v1";
+#endif
+            }
+        }
+
+        public void SetBaseUrl(string newBaseUrl)
+        {
+            if (string.IsNullOrEmpty(newBaseUrl)) return;
+            string clean = newBaseUrl.TrimEnd('/');
+            baseUrl = clean.EndsWith("/api/v1") ? clean : clean + "/api/v1";
+            PlayerPrefs.SetString("SurakshaAR_BackendUrl", clean.Replace("/api/v1", ""));
+            PlayerPrefs.Save();
         }
 
         private void OnDestroy()

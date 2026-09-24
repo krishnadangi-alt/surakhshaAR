@@ -13,6 +13,7 @@ from sqlalchemy.orm import Session
 from app.api.deps import ensure_worker_access, get_current_user, get_db
 from app.models.assessment import Assessment
 from app.models.auth_user import AuthUser
+from app.models.certificate import Certificate
 from app.models.module import Module
 from app.models.worker import Worker
 from app.schemas.assessment import (
@@ -22,6 +23,8 @@ from app.schemas.assessment import (
     RetrainingPlanOut,
 )
 from app.services.audit_service import write_audit
+from app.services.certificate_service import generate_certificate_number
+
 from app.services.competency_service import (
     UnsupportedScenarioError,
     next_attempt_number,
@@ -120,6 +123,36 @@ def submit_assessment(
                 return existing
         raise
     db.refresh(assessment)
+
+    # Eligible passing assessments enter PENDING_REVIEW queue — never auto-issue active certificates
+    if result.get("certificate_eligible", False) or (result["passed"] and not result["critical_errors"] and not result.get("timed_out") and result.get("sequence_valid", True)):
+        existing_cert = (
+            db.query(Certificate)
+            .filter(
+                Certificate.worker_id == payload.worker_id,
+                Certificate.module_id == module.id,
+                Certificate.assessment_id == assessment.id,
+            )
+            .first()
+        )
+        if not existing_cert:
+            worker = db.query(Worker).filter(Worker.id == payload.worker_id).first()
+            cert = Certificate(
+                certificate_number=generate_certificate_number(db),
+                worker_id=payload.worker_id,
+                module_id=module.id,
+                attempt_id=payload.client_session_id or f"attempt_{assessment.id}",
+                assessment_id=assessment.id,
+                worker_name_snapshot=worker.name if worker else f"Worker {payload.worker_id}",
+                employee_id_snapshot=worker.employee_id if worker else f"EMP-{payload.worker_id}",
+                module_snapshot=module.name,
+                score_snapshot=result["overall_score"],
+                competency_snapshot=result.get("competency_status", "COMPETENT"),
+                assessment_date_snapshot=assessment.created_at,
+                status="PENDING_REVIEW",
+            )
+            db.add(cert)
+
     write_audit(
         db,
         action="assessment.create",
@@ -137,6 +170,7 @@ def submit_assessment(
     )
     db.commit()
     return assessment
+
 
 
 @router.get("/{worker_id}", response_model=AssessmentHistoryOut)

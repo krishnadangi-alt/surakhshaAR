@@ -31,7 +31,7 @@ namespace SurakshaAR.Core
             }
 
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            if (Application.isPlaying) DontDestroyOnLoad(gameObject);
 
             _uiSource = gameObject.AddComponent<AudioSource>();
             _uiSource.playOnAwake = false;
