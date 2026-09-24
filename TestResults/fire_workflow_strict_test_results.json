@@ -1,0 +1,183 @@
+{
+    "timestamp": "2026-09-20T17:00:39.0642249Z",
+    "totalTests": 29,
+    "passedTests": 29,
+    "failedTests": 0,
+    "allPassed": true,
+    "results": [
+        {
+            "id": "TEST-00",
+            "name": "Editor Scene view state -> FireExt & FireExt_display active in scene asset",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-01",
+            "name": "Start Fire module -> Step 1 active, display visible, original hidden",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-02",
+            "name": "Tap extinguisher before hazard/alarm -> Penalty (-5), display stays, no pickup",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-03",
+            "name": "Identify hazard -> Correct action (+10), Step 2 active, OnHazardIdentified raised",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-04",
+            "name": "Tap extinguisher before alarm -> Unsafe penalty (-10), display stays, no pickup",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-05",
+            "name": "Activate alarm -> Step 3 active, extinguisher selection becomes valid, OnAlarmActivated raised",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-06",
+            "name": "Select extinguisher -> Real extinguisher handoff, follows camera, no duplicates, OnExtinguisherPickedUp raised",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-07",
+            "name": "Try grip before pin removal -> Penalty (-10 unsafe), grip blocked, OnGripActivated NOT raised",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-08",
+            "name": "Try spray before pin removal -> Spray blocked, fire active, OnPrematureSprayAttempt raised",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-09",
+            "name": "Remove pin -> Grip unlocked, Step 5 active, OnPinRemoved raised",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-10",
+            "name": "Grip extinguisher after pin removed -> Real grip active, OnGripActivated raised",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-11",
+            "name": "Aim away from fire -> Invalid aim feedback, OnInvalidAim raised",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-12",
+            "name": "Aim at fire base -> Valid aim, Step 6 active, OnValidAim raised",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-13",
+            "name": "Spray for 1 second -> Fire remains active",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-14",
+            "name": "Spray for 9 seconds -> Fire remains active",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-15",
+            "name": "Spray continuously for >= 10 seconds -> Fire extinguishes, OnFireExtinguished raised",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-16",
+            "name": "Interrupted spray > 0.35s -> Contact timer resets to 0.0s, OnSprayContactReset raised",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-17",
+            "name": "Single particle collision (0.016s) -> Fire remains active",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-18",
+            "name": "Complete all six steps -> NO Step 7, AR completion triggered",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-19",
+            "name": "Rapid wrong actions -> Debounce prevents multi-frame score drain",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-20",
+            "name": "Timeout at 420 seconds -> Critical error, OnScenarioTimeout raised",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-21",
+            "name": "Successful attempt -> Real AR metrics reach AppState",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-22",
+            "name": "Failed attempt -> Real failure metrics reach AppState",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-23",
+            "name": "Certificate eligibility rule -> Score >= 80 && Crit == 0 && !TimedOut",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-24",
+            "name": "Language switching English -> Hindi -> Santali -> Non-empty fallback",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-25",
+            "name": "Scene placement & alignment defense -> FireExt_display active, FireExt inactive",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-26",
+            "name": "Pre-alarm tap defense in Step 1 & Step 2 -> FireExt remains strictly inactive",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-27",
+            "name": "Valid selection handoff -> FireExt_display DISAPPEARS, FireExt APPEARS and ATTACHES",
+            "passed": true,
+            "message": "PASSED"
+        },
+        {
+            "id": "TEST-28",
+            "name": "Scenario Reset -> FireExt detaches & becomes inactive, FireExt_display active",
+            "passed": true,
+            "message": "PASSED"
+        }
+    ]
+}

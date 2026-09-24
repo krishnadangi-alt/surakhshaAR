@@ -26,6 +26,9 @@ namespace SurakshaAR.UI.Builders
                 case ScreenId.Progress:          return ProgressBuilder.Build();
                 case ScreenId.ProfileSetup:      return ProfileBuilder.Build();
                 case ScreenId.Notifications:     return NotificationsBuilder.Build();
+                case ScreenId.TrainingInstructions: return TrainingInstructionsBuilder.Build();
+                case ScreenId.GasScenarioSelection: return GasScenarioSelectionBuilder.Build();
+                case ScreenId.GasModuleDetail:      return GasModuleDetailBuilder.Build();
                 default:
                     Debug.LogWarning($"[ScreenFactory] No builder for {id}, returning empty screen.");
                     return MakeFallback(id.ToString());

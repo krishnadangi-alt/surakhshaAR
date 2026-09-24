@@ -1,11 +1,4 @@
 ﻿<Solution>
-  <Project Path="Cdm.Figma.UI.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
-  <Project Path="Cdm.Figma.csproj" />
-  <Project Path="Cdm.Figma.UI.Editor.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
-  <Project Path="Cdm.Figma.UI.Tests.csproj" />
-  <Project Path="Cdm.Figma.Editor.csproj" />
-  <Project Path="Cdm.Figma.Tests.csproj" />
-  <Project Path="Cdm.Figma.Tests.Editor.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
 </Solution>

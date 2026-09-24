@@ -1,0 +1,2360 @@
+VBCSCompilerPreWarmer: pre-warm launched (dotnet PID 24236)
+VBCSCompiler prewarm took 6.99 ms
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-MP2NQ" at "2026-09-19T18:59:38.5167624Z"
+Built from '6000.6/respin/6000.6.0f1-fa21a270ab12' branch; Version is '6000.6.0f1 (f7f8ed4d1e24) revision 16251117'; Using compiler version '194234433'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26200) CoreSingleLanguage' Language: 'en' Physical Memory: 11995 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-09-19T18:59:38Z
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 7044, path: "C:/Program Files/Unity Hub/UnityLicensingClient_V1/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.3+d7ffd15
+  Session Id:              2e5d06ecf3704034a5f79270f3a37b28
+  Correlation Id:          89f436bd8959fc60fa6b2e78a64ffb2f
+  External correlation Id: 3023908734557777569
+  Machine Id:              DfsKgPorDtWx2iet2rMg1y4vXIA=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-MP2NQ" (connect: 0.00s, validation: 0.00s, handshake: 0.06s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-MP2NQ-notifications" at "2026-09-19T18:59:38.5777409Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 13469962889620-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.08s
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.6.0f1\Editor\Unity.exe
+-batchmode
+-quit
+-projectPath
+c:\project\surakshaAR
+-executeMethod
+SurakshaAR.Editor.FireWorkflowStrictTest.RunAllMatrixTestsBatch
+-logFile
+c:\project\surakshaAR\TestResults\fire_strict.log
+Successfully changed project path to: c:\project\surakshaAR
+C:/project/surakshaAR
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-remapper-allocator-initial-capacity=32768"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-main-allocator-mimalloc-enabled=1"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+Logging is directed to a specific file, skipping project log.
+Player connection [7700]  Target information:
+
+Player connection [7700]  * "[IP] 172.16.48.160 [Port] 55504 [Flags] 2 [Guid] 40463130 [EditorId] 40463130 [Version] 1048832 [Id] WindowsEditor(7,krishnadangi) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [7700]  * "[IP] 169.254.136.248 [Port] 55504 [Flags] 2 [Guid] 40463130 [EditorId] 40463130 [Version] 1048832 [Id] WindowsEditor(7,krishnadangi) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [7700] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [7700] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-15192" after 0.3 seconds.
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+Initialising UDS system complete:
+  - System type: Client
+  - Resource namespace: 2173941a58b4f39d1f6d79f3f084606f
+  - Shared memory size: 1073741824
+  - Command buffer id: 1052576
+  - Command buffer size: 8192
+  - Hashmap size: 4194304
+  - Service connected: false
+Launching Unity Data Store - C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/Tools/Unity.DataStore.exe 
+Unity Data Store artifact dir = Library/DataStore, working dir = C:/project/surakshaAR[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Unity Data Store running and initialised
+[Licensing::Client] Successfully resolved entitlement details
+Initialize engine version: 6000.6.0f1 (f7f8ed4d1e24)
+[EntityIdStore] init: VM path (explicit commit), pageSize=4096, blockCount=1048576, entitiesPerBlock=256, slots reserved=4294967296 bytes
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/project/surakshaAR/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 2050 (ID=0x25ed)
+    Vendor:   NVIDIA
+    VRAM:     3964 MB
+    Driver:   32.0.15.8186
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/BCLExtensions/runtime/netstandard2.1'
+Mono path[2] = 'C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56192
+CodeReloadManager initialized
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Registered in 0.001813 seconds.
+Native extension for Android target not found
+Native extension for WindowsStandalone target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Scripting: successfully reloaded assembly
+- Finished resetting the current domain, in  0.820 seconds
+Domain Reload Profiling: 1521ms
+	BeginReloadAssembly (206ms)
+		CreateAndSetChildDomain (14ms)
+	RebuildCommonClasses (8ms)
+	RebuildNativeTypeToScriptingClass (29ms)
+	initialDomainReloadingComplete (80ms)
+	LoadAllAssembliesAndSetupDomain (376ms)
+		LoadAssemblies (188ms)
+		TypeCache.Refresh (240ms)
+			TypeCache.ScanAssembly (225ms)
+		AnalyzeDomain (1ms)
+	FinalizeReload (822ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (10ms)
+			BeforeProcessingInitializeOnLoad (111ms)
+			ProcessInitializeOnLoadAttributes (165ms)
+			ProcessInitializeOnLoadMethodAttributes (252ms)
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 55 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ai.navigation@2.0.14 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.ai.navigation@134dd6a3b97b)
+    com.unity.ide.rider@3.0.38 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.ide.rider@1f60b3138684)
+    com.unity.ide.visualstudio@2.0.26 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.ide.visualstudio@a99d56dec63f)
+    com.unity.inputsystem@1.20.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.inputsystem@7a4e1a2a8194)
+    com.unity.xr.arcore@6.6.2 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.xr.arcore@48fb51f3ca76)
+    com.unity.xr.arfoundation@6.6.2 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.xr.arfoundation@d57b0b4d336a)
+    com.unity.xr.legacyinputhelpers@3.0.1 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.xr.legacyinputhelpers@3f62d634f63b)
+    com.unity.xr.core-utils@2.6.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.xr.core-utils@a8b900321199)
+    com.unity.xr.management@4.7.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.xr.management@2ad85c7dd480)
+  Built-in packages:
+    com.unity.2d.sprite@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.2d.sprite@947350d67f82)
+    com.unity.2d.tilemap@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.2d.tilemap@639ca1d99254)
+    com.unity.test-framework@1.8.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.test-framework@7a3849e09bd0)
+    com.unity.timeline@6.6.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.timeline@281d5f7e7d7d)
+    com.unity.ugui@2.6.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.ugui@23caec89ae27)
+    com.unity.modules.accessibility@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.physics2d)
+    com.unity.modules.physicscore2d@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.physicscore2d)
+    com.unity.modules.screencapture@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.terrainphysics)
+    com.unity.modules.tetgen@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.tetgen)
+    com.unity.modules.tilemap@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.tilemap)
+    com.unity.modules.timelinefoundation@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.timelinefoundation)
+    com.unity.modules.ui@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.umbra)
+    com.unity.modules.unitywebrequest@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.video)
+    com.unity.modules.wind@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.hierarchycore)
+    com.unity.mathematics@1.4.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.mathematics@8306a64d0cd6)
+    com.unity.editorcoroutines@6.6.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.editorcoroutines@8cd72baa102a)
+    com.unity.modules.unityanalytics@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.unityanalytics)
+    com.unity.ext.nunit@2.1.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.ext.nunit@0198eae3b53e)
+[Subsystems] Looking for new subsystems at path C:\project\surakshaAR\Library\PackageCache\com.unity.xr.arfoundation@d57b0b4d336a
+[Subsystems] Novel subsystem found at Library/PackageCache/com.unity.xr.arfoundation@d57b0b4d336a/Runtime/UnitySubsystemsManifest.json
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/project/surakshaAR/Assets
+[Subsystems] Discovering subsystems at path C:\project\surakshaAR\Library\PackageCache\com.unity.xr.arfoundation@d57b0b4d336a
+[Subsystems] No descriptors matched for  examples in Library/PackageCache/com.unity.xr.arfoundation@d57b0b4d336a/Runtime/UnitySubsystemsManifest.json.
+[Subsystems] 1 'inputs' descriptors matched in Library/PackageCache/com.unity.xr.arfoundation@d57b0b4d336a/Runtime/UnitySubsystemsManifest.json
+[Subsystems] No descriptors matched for  displays in Library/PackageCache/com.unity.xr.arfoundation@d57b0b4d336a/Runtime/UnitySubsystemsManifest.json.
+[Subsystems] 1 'meshings' descriptors matched in Library/PackageCache/com.unity.xr.arfoundation@d57b0b4d336a/Runtime/UnitySubsystemsManifest.json
+[Package Manager] Done registering packages in 0.05 seconds
+Starting: C:\Program Files\Unity\Hub\Editor\6000.6.0f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1300b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/project/surakshaAR
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 0s234ms
+[545/684    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra build success (0.20 seconds), 1 items updated, 684 evaluated
+AssetDatabase: script compilation time: 0.697949s
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for Android target not found
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Scripting: successfully reloaded assembly
+- Finished resetting the current domain, in  0.713 seconds
+Domain Reload Profiling: 1578ms
+	BeginReloadAssembly (382ms)
+		DisableScriptedObjects (27ms)
+		CreateAndSetChildDomain (160ms)
+	RebuildCommonClasses (10ms)
+	RebuildNativeTypeToScriptingClass (18ms)
+	initialDomainReloadingComplete (49ms)
+	LoadAllAssembliesAndSetupDomain (404ms)
+		LoadAssemblies (278ms)
+		TypeCache.Refresh (67ms)
+			TypeCache.ScanAssembly (57ms)
+		AnalyzeDomain (33ms)
+			BuildScriptInfoCaches (28ms)
+			ResolveRequiredComponents (3ms)
+	FinalizeReload (715ms)
+		SetupLoadedEditorAssemblies (0ms)
+			LogAssemblyErrors (3ms)
+			InitializePlatformSupportModulesInManaged (12ms)
+			BeforeProcessingInitializeOnLoad (121ms)
+			ProcessInitializeOnLoadAttributes (193ms)
+			ProcessInitializeOnLoadMethodAttributes (96ms)
+			AfterProcessingInitializeOnLoad (6ms)
+		AwakeInstancesAfterBackupRestoration (46ms)
+Starting new worker id: 0 with log in C:/project/surakshaAR/Logs/AssetImportWorkerHW0.log
+
+Asset Pipeline Refresh (id=2970d56920cdfca4585be3ff436c021a): Total: 2.716 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	(Values over 0.05ms)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=981 ms
+		Asset DB Callback time: managed=32 ms, native=56 ms
+		Scripting: domain reloads=1, domain reload time=907 ms, compile time=701 ms, other=36 ms
+		Project Asset Count: scripts=818, non-scripts=1143
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokePackagesCallback: 57.977ms
+	ApplyChangesToAssetFolders: 0.839ms
+	Scan: 75.496ms
+	Collect global state as custom dependencies: 9.480ms
+	CategorizeScriptCompilationAssets: 14.734ms
+	ProcessAssetsWithTransientArtifactChanges: 40.504ms
+	CategorizeAssets: 22.137ms
+	CompileScripts: 700.950ms
+	ImportOutOfDateAssets: 734.315ms (719.698ms without children)
+		UnloadImportedAssets: 0.111ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.335ms
+		ImportSchedulerStart: 14.152ms
+	PostProcessAllAssets: 32.744ms
+		MonoPostProcessAllAssets: 32.644ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 11.978ms
+			SyncVS.PostprocessSyncProject 4.206ms
+			EditModeScopePostprocessor.OnPostprocessAllAssets 1.220ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 0.866ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.351ms
+			InputActionAssetPostprocessor.OnPostprocessAllAssets 0.288ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.271ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.231ms
+			ProjectSettingsPostprocessor.OnPostprocessAllAssets 0.205ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.104ms
+	UnloadStreamsBegin: 1.441ms
+	PersistCurrentRevisions: 0.070ms
+	GenerateScriptTypeHashes: 2.297ms
+	GenerateScriptTypeSerializationHashes: 4.319ms
+	Untracked: 1019.421ms
+
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.01 seconds
+Scanning for USB devices : 2.244ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-surakshaAR
+Unloading 11 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 2845 unused Assets / (3.5 MB). Loaded Objects now: 3617.
+Memory consumption went from 285.0 MB to 281.5 MB.
+Total: 13.447500 ms (FindLiveObjects: 0.460300 ms CreateObjectMapping: 0.218100 ms MarkObjects: 7.494800 ms  DeleteObjects: 5.012200 ms)
+
+================================================================================
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:49)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 49)
+
+[SurakshaAR] STARTING FIRE WORKFLOW STRICT 24-POINT TEST MATRIX
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:50)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 50)
+
+================================================================================
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:51)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 51)
+
+Opening scene 'Assets/AR_Fire_foundation/scenes/FireTraining.unity'
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/AR_Fire_foundation/scenes/FireTraining.unity'
+	Deserialize:            22.728 ms
+	Integration:            36.390 ms
+	Integration of assets:  4.231 ms
+	Thread Wait Time:       -3.917 ms
+	Total Operation Time:   59.433 ms
+Unloading 10 unused Assets / (18.2 KB). Loaded Objects now: 4002.
+Memory consumption went from 293.4 MB to 293.4 MB.
+Total: 7.619500 ms (FindLiveObjects: 0.329400 ms CreateObjectMapping: 0.072800 ms MarkObjects: 6.952900 ms  DeleteObjects: 0.059500 ms)
+
+[Lookups] flow: True, display: True, alarm: True, pin: True, grip: True, fire: True, sprayCol: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:132)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 132)
+
+[TRAINING EVENT] [COMMON EVENT] SCENARIO_STARTED: module=fire, scenario=fire_drill_01
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseScenarioStarted (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:206)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:79)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__4 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:171)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:168)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[FIRE ADAPTER] Started Fire Scenario: fire_drill_01 for Worker ID: 1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:81)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__4 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:171)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:168)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs Line: 81)
+
+✓ [PASS] TEST-01: Start Fire module -> Step 1 active, display visible, original hidden
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:168)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+[TRAINING EVENT] [COMMON EVENT] SCENARIO_STARTED: module=fire, scenario=fire_drill_01
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseScenarioStarted (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:206)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:79)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__5 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:194)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:192)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[FIRE ADAPTER] Started Fire Scenario: fire_drill_01 for Worker ID: 1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:81)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__5 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:194)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:192)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs Line: 81)
+
+[TRAINING EVENT] WrongAction [minor]: wrong_action - Identify the fire hazard first.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseWrongAction (string,string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:168)
+SurakshaAR.Data.FireAssessmentAdapter:RecordWrongAction (string,string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:304)
+FireScenarioFlowManager:DeductScore (int,string,bool) (at Assets/Scripts/FireScenarioFlowManager.cs:266)
+FireScenarioFlowManager:HandlePrematureExtinguisherAttempt () (at Assets/Scripts/FireScenarioFlowManager.cs:322)
+ExtinguisherDisplayPickup:Pickup () (at Assets/Scripts/fireext_display.cs:263)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__5 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:199)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:192)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] [COMMON EVENT] SEQUENCE_ERROR: Expected 'identify_hazard', performed 'select_extinguisher'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseSequenceError (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:251)
+SurakshaAR.Data.FireAssessmentAdapter:RecordSequenceError (string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:325)
+FireScenarioFlowManager:HandlePrematureExtinguisherAttempt () (at Assets/Scripts/FireScenarioFlowManager.cs:323)
+ExtinguisherDisplayPickup:Pickup () (at Assets/Scripts/fireext_display.cs:263)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__5 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:199)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:192)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+✓ [PASS] TEST-02: Tap extinguisher before hazard/alarm -> Penalty (-5), display stays, no pickup
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:192)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+[TRAINING EVENT] [COMMON EVENT] SCENARIO_STARTED: module=fire, scenario=fire_drill_01
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseScenarioStarted (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:206)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:79)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__6 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:214)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:212)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[FIRE ADAPTER] Started Fire Scenario: fire_drill_01 for Worker ID: 1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:81)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__6 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:214)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:212)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs Line: 81)
+
+[TRAINING EVENT] HazardIdentified
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseHazardIdentified () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:120)
+SurakshaAR.Data.FireAssessmentAdapter:RecordHazardIdentified (string,bool,single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:193)
+FireScenarioFlowManager:OnHazardIdentified () (at Assets/Scripts/FireScenarioFlowManager.cs:957)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__6 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:218)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:212)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] HazardIdentified
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseHazardIdentified () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:120)
+FireScenarioFlowManager:OnHazardIdentified () (at Assets/Scripts/FireScenarioFlowManager.cs:958)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__6 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:218)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:212)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+✓ [PASS] TEST-03: Identify hazard -> Correct action (+10), Step 2 active
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:212)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+[TRAINING EVENT] [COMMON EVENT] UNSAFE_ACTION: unsafe_action - Activate the fire alarm before selecting the extinguisher.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseUnsafeAction (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:245)
+SurakshaAR.Data.FireAssessmentAdapter:RecordUnsafeAction (string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:311)
+FireScenarioFlowManager:DeductScore (int,string,bool) (at Assets/Scripts/FireScenarioFlowManager.cs:261)
+FireScenarioFlowManager:HandlePrematureExtinguisherAttempt () (at Assets/Scripts/FireScenarioFlowManager.cs:329)
+ExtinguisherDisplayPickup:Pickup () (at Assets/Scripts/fireext_display.cs:263)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__7 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:237)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:229)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] [COMMON EVENT] UNSAFE_ACTION: premature_extinguisher_attempt - Activate the fire alarm before selecting the extinguisher.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseUnsafeAction (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:245)
+SurakshaAR.Data.FireAssessmentAdapter:RecordUnsafeAction (string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:311)
+FireScenarioFlowManager:HandlePrematureExtinguisherAttempt () (at Assets/Scripts/FireScenarioFlowManager.cs:330)
+ExtinguisherDisplayPickup:Pickup () (at Assets/Scripts/fireext_display.cs:263)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__7 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:237)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:229)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] [COMMON EVENT] SEQUENCE_ERROR: Expected 'activate_alarm', performed 'select_extinguisher'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseSequenceError (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:251)
+SurakshaAR.Data.FireAssessmentAdapter:RecordSequenceError (string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:325)
+FireScenarioFlowManager:HandlePrematureExtinguisherAttempt () (at Assets/Scripts/FireScenarioFlowManager.cs:331)
+ExtinguisherDisplayPickup:Pickup () (at Assets/Scripts/fireext_display.cs:263)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__7 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:237)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:229)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+✓ [PASS] TEST-04: Tap extinguisher before alarm -> Unsafe penalty (-10), display stays, no pickup
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:229)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+[AlarmInteraction] ALARM ACTIVATED
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+AlarmInteraction:ActivateAlarm () (at Assets/Scripts/AlarmInteraction.cs:238)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__8 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:257)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:251)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/Scripts/AlarmInteraction.cs Line: 238)
+
+[TRAINING EVENT] [COMMON EVENT] CORRECT_ACTION: activate_alarm, responseTime=0.10s
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseCorrectAction (string,single) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:239)
+SurakshaAR.Data.FireAssessmentAdapter:RecordCorrectAction (string,single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:297)
+SurakshaAR.Data.FireAssessmentAdapter:RecordAlarmActivated (single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:205)
+FireScenarioFlowManager:HandleAlarmActivated () (at Assets/Scripts/FireScenarioFlowManager.cs:1016)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__1 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:148)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+AlarmInteraction:ActivateAlarm () (at Assets/Scripts/AlarmInteraction.cs:255)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__8 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:257)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:251)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] AlarmActivated
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseAlarmActivated () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:126)
+SurakshaAR.Data.FireAssessmentAdapter:RecordAlarmActivated (single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:206)
+FireScenarioFlowManager:HandleAlarmActivated () (at Assets/Scripts/FireScenarioFlowManager.cs:1016)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__1 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:148)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+AlarmInteraction:ActivateAlarm () (at Assets/Scripts/AlarmInteraction.cs:255)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__8 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:257)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:251)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] AlarmActivated
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseAlarmActivated () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:126)
+AlarmInteraction:ActivateAlarm () (at Assets/Scripts/AlarmInteraction.cs:258)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__8 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:257)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:251)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+✓ [PASS] TEST-05: Activate alarm -> Step 3 active, extinguisher selection becomes valid
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:251)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+[ExtinguisherPickup] Extinguisher attached to AR camera.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ExtinguisherPickup:AttachToCamera () (at Assets/Scripts/ExtinguisherPickup.cs:218)
+ExtinguisherDisplayPickup:Pickup () (at Assets/Scripts/fireext_display.cs:311)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__9 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:279)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:268)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/Scripts/ExtinguisherPickup.cs Line: 218)
+
+[ExtinguisherDisplayPickup] Display extinguisher tapped -> Functional FireExt equipped to AR Camera!
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ExtinguisherDisplayPickup:Pickup () (at Assets/Scripts/fireext_display.cs:316)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__9 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:279)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:268)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/Scripts/fireext_display.cs Line: 316)
+
+[TRAINING EVENT] ExtinguisherPickedUp
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseExtinguisherPickedUp () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:132)
+SurakshaAR.Data.FireAssessmentAdapter:RecordEquipmentSelected (string,bool,single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:218)
+FireScenarioFlowManager:HandleExtinguisherPickedUp () (at Assets/Scripts/FireScenarioFlowManager.cs:1094)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__2 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:155)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+ExtinguisherDisplayPickup:Pickup () (at Assets/Scripts/fireext_display.cs:321)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__9 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:279)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:268)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] ExtinguisherPickedUp
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseExtinguisherPickedUp () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:132)
+FireScenarioFlowManager:HandleExtinguisherPickedUp () (at Assets/Scripts/FireScenarioFlowManager.cs:1095)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__2 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:155)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+ExtinguisherDisplayPickup:Pickup () (at Assets/Scripts/fireext_display.cs:321)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__9 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:279)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:268)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+✓ [PASS] TEST-06: Select extinguisher -> Real extinguisher handoff, attached to camera, no duplicates
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:268)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+[ExtinguisherGripInteraction] Safety pin is still inserted! Cannot spray.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ExtinguisherGripInteraction:StartGrip () (at Assets/Scripts/ExtingguisherGripInteraction.cs:356)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__10 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:327)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:320)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/Scripts/ExtingguisherGripInteraction.cs Line: 356)
+
+[TRAINING EVENT] [COMMON EVENT] UNSAFE_ACTION: unsafe_action - Remove the safety pin before using the handle.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseUnsafeAction (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:245)
+SurakshaAR.Data.FireAssessmentAdapter:RecordUnsafeAction (string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:311)
+FireScenarioFlowManager:DeductScore (int,string,bool) (at Assets/Scripts/FireScenarioFlowManager.cs:261)
+FireScenarioFlowManager:HandlePrematureGripAttempt () (at Assets/Scripts/FireScenarioFlowManager.cs:357)
+FireScenarioFlowManager:HandlePinRemovalRequired () (at Assets/Scripts/FireScenarioFlowManager.cs:1207)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+ExtinguisherGripInteraction:StartGrip () (at Assets/Scripts/ExtingguisherGripInteraction.cs:357)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__10 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:327)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:320)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] [COMMON EVENT] UNSAFE_ACTION: lever_squeezed_before_pin - Remove the safety pin before using the handle.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseUnsafeAction (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:245)
+SurakshaAR.Data.FireAssessmentAdapter:RecordUnsafeAction (string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:311)
+FireScenarioFlowManager:HandlePrematureGripAttempt () (at Assets/Scripts/FireScenarioFlowManager.cs:358)
+FireScenarioFlowManager:HandlePinRemovalRequired () (at Assets/Scripts/FireScenarioFlowManager.cs:1207)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+ExtinguisherGripInteraction:StartGrip () (at Assets/Scripts/ExtingguisherGripInteraction.cs:357)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__10 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:327)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:320)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] [COMMON EVENT] SEQUENCE_ERROR: Expected 'remove_pin', performed 'grip_handle'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseSequenceError (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:251)
+SurakshaAR.Data.FireAssessmentAdapter:RecordSequenceError (string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:325)
+FireScenarioFlowManager:HandlePrematureGripAttempt () (at Assets/Scripts/FireScenarioFlowManager.cs:359)
+FireScenarioFlowManager:HandlePinRemovalRequired () (at Assets/Scripts/FireScenarioFlowManager.cs:1207)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+ExtinguisherGripInteraction:StartGrip () (at Assets/Scripts/ExtingguisherGripInteraction.cs:357)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__10 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:327)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:320)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+✓ [PASS] TEST-07: Try grip before pin removal -> Penalty (-10 unsafe), grip blocked
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:320)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+✓ [PASS] TEST-08: Try spray before pin removal -> Spray blocked, fire remains active
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:337)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+PIN REMOVED
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FirePinInteraction:RemovePin () (at Assets/Scripts/FirePinInteraction.cs:184)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__12 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:358)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:349)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/Scripts/FirePinInteraction.cs Line: 184)
+
+equipment_selected
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FirePinInteraction:RemovePin () (at Assets/Scripts/FirePinInteraction.cs:185)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__12 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:358)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:349)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/Scripts/FirePinInteraction.cs Line: 185)
+
+Safety pin removed. Extinguisher is READY.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FirePinInteraction:RemovePin () (at Assets/Scripts/FirePinInteraction.cs:186)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__12 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:358)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:349)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/Scripts/FirePinInteraction.cs Line: 186)
+
+[TRAINING EVENT] [COMMON EVENT] CORRECT_ACTION: remove_safety_pin, responseTime=0.10s
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseCorrectAction (string,single) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:239)
+SurakshaAR.Data.FireAssessmentAdapter:RecordCorrectAction (string,single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:297)
+SurakshaAR.Data.FireAssessmentAdapter:RecordPinRemoved (single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:230)
+FireScenarioFlowManager:HandlePinRemoved () (at Assets/Scripts/FireScenarioFlowManager.cs:1184)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__3 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:162)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+FirePinInteraction:RemovePin () (at Assets/Scripts/FirePinInteraction.cs:203)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__12 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:358)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:349)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] PinRemoved
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaisePinRemoved () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:138)
+SurakshaAR.Data.FireAssessmentAdapter:RecordPinRemoved (single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:231)
+FireScenarioFlowManager:HandlePinRemoved () (at Assets/Scripts/FireScenarioFlowManager.cs:1184)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__3 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:162)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+FirePinInteraction:RemovePin () (at Assets/Scripts/FirePinInteraction.cs:203)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__12 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:358)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:349)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] PinRemoved
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaisePinRemoved () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:138)
+FireScenarioFlowManager:HandlePinRemoved () (at Assets/Scripts/FireScenarioFlowManager.cs:1185)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__3 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:162)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+FirePinInteraction:RemovePin () (at Assets/Scripts/FirePinInteraction.cs:203)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__12 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:358)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:349)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] WrongAction [minor]: wrong_action - Select the CO2 extinguisher first.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseWrongAction (string,string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:168)
+SurakshaAR.Data.FireAssessmentAdapter:RecordWrongAction (string,string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:304)
+FireScenarioFlowManager:DeductScore (int,string,bool) (at Assets/Scripts/FireScenarioFlowManager.cs:266)
+FireScenarioFlowManager:HandlePrematurePinAttempt () (at Assets/Scripts/FireScenarioFlowManager.cs:346)
+FireScenarioFlowManager:HandlePinRemoved () (at Assets/Scripts/FireScenarioFlowManager.cs:1179)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+FirePinInteraction:RemovePin () (at Assets/Scripts/FirePinInteraction.cs:203)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__12 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:358)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:349)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] [COMMON EVENT] SEQUENCE_ERROR: Expected 'select_extinguisher', performed 'remove_pin'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseSequenceError (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:251)
+SurakshaAR.Data.FireAssessmentAdapter:RecordSequenceError (string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:325)
+FireScenarioFlowManager:HandlePrematurePinAttempt () (at Assets/Scripts/FireScenarioFlowManager.cs:347)
+FireScenarioFlowManager:HandlePinRemoved () (at Assets/Scripts/FireScenarioFlowManager.cs:1179)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+FirePinInteraction:RemovePin () (at Assets/Scripts/FirePinInteraction.cs:203)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__12 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:358)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:349)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+✓ [PASS] TEST-09: Remove pin -> Grip unlocked, Step 5 active
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:349)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+[ExtinguisherGripInteraction] Grip pressed -> Spray Started
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ExtinguisherGripInteraction:StartGrip () (at Assets/Scripts/ExtingguisherGripInteraction.cs:372)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__13 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:377)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:370)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/Scripts/ExtingguisherGripInteraction.cs Line: 372)
+
+[DryPowderSpray] StartSpray called. sprayParticles=True isPlaying=True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+DryPowderSpray:StartSpray () (at Assets/Scripts/DryPowderSpray.cs:177)
+ExtinguisherGripInteraction:StartGrip () (at Assets/Scripts/ExtingguisherGripInteraction.cs:382)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__13 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:377)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:370)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/Scripts/DryPowderSpray.cs Line: 177)
+
+[ExtinguisherGripInteraction] Grip released -> Spray Stopped
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ExtinguisherGripInteraction:StopGrip () (at Assets/Scripts/ExtingguisherGripInteraction.cs:430)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__13 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:384)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:370)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/Scripts/ExtingguisherGripInteraction.cs Line: 430)
+
+✓ [PASS] TEST-10: Grip extinguisher after pin removed -> Real grip active, spray from real FireExt
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:370)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+[TRAINING EVENT] WrongAction [minor]: wrong_action - Aim the nozzle at the base of the fire.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseWrongAction (string,string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:168)
+SurakshaAR.Data.FireAssessmentAdapter:RecordWrongAction (string,string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:304)
+FireScenarioFlowManager:DeductScore (int,string,bool) (at Assets/Scripts/FireScenarioFlowManager.cs:266)
+FireScenarioFlowManager:HandleInvalidAim () (at Assets/Scripts/FireScenarioFlowManager.cs:367)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__14 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:396)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:390)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] WrongAction [minor]: aim_off_target - Aimed above or away from fire base
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseWrongAction (string,string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:168)
+SurakshaAR.Data.FireAssessmentAdapter:RecordWrongAction (string,string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:304)
+SurakshaAR.Data.FireAssessmentAdapter:RecordAimAtBase (bool,single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:244)
+FireScenarioFlowManager:HandleInvalidAim () (at Assets/Scripts/FireScenarioFlowManager.cs:368)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__14 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:396)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:390)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+✓ [PASS] TEST-11: Aim away from fire -> Invalid aim feedback, fire remains active
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:390)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+[TRAINING EVENT] [COMMON EVENT] CORRECT_ACTION: aim_at_base_of_fire, responseTime=0.10s
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseCorrectAction (string,single) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:239)
+SurakshaAR.Data.FireAssessmentAdapter:RecordCorrectAction (string,single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:297)
+SurakshaAR.Data.FireAssessmentAdapter:RecordAimAtBase (bool,single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:240)
+FireScenarioFlowManager:OnAimConfirmed () (at Assets/Scripts/FireScenarioFlowManager.cs:1237)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__15 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:410)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:405)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+✓ [PASS] TEST-12: Aim at fire base -> Valid aim, Step 6 active
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:405)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+✓ [PASS] TEST-13: Spray for 1 second -> Fire remains active
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:419)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+✓ [PASS] TEST-14: Spray for 9 seconds -> Fire remains active
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:431)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+[SurakshaAR] FireExtinguishable: Fire successfully extinguished!
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FireExtinguishable:ExtinguishFire () (at Assets/Scripts/FireExtinguishable1.cs:409)
+FireExtinguishable:NotifyParticleCollision (bool,single,single) (at Assets/Scripts/FireExtinguishable1.cs:171)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__18 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:446)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:443)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/Scripts/FireExtinguishable1.cs Line: 409)
+
+[TRAINING EVENT] [COMMON EVENT] CORRECT_ACTION: fire_extinguished, responseTime=0.10s
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseCorrectAction (string,single) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:239)
+SurakshaAR.Data.FireAssessmentAdapter:RecordCorrectAction (string,single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:297)
+SurakshaAR.Data.FireAssessmentAdapter:RecordFireExtinguished (single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:265)
+FireScenarioFlowManager:HandleFireExtinguished () (at Assets/Scripts/FireScenarioFlowManager.cs:1406)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+FireExtinguishable:ExtinguishFire () (at Assets/Scripts/FireExtinguishable1.cs:411)
+FireExtinguishable:NotifyParticleCollision (bool,single,single) (at Assets/Scripts/FireExtinguishable1.cs:171)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__18 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:446)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:443)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] FireExtinguished
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseFireExtinguished () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:150)
+SurakshaAR.Data.FireAssessmentAdapter:RecordFireExtinguished (single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:266)
+FireScenarioFlowManager:HandleFireExtinguished () (at Assets/Scripts/FireScenarioFlowManager.cs:1406)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+FireExtinguishable:ExtinguishFire () (at Assets/Scripts/FireExtinguishable1.cs:411)
+FireExtinguishable:NotifyParticleCollision (bool,single,single) (at Assets/Scripts/FireExtinguishable1.cs:171)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__18 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:446)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:443)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] FireExtinguished
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseFireExtinguished () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:150)
+FireScenarioFlowManager:HandleFireExtinguished () (at Assets/Scripts/FireScenarioFlowManager.cs:1407)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+FireExtinguishable:ExtinguishFire () (at Assets/Scripts/FireExtinguishable1.cs:411)
+FireExtinguishable:NotifyParticleCollision (bool,single,single) (at Assets/Scripts/FireExtinguishable1.cs:171)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__18 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:446)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:443)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] EvacuationStarted: Route=emergency_exit_A, Safe=True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseEvacuationStarted (string,bool) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:180)
+SurakshaAR.Data.FireAssessmentAdapter:RecordEvacuation (bool,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:280)
+FireScenarioFlowManager:CompleteScenario (bool) (at Assets/Scripts/FireScenarioFlowManager.cs:1509)
+FireScenarioFlowManager:HandleFireExtinguished () (at Assets/Scripts/FireScenarioFlowManager.cs:1425)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+FireExtinguishable:ExtinguishFire () (at Assets/Scripts/FireExtinguishable1.cs:411)
+FireExtinguishable:NotifyParticleCollision (bool,single,single) (at Assets/Scripts/FireExtinguishable1.cs:171)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__18 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:446)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:443)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] TrainingCompleted
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseTrainingCompleted () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:156)
+FireScenarioFlowManager:CompleteScenario (bool) (at Assets/Scripts/FireScenarioFlowManager.cs:1536)
+FireScenarioFlowManager:HandleFireExtinguished () (at Assets/Scripts/FireScenarioFlowManager.cs:1425)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+FireExtinguishable:ExtinguishFire () (at Assets/Scripts/FireExtinguishable1.cs:411)
+FireExtinguishable:NotifyParticleCollision (bool,single,single) (at Assets/Scripts/FireExtinguishable1.cs:171)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__18 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:446)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:443)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+✓ [PASS] TEST-15: Spray continuously for >= 10 seconds -> Fire extinguishes
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:443)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+✓ [PASS] TEST-16: Interrupted spray > 0.35s -> Contact timer resets to 0.0s
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:454)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+✓ [PASS] TEST-17: Single particle collision (0.016s) -> Fire remains active
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:474)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+[SurakshaAR] FireExtinguishable: Fire successfully extinguished!
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FireExtinguishable:ExtinguishFire () (at Assets/Scripts/FireExtinguishable1.cs:409)
+FireExtinguishable:NotifyParticleCollision (bool,single,single) (at Assets/Scripts/FireExtinguishable1.cs:171)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__21 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:488)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:485)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/Scripts/FireExtinguishable1.cs Line: 409)
+
+[TRAINING EVENT] [COMMON EVENT] CORRECT_ACTION: fire_extinguished, responseTime=0.10s
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseCorrectAction (string,single) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:239)
+SurakshaAR.Data.FireAssessmentAdapter:RecordCorrectAction (string,single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:297)
+SurakshaAR.Data.FireAssessmentAdapter:RecordFireExtinguished (single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:265)
+FireScenarioFlowManager:HandleFireExtinguished () (at Assets/Scripts/FireScenarioFlowManager.cs:1406)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+FireExtinguishable:ExtinguishFire () (at Assets/Scripts/FireExtinguishable1.cs:411)
+FireExtinguishable:NotifyParticleCollision (bool,single,single) (at Assets/Scripts/FireExtinguishable1.cs:171)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__21 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:488)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:485)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] FireExtinguished
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseFireExtinguished () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:150)
+SurakshaAR.Data.FireAssessmentAdapter:RecordFireExtinguished (single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:266)
+FireScenarioFlowManager:HandleFireExtinguished () (at Assets/Scripts/FireScenarioFlowManager.cs:1406)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+FireExtinguishable:ExtinguishFire () (at Assets/Scripts/FireExtinguishable1.cs:411)
+FireExtinguishable:NotifyParticleCollision (bool,single,single) (at Assets/Scripts/FireExtinguishable1.cs:171)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__21 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:488)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:485)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] FireExtinguished
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseFireExtinguished () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:150)
+FireScenarioFlowManager:HandleFireExtinguished () (at Assets/Scripts/FireScenarioFlowManager.cs:1407)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+FireExtinguishable:ExtinguishFire () (at Assets/Scripts/FireExtinguishable1.cs:411)
+FireExtinguishable:NotifyParticleCollision (bool,single,single) (at Assets/Scripts/FireExtinguishable1.cs:171)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__21 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:488)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:485)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] EvacuationStarted: Route=emergency_exit_A, Safe=True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseEvacuationStarted (string,bool) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:180)
+SurakshaAR.Data.FireAssessmentAdapter:RecordEvacuation (bool,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:280)
+FireScenarioFlowManager:CompleteScenario (bool) (at Assets/Scripts/FireScenarioFlowManager.cs:1509)
+FireScenarioFlowManager:HandleFireExtinguished () (at Assets/Scripts/FireScenarioFlowManager.cs:1425)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+FireExtinguishable:ExtinguishFire () (at Assets/Scripts/FireExtinguishable1.cs:411)
+FireExtinguishable:NotifyParticleCollision (bool,single,single) (at Assets/Scripts/FireExtinguishable1.cs:171)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__21 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:488)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:485)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] TrainingCompleted
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseTrainingCompleted () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:156)
+FireScenarioFlowManager:CompleteScenario (bool) (at Assets/Scripts/FireScenarioFlowManager.cs:1536)
+FireScenarioFlowManager:HandleFireExtinguished () (at Assets/Scripts/FireScenarioFlowManager.cs:1425)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+FireExtinguishable:ExtinguishFire () (at Assets/Scripts/FireExtinguishable1.cs:411)
+FireExtinguishable:NotifyParticleCollision (bool,single,single) (at Assets/Scripts/FireExtinguishable1.cs:171)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__21 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:488)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:485)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] EvacuationStarted: Route=emergency_exit_A, Safe=True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseEvacuationStarted (string,bool) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:180)
+SurakshaAR.Data.FireAssessmentAdapter:RecordEvacuation (bool,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:280)
+FireScenarioFlowManager:CompleteScenario (bool) (at Assets/Scripts/FireScenarioFlowManager.cs:1509)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__21 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:491)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:485)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] TrainingCompleted
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseTrainingCompleted () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:156)
+FireScenarioFlowManager:CompleteScenario (bool) (at Assets/Scripts/FireScenarioFlowManager.cs:1536)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__21 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:491)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:485)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+✓ [PASS] TEST-18: Complete all six steps -> NO Step 7, AR completion triggered
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:485)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+[ExtinguisherPickup] Extinguisher detached and restored to initial scene position.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ExtinguisherPickup:DetachFromCamera () (at Assets/Scripts/ExtinguisherPickup.cs:247)
+ExtinguisherDisplayPickup:ResetDisplay () (at Assets/Scripts/fireext_display.cs:246)
+FireScenarioFlowManager:EnsureInitialExtinguisherVisibility () (at Assets/Scripts/FireScenarioFlowManager.cs:137)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:925)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__22 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:502)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:500)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/Scripts/ExtinguisherPickup.cs Line: 247)
+
+[TRAINING EVENT] [COMMON EVENT] SCENARIO_STARTED: module=fire, scenario=fire_drill_01
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseScenarioStarted (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:206)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:79)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__22 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:502)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:500)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[FIRE ADAPTER] Started Fire Scenario: fire_drill_01 for Worker ID: 1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:81)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__22 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:502)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:500)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs Line: 81)
+
+[TRAINING EVENT] WrongAction [minor]: wrong_action - Identify the fire hazard first.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseWrongAction (string,string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:168)
+SurakshaAR.Data.FireAssessmentAdapter:RecordWrongAction (string,string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:304)
+FireScenarioFlowManager:DeductScore (int,string,bool) (at Assets/Scripts/FireScenarioFlowManager.cs:266)
+FireScenarioFlowManager:HandlePrematureExtinguisherAttempt () (at Assets/Scripts/FireScenarioFlowManager.cs:322)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__22 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:509)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:500)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] [COMMON EVENT] SEQUENCE_ERROR: Expected 'identify_hazard', performed 'select_extinguisher'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseSequenceError (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:251)
+SurakshaAR.Data.FireAssessmentAdapter:RecordSequenceError (string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:325)
+FireScenarioFlowManager:HandlePrematureExtinguisherAttempt () (at Assets/Scripts/FireScenarioFlowManager.cs:323)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__22 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:509)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:500)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+✓ [PASS] TEST-19: Rapid wrong actions -> Debounce prevents multi-frame score drain
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:500)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+[TRAINING EVENT] [COMMON EVENT] SCENARIO_STARTED: module=fire, scenario=fire_drill_01
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseScenarioStarted (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:206)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:79)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__23 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:522)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:518)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[FIRE ADAPTER] Started Fire Scenario: fire_drill_01 for Worker ID: 1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:81)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__23 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:522)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:518)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs Line: 81)
+
+[TRAINING EVENT] EvacuationStarted: Route=emergency_exit_timeout, Safe=False
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseEvacuationStarted (string,bool) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:180)
+SurakshaAR.Data.FireAssessmentAdapter:RecordEvacuation (bool,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:280)
+FireScenarioFlowManager:CompleteScenario (bool) (at Assets/Scripts/FireScenarioFlowManager.cs:1509)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__23 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:523)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:518)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] TrainingCompleted
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseTrainingCompleted () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:156)
+FireScenarioFlowManager:CompleteScenario (bool) (at Assets/Scripts/FireScenarioFlowManager.cs:1536)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__23 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:523)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:518)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+✓ [PASS] TEST-20: Timeout at 420 seconds -> Critical error, no successful completion
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:518)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+[TRAINING EVENT] [COMMON EVENT] SCENARIO_STARTED: module=fire, scenario=fire_drill_01
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseScenarioStarted (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:206)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:79)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__24 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:538)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:534)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[FIRE ADAPTER] Started Fire Scenario: fire_drill_01 for Worker ID: 1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:81)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__24 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:538)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:534)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs Line: 81)
+
+[TRAINING EVENT] EvacuationStarted: Route=emergency_exit_A, Safe=True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseEvacuationStarted (string,bool) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:180)
+SurakshaAR.Data.FireAssessmentAdapter:RecordEvacuation (bool,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:280)
+FireScenarioFlowManager:CompleteScenario (bool) (at Assets/Scripts/FireScenarioFlowManager.cs:1509)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__24 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:540)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:534)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] TrainingCompleted
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseTrainingCompleted () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:156)
+FireScenarioFlowManager:CompleteScenario (bool) (at Assets/Scripts/FireScenarioFlowManager.cs:1536)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__24 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:540)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:534)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+✓ [PASS] TEST-21: Successful attempt -> Real AR metrics reach AppState
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:534)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+[TRAINING EVENT] [COMMON EVENT] SCENARIO_STARTED: module=fire, scenario=fire_drill_01
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseScenarioStarted (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:206)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:79)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__25 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:554)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:550)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[FIRE ADAPTER] Started Fire Scenario: fire_drill_01 for Worker ID: 1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:81)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__25 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:554)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:550)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs Line: 81)
+
+[TRAINING EVENT] EvacuationStarted: Route=emergency_exit_timeout, Safe=False
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseEvacuationStarted (string,bool) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:180)
+SurakshaAR.Data.FireAssessmentAdapter:RecordEvacuation (bool,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:280)
+FireScenarioFlowManager:CompleteScenario (bool) (at Assets/Scripts/FireScenarioFlowManager.cs:1509)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__25 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:555)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:550)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] TrainingCompleted
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseTrainingCompleted () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:156)
+FireScenarioFlowManager:CompleteScenario (bool) (at Assets/Scripts/FireScenarioFlowManager.cs:1536)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__25 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:555)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:550)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+✓ [PASS] TEST-22: Failed attempt -> Real failure metrics reach AppState
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:550)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+✓ [PASS] TEST-23: Certificate eligibility rule -> Score >= 80 && Crit == 0 && !TimedOut
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:564)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+✓ [PASS] TEST-24: Language switching English -> Hindi -> Santali -> Non-empty fallback
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:597)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+✓ [PASS] TEST-25: Scene placement & alignment defense -> FireExt_display active, FireExt inactive
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:621)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+[TRAINING EVENT] [COMMON EVENT] SCENARIO_STARTED: module=fire, scenario=fire_drill_01
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseScenarioStarted (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:206)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:79)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__29 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:650)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:647)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[FIRE ADAPTER] Started Fire Scenario: fire_drill_01 for Worker ID: 1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:81)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__29 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:650)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:647)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs Line: 81)
+
+[TRAINING EVENT] WrongAction [minor]: wrong_action - Identify the fire hazard first.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseWrongAction (string,string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:168)
+SurakshaAR.Data.FireAssessmentAdapter:RecordWrongAction (string,string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:304)
+FireScenarioFlowManager:DeductScore (int,string,bool) (at Assets/Scripts/FireScenarioFlowManager.cs:266)
+FireScenarioFlowManager:HandlePrematureExtinguisherAttempt () (at Assets/Scripts/FireScenarioFlowManager.cs:322)
+ExtinguisherDisplayPickup:Pickup () (at Assets/Scripts/fireext_display.cs:263)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__29 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:652)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:647)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] [COMMON EVENT] SEQUENCE_ERROR: Expected 'identify_hazard', performed 'select_extinguisher'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseSequenceError (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:251)
+SurakshaAR.Data.FireAssessmentAdapter:RecordSequenceError (string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:325)
+FireScenarioFlowManager:HandlePrematureExtinguisherAttempt () (at Assets/Scripts/FireScenarioFlowManager.cs:323)
+ExtinguisherDisplayPickup:Pickup () (at Assets/Scripts/fireext_display.cs:263)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__29 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:652)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:647)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+✓ [PASS] TEST-26: Pre-alarm tap defense in Step 1 & Step 2 -> FireExt remains strictly inactive
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:647)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+[ExtinguisherPickup] Extinguisher attached to AR camera.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ExtinguisherPickup:AttachToCamera () (at Assets/Scripts/ExtinguisherPickup.cs:218)
+ExtinguisherDisplayPickup:Pickup () (at Assets/Scripts/fireext_display.cs:311)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__30 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:676)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:668)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/Scripts/ExtinguisherPickup.cs Line: 218)
+
+[ExtinguisherDisplayPickup] Display extinguisher tapped -> Functional FireExt equipped to AR Camera!
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ExtinguisherDisplayPickup:Pickup () (at Assets/Scripts/fireext_display.cs:316)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__30 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:676)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:668)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/Scripts/fireext_display.cs Line: 316)
+
+[TRAINING EVENT] ExtinguisherPickedUp
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseExtinguisherPickedUp () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:132)
+SurakshaAR.Data.FireAssessmentAdapter:RecordEquipmentSelected (string,bool,single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:218)
+FireScenarioFlowManager:HandleExtinguisherPickedUp () (at Assets/Scripts/FireScenarioFlowManager.cs:1094)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__2 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:155)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+ExtinguisherDisplayPickup:Pickup () (at Assets/Scripts/fireext_display.cs:321)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__30 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:676)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:668)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] ExtinguisherPickedUp
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseExtinguisherPickedUp () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:132)
+FireScenarioFlowManager:HandleExtinguisherPickedUp () (at Assets/Scripts/FireScenarioFlowManager.cs:1095)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__2 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:155)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+ExtinguisherDisplayPickup:Pickup () (at Assets/Scripts/fireext_display.cs:321)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__30 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:676)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:668)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+✓ [PASS] TEST-27: Valid selection handoff -> FireExt_display DISAPPEARS, FireExt APPEARS and ATTACHES
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:668)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+[ExtinguisherPickup] Extinguisher detached and restored to initial scene position.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ExtinguisherPickup:DetachFromCamera () (at Assets/Scripts/ExtinguisherPickup.cs:247)
+ExtinguisherDisplayPickup:ResetDisplay () (at Assets/Scripts/fireext_display.cs:246)
+FireScenarioFlowManager:RestartScenario () (at Assets/Scripts/FireScenarioFlowManager.cs:1606)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__31 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:691)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:689)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/Scripts/ExtinguisherPickup.cs Line: 247)
+
+[TRAINING EVENT] [COMMON EVENT] SCENARIO_STARTED: module=fire, scenario=fire_drill_01
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseScenarioStarted (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:206)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:79)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+FireScenarioFlowManager:RestartScenario () (at Assets/Scripts/FireScenarioFlowManager.cs:1641)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__31 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:691)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:689)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[FIRE ADAPTER] Started Fire Scenario: fire_drill_01 for Worker ID: 1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:81)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+FireScenarioFlowManager:RestartScenario () (at Assets/Scripts/FireScenarioFlowManager.cs:1641)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>b__31 () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:691)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:71)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:689)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs Line: 81)
+
+✓ [PASS] TEST-28: Scenario Reset -> FireExt detaches & becomes inactive, FireExt_display active
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest/<>c__DisplayClass5_0:<RunAllMatrixTests>g__RunTest|0 (string,string,System.Action) (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:74)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:689)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 74)
+
+================================================================================
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:706)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 706)
+
+[FireWorkflowStrictTest] COMPLETED: 28 / 28 TESTS PASSED
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:707)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 707)
+
+================================================================================
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:708)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 708)
+
+[FireWorkflowStrictTest] Test results written to C:\project\surakshaAR\TestResults\fire_workflow_strict_test_results.json
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTests () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:728)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:42)
+
+(Filename: Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs Line: 728)
+
+MonoPathRemapper: Attempts to remap: 8165; Successful remaps: 0
+Serialized file version minimum: 23, current 23
+Worker ready: AssetImportWorkerHW0 0
+Killing ADB server in 2.0829887 seconds.
+Call to StopSubsystems without an initialized manager.Please make sure wait for initialization to complete before calling this API.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEngine.XR.Management.XRManagerSettings:StopSubsystems () (at ./Library/PackageCache/com.unity.xr.management@2ad85c7dd480/Runtime/XRManagerSettings.cs:415)
+UnityEngine.XR.Management.XRManagerSettings:OnDisable () (at ./Library/PackageCache/com.unity.xr.management@2ad85c7dd480/Runtime/XRManagerSettings.cs:460)
+SurakshaAR.Editor.FireWorkflowStrictTest:RunAllMatrixTestsBatch () (at Assets/SurakshaAR/Editor/FireWorkflowStrictTest.cs:43)
+
+(Filename: ./Library/PackageCache/com.unity.xr.management@2ad85c7dd480/Runtime/XRManagerSettings.cs Line: 415)
+
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-MP2NQ-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-MP2NQ channel disconnected successfully.
+Lingering sessions upon destruction of worker manager
+Unity Data Store service was successfully shut down
+UDS shutting down local client system
+Shut down UDS service system complete
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+CodeReloadManager destroyed
+Checking for leaked weakptr:
+  Found no leaked weakptrs.
+[Package Manager] Server process was shutdown
+##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1789844392140,"processId":15192,"allocatedMemory":13164630,"memoryLabels":[{"Default":196040},{"Permanent":15516},{"NewDelete":70159},{"Thread":4198064},{"Manager":32453},{"VertexData":8},{"Geometry":816},{"Texture":24},{"Shader":851820},{"Material":24},{"GfxDevice":55968},{"Animation":952},{"FreeType":8},{"FontEngine":736},{"Physics":1970},{"Physics2D":16},{"Serialization":23136},{"Input":42840},{"JobScheduler":256},{"TextLib":280},{"Mono":48},{"ScriptingNativeRuntime":1225616},{"BaseObject":50384},{"Resource":1208},{"Renderer":2376},{"Transform":4685},{"File":7389},{"WebCam":616},{"Culling":32},{"Terrain":11442},{"Wind":24},{"STL":40},{"String":641050},{"StaticString":3808},{"Utility":2674262},{"Curl":2498},{"PoolAlloc":2168},{"AI":80},{"TypeTree":18701},{"ScriptManager":12640},{"CodeReload":448},{"RuntimeInitializeOnLoadManager":64},{"Sprites":102},{"SpriteAtlas":120},{"GI":7816},{"Director":8296},{"CloudService":7584},{"WebRequest":11768},{"VR":49794},{"SceneManager":608},{"Video":64},{"LazyScriptCache":32},{"Camera":729},{"Secure":2377},{"SerializationCache":9256},{"APIUpdating":10320},{"Subsystems":192},{"VirtualTexturing":57888},{"StaticSafetyDebugInfo":278528},{"Analytics":768},{"Hierarchy":1188},{"UIElements":40},{"CoreStats":14456},{"Identifiers":7152},{"Gui":128},{"EditorUtility":105470},{"VersionControl":8},{"Undo":931},{"AssetDatabase":2374882},{"AssetImporter":40},{"EditorGi":328},{"UnityConnect":40441},{"Upm":1912},{"UpmDiagnostics":8},{"AssetCompliance":96},{"DrivenProperties":72},{"LocalIPC":260},{"ProfilerEditor":9746},{"CoreBusinessMetrics":3600},{"Windowing":456},{"Licensing":12757},{"AssetReference":32},{"IPCStream":32}]}
+~StackAllocator(ALLOC_TEMP_MAIN) m_LastAlloc not NULL. Did you forget to call FreeAllStackAllocations()? To get more information, run app with -diag-temp-memory-leak-validation cmd line argument

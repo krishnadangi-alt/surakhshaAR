@@ -452,6 +452,9 @@ namespace SurakshaAR.Core
                 case ScreenId.Progress:           return new ProgressController();
                 case ScreenId.ProfileSetup:       return new ProfileController();
                 case ScreenId.Notifications:      return new NotificationsController();
+                case ScreenId.TrainingInstructions: return new TrainingInstructionsController();
+                case ScreenId.GasScenarioSelection: return new GasScenarioSelectionController();
+                case ScreenId.GasModuleDetail:      return new GasModuleDetailController();
                 default:                          return null;
             }
         }

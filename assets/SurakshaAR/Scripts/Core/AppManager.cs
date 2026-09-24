@@ -99,7 +99,7 @@ namespace SurakshaAR.Core
         public void ReturnFromARToScenarioSelection()
         {
             UIManager.SetUIVisible(true);
-            UIManager.ShowScreen(ScreenId.HomeDashboard);
+            UIManager.ShowScreen(ScreenId.TrainingInstructions);
         }
 
         /// <summary>

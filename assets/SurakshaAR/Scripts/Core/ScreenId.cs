@@ -18,6 +18,9 @@ namespace SurakshaAR.Core
         Certificate = 10,
         Progress = 11,
         ProfileSetup = 12,
-        Notifications = 13
+        Notifications = 13,
+        TrainingInstructions    = 14,
+        GasScenarioSelection    = 15,
+        GasModuleDetail         = 16
     }
 }

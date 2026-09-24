@@ -1062,7 +1062,8 @@ namespace SurakshaAR.Editor
                 (ScreenId.Assessment, "Assessment"),
                 (ScreenId.Result, "Result"),
                 (ScreenId.Certificate, "Certificate"),
-                (ScreenId.Progress, "Progress")
+                (ScreenId.Progress, "Progress"),
+                (ScreenId.TrainingInstructions, "TrainingInstructions")
             };
 
             foreach (var res in targetResolutions)

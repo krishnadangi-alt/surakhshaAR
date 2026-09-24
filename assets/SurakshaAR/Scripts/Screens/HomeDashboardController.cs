@@ -430,9 +430,27 @@ namespace SurakshaAR.Screens
         private void OpenModule(ModuleId moduleId)
         {
             var module = AppManager.Instance?.GetModule(moduleId);
+            if (module != null && AppState.Instance != null)
+            {
+                AppState.Instance.SelectedModule = module;
+            }
+
+            // Fire & Explosion Response opens the dedicated Sub-Module Scenario Selection screen
+            if (moduleId == ModuleId.FireAndExplosion)
+            {
+                UIManager.Instance?.ShowScreen(ScreenId.ScenarioSelection);
+                return;
+            }
+
+            // Gas Leak & Confined Space opens its own dedicated scenario selection screen
+            if (moduleId == ModuleId.GasLeakConfinedSpace)
+            {
+                UIManager.Instance?.ShowScreen(ScreenId.GasScenarioSelection);
+                return;
+            }
+
             if (module != null)
             {
-                if (AppState.Instance != null) AppState.Instance.SelectedModule = module;
                 UIManager.Instance?.ShowScreen(ScreenId.ModuleDetail, module);
             }
             else

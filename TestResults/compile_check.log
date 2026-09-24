@@ -1,0 +1,424 @@
+VBCSCompilerPreWarmer: pre-warm launched (dotnet PID 6112)
+VBCSCompiler prewarm took 18.31 ms
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.6/respin/6000.6.0f1-fa21a270ab12' branch; Version is '6000.6.0f1 (f7f8ed4d1e24) revision 16251117'; Using compiler version '194234433'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26200) CoreSingleLanguage' Language: 'en' Physical Memory: 11995 MB
+[Licensing::IpcConnector] Channel LicenseClient-MP2NQ doesn't exist
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-09-19T17:09:44Z
+[Licensing::Module] Successfully launched the LicensingClient (PId: 9244)
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.6.0f1\Editor\Unity.exe
+-projectPath
+c:\project\surakshaAR
+-batchmode
+-quit
+-logFile
+c:\project\surakshaAR\TestResults\compile_check.log
+Successfully changed project path to: c:\project\surakshaAR
+C:/project/surakshaAR
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-remapper-allocator-initial-capacity=32768"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-main-allocator-mimalloc-enabled=1"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+Logging is directed to a specific file, skipping project log.
+Player connection [1532]  Target information:
+
+Player connection [1532]  * "[IP] 172.16.48.160 [Port] 55504 [Flags] 2 [Guid] 3345657784 [EditorId] 3345657784 [Version] 1048832 [Id] WindowsEditor(7,krishnadangi) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [1532]  * "[IP] 169.254.136.248 [Port] 55504 [Flags] 2 [Guid] 3345657784 [EditorId] 3345657784 [Version] 1048832 [Id] WindowsEditor(7,krishnadangi) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [1532] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [1532] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Starting IPC server.
+Waiting for clients to connect on \\.\pipe\Unity-LicenseClient-MP2NQ, press Ctrl-C to exit.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-MP2NQ" at "2026-09-19T17:09:45.177443Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 9244, path: "C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.3+d7ffd15
+  Session Id:              15ab2e3aece743698fe56a15b4e81c93
+  Correlation Id:          da5c2a71767b24b14b10ab3b4d442701
+  External correlation Id: 6715387985673597302
+  Machine Id:              DfsKgPorDtWx2iet2rMg1y4vXIA=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-MP2NQ" (connect: 0.85s, validation: 0.20s, handshake: 0.05s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-MP2NQ-notifications" at "2026-09-19T17:09:45.4306098Z"
+[Licensing::Module] Connected to LicensingClient (PId: 9244, launch time: 0.01, total connection time: 1.11s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 13469962889620-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.01
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 1.19s
+[Package Manager] Connected to IPC stream "Upm-8628" after 0.8 seconds.
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+Initialising UDS system complete:
+  - System type: Client
+  - Resource namespace: 2173941a58b4f39d1f6d79f3f084606f
+  - Shared memory size: 1073741824
+  - Command buffer id: 1052576
+  - Command buffer size: 8192
+  - Hashmap size: 4194304
+  - Service connected: false
+Launching Unity Data Store - C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/Tools/Unity.DataStore.exe 
+Unity Data Store artifact dir = Library/DataStore, working dir = C:/project/surakshaAR[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Unity Data Store running and initialised
+[Licensing::Client] Successfully resolved entitlement details
+Refreshing native plugins compatible for Editor in 2.81 ms, found 0 plugins.
+Initialize engine version: 6000.6.0f1 (f7f8ed4d1e24)
+[EntityIdStore] init: VM path (explicit commit), pageSize=4096, blockCount=1048576, entitiesPerBlock=256, slots reserved=4294967296 bytes
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/project/surakshaAR/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 2050 (ID=0x25ed)
+    Vendor:   NVIDIA
+    VRAM:     3964 MB
+    Driver:   32.0.15.8186
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/BCLExtensions/runtime/netstandard2.1'
+Mono path[2] = 'C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56628
+CodeReloadManager initialized
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Registered in 0.005317 seconds.
+Native extension for Android target not found
+Native extension for WindowsStandalone target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Scripting: successfully reloaded assembly
+- Finished resetting the current domain, in  1.593 seconds
+Domain Reload Profiling: 2383ms
+	BeginReloadAssembly (205ms)
+		CreateAndSetChildDomain (28ms)
+	RebuildCommonClasses (9ms)
+	RebuildNativeTypeToScriptingClass (25ms)
+	initialDomainReloadingComplete (111ms)
+	LoadAllAssembliesAndSetupDomain (439ms)
+		LoadAssemblies (172ms)
+		TypeCache.Refresh (301ms)
+			TypeCache.ScanAssembly (282ms)
+		AnalyzeDomain (1ms)
+	FinalizeReload (1595ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (14ms)
+			BeforeProcessingInitializeOnLoad (124ms)
+			ProcessInitializeOnLoadAttributes (137ms)
+			ProcessInitializeOnLoadMethodAttributes (1025ms)
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 55 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ai.navigation@2.0.14 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.ai.navigation@134dd6a3b97b)
+    com.unity.ide.rider@3.0.38 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.ide.rider@1f60b3138684)
+    com.unity.ide.visualstudio@2.0.26 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.ide.visualstudio@a99d56dec63f)
+    com.unity.inputsystem@1.20.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.inputsystem@7a4e1a2a8194)
+    com.unity.xr.arcore@6.6.2 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.xr.arcore@48fb51f3ca76)
+    com.unity.xr.arfoundation@6.6.2 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.xr.arfoundation@d57b0b4d336a)
+    com.unity.xr.legacyinputhelpers@3.0.1 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.xr.legacyinputhelpers@3f62d634f63b)
+    com.unity.xr.core-utils@2.6.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.xr.core-utils@a8b900321199)
+    com.unity.xr.management@4.7.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.xr.management@2ad85c7dd480)
+  Built-in packages:
+    com.unity.2d.sprite@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.2d.sprite@947350d67f82)
+    com.unity.2d.tilemap@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.2d.tilemap@639ca1d99254)
+    com.unity.test-framework@1.8.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.test-framework@7a3849e09bd0)
+    com.unity.timeline@6.6.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.timeline@281d5f7e7d7d)
+    com.unity.ugui@2.6.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.ugui@23caec89ae27)
+    com.unity.modules.accessibility@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.physics2d)
+    com.unity.modules.physicscore2d@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.physicscore2d)
+    com.unity.modules.screencapture@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.terrainphysics)
+    com.unity.modules.tetgen@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.tetgen)
+    com.unity.modules.tilemap@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.tilemap)
+    com.unity.modules.timelinefoundation@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.timelinefoundation)
+    com.unity.modules.ui@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.umbra)
+    com.unity.modules.unitywebrequest@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.video)
+    com.unity.modules.wind@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.hierarchycore)
+    com.unity.mathematics@1.4.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.mathematics@8306a64d0cd6)
+    com.unity.editorcoroutines@6.6.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.editorcoroutines@8cd72baa102a)
+    com.unity.modules.unityanalytics@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.unityanalytics)
+    com.unity.ext.nunit@2.1.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.ext.nunit@0198eae3b53e)
+[Subsystems] Looking for new subsystems at path C:\project\surakshaAR\Library\PackageCache\com.unity.xr.arfoundation@d57b0b4d336a
+[Subsystems] Novel subsystem found at Library/PackageCache/com.unity.xr.arfoundation@d57b0b4d336a/Runtime/UnitySubsystemsManifest.json
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/project/surakshaAR/Assets
+[Subsystems] Discovering subsystems at path C:\project\surakshaAR\Library\PackageCache\com.unity.xr.arfoundation@d57b0b4d336a
+[Subsystems] No descriptors matched for  examples in Library/PackageCache/com.unity.xr.arfoundation@d57b0b4d336a/Runtime/UnitySubsystemsManifest.json.
+[Subsystems] 1 'inputs' descriptors matched in Library/PackageCache/com.unity.xr.arfoundation@d57b0b4d336a/Runtime/UnitySubsystemsManifest.json
+[Subsystems] No descriptors matched for  displays in Library/PackageCache/com.unity.xr.arfoundation@d57b0b4d336a/Runtime/UnitySubsystemsManifest.json.
+[Subsystems] 1 'meshings' descriptors matched in Library/PackageCache/com.unity.xr.arfoundation@d57b0b4d336a/Runtime/UnitySubsystemsManifest.json
+[Package Manager] Done registering packages in 0.02 seconds
+[ScriptCompilation] Requested script compilation because: AssetDatabase observed changes in script compilation related files
+Starting: C:\Program Files\Unity\Hub\Editor\6000.6.0f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1300b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/project/surakshaAR
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 3s213ms
+[543/684    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[676/684    2s] Csc Library/Bee/artifacts/1300b0aE.dag/Assembly-CSharp.dll (+2 others)
+[677/684    0s] ILPostProcess Library/Bee/artifacts/1300b0aE.dag/post-processed/Assembly-CSharp.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1300b0aE.dag/Assembly-CSharp.dll, with 156 defines and 328 references
+
+processors: zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+1 processor(s) skipped this assembly
+[678/684    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.pdb
+[679/684    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.dll
+[680/684    0s] Csc Library/Bee/artifacts/1300b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
+[681/684    0s] ILPostProcess Library/Bee/artifacts/1300b0aE.dag/post-processed/Assembly-CSharp-Editor.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1300b0aE.dag/Assembly-CSharp-Editor.dll, with 154 defines and 344 references
+
+processors: zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+1 processor(s) skipped this assembly
+[682/684    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
+[683/684    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.pdb
+*** Tundra build success (3.17 seconds), 9 items updated, 684 evaluated
+AssetDatabase: script compilation time: 4.084321s
+Begin MonoManager ReloadAssembly
+Refreshing native plugins compatible for Editor in 6.48 ms, found 1 plugins.
+Native extension for WindowsStandalone target not found
+Native extension for Android target not found
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Scripting: successfully reloaded assembly
+- Finished resetting the current domain, in  0.741 seconds
+Domain Reload Profiling: 1727ms
+	BeginReloadAssembly (422ms)
+		DisableScriptedObjects (40ms)
+		CreateAndSetChildDomain (176ms)
+	RebuildCommonClasses (10ms)
+	RebuildNativeTypeToScriptingClass (21ms)
+	initialDomainReloadingComplete (59ms)
+	LoadAllAssembliesAndSetupDomain (471ms)
+		LoadAssemblies (338ms)
+		TypeCache.Refresh (80ms)
+			TypeCache.ScanAssembly (68ms)
+		AnalyzeDomain (44ms)
+			BuildScriptInfoCaches (39ms)
+			ResolveRequiredComponents (3ms)
+	FinalizeReload (744ms)
+		SetupLoadedEditorAssemblies (0ms)
+			LogAssemblyErrors (3ms)
+			InitializePlatformSupportModulesInManaged (7ms)
+			BeforeProcessingInitializeOnLoad (120ms)
+			ProcessInitializeOnLoadAttributes (194ms)
+			ProcessInitializeOnLoadMethodAttributes (106ms)
+			AfterProcessingInitializeOnLoad (8ms)
+		AwakeInstancesAfterBackupRestoration (56ms)
+Starting new worker id: 0 with log in C:/project/surakshaAR/Logs/AssetImportWorkerHW0.log
+Refreshing native plugins compatible for Editor in 2.42 ms, found 1 plugins.
+
+Asset Pipeline Refresh (id=10dc0557f1869364fb864829bc3e33b7): Total: 6.736 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	(Values over 0.05ms)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1184 ms
+		Asset DB Callback time: managed=349 ms, native=44 ms
+		Scripting: domain reloads=1, domain reload time=1033 ms, compile time=4088 ms, other=36 ms
+		Project Asset Count: scripts=818, non-scripts=1143
+		Asset File Changes: new=0, changed=9, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokePackagesCallback: 27.559ms
+	ApplyChangesToAssetFolders: 1.366ms
+	Scan: 152.798ms
+	Collect global state as custom dependencies: 15.338ms
+	OnSourceAssetsModified: 2.174ms
+	CategorizeScriptCompilationAssets: 17.735ms
+	ProcessAssetsWithTransientArtifactChanges: 48.627ms
+	CategorizeAssets: 21.937ms
+	CompileScripts: 4087.604ms
+	ImportOutOfDateAssets: 773.020ms (757.513ms without children)
+		ReloadNativeAssets: 0.287ms
+		UnloadImportedAssets: 0.149ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.534ms
+		ImportSchedulerStart: 14.533ms
+	PostProcessAllAssets: 360.192ms
+		VCAutoAddAssetPostprocess 5.412ms
+		XRBuildSystem.XRAssetImported 0.645ms
+		ShaderAssetModifiedCallback 0.414ms
+		WindowTitlePostprocess 0.385ms
+		PostProcessCallbackCreateDeferredMaterials 0.381ms
+		Canvas.OnAllAssetImport 0.346ms
+		RaytracingShaderImportPostprocess 0.072ms
+		AssemblyValidation.PostprocessAllAssets 0.053ms
+		MonoPostProcessAllAssets: 348.586ms
+			AssetPostprocessor.OnPostprocessAllAssets 209.070ms
+			StyleCatalogPostProcessor.OnPostprocessAllAssets 35.780ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 15.689ms
+			AssetCallbacks.OnPostprocessAllAssets 13.841ms
+			BuilderAssetPostprocessor.OnPostprocessAllAssets 8.824ms
+			AssetChangedListener.OnPostprocessAllAssets 5.138ms
+			SyncVS.PostprocessSyncProject 5.129ms
+			SpriteSlicePostprocessor.OnPostprocessAllAssets 3.945ms
+			RetainedModeAssetPostprocessor.OnPostprocessAllAssets 3.018ms
+			TextAssetPostProcessor.OnPostprocessAllAssets 2.385ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 1.830ms
+			EditModeScopePostprocessor.OnPostprocessAllAssets 1.796ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 1.662ms
+			ArtifactBrowserPostProcessor.OnPostprocessAllAssets 0.969ms
+			SpriteEditorTexturePostprocessor.OnPostprocessAllAssets 0.900ms
+			EnvironmentAssetPostprocessor.OnPostprocessAllAssets 0.755ms
+			AssetProcessor.OnPostprocessAllAssets 0.625ms
+			InputActionAssetPostprocessor.OnPostprocessAllAssets 0.596ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.541ms
+			TMPro_TexturePostProcessor.OnPostprocessAllAssets 0.503ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.460ms
+			AssetEvents.OnPostprocessAllAssets 0.458ms
+			SpeedTreePostProcessor.OnPostprocessAllAssets 0.442ms
+			InputActionJsonNameModifierAssetProcessor.OnPostprocessAllAssets 0.380ms
+			AudioMixerPostprocessor.OnPostprocessAllAssets 0.368ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.333ms
+			SamplePostprocessor.OnPostprocessAllAssets 0.307ms
+			ProjectSettingsPostprocessor.OnPostprocessAllAssets 0.288ms
+			ThemePostprocessor.OnPostprocessAllAssets 0.274ms
+			ConfigAssetsTracker.OnPostprocessAllAssets 0.271ms
+			ScenarioDriftAssetsTracker.OnPostprocessAllAssets 0.225ms
+			AudioContainerPostProcessor.OnPostprocessAllAssets 0.084ms
+	PostAssetChangesProfiler: 5.860ms
+	UnloadStreamsBegin: 1.443ms
+	PersistCurrentRevisions: 0.114ms
+	GenerateScriptTypeHashes: 2.393ms
+	GenerateScriptTypeSerializationHashes: 4.246ms
+	Untracked: 1212.876ms
+
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.03 seconds
+Scanning for USB devices : 3.292ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-surakshaAR
+Worker ready: AssetImportWorkerHW0 0
+Unloading 11 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 2844 unused Assets / (3.4 MB). Loaded Objects now: 3619.
+Memory consumption went from 285.9 MB to 282.5 MB.
+Total: 14.261900 ms (FindLiveObjects: 0.452700 ms CreateObjectMapping: 0.227400 ms MarkObjects: 8.924700 ms  DeleteObjects: 4.363500 ms)
+
+Batchmode quit successfully invoked - shutting down!
+Curl error 42: Callback aborted
+Curl error 42: Callback aborted
+Killing ADB server in 2.1413565 seconds.
+Call to StopSubsystems without an initialized manager.Please make sure wait for initialization to complete before calling this API.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEngine.XR.Management.XRManagerSettings:StopSubsystems () (at ./Library/PackageCache/com.unity.xr.management@2ad85c7dd480/Runtime/XRManagerSettings.cs:415)
+UnityEngine.XR.Management.XRManagerSettings:OnDisable () (at ./Library/PackageCache/com.unity.xr.management@2ad85c7dd480/Runtime/XRManagerSettings.cs:460)
+
+(Filename: ./Library/PackageCache/com.unity.xr.management@2ad85c7dd480/Runtime/XRManagerSettings.cs Line: 415)
+
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-MP2NQ-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-MP2NQ channel disconnected successfully.
+Lingering sessions upon destruction of worker manager
+Shut down.
+Unity Data Store service was successfully shut down
+UDS shutting down local client system
+Shut down UDS service system complete
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+CodeReloadManager destroyed
+abort_threads: Failed aborting id: 0000000000003250, mono_thread_manage will ignore it
+
+abort_threads: Failed aborting id: 0000000000006A44, mono_thread_manage will ignore it
+
+abort_threads: Failed aborting id: 0000000000003250, mono_thread_manage will ignore it
+
+abort_threads: Failed aborting id: 0000000000006A44, mono_thread_manage will ignore it
+
+debugger-agent: Unable to listen on 3916
+Exiting batchmode successfully now!
+[ExitDontLaunchBugReporter] Exiting without the bug reporter. Application will exit with return code 0

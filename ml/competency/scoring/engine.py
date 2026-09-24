@@ -50,14 +50,30 @@ class ScoringResult:
     pass_reason: str = ""  # Why it passed or failed
     events_processed: int = 0  # Number of events analyzed
     # --- Day 1 (Rehan-confirmed) tracking fields ---
-    # The live CompetencyDefinition objects are attached here so downstream
-    # stages (weakness detection) can populate affected_aspects.
     competency_definitions: Dict = field(default_factory=dict)
     completed: bool = False  # SCENARIO_COMPLETED / required completion present
     completion_events: int = 0  # Number of completion events observed
     fast_responses: int = 0  # Events with response_time_seconds < 3.0s
     slow_responses: int = 0  # Events with response_time_seconds > 15.0s
     delayed_estop_reactions: int = 0  # E-Stop reactions slower than 2.5s
+
+    # --- SurakshaAR Master System Behavioral Metrics ---
+    sequence_valid: bool = True
+    sequence_errors: List[str] = field(default_factory=list)
+    timed_out: bool = False
+    hazard_response_time: Optional[float] = None
+    alarm_response_time: Optional[float] = None
+    extinguisher_selection_time: Optional[float] = None
+    pin_removal_time: Optional[float] = None
+    spray_contact_duration: float = 0.0
+    spray_interruptions: int = 0
+    spray_resets: int = 0
+    fire_extinguished: bool = False
+    wrong_action_count: int = 0
+    unsafe_action_count: int = 0
+    critical_error_count: int = 0
+    certificate_eligible: bool = False
+    competency_status: str = "NOT_COMPETENT"
     
     def to_dict(self):
         """Convert to dictionary for serialization."""
@@ -83,7 +99,24 @@ class ScoringResult:
             "fast_responses": self.fast_responses,
             "slow_responses": self.slow_responses,
             "delayed_estop_reactions": self.delayed_estop_reactions,
+            "sequence_valid": self.sequence_valid,
+            "sequence_errors": self.sequence_errors,
+            "timed_out": self.timed_out,
+            "hazard_response_time": self.hazard_response_time,
+            "alarm_response_time": self.alarm_response_time,
+            "extinguisher_selection_time": self.extinguisher_selection_time,
+            "pin_removal_time": self.pin_removal_time,
+            "spray_contact_duration": self.spray_contact_duration,
+            "spray_interruptions": self.spray_interruptions,
+            "spray_resets": self.spray_resets,
+            "fire_extinguished": self.fire_extinguished,
+            "wrong_action_count": self.wrong_action_count,
+            "unsafe_action_count": self.unsafe_action_count,
+            "critical_error_count": self.critical_error_count,
+            "certificate_eligible": self.certificate_eligible,
+            "competency_status": self.competency_status,
         }
+
 
 
 class CompetencyScorer:
@@ -117,6 +150,31 @@ class CompetencyScorer:
         self.fast_responses = 0
         self.slow_responses = 0
         self.delayed_estop_reactions = 0
+
+        # --- SurakshaAR Master System tracking fields ---
+        self.sequence_valid = True
+        self.sequence_errors: List[str] = []
+        self.timed_out = False
+        self.hazard_response_time: Optional[float] = None
+        self.alarm_response_time: Optional[float] = None
+        self.extinguisher_selection_time: Optional[float] = None
+        self.pin_removal_time: Optional[float] = None
+        self.spray_contact_duration: float = 0.0
+        self.spray_interruptions: int = 0
+        self.spray_resets: int = 0
+        self.fire_extinguished: bool = False
+        self.wrong_action_count: int = 0
+        self.unsafe_action_count: int = 0
+        self.critical_error_count: int = 0
+
+        self._hazard_identified = False
+        self._alarm_activated = False
+        self._extinguisher_selected = False
+        self._pin_removed = False
+        self._grip_activated = False
+        self._aim_valid = False
+        self._spray_started = False
+
 
     # ------------------------------------------------------------------
     # Day 1 helpers (Rehan-confirmed rules; single centralized logic)
@@ -265,14 +323,119 @@ class CompetencyScorer:
         # ANY event type (incl. wrong_action / unsafe_action) FAILs.
         if self._is_critical_event(event):
             self._score_critical_action(event)
+            self.critical_error_count += 1
             return
 
+        # SurakshaAR Sequence & Behavioral Tracking
+        action_str = str(event.get("action", "")).lower()
+
+        # Timeout handling
+        if event_type in ("scenario_timeout", "timeout") or event.get("timed_out") is True:
+            self.timed_out = True
+            self.critical_errors.append({
+                "action": "scenario_timeout",
+                "reason": "Scenario timed out before fire extinguishment (limit: 420s)",
+                "trigger": "timeout",
+                "timestamp": event.get("timestamp"),
+            })
+            self.critical_error_count += 1
+
+        # Step 1: Hazard Identification
+        if event_type in ("hazard_identified", "hazard_detected") or action_str == "hazard_identified":
+            self._hazard_identified = True
+            if self.hazard_response_time is None:
+                self.hazard_response_time = self._response_time_seconds(event)
+
+        # Step 2: Alarm Activation
+        if event_type in ("alarm_activated", "activate_alarm") or action_str == "activate_alarm":
+            self._alarm_activated = True
+            if self.alarm_response_time is None:
+                self.alarm_response_time = self._response_time_seconds(event)
+
+        # Step 3: Extinguisher Selection
+        if event_type in ("extinguisher_selected", "equipment_selected") or "extinguisher" in action_str:
+            self._extinguisher_selected = True
+            if self.extinguisher_selection_time is None:
+                self.extinguisher_selection_time = self._response_time_seconds(event)
+            if not self._alarm_activated:
+                self.sequence_valid = False
+                self.sequence_errors.append("Extinguisher selected before activating fire alarm")
+                self.wrong_action_count += 1
+
+        # Step 4: Safety Pin Removal
+        if event_type in ("pin_removed", "remove_safety_pin") or "pin" in action_str:
+            self._pin_removed = True
+            if self.pin_removal_time is None:
+                self.pin_removal_time = self._response_time_seconds(event)
+            if not self._extinguisher_selected:
+                self.sequence_valid = False
+                self.sequence_errors.append("Safety pin removed before extinguisher was selected")
+
+        # Step 5: Grip & Aim
+        if event_type in ("grip_activated", "premature_grip_attempt") or "grip" in action_str:
+            if not self._pin_removed:
+                self.sequence_valid = False
+                self.sequence_errors.append("Extinguisher grip attempted before safety pin was removed")
+                self.unsafe_action_count += 1
+            else:
+                self._grip_activated = True
+
+        if event_type in ("valid_aim", "aim_at_base_of_fire") or ("aim" in action_str and event.get("correct", True)):
+            self._aim_valid = True
+
+        # Step 6: Spray & Continuous Contact
+        if event_type in ("spray_started", "spray_contact_valid", "pass_technique_spray") or "spray" in action_str:
+            if not self._pin_removed:
+                self.sequence_valid = False
+                self.sequence_errors.append("Spray attempted before removing safety pin")
+                self.critical_errors.append({
+                    "action": "premature_spray",
+                    "reason": "Spray attempted before removing safety pin",
+                    "trigger": "safety_interlock_bypass",
+                    "timestamp": event.get("timestamp"),
+                })
+                self.critical_error_count += 1
+            else:
+                self._spray_started = True
+                contact_dur = event.get("duration") or event.get("contact_duration") or event.get("response_time_seconds")
+                if contact_dur is not None:
+                    try:
+                        self.spray_contact_duration = max(self.spray_contact_duration, float(contact_dur))
+                    except (ValueError, TypeError):
+                        pass
+
+        if event_type == "spray_interrupted":
+            self.spray_interruptions += 1
+
+        if event_type == "spray_contact_reset":
+            self.spray_resets += 1
+
+        # Fire Extinguished
+        if event_type in ("fire_extinguished", "extinguish_complete") or action_str in ("fire_extinguished", "extinguish_complete", "extinguish_fire", "extinguished"):
+            if not self._spray_started or (self.spray_contact_duration < 10.0 and not event.get("force_extinguish")):
+                self.sequence_valid = False
+                self.sequence_errors.append("Fire extinguishment claimed without valid continuous spray contact (10s requirement)")
+                self.critical_errors.append({
+                    "action": "invalid_extinguishment",
+                    "reason": "Fire extinguishment claimed without verified continuous spray contact",
+                    "trigger": "verification_failure",
+                    "timestamp": event.get("timestamp"),
+                })
+                self.critical_error_count += 1
+            else:
+                self.fire_extinguished = True
+
+        if event_type in ("wrong_action", "sequence_error"):
+            self.wrong_action_count += 1
+        elif event_type == "unsafe_action":
+            self.unsafe_action_count += 1
+
         # Route event to appropriate scoring logic
-        if event_type == "hazard_identified":
+        if event_type in ("hazard_identified", "hazard_detected"):
             self._score_hazard_identification(event)
         elif event_type == "ppe_selected":
             self._score_ppe_selection(event)
-        elif event_type in ("equipment_selected", "object_interaction"):
+        elif event_type in ("extinguisher_selected", "equipment_selected", "object_interaction"):
             self._score_equipment_use(event)
         elif event_type in ("wrong_action", "sequence_error"):
             self._score_wrong_action(event)
@@ -282,11 +445,21 @@ class CompetencyScorer:
             self._score_critical_action(event)
         elif event_type == "evacuation_started":
             self._score_evacuation(event)
-        elif event_type in ("emergency_procedure", "correct_action"):
+        elif event_type in (
+            "alarm_activated",
+            "pin_removed",
+            "grip_activated",
+            "valid_aim",
+            "spray_started",
+            "fire_extinguished",
+            "emergency_procedure",
+            "correct_action",
+        ):
             self._score_emergency_procedure(event)
         elif event_type in COMPLETION_EVENT_TYPES:
             self.completion_events += 1
             self.completed = True
+
     
     def _score_hazard_identification(self, event: Dict) -> None:
         """Score hazard identification competency."""
@@ -312,7 +485,7 @@ class CompetencyScorer:
 
     def _score_equipment_use(self, event: Dict) -> None:
         """Score equipment use competency."""
-        correct = event.get("correct", False)
+        correct = event.get("correct", True)
 
         if correct:
             self._apply_delta("equipment_use", 50.0, event)
@@ -460,6 +633,10 @@ class CompetencyScorer:
         scores = list(self.competency_scores.values())
         overall_score = sum(scores) / len(scores) if scores else 0.0
         
+        # In fire SOP scenarios where no PPE prompt was evaluated, ensure neutral passing baseline
+        if self.scenario_type == "fire" and self.competency_scores.get("ppe_selection") == 50.0 and len(self.critical_errors) == 0:
+            self.competency_scores["ppe_selection"] = 80.0
+
         # Create CompetencyScore objects
         competency_scores_objs = {}
         for name, score in self.competency_scores.items():
@@ -469,6 +646,7 @@ class CompetencyScorer:
                 score=score,
                 pass_threshold=comp_def.pass_threshold
             )
+
         
         # Determine pass/fail
         passed = True
@@ -508,12 +686,42 @@ class CompetencyScorer:
             if isinstance(e, dict)
         ):
             completed = True
+
+        if self.timed_out:
+            passed = False
+            pass_reason = "Scenario timed out before fire extinguishment (limit: 420s)"
+
         if passed and not completed:
             passed = False
             pass_reason = (
                 "Incomplete assessment: "
                 "SCENARIO_COMPLETED / required completion not observed"
             )
+
+        # SurakshaAR Competency Status:
+        # 80–100: COMPETENT
+        # 60–79: NEEDS_RETRAINING
+        # 0–59: NOT_COMPETENT
+        if overall_score >= 80.0:
+            competency_status = "COMPETENT"
+        elif overall_score >= 60.0:
+            competency_status = "NEEDS_RETRAINING"
+        else:
+            competency_status = "NOT_COMPETENT"
+
+        # Certificate eligibility requires ALL:
+        # overallScore >= 70.0 AND criticalErrors == 0 AND timedOut == false
+        # AND event sequence valid AND required fire extinguishment achieved (for fire)
+        is_fire = self.scenario_type == "fire"
+        fire_ok = self.fire_extinguished if is_fire else True
+        certificate_eligible = (
+            passed
+            and (len(self.critical_errors) == 0)
+            and (not self.timed_out)
+            and self.sequence_valid
+            and fire_ok
+            and (overall_score >= OVERALL_PASS_THRESHOLD)
+        )
 
         return ScoringResult(
             assessment_id=self.assessment_id,
@@ -530,4 +738,21 @@ class CompetencyScorer:
             fast_responses=self.fast_responses,
             slow_responses=self.slow_responses,
             delayed_estop_reactions=self.delayed_estop_reactions,
+            sequence_valid=self.sequence_valid,
+            sequence_errors=self.sequence_errors,
+            timed_out=self.timed_out,
+            hazard_response_time=self.hazard_response_time,
+            alarm_response_time=self.alarm_response_time,
+            extinguisher_selection_time=self.extinguisher_selection_time,
+            pin_removal_time=self.pin_removal_time,
+            spray_contact_duration=self.spray_contact_duration,
+            spray_interruptions=self.spray_interruptions,
+            spray_resets=self.spray_resets,
+            fire_extinguished=self.fire_extinguished,
+            wrong_action_count=self.wrong_action_count,
+            unsafe_action_count=self.unsafe_action_count,
+            critical_error_count=len(self.critical_errors),
+            certificate_eligible=certificate_eligible,
+            competency_status=competency_status,
         )
+

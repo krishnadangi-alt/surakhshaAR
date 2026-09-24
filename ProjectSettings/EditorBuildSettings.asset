@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/SurakshaAR/Scenes/Main.unity
+    guid: fcf373f73d5ab534ba46f41d656f9fd9
+  - enabled: 1
+    path: Assets/AR_Fire_foundation/scenes/FireTraining.unity
+    guid: e932db98acda1384da8a2df7692af68a
+  m_configObjects:
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: ff2c7602a5936c541abdb4c83a78d3ea, type: 2}
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 83eb6171c9577c847862629aa1fa6dc0, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 8a15cb6c7a0dc784f971e1712e1ad134, type: 2}

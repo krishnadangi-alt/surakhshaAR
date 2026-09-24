@@ -651,19 +651,19 @@ namespace SurakshaAR.UI.Builders
             cvlg.childForceExpandHeight = false;
             cvlg.padding = new RectOffset(0, 0, 0, 0);
 
-            // Title: 46px bold (crisp, authoritative, readable)
-            var titleLbl = UIHelper.MakeLabel(hindiLabelName, contentCol, englishTitle, 46, Hex("#0A192F"), TextAlignmentOptions.Left, bold: true);
+            // Title: 38px bold (clean, crisp, authoritative, non-overlapping)
+            var titleLbl = UIHelper.MakeLabel(hindiLabelName, contentCol, englishTitle, 38, Hex("#0A192F"), TextAlignmentOptions.Left, bold: true);
             titleLbl.lineSpacing = 1.05f;
             titleLbl.textWrappingMode = TextWrappingModes.Normal;
             titleLbl.overflowMode = TextOverflowModes.Overflow;
-            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: -1, minHeight: 48);
+            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: -1, minHeight: 44);
 
-            // Subtitle: 34px (clear, legible, comfortable 6px distance from title)
-            var subLbl = UIHelper.MakeLabel(engLabelName, contentCol, subtitle, 34, Hex("#334155"), TextAlignmentOptions.Left);
+            // Subtitle: 28px (clear, legible, comfortable distance from title)
+            var subLbl = UIHelper.MakeLabel(engLabelName, contentCol, subtitle, 28, Hex("#334155"), TextAlignmentOptions.Left);
             subLbl.lineSpacing = 1.12f;
             subLbl.textWrappingMode = TextWrappingModes.Normal;
             subLbl.overflowMode = TextOverflowModes.Overflow;
-            UIHelper.SetLayout(subLbl.gameObject, preferredHeight: -1, minHeight: 38);
+            UIHelper.SetLayout(subLbl.gameObject, preferredHeight: -1, minHeight: 34);
 
             // Right: Rounded Colored "Start" Button + Chevron side-by-side
             var rightCol = UIHelper.MakeHorizontal("RightCol", hlg, 10, childForceWidth: false, childForceHeight: false);
@@ -681,8 +681,8 @@ namespace SurakshaAR.UI.Builders
             startBtnImg.color = btnBgColor;
             UIHelper.SetImageRoundedSprite(startBtnImg, 18);
 
-            // Start button text: 32px bold
-            var startLbl = UIHelper.MakeLabel(statusLabelName, startBtnGO, "शुरू करें", 32, Color.white, TextAlignmentOptions.Center, bold: true);
+            // Start button text: 28px bold
+            var startLbl = UIHelper.MakeLabel(statusLabelName, startBtnGO, "Start >", 28, Color.white, TextAlignmentOptions.Center, bold: true);
             UIHelper.Stretch(startLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
 
             // Right chevron `>`

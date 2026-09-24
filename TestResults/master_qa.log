@@ -1,0 +1,1400 @@
+VBCSCompilerPreWarmer: pre-warm launched (dotnet PID 20456)
+VBCSCompiler prewarm took 7.88 ms
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.6/respin/6000.6.0f1-fa21a270ab12' branch; Version is '6000.6.0f1 (f7f8ed4d1e24) revision 16251117'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-MP2NQ" at "2026-09-19T18:58:42.0328248Z"
+OS: 'Windows 11  (10.0.26200) CoreSingleLanguage' Language: 'en' Physical Memory: 11995 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-09-19T18:58:42Z
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 7044, path: "C:/Program Files/Unity Hub/UnityLicensingClient_V1/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.3+d7ffd15
+  Session Id:              ef5a64920bf946bda6390eebe7de23f6
+  Correlation Id:          89f436bd8959fc60fa6b2e78a64ffb2f
+  External correlation Id: 81613497260611000
+  Machine Id:              DfsKgPorDtWx2iet2rMg1y4vXIA=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-MP2NQ" (connect: 0.00s, validation: 0.00s, handshake: 0.06s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-MP2NQ-notifications" at "2026-09-19T18:58:42.0949796Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 13469962889620-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.08s
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.6.0f1\Editor\Unity.exe
+-batchmode
+-quit
+-projectPath
+c:\project\surakshaAR
+-executeMethod
+SurakshaAR.Editor.MasterQATestSuite.RunAllTestsBatch
+-logFile
+c:\project\surakshaAR\TestResults\master_qa.log
+Successfully changed project path to: c:\project\surakshaAR
+C:/project/surakshaAR
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-remapper-allocator-initial-capacity=32768"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-main-allocator-mimalloc-enabled=1"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+Logging is directed to a specific file, skipping project log.
+Player connection [19996]  Target information:
+
+Player connection [19996]  * "[IP] 172.16.48.160 [Port] 55504 [Flags] 2 [Guid] 2792172977 [EditorId] 2792172977 [Version] 1048832 [Id] WindowsEditor(7,krishnadangi) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [19996]  * "[IP] 169.254.136.248 [Port] 55504 [Flags] 2 [Guid] 2792172977 [EditorId] 2792172977 [Version] 1048832 [Id] WindowsEditor(7,krishnadangi) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [19996] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [19996] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-13492" after 0.3 seconds.
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+Initialising UDS system complete:
+  - System type: Client
+  - Resource namespace: 2173941a58b4f39d1f6d79f3f084606f
+  - Shared memory size: 1073741824
+  - Command buffer id: 1052576
+  - Command buffer size: 8192
+  - Hashmap size: 4194304
+  - Service connected: false
+Launching Unity Data Store - C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/Tools/Unity.DataStore.exe 
+Unity Data Store artifact dir = Library/DataStore, working dir = C:/project/surakshaAR[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Unity Data Store running and initialised
+[Licensing::Client] Successfully resolved entitlement details
+Initialize engine version: 6000.6.0f1 (f7f8ed4d1e24)
+[EntityIdStore] init: VM path (explicit commit), pageSize=4096, blockCount=1048576, entitiesPerBlock=256, slots reserved=4294967296 bytes
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/project/surakshaAR/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 2050 (ID=0x25ed)
+    Vendor:   NVIDIA
+    VRAM:     3964 MB
+    Driver:   32.0.15.8186
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/BCLExtensions/runtime/netstandard2.1'
+Mono path[2] = 'C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56492
+CodeReloadManager initialized
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Registered in 0.002946 seconds.
+Native extension for Android target not found
+Native extension for WindowsStandalone target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Scripting: successfully reloaded assembly
+- Finished resetting the current domain, in  0.786 seconds
+Domain Reload Profiling: 1471ms
+	BeginReloadAssembly (184ms)
+		CreateAndSetChildDomain (12ms)
+	RebuildCommonClasses (8ms)
+	RebuildNativeTypeToScriptingClass (16ms)
+	initialDomainReloadingComplete (90ms)
+	LoadAllAssembliesAndSetupDomain (385ms)
+		LoadAssemblies (166ms)
+		TypeCache.Refresh (255ms)
+			TypeCache.ScanAssembly (238ms)
+		AnalyzeDomain (1ms)
+	FinalizeReload (787ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (12ms)
+			BeforeProcessingInitializeOnLoad (119ms)
+			ProcessInitializeOnLoadAttributes (155ms)
+			ProcessInitializeOnLoadMethodAttributes (257ms)
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 55 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ai.navigation@2.0.14 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.ai.navigation@134dd6a3b97b)
+    com.unity.ide.rider@3.0.38 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.ide.rider@1f60b3138684)
+    com.unity.ide.visualstudio@2.0.26 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.ide.visualstudio@a99d56dec63f)
+    com.unity.inputsystem@1.20.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.inputsystem@7a4e1a2a8194)
+    com.unity.xr.arcore@6.6.2 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.xr.arcore@48fb51f3ca76)
+    com.unity.xr.arfoundation@6.6.2 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.xr.arfoundation@d57b0b4d336a)
+    com.unity.xr.legacyinputhelpers@3.0.1 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.xr.legacyinputhelpers@3f62d634f63b)
+    com.unity.xr.core-utils@2.6.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.xr.core-utils@a8b900321199)
+    com.unity.xr.management@4.7.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.xr.management@2ad85c7dd480)
+  Built-in packages:
+    com.unity.2d.sprite@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.2d.sprite@947350d67f82)
+    com.unity.2d.tilemap@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.2d.tilemap@639ca1d99254)
+    com.unity.test-framework@1.8.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.test-framework@7a3849e09bd0)
+    com.unity.timeline@6.6.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.timeline@281d5f7e7d7d)
+    com.unity.ugui@2.6.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.ugui@23caec89ae27)
+    com.unity.modules.accessibility@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.physics2d)
+    com.unity.modules.physicscore2d@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.physicscore2d)
+    com.unity.modules.screencapture@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.terrainphysics)
+    com.unity.modules.tetgen@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.tetgen)
+    com.unity.modules.tilemap@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.tilemap)
+    com.unity.modules.timelinefoundation@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.timelinefoundation)
+    com.unity.modules.ui@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.umbra)
+    com.unity.modules.unitywebrequest@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.video)
+    com.unity.modules.wind@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.hierarchycore)
+    com.unity.mathematics@1.4.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.mathematics@8306a64d0cd6)
+    com.unity.editorcoroutines@6.6.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.editorcoroutines@8cd72baa102a)
+    com.unity.modules.unityanalytics@1.0.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.modules.unityanalytics)
+    com.unity.ext.nunit@2.1.0 (location: C:\project\surakshaAR\Library\PackageCache\com.unity.ext.nunit@0198eae3b53e)
+[Subsystems] Looking for new subsystems at path C:\project\surakshaAR\Library\PackageCache\com.unity.xr.arfoundation@d57b0b4d336a
+[Subsystems] Novel subsystem found at Library/PackageCache/com.unity.xr.arfoundation@d57b0b4d336a/Runtime/UnitySubsystemsManifest.json
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/project/surakshaAR/Assets
+[Subsystems] Discovering subsystems at path C:\project\surakshaAR\Library\PackageCache\com.unity.xr.arfoundation@d57b0b4d336a
+[Subsystems] No descriptors matched for  examples in Library/PackageCache/com.unity.xr.arfoundation@d57b0b4d336a/Runtime/UnitySubsystemsManifest.json.
+[Subsystems] 1 'inputs' descriptors matched in Library/PackageCache/com.unity.xr.arfoundation@d57b0b4d336a/Runtime/UnitySubsystemsManifest.json
+[Subsystems] No descriptors matched for  displays in Library/PackageCache/com.unity.xr.arfoundation@d57b0b4d336a/Runtime/UnitySubsystemsManifest.json.
+[Subsystems] 1 'meshings' descriptors matched in Library/PackageCache/com.unity.xr.arfoundation@d57b0b4d336a/Runtime/UnitySubsystemsManifest.json
+[Package Manager] Done registering packages in 0.05 seconds
+Starting: C:\Program Files\Unity\Hub\Editor\6000.6.0f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1300b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/project/surakshaAR
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 0s234ms
+[545/684    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra build success (0.20 seconds), 1 items updated, 684 evaluated
+AssetDatabase: script compilation time: 0.687790s
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for Android target not found
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Scripting: successfully reloaded assembly
+- Finished resetting the current domain, in  0.687 seconds
+Domain Reload Profiling: 1537ms
+	BeginReloadAssembly (370ms)
+		DisableScriptedObjects (30ms)
+		CreateAndSetChildDomain (150ms)
+	RebuildCommonClasses (9ms)
+	RebuildNativeTypeToScriptingClass (16ms)
+	initialDomainReloadingComplete (55ms)
+	LoadAllAssembliesAndSetupDomain (398ms)
+		LoadAssemblies (278ms)
+		TypeCache.Refresh (68ms)
+			TypeCache.ScanAssembly (58ms)
+		AnalyzeDomain (35ms)
+			BuildScriptInfoCaches (31ms)
+			ResolveRequiredComponents (3ms)
+	FinalizeReload (688ms)
+		SetupLoadedEditorAssemblies (0ms)
+			LogAssemblyErrors (3ms)
+			InitializePlatformSupportModulesInManaged (8ms)
+			BeforeProcessingInitializeOnLoad (124ms)
+			ProcessInitializeOnLoadAttributes (175ms)
+			ProcessInitializeOnLoadMethodAttributes (93ms)
+			AfterProcessingInitializeOnLoad (8ms)
+		AwakeInstancesAfterBackupRestoration (44ms)
+Starting new worker id: 0 with log in C:/project/surakshaAR/Logs/AssetImportWorkerHW0.log
+
+Asset Pipeline Refresh (id=db6f19c377680ca44a78eb0da682827c): Total: 2.656 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	(Values over 0.05ms)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=950 ms
+		Asset DB Callback time: managed=33 ms, native=56 ms
+		Scripting: domain reloads=1, domain reload time=889 ms, compile time=692 ms, other=34 ms
+		Project Asset Count: scripts=818, non-scripts=1143
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokePackagesCallback: 58.045ms
+	ApplyChangesToAssetFolders: 0.583ms
+	Scan: 72.623ms
+	Collect global state as custom dependencies: 9.079ms
+	CategorizeScriptCompilationAssets: 15.059ms
+	ProcessAssetsWithTransientArtifactChanges: 39.680ms
+	CategorizeAssets: 21.496ms
+	CompileScripts: 691.902ms
+	ImportOutOfDateAssets: 707.363ms (693.421ms without children)
+		UnloadImportedAssets: 0.109ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.429ms
+		ImportSchedulerStart: 13.387ms
+	PostProcessAllAssets: 33.251ms
+		MonoPostProcessAllAssets: 33.050ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 11.211ms
+			SyncVS.PostprocessSyncProject 5.081ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 0.938ms
+			EditModeScopePostprocessor.OnPostprocessAllAssets 0.907ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.440ms
+			ProjectSettingsPostprocessor.OnPostprocessAllAssets 0.426ms
+			InputActionAssetPostprocessor.OnPostprocessAllAssets 0.395ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.324ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.312ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.134ms
+	UnloadStreamsBegin: 1.373ms
+	PersistCurrentRevisions: 0.099ms
+	GenerateScriptTypeHashes: 2.686ms
+	GenerateScriptTypeSerializationHashes: 5.278ms
+	Untracked: 999.784ms
+
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.01 seconds
+Scanning for USB devices : 2.006ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-surakshaAR
+Unloading 11 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 2845 unused Assets / (3.0 MB). Loaded Objects now: 3617.
+Memory consumption went from 284.3 MB to 281.3 MB.
+Total: 15.884000 ms (FindLiveObjects: 0.718300 ms CreateObjectMapping: 0.390800 ms MarkObjects: 9.189500 ms  DeleteObjects: 5.262700 ms)
+
+[LOCAL DB] Initialized. Users: 0, Attempts: 0, SyncQueue: 0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Data.LocalDatabaseService:InitializeDatabase () (at Assets/SurakshaAR/Scripts/Data/LocalDatabaseService.cs:149)
+SurakshaAR.Data.LocalDatabaseService:Awake () (at Assets/SurakshaAR/Scripts/Data/LocalDatabaseService.cs:136)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+SurakshaAR.Editor.MasterQATestSuite:EnsureAppManagers () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:727)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:94)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Scripts/Data/LocalDatabaseService.cs Line: 149)
+
+[LOCAL DB] Initialized. Users: 0, Attempts: 0, SyncQueue: 0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Data.LocalDatabaseService:InitializeDatabase () (at Assets/SurakshaAR/Scripts/Data/LocalDatabaseService.cs:149)
+SurakshaAR.Editor.MasterQATestSuite:EnsureAppManagers () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:728)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:94)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Scripts/Data/LocalDatabaseService.cs Line: 149)
+
+[UIManager] Subscribed to OnLanguageChanged.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Core.UIManager/<SubscribeToLocalizationWhenReady>d__24:MoveNext () (at Assets/SurakshaAR/Scripts/Core/UIManager.cs:82)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+UnityEngine.MonoBehaviour:StartCoroutineManaged2 (System.Collections.IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SurakshaAR.Core.UIManager:Awake () (at Assets/SurakshaAR/Scripts/Core/UIManager.cs:66)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+SurakshaAR.Editor.MasterQATestSuite:EnsureAppManagers () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:744)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:94)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Scripts/Core/UIManager.cs Line: 82)
+
+[PASS] TEST-01: English Canonical Language Coverage — Total Keys: 303, Missing English: 0, Active: English
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:111)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[UIManager] Language changed to Hindi — refreshing screen.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Core.UIManager:OnLanguageChanged (SurakshaAR.Data.AppLanguage) (at Assets/SurakshaAR/Scripts/Core/UIManager.cs:88)
+SurakshaAR.Localization.LocalizationManager:SetLanguage (SurakshaAR.Data.AppLanguage) (at Assets/SurakshaAR/Scripts/Localization/LocalizationManager.cs:64)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:123)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Scripts/Core/UIManager.cs Line: 88)
+
+[PASS] TEST-02: Hindi Devanagari & Industrial Wording Audit — Total Keys: 303, Missing Hindi: 0, English Leaks: 0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:150)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[UIManager] Language changed to Santali — refreshing screen.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Core.UIManager:OnLanguageChanged (SurakshaAR.Data.AppLanguage) (at Assets/SurakshaAR/Scripts/Core/UIManager.cs:88)
+SurakshaAR.Localization.LocalizationManager:SetLanguage (SurakshaAR.Data.AppLanguage) (at Assets/SurakshaAR/Scripts/Localization/LocalizationManager.cs:64)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:162)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Scripts/Core/UIManager.cs Line: 88)
+
+[PASS] TEST-03: Santali Genuine Ol Chiki Audit — Verified Ol Chiki: 295, Clean Empty Fallbacks: 8, Invalid/Romanized: 0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:194)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[UIManager] Language changed to English — refreshing screen.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Core.UIManager:OnLanguageChanged (SurakshaAR.Data.AppLanguage) (at Assets/SurakshaAR/Scripts/Core/UIManager.cs:88)
+SurakshaAR.Localization.LocalizationManager:SetLanguage (SurakshaAR.Data.AppLanguage) (at Assets/SurakshaAR/Scripts/Localization/LocalizationManager.cs:64)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:206)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Scripts/Core/UIManager.cs Line: 88)
+
+[UIManager] Language changed to Hindi — refreshing screen.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Core.UIManager:OnLanguageChanged (SurakshaAR.Data.AppLanguage) (at Assets/SurakshaAR/Scripts/Core/UIManager.cs:88)
+SurakshaAR.Localization.LocalizationManager:SetLanguage (SurakshaAR.Data.AppLanguage) (at Assets/SurakshaAR/Scripts/Localization/LocalizationManager.cs:64)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:209)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Scripts/Core/UIManager.cs Line: 88)
+
+[UIManager] Language changed to Santali — refreshing screen.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Core.UIManager:OnLanguageChanged (SurakshaAR.Data.AppLanguage) (at Assets/SurakshaAR/Scripts/Core/UIManager.cs:88)
+SurakshaAR.Localization.LocalizationManager:SetLanguage (SurakshaAR.Data.AppLanguage) (at Assets/SurakshaAR/Scripts/Localization/LocalizationManager.cs:64)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:212)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Scripts/Core/UIManager.cs Line: 88)
+
+[UIManager] Language changed to English — refreshing screen.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Core.UIManager:OnLanguageChanged (SurakshaAR.Data.AppLanguage) (at Assets/SurakshaAR/Scripts/Core/UIManager.cs:88)
+SurakshaAR.Localization.LocalizationManager:SetLanguage (SurakshaAR.Data.AppLanguage) (at Assets/SurakshaAR/Scripts/Localization/LocalizationManager.cs:64)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:215)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Scripts/Core/UIManager.cs Line: 88)
+
+[PASS] TEST-04: Live Dynamic Language Switching Without Restart — EN: 'Submit' -> HI: 'जमा करें' -> SAT: 'ᱡᱚᱢᱟ ᱢᱮ' -> EN: 'Submit'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:219)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[PASS] TEST-05: Profile Back Button Navigation — btn-back Found: True, Click Event Dispatched: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:256)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[PASS] TEST-06: Profile Edit Flow & Modal Invocation — btn-edit Found: True, Modal Active: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:279)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[PASS] TEST-07: Personal Information Panel Opening — btn-personal Found: True, PersonalInfoModal Active: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:301)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[PASS] TEST-08: Safety Preferences Panel & Controls — btn-safety Found: True, SafetyPreferencesModal Active: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:323)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+HomeDashboardScreen: Destroy may not be called from edit mode! Use DestroyImmediate instead.
+Destroying an object in edit mode destroys it permanently
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.Object:Destroy (UnityEngine.Object,single)
+UnityEngine.Object:Destroy (UnityEngine.Object)
+SurakshaAR.Core.UIManager:ShowScreen (SurakshaAR.Core.ScreenId,object) (at Assets/SurakshaAR/Scripts/Core/UIManager.cs:109)
+SurakshaAR.Screens.ProfileController/<>c:<OnShow>b__12_4 () (at Assets/SurakshaAR/Scripts/Screens/ProfileController.cs:144)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:341)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+[Assets/SurakshaAR/Editor/MasterQATestSuite.cs line 341]
+
+[PASS] TEST-09: My Certificates Navigation Flow — btn-certs Found: True, Navigation Invoked: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:344)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+CertificateScreen: Destroy may not be called from edit mode! Use DestroyImmediate instead.
+Destroying an object in edit mode destroys it permanently
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.Object:Destroy (UnityEngine.Object,single)
+UnityEngine.Object:Destroy (UnityEngine.Object)
+SurakshaAR.Core.UIManager:ShowScreen (SurakshaAR.Core.ScreenId,object) (at Assets/SurakshaAR/Scripts/Core/UIManager.cs:109)
+SurakshaAR.Screens.ProfileController/<>c:<OnShow>b__12_5 () (at Assets/SurakshaAR/Scripts/Screens/ProfileController.cs:151)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:362)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+[Assets/SurakshaAR/Editor/MasterQATestSuite.cs line 362]
+
+[PASS] TEST-10: Training History Navigation Flow — btn-history Found: True, Navigation Invoked: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:365)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[PASS] TEST-11: App Settings Panel & Preferences — btn-settings Found: True, AppSettingsModal Active: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:387)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[AUTH SESSION] Session established for user 'JH-MN-TEST' (Role: worker, WorkerID: 99)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Core.AuthSession:SetSession (string,string,string,int) (at Assets/SurakshaAR/Scripts/Core/AuthSession.cs:65)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:398)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Scripts/Core/AuthSession.cs Line: 65)
+
+[AUTH SESSION] Session cleared.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Core.AuthSession:ClearSession () (at Assets/SurakshaAR/Scripts/Core/AuthSession.cs:82)
+SurakshaAR.Screens.ProfileController/<>c:<OnShow>b__12_7 () (at Assets/SurakshaAR/Scripts/Screens/ProfileController.cs:168)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:406)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Scripts/Core/AuthSession.cs Line: 82)
+
+ProgressScreen: Destroy may not be called from edit mode! Use DestroyImmediate instead.
+Destroying an object in edit mode destroys it permanently
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.Object:Destroy (UnityEngine.Object,single)
+UnityEngine.Object:Destroy (UnityEngine.Object)
+SurakshaAR.Core.UIManager:ShowScreen (SurakshaAR.Core.ScreenId,object) (at Assets/SurakshaAR/Scripts/Core/UIManager.cs:109)
+SurakshaAR.Screens.ProfileController/<>c:<OnShow>b__12_7 () (at Assets/SurakshaAR/Scripts/Screens/ProfileController.cs:181)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:406)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+[Assets/SurakshaAR/Editor/MasterQATestSuite.cs line 406]
+
+[PASS] TEST-12: Secure Logout Session Teardown — btnLogout Found: True, Session Cleared: True, Worker Reset: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:412)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[PASS] TEST-13: Notifications Screen Loading & Back Action — Screen built successfully, btn-back present: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:434)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[PASS] TEST-14: Honest Zero-Data Notifications Empty State — Empty Container Active: True, Heading: 'No new notifications', Sub: 'You're all caught up!'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:453)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[PASS] TEST-15: Bottom Navigation Item: Home — nav-home Present: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:477)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[PASS] TEST-16: Bottom Navigation Item: Learn — nav-learn Present: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:478)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[PASS] TEST-17: Bottom Navigation Item: My Progress — nav-progress Present: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:479)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[PASS] TEST-18: Bottom Navigation Item: Certificates — nav-certs Present: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:480)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[PASS] TEST-19: Real Authenticated Profile Identity Preservation — Displayed Name: 'Sunil Marandi', Displayed ID: 'Employee ID JH-MN-008811'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:506)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+Worker ready: AssetImportWorkerHW0 0
+[PASS] TEST-20: Guest Session Identity Isolation — IsGuestMode: True, Displayed ID: 'Guest ID GST-01'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:527)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+Opening scene 'Assets/AR_Fire_foundation/scenes/FireTraining.unity'
+Unloading 26 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/AR_Fire_foundation/scenes/FireTraining.unity'
+	Deserialize:            30.088 ms
+	Integration:            63.138 ms
+	Integration of assets:  0.772 ms
+	Thread Wait Time:       -0.741 ms
+	Total Operation Time:   93.257 ms
+Unloading 31 unused Assets / (7.1 KB). Loaded Objects now: 4044.
+Memory consumption went from 317.4 MB to 317.4 MB.
+Total: 8.272300 ms (FindLiveObjects: 0.336200 ms CreateObjectMapping: 0.066600 ms MarkObjects: 7.534600 ms  DeleteObjects: 0.127000 ms)
+
+[PASS] TEST-21: Fire AR Module Initialization & Components — Flow: True, Fire: True, Grip: True, Pin: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:566)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[PASS] TEST-22: Fire AR UI Worker Readability Scaling — Typography verified (Main 36-42px, Step 28-34px, Timers 32-38px, Action 24-28px)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:573)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[TRAINING EVENT] [COMMON EVENT] SCENARIO_STARTED: module=fire, scenario=fire_drill_01
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseScenarioStarted (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:206)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:79)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:576)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[FIRE ADAPTER] Started Fire Scenario: fire_drill_01 for Worker ID: 1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Data.FireAssessmentAdapter:StartScenario (string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:81)
+FireScenarioFlowManager:TransitionToStep1 () (at Assets/Scripts/FireScenarioFlowManager.cs:927)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:576)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs Line: 81)
+
+[TRAINING EVENT] [COMMON EVENT] CORRECT_ACTION: aim_at_base_of_fire, responseTime=0.10s
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseCorrectAction (string,single) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:239)
+SurakshaAR.Data.FireAssessmentAdapter:RecordCorrectAction (string,single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:297)
+SurakshaAR.Data.FireAssessmentAdapter:RecordAimAtBase (bool,single) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:240)
+FireScenarioFlowManager:OnAimConfirmed () (at Assets/Scripts/FireScenarioFlowManager.cs:1237)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:586)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[PASS] TEST-23: Strict 6-Step SOP Workflow Sequence Enforcement — Sequence: S1(True)->S2(True)->S3(True)->S4(True)->S5(True)->S6(True)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:590)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[TRAINING EVENT] WrongAction [minor]: wrong_action - Incorrect sequence attempt
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseWrongAction (string,string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:168)
+SurakshaAR.Data.FireAssessmentAdapter:RecordWrongAction (string,string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:304)
+FireScenarioFlowManager:DeductScore (int,string,bool) (at Assets/Scripts/FireScenarioFlowManager.cs:266)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:595)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[PASS] TEST-24: Mistake Penalization & Mark Deduction Interlock — Score Before: 85, Score After Mistake: 80 (Deduction: 5 pts)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:598)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[ExtinguisherGripInteraction] Safety pin is still inserted! Cannot spray.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ExtinguisherGripInteraction:StartGrip () (at Assets/Scripts/ExtingguisherGripInteraction.cs:356)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:612)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/Scripts/ExtingguisherGripInteraction.cs Line: 356)
+
+[TRAINING EVENT] [COMMON EVENT] UNSAFE_ACTION: unsafe_action - Remove the safety pin before using the handle.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseUnsafeAction (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:245)
+SurakshaAR.Data.FireAssessmentAdapter:RecordUnsafeAction (string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:311)
+FireScenarioFlowManager:DeductScore (int,string,bool) (at Assets/Scripts/FireScenarioFlowManager.cs:261)
+FireScenarioFlowManager:HandlePrematureGripAttempt () (at Assets/Scripts/FireScenarioFlowManager.cs:357)
+FireScenarioFlowManager:HandlePinRemovalRequired () (at Assets/Scripts/FireScenarioFlowManager.cs:1207)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+ExtinguisherGripInteraction:StartGrip () (at Assets/Scripts/ExtingguisherGripInteraction.cs:357)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:612)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] [COMMON EVENT] UNSAFE_ACTION: lever_squeezed_before_pin - Remove the safety pin before using the handle.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseUnsafeAction (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:245)
+SurakshaAR.Data.FireAssessmentAdapter:RecordUnsafeAction (string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:311)
+FireScenarioFlowManager:HandlePrematureGripAttempt () (at Assets/Scripts/FireScenarioFlowManager.cs:358)
+FireScenarioFlowManager:HandlePinRemovalRequired () (at Assets/Scripts/FireScenarioFlowManager.cs:1207)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+ExtinguisherGripInteraction:StartGrip () (at Assets/Scripts/ExtingguisherGripInteraction.cs:357)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:612)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] [COMMON EVENT] SEQUENCE_ERROR: Expected 'remove_pin', performed 'grip_handle'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseSequenceError (string,string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:251)
+SurakshaAR.Data.FireAssessmentAdapter:RecordSequenceError (string,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:325)
+FireScenarioFlowManager:HandlePrematureGripAttempt () (at Assets/Scripts/FireScenarioFlowManager.cs:359)
+FireScenarioFlowManager:HandlePinRemovalRequired () (at Assets/Scripts/FireScenarioFlowManager.cs:1207)
+UnityEngine.Events.InvokableCall:Invoke ()
+UnityEngine.Events.UnityEvent:Invoke ()
+ExtinguisherGripInteraction:StartGrip () (at Assets/Scripts/ExtingguisherGripInteraction.cs:357)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:612)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+PIN REMOVED
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FirePinInteraction:RemovePin () (at Assets/Scripts/FirePinInteraction.cs:184)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:615)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/Scripts/FirePinInteraction.cs Line: 184)
+
+equipment_selected
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FirePinInteraction:RemovePin () (at Assets/Scripts/FirePinInteraction.cs:185)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:615)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/Scripts/FirePinInteraction.cs Line: 185)
+
+Safety pin removed. Extinguisher is READY.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FirePinInteraction:RemovePin () (at Assets/Scripts/FirePinInteraction.cs:186)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:615)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/Scripts/FirePinInteraction.cs Line: 186)
+
+[ExtinguisherGripInteraction] Grip pressed -> Spray Started
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ExtinguisherGripInteraction:StartGrip () (at Assets/Scripts/ExtingguisherGripInteraction.cs:372)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:616)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/Scripts/ExtingguisherGripInteraction.cs Line: 372)
+
+[DryPowderSpray] StartSpray called. sprayParticles=True isPlaying=True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+DryPowderSpray:StartSpray () (at Assets/Scripts/DryPowderSpray.cs:177)
+ExtinguisherGripInteraction:StartGrip () (at Assets/Scripts/ExtingguisherGripInteraction.cs:382)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:616)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/Scripts/DryPowderSpray.cs Line: 177)
+
+[ExtinguisherGripInteraction] Grip released -> Spray Stopped
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ExtinguisherGripInteraction:StopGrip () (at Assets/Scripts/ExtingguisherGripInteraction.cs:430)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:618)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/Scripts/ExtingguisherGripInteraction.cs Line: 430)
+
+[PASS] TEST-25: Extinguisher Safety Pin Interlock — Spray Blocked With Pin: True, Spray Active After Removal: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:621)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[SurakshaAR] FireExtinguishable: Fire successfully extinguished!
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FireExtinguishable:ExtinguishFire () (at Assets/Scripts/FireExtinguishable1.cs:409)
+FireExtinguishable:NotifyParticleCollision (bool,single,single) (at Assets/Scripts/FireExtinguishable1.cs:171)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:632)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/Scripts/FireExtinguishable1.cs Line: 409)
+
+[PASS] TEST-26: 10-Second Continuous Spray & Reset On Contact Loss — Alive at 5s: True, Reset on Interrupt: True, Extinguished at 10s: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:636)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[TELEMETRY] Logged event 'assessment_started' (Total in session: 1)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Data.AssessmentTelemetryManager:LogEvent (SurakshaAR.Data.AssessmentEvent) (at Assets/SurakshaAR/Scripts/Data/AssessmentTelemetryManager.cs:131)
+SurakshaAR.Data.AssessmentTelemetryManager:StartSession (string) (at Assets/SurakshaAR/Scripts/Data/AssessmentTelemetryManager.cs:115)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:646)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Scripts/Data/AssessmentTelemetryManager.cs Line: 131)
+
+[TELEMETRY] Assessment session started: sess_0f0b33224bb for scenario: fire
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Data.AssessmentTelemetryManager:StartSession (string) (at Assets/SurakshaAR/Scripts/Data/AssessmentTelemetryManager.cs:120)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:646)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Scripts/Data/AssessmentTelemetryManager.cs Line: 120)
+
+[TRAINING EVENT] EvacuationStarted: Route=emergency_exit_A, Safe=True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseEvacuationStarted (string,bool) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:180)
+SurakshaAR.Data.FireAssessmentAdapter:RecordEvacuation (bool,string) (at Assets/SurakshaAR/Scripts/Data/FireAssessmentAdapter.cs:280)
+FireScenarioFlowManager:CompleteScenario (bool) (at Assets/Scripts/FireScenarioFlowManager.cs:1509)
+FireScenarioFlowManager:CompleteScenario () (at Assets/Scripts/FireScenarioFlowManager.cs:1500)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:647)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TRAINING EVENT] TrainingCompleted
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TrainingEventManager:Log (string) (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:269)
+TrainingEventManager:RaiseTrainingCompleted () (at Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs:156)
+FireScenarioFlowManager:CompleteScenario (bool) (at Assets/Scripts/FireScenarioFlowManager.cs:1536)
+FireScenarioFlowManager:CompleteScenario () (at Assets/Scripts/FireScenarioFlowManager.cs:1500)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:647)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/AR_Fire_foundation/scripts/App/TrainingEventManager.cs Line: 269)
+
+[TELEMETRY] Logged event 'assessment_completed' (Total in session: 2)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Data.AssessmentTelemetryManager:LogEvent (SurakshaAR.Data.AssessmentEvent) (at Assets/SurakshaAR/Scripts/Data/AssessmentTelemetryManager.cs:131)
+SurakshaAR.Data.AssessmentTelemetryManager:CompleteSession () (at Assets/SurakshaAR/Scripts/Data/AssessmentTelemetryManager.cs:189)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:648)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Scripts/Data/AssessmentTelemetryManager.cs Line: 131)
+
+[TELEMETRY] Session finalized. Overall: 50.0%, Passed: False, Critical: 0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Data.AssessmentTelemetryManager:CompleteSession () (at Assets/SurakshaAR/Scripts/Data/AssessmentTelemetryManager.cs:214)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:648)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Scripts/Data/AssessmentTelemetryManager.cs Line: 214)
+
+[PASS] TEST-27: Fire Completion Event Propagation to Assessment — Telemetry Result Scenario: 'fire', Completed: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:650)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[PASS] TEST-28: AR Runtime Metrics Propagation to AppState — AppState Score: 70, Extinguished: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:657)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[PASS] TEST-29: Certificate Eligibility Rule Matrix Verification — Score 85% Eligible: True, Score 60% Blocked: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:671)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+[PASS] TEST-30: Zero Unity Engine Compilation & Runtime Errors — All Preceding Tests Passed: 29/29, Regressions: 0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:<RunAllTests>g__Record|5_0 (string,string,bool,string,SurakshaAR.Editor.MasterQATestSuite/<>c__DisplayClass5_0&) (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:90)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:689)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 90)
+
+================================================================================
+[SurakshaAR] MASTER 30-POINT QA TEST SUITE EXECUTION
+Timestamp: 2026-09-20 00:28:51
+================================================================================
+[PASS] TEST-01: English Canonical Language Coverage
+       Detail: Total Keys: 303, Missing English: 0, Active: English
+[PASS] TEST-02: Hindi Devanagari & Industrial Wording Audit
+       Detail: Total Keys: 303, Missing Hindi: 0, English Leaks: 0
+[PASS] TEST-03: Santali Genuine Ol Chiki Audit
+       Detail: Verified Ol Chiki: 295, Clean Empty Fallbacks: 8, Invalid/Romanized: 0
+[PASS] TEST-04: Live Dynamic Language Switching Without Restart
+       Detail: EN: 'Submit' -> HI: 'जमा करें' -> SAT: 'ᱡᱚᱢᱟ ᱢᱮ' -> EN: 'Submit'
+[PASS] TEST-05: Profile Back Button Navigation
+       Detail: btn-back Found: True, Click Event Dispatched: True
+[PASS] TEST-06: Profile Edit Flow & Modal Invocation
+       Detail: btn-edit Found: True, Modal Active: True
+[PASS] TEST-07: Personal Information Panel Opening
+       Detail: btn-personal Found: True, PersonalInfoModal Active: True
+[PASS] TEST-08: Safety Preferences Panel & Controls
+       Detail: btn-safety Found: True, SafetyPreferencesModal Active: True
+[PASS] TEST-09: My Certificates Navigation Flow
+       Detail: btn-certs Found: True, Navigation Invoked: True
+[PASS] TEST-10: Training History Navigation Flow
+       Detail: btn-history Found: True, Navigation Invoked: True
+[PASS] TEST-11: App Settings Panel & Preferences
+       Detail: btn-settings Found: True, AppSettingsModal Active: True
+[PASS] TEST-12: Secure Logout Session Teardown
+       Detail: btnLogout Found: True, Session Cleared: True, Worker Reset: True
+[PASS] TEST-13: Notifications Screen Loading & Back Action
+       Detail: Screen built successfully, btn-back present: True
+[PASS] TEST-14: Honest Zero-Data Notifications Empty State
+       Detail: Empty Container Active: True, Heading: 'No new notifications', Sub: 'You're all caught up!'
+[PASS] TEST-15: Bottom Navigation Item: Home
+       Detail: nav-home Present: True
+[PASS] TEST-16: Bottom Navigation Item: Learn
+       Detail: nav-learn Present: True
+[PASS] TEST-17: Bottom Navigation Item: My Progress
+       Detail: nav-progress Present: True
+[PASS] TEST-18: Bottom Navigation Item: Certificates
+       Detail: nav-certs Present: True
+[PASS] TEST-19: Real Authenticated Profile Identity Preservation
+       Detail: Displayed Name: 'Sunil Marandi', Displayed ID: 'Employee ID JH-MN-008811'
+[PASS] TEST-20: Guest Session Identity Isolation
+       Detail: IsGuestMode: True, Displayed ID: 'Guest ID GST-01'
+[PASS] TEST-21: Fire AR Module Initialization & Components
+       Detail: Flow: True, Fire: True, Grip: True, Pin: True
+[PASS] TEST-22: Fire AR UI Worker Readability Scaling
+       Detail: Typography verified (Main 36-42px, Step 28-34px, Timers 32-38px, Action 24-28px)
+[PASS] TEST-23: Strict 6-Step SOP Workflow Sequence Enforcement
+       Detail: Sequence: S1(True)->S2(True)->S3(True)->S4(True)->S5(True)->S6(True)
+[PASS] TEST-24: Mistake Penalization & Mark Deduction Interlock
+       Detail: Score Before: 85, Score After Mistake: 80 (Deduction: 5 pts)
+[PASS] TEST-25: Extinguisher Safety Pin Interlock
+       Detail: Spray Blocked With Pin: True, Spray Active After Removal: True
+[PASS] TEST-26: 10-Second Continuous Spray & Reset On Contact Loss
+       Detail: Alive at 5s: True, Reset on Interrupt: True, Extinguished at 10s: True
+[PASS] TEST-27: Fire Completion Event Propagation to Assessment
+       Detail: Telemetry Result Scenario: 'fire', Completed: True
+[PASS] TEST-28: AR Runtime Metrics Propagation to AppState
+       Detail: AppState Score: 70, Extinguished: True
+[PASS] TEST-29: Certificate Eligibility Rule Matrix Verification
+       Detail: Score 85% Eligible: True, Score 60% Blocked: True
+[PASS] TEST-30: Zero Unity Engine Compilation & Runtime Errors
+       Detail: All Preceding Tests Passed: 29/29, Regressions: 0
+================================================================================
+[SurakshaAR MASTER QA SUMMARY] 30 / 30 TESTS PASSED
+================================================================================
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTests () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:697)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:54)
+
+(Filename: Assets/SurakshaAR/Editor/MasterQATestSuite.cs Line: 697)
+
+MonoPathRemapper: Attempts to remap: 7604; Successful remaps: 0
+Serialized file version minimum: 23, current 23
+Curl error 42: Callback aborted
+Request timed out while processing request "https://public-cdn.cloud.unity3d.com/config/production", HTTP error code 0
+.[UnityConnect] Request timed out.
+Clearing [NotoSansDevanagari SDF] dynamic font asset data.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TMPro.EditorEventCallbacks/<>c:<InitializeFontAssetResourceChangeCallBacks>b__0_0 () (at ./Library/PackageCache/com.unity.ugui@23caec89ae27/Editor/TMP/TMP_EditorResourceManager.cs:36)
+UnityEditor.EditorApplication:Internal_EditorApplicationQuit ()
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:55)
+
+(Filename: ./Library/PackageCache/com.unity.ugui@23caec89ae27/Editor/TMP/TMP_EditorResourceManager.cs Line: 36)
+
+Clearing [NotoSansOlChiki SDF] dynamic font asset data.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TMPro.EditorEventCallbacks/<>c:<InitializeFontAssetResourceChangeCallBacks>b__0_0 () (at ./Library/PackageCache/com.unity.ugui@23caec89ae27/Editor/TMP/TMP_EditorResourceManager.cs:36)
+UnityEditor.EditorApplication:Internal_EditorApplicationQuit ()
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:55)
+
+(Filename: ./Library/PackageCache/com.unity.ugui@23caec89ae27/Editor/TMP/TMP_EditorResourceManager.cs Line: 36)
+
+Curl error 42: Callback aborted
+Killing ADB server in 2.1212344 seconds.
+Importing 'GUID: a1e9cad979233ac4896e141a31e23bf3 - Path: Assets/Resources/Fonts/NotoSansOlChiki SDF.asset' with importer (NativeFormatImporter)
+Imported 'GUID: a1e9cad979233ac4896e141a31e23bf3' -> (Import Result ID: 'b98c92f4abb372639f02e1ba3c9ac27d') in 0.011 seconds [static dependencies only]. Details - ImportResultOutputID=f99073e038a125152cef90cd24d224f2 DependenciesID=96608e566b68df769eecca6059ee6660 StaticDependenciesID=b2bf775ced6d126caba2ee1fda2b0735 
+Importing 'GUID: 872bd6c0aa7c704448fdb661e8d365a2 - Path: Assets/Resources/Fonts/NotoSansDevanagari SDF.asset' with importer (NativeFormatImporter)
+Imported 'GUID: 872bd6c0aa7c704448fdb661e8d365a2' -> (Import Result ID: 'd9ebb516eb1e0a71e594e1adcf3dcc9d') in 0.006 seconds [static dependencies only]. Details - ImportResultOutputID=6ac648ca588b199dd9744859f3401c84 DependenciesID=bd557dbc5b674f352e565241b15dacac StaticDependenciesID=158da6518eecfb443bb7e8410c676fb2 
+Asset Pipeline Refresh (id=852df6a3e946f514ea154ab9eafdaed5): Total: 0.115 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Call to StopSubsystems without an initialized manager.Please make sure wait for initialization to complete before calling this API.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEngine.XR.Management.XRManagerSettings:StopSubsystems () (at ./Library/PackageCache/com.unity.xr.management@2ad85c7dd480/Runtime/XRManagerSettings.cs:415)
+UnityEngine.XR.Management.XRManagerSettings:OnDisable () (at ./Library/PackageCache/com.unity.xr.management@2ad85c7dd480/Runtime/XRManagerSettings.cs:460)
+SurakshaAR.Editor.MasterQATestSuite:RunAllTestsBatch () (at Assets/SurakshaAR/Editor/MasterQATestSuite.cs:55)
+
+(Filename: ./Library/PackageCache/com.unity.xr.management@2ad85c7dd480/Runtime/XRManagerSettings.cs Line: 415)
+
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-MP2NQ-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-MP2NQ channel disconnected successfully.
+Lingering sessions upon destruction of worker manager
+Unity Data Store service was successfully shut down
+UDS shutting down local client system
+Shut down UDS service system complete
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+CodeReloadManager destroyed
+Checking for leaked weakptr:
+  Found no leaked weakptrs.
+[Package Manager] Server process was shutdown
+##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1789844340685,"processId":13492,"allocatedMemory":12964003,"memoryLabels":[{"Default":196176},{"Permanent":15516},{"NewDelete":70157},{"Thread":4167864},{"Manager":32453},{"VertexData":8},{"Geometry":816},{"Texture":24},{"Shader":851820},{"Material":24},{"GfxDevice":55968},{"Animation":952},{"FreeType":8},{"FontEngine":736},{"Physics":1970},{"Physics2D":16},{"Serialization":23136},{"Input":42840},{"JobScheduler":256},{"TextLib":280},{"Mono":48},{"ScriptingNativeRuntime":1225616},{"BaseObject":80544},{"Resource":1208},{"Renderer":2376},{"Transform":4685},{"File":7389},{"WebCam":616},{"Culling":32},{"Terrain":11442},{"Wind":24},{"STL":40},{"String":453675},{"StaticString":3808},{"Utility":2674262},{"Curl":1712},{"PoolAlloc":2168},{"AI":80},{"TypeTree":18701},{"ScriptManager":12640},{"CodeReload":448},{"RuntimeInitializeOnLoadManager":64},{"Sprites":102},{"SpriteAtlas":120},{"GI":7816},{"Director":8296},{"CloudService":7440},{"WebRequest":629},{"VR":49794},{"SceneManager":608},{"Video":64},{"LazyScriptCache":32},{"Camera":729},{"Secure":2377},{"SerializationCache":9256},{"APIUpdating":10320},{"Subsystems":192},{"VirtualTexturing":57888},{"StaticSafetyDebugInfo":278528},{"Analytics":768},{"Hierarchy":1188},{"UIElements":40},{"CoreStats":14456},{"Identifiers":7152},{"Gui":128},{"EditorUtility":104190},{"VersionControl":8},{"Undo":931},{"AssetDatabase":2374922},{"AssetImporter":40},{"EditorGi":328},{"UnityConnect":40404},{"Upm":1912},{"UpmDiagnostics":8},{"AssetCompliance":96},{"DrivenProperties":72},{"LocalIPC":260},{"ProfilerEditor":9746},{"CoreBusinessMetrics":3600},{"Windowing":456},{"Licensing":12757},{"AssetReference":32},{"IPCStream":32}]}
+~StackAllocator(ALLOC_TEMP_MAIN) m_LastAlloc not NULL. Did you forget to call FreeAllStackAllocations()? To get more information, run app with -diag-temp-memory-leak-validation cmd line argument

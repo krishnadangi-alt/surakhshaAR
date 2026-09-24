@@ -1,0 +1,194 @@
+{
+    "timestamp": "2026-09-23T07:15:15.7037521Z",
+    "total": 31,
+    "passed": 21,
+    "failed": 10,
+    "tests": [
+        {
+            "id": "TEST-00",
+            "name": "Android Native Locale Detection & LocaleResolver Mapping",
+            "passed": true,
+            "details": "hi-IN -> Hindi, sat-IN -> Santali, en-IN -> English, Detected: English"
+        },
+        {
+            "id": "TEST-01",
+            "name": "English Canonical Language Coverage",
+            "passed": true,
+            "details": "Total Keys: 395, Missing English: 0, Active: English"
+        },
+        {
+            "id": "TEST-02",
+            "name": "Hindi Devanagari & Industrial Wording Audit",
+            "passed": true,
+            "details": "Total Keys: 395, Missing Hindi: 0, English Leaks: 0"
+        },
+        {
+            "id": "TEST-03",
+            "name": "Santali Genuine Ol Chiki Audit",
+            "passed": true,
+            "details": "Verified Ol Chiki: 395, Clean Empty Fallbacks: 0, Invalid/Romanized: 0"
+        },
+        {
+            "id": "TEST-04",
+            "name": "Live Dynamic Language Switching Without Restart",
+            "passed": true,
+            "details": "EN: 'Submit' -> HI: 'जमा करें' -> SAT: 'ᱡᱚᱢᱟ ᱢᱮ' -> EN: 'Submit'"
+        },
+        {
+            "id": "TEST-05",
+            "name": "Profile Back Button Navigation",
+            "passed": true,
+            "details": "btn-back Found: True, Click Event Dispatched: True"
+        },
+        {
+            "id": "TEST-06",
+            "name": "Profile Edit Flow & Modal Invocation",
+            "passed": true,
+            "details": "btn-edit Found: True, Modal Active: True"
+        },
+        {
+            "id": "TEST-07",
+            "name": "Personal Information Panel Opening",
+            "passed": true,
+            "details": "btn-personal Found: True, PersonalInfoModal Active: True"
+        },
+        {
+            "id": "TEST-08",
+            "name": "Safety Preferences Panel & Controls",
+            "passed": true,
+            "details": "btn-safety Found: True, SafetyPreferencesModal Active: True"
+        },
+        {
+            "id": "TEST-09",
+            "name": "My Certificates Navigation Flow",
+            "passed": true,
+            "details": "btn-certs Found: True, Navigation Invoked: True"
+        },
+        {
+            "id": "TEST-10",
+            "name": "Training History Navigation Flow",
+            "passed": true,
+            "details": "btn-history Found: True, Navigation Invoked: True"
+        },
+        {
+            "id": "TEST-11",
+            "name": "App Settings Panel & Preferences",
+            "passed": true,
+            "details": "btn-settings Found: True, AppSettingsModal Active: True"
+        },
+        {
+            "id": "TEST-12",
+            "name": "Secure Logout Session Teardown",
+            "passed": true,
+            "details": "btnLogout Found: True, Session Cleared: True, Worker Reset: True"
+        },
+        {
+            "id": "TEST-13",
+            "name": "Notifications Screen Loading & Back Action",
+            "passed": true,
+            "details": "Screen built successfully, btn-back present: True"
+        },
+        {
+            "id": "TEST-14",
+            "name": "Honest Zero-Data Notifications Empty State",
+            "passed": true,
+            "details": "Empty Container Active: True, Heading: 'No new notifications', Sub: 'You're all caught up!'"
+        },
+        {
+            "id": "TEST-15",
+            "name": "Bottom Navigation Item: Home",
+            "passed": true,
+            "details": "nav-home Present: True"
+        },
+        {
+            "id": "TEST-16",
+            "name": "Bottom Navigation Item: Learn",
+            "passed": true,
+            "details": "nav-learn Present: True"
+        },
+        {
+            "id": "TEST-17",
+            "name": "Bottom Navigation Item: My Progress",
+            "passed": true,
+            "details": "nav-progress Present: True"
+        },
+        {
+            "id": "TEST-18",
+            "name": "Bottom Navigation Item: Certificates",
+            "passed": true,
+            "details": "nav-certs Present: True"
+        },
+        {
+            "id": "TEST-19",
+            "name": "Real Authenticated Profile Identity Preservation",
+            "passed": true,
+            "details": "Displayed Name: 'Sunil Marandi', Displayed ID: 'Employee ID JH-MN-008811'"
+        },
+        {
+            "id": "TEST-20",
+            "name": "Guest Session Identity Isolation",
+            "passed": true,
+            "details": "IsGuestMode: True, Displayed ID: 'Guest ID GST-01'"
+        },
+        {
+            "id": "TEST-21",
+            "name": "Fire AR Module Initialization & Components",
+            "passed": false,
+            "details": "This cannot be used during play mode, please use SceneManager.LoadScene()/SceneManager.LoadSceneAsync() instead."
+        },
+        {
+            "id": "TEST-22",
+            "name": "Fire AR UI Worker Readability Scaling",
+            "passed": false,
+            "details": "This cannot be used during play mode, please use SceneManager.LoadScene()/SceneManager.LoadSceneAsync() instead."
+        },
+        {
+            "id": "TEST-23",
+            "name": "Strict 6-Step SOP Workflow Sequence Enforcement",
+            "passed": false,
+            "details": "This cannot be used during play mode, please use SceneManager.LoadScene()/SceneManager.LoadSceneAsync() instead."
+        },
+        {
+            "id": "TEST-24",
+            "name": "Mistake Penalization & Mark Deduction Interlock",
+            "passed": false,
+            "details": "This cannot be used during play mode, please use SceneManager.LoadScene()/SceneManager.LoadSceneAsync() instead."
+        },
+        {
+            "id": "TEST-25",
+            "name": "Extinguisher Safety Pin Interlock",
+            "passed": false,
+            "details": "This cannot be used during play mode, please use SceneManager.LoadScene()/SceneManager.LoadSceneAsync() instead."
+        },
+        {
+            "id": "TEST-26",
+            "name": "10-Second Continuous Spray & Reset On Contact Loss",
+            "passed": false,
+            "details": "This cannot be used during play mode, please use SceneManager.LoadScene()/SceneManager.LoadSceneAsync() instead."
+        },
+        {
+            "id": "TEST-27",
+            "name": "Fire Completion Event Propagation to Assessment",
+            "passed": false,
+            "details": "This cannot be used during play mode, please use SceneManager.LoadScene()/SceneManager.LoadSceneAsync() instead."
+        },
+        {
+            "id": "TEST-28",
+            "name": "AR Runtime Metrics Propagation to AppState",
+            "passed": false,
+            "details": "This cannot be used during play mode, please use SceneManager.LoadScene()/SceneManager.LoadSceneAsync() instead."
+        },
+        {
+            "id": "TEST-29",
+            "name": "Certificate Eligibility Rule Matrix Verification",
+            "passed": false,
+            "details": "This cannot be used during play mode, please use SceneManager.LoadScene()/SceneManager.LoadSceneAsync() instead."
+        },
+        {
+            "id": "TEST-30",
+            "name": "Zero Unity Engine Compilation & Runtime Errors",
+            "passed": false,
+            "details": "All Preceding Tests Passed: 21/30, Regressions: 9"
+        }
+    ]
+}
