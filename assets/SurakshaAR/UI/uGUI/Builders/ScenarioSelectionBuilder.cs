@@ -5,395 +5,466 @@ using UnityEngine.UI;
 namespace SurakshaAR.UI.Builders
 {
     /// <summary>
-    /// Scenario Selection Screen Builder (Screen 2 in official reference UI):
-    /// Displays Fire & Explosion Response sub-modules:
-    /// - 01: Electrical Panel Fire (AR Ready)
-    /// - 02: Conveyor Belt Fire
-    /// - 03: Excavator / HEMM Fire
-    /// Uses photorealistic industrial imagery, rounded cards, high contrast,
-    /// and standard bottom navigation.
+    /// Fire &amp; Explosion Response — Scenario Selection Screen.
+    ///
+    /// TYPOGRAPHY matches the approved Home Dashboard system (CanvasScaler 1080×2400):
+    ///   Screen title  = 42px bold   (matches Home card title 38px, +1 level)
+    ///   Intro title   = 38px bold   (Home module card title)
+    ///   Intro desc    = 28px        (Home module card subtitle)
+    ///   Section head  = 36px bold
+    ///   Card title    = 34px bold
+    ///   Card desc     = 26px
+    ///   Chip text     = 26px bold
+    ///   Bottom nav    = 30px bold   (Home exact)
+    ///
+    /// LAYOUT: icon-based, NO photographic banner (reference image spec).
+    /// Intro card = compact white card with flame icon + description.
+    /// Scenario cards = numbered, icon illustration, white bg, orange accent.
     /// </summary>
     public static class ScenarioSelectionBuilder
     {
-        private static Color Hex(string hex) => UIColors.Hex(hex);
+        // ── Accent palette (Fire orange) ─────────────────────────────────
+        private static readonly Color AccentOrange = UIColors.Hex("#EA580C");
+        private static readonly Color AccentLight  = UIColors.Hex("#FFF7ED");
+        private static readonly Color AccentBorder = UIColors.Hex("#FFEDD5");
+        private static readonly Color NavyText     = UIColors.Hex("#0A192F");
+        private static readonly Color SlateText    = UIColors.Hex("#334155");
+        private static readonly Color SubText      = UIColors.Hex("#64748B");
+
+        // Home canvas constants (matches HomeDashboardBuilder)
+        private const float NAV_H = 140f;  // bottom nav height
+
+        private static Color Hex(string h) => UIColors.Hex(h);
 
         public static GameObject Build()
         {
             var root = new GameObject("ScenarioSelectionScreen");
             root.AddComponent<RectTransform>();
             var rootImg = root.AddComponent<Image>();
-            rootImg.color = Hex("#F8FAFC");
+            rootImg.color  = Hex("#F8FAFC");
             rootImg.sprite = UIHelper.GetWhiteSprite();
 
-            // ── Scrollable Body ──────────────────────────────────────────
+            // ── Bottom nav (fixed, behind scroll) ────────────────────────
+            BuildBottomNav(root.transform);
+
+            // ── Scrollable body ──────────────────────────────────────────
             var scrollRoot = UIHelper.MakeRect("ScrollArea", root.transform);
             scrollRoot.anchorMin = Vector2.zero;
             scrollRoot.anchorMax = Vector2.one;
-            scrollRoot.offsetMin = new Vector2(0, 140); // Leave room for bottom nav bar
+            scrollRoot.offsetMin = new Vector2(0, NAV_H);
             scrollRoot.offsetMax = Vector2.zero;
 
-            var scrollRect = scrollRoot.gameObject.AddComponent<ScrollRect>();
-            scrollRect.horizontal = false;
-            scrollRect.vertical = true;
-            scrollRect.movementType = ScrollRect.MovementType.Clamped;
-            scrollRect.scrollSensitivity = 25f;
+            var sr = scrollRoot.gameObject.AddComponent<ScrollRect>();
+            sr.horizontal        = false;
+            sr.vertical          = true;
+            sr.movementType      = ScrollRect.MovementType.Elastic;
+            sr.scrollSensitivity = 40f;
 
-            var viewport = UIHelper.MakeRect("Viewport", scrollRoot);
-            viewport.anchorMin = Vector2.zero;
-            viewport.anchorMax = Vector2.one;
-            viewport.offsetMin = Vector2.zero;
-            viewport.offsetMax = Vector2.zero;
-            viewport.gameObject.AddComponent<RectMask2D>();
-            scrollRect.viewport = viewport;
+            var vp = UIHelper.MakeRect("Viewport", scrollRoot);
+            vp.anchorMin = Vector2.zero;
+            vp.anchorMax = Vector2.one;
+            vp.offsetMin = Vector2.zero;
+            vp.offsetMax = Vector2.zero;
+            vp.gameObject.AddComponent<RectMask2D>();
+            sr.viewport = vp;
 
-            var content = UIHelper.MakeRect("Content", viewport);
-            content.anchorMin = new Vector2(0, 1);
-            content.anchorMax = new Vector2(1, 1);
-            content.pivot = new Vector2(0.5f, 1);
-            content.sizeDelta = new Vector2(0, 1800);
-            scrollRect.content = content;
+            var content = UIHelper.MakeRect("Content", vp);
+            content.anchorMin  = new Vector2(0, 1);
+            content.anchorMax  = new Vector2(1, 1);
+            content.pivot      = new Vector2(0.5f, 1);
+            content.offsetMin  = Vector2.zero;
+            content.offsetMax  = Vector2.zero;
+            content.sizeDelta  = Vector2.zero;
+            sr.content         = content;
 
             var vlg = content.gameObject.AddComponent<VerticalLayoutGroup>();
-            vlg.spacing = 20;
-            vlg.padding = new RectOffset(32, 32, 24, 40);
-            vlg.childForceExpandWidth = true;
+            vlg.spacing              = 20;
+            vlg.padding              = new RectOffset(28, 28, 20, 40);
+            vlg.childForceExpandWidth  = true;
             vlg.childForceExpandHeight = false;
-            vlg.childControlWidth = true;
-            vlg.childControlHeight = false;
+            vlg.childControlWidth      = true;
+            vlg.childControlHeight     = false;
 
             var csf = content.gameObject.AddComponent<ContentSizeFitter>();
             csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-            // ── Top Header ───────────────────────────────────────────────
+            // ── 1. Top header row (back + title + lang/bell/profile) ─────
             BuildTopHeader(content);
 
-            // ── Hero Banner ──────────────────────────────────────────────
-            BuildHeroBanner(content);
+            // ── 2. Module intro card (icon + title + description) ─────────
+            BuildIntroCard(content);
 
-            // ── Section Title ────────────────────────────────────────────
-            BuildSectionHeader(content);
+            // ── 3. "Select a Scenario" section heading ────────────────────
+            BuildSectionHeading(content, "Select a Scenario");
 
-            // ── Sub-module Scenario Cards ────────────────────────────────
-            BuildScenarioCards(content);
+            // ── 4. Three scenario cards ───────────────────────────────────
+            BuildScenarioCard(content, "card-scenario-1", "01",
+                "Electrical Panel Fire",
+                "Handle fire in electrical panels and control rooms.",
+                "icon_electrical_panel_fire.jpg", available: true);
 
-            // ── Bottom Navigation Bar ────────────────────────────────────
-            BuildBottomNav(root.transform);
+            BuildScenarioCard(content, "card-scenario-2", "02",
+                "Conveyor Belt Fire",
+                "Respond to fire in conveyor belt systems.",
+                "icon_conveyor_belt_fire.jpg", available: false);
+
+            BuildScenarioCard(content, "card-scenario-3", "03",
+                "Excavator / HEMM Fire",
+                "Handle fire in heavy earth moving machinery.",
+                "icon_excavator_hemm_fire.jpg", available: false);
 
             return root;
         }
 
+        // ────────────────────────────────────────────────────────────────
+        // TOP HEADER
+        // ────────────────────────────────────────────────────────────────
         private static void BuildTopHeader(Transform parent)
         {
-            var headerBox = UIHelper.MakeVertical("HeaderBox", parent, 10);
-            UIHelper.SetLayout(headerBox.gameObject, flexibleWidth: true, flexWidth: 1);
+            var row = UIHelper.MakeHorizontal("TopHeaderRow", parent, 12,
+                childForceWidth: false, childForceHeight: false);
+            UIHelper.SetLayout(row.gameObject,
+                flexibleWidth: true, flexWidth: 1,
+                preferredHeight: 72, minHeight: 64);
+            row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
-            // Row 1: SurakshaAR Brand + Lang + Bell + Profile
-            var brandRow = UIHelper.MakeHorizontal("BrandRow", headerBox, 14, childForceWidth: false, childForceHeight: false);
-            UIHelper.SetLayout(brandRow.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 60, minHeight: 52);
-            brandRow.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
+            // Back button — matches Home header icon buttons (78×78 → scale to 72)
+            var backBtn = UIHelper.MakeButton("btn-back", row, "‹", 56,
+                Color.white, NavyText, 18);
+            UIHelper.SetLayout(backBtn.gameObject, preferredWidth: 70, preferredHeight: 70);
+            var outline = backBtn.gameObject.AddComponent<Outline>();
+            outline.effectColor    = Hex("#E2E8F0");
+            outline.effectDistance = new Vector2(1, -1);
 
-            var brandLbl = UIHelper.MakeLabel("BrandLbl", brandRow, "Suraksha<color=#16A34A>AR</color>", 38, Hex("#0A192F"), bold: true);
-            UIHelper.SetLayout(brandLbl.gameObject, flexibleWidth: true, flexWidth: 1);
+            // Screen title — 42px bold (matches Home module card title scale)
+            var titleLbl = UIHelper.MakeLabel("label-title", row,
+                "Fire & Explosion Response", 42, NavyText, bold: true);
+            UIHelper.SetLayout(titleLbl.gameObject,
+                flexibleWidth: true, flexWidth: 1, preferredHeight: 56);
 
-            // English dropdown pill
-            var langPill = UIHelper.MakeButton("btn-lang-top", brandRow, "🌐 English ▾", 24, Hex("#F1F5F9"), Hex("#334155"), 12);
-            UIHelper.SetLayout(langPill.gameObject, preferredWidth: 170, preferredHeight: 46);
+            // Language pill (compact, same as Home but shorter)
+            var langPill = UIHelper.MakeButton("btn-language-picker", row,
+                "🌐 EN ▾", 26, Hex("#F1F5F9"), SlateText, 14);
+            UIHelper.SetLayout(langPill.gameObject, preferredWidth: 130, preferredHeight: 58);
 
-            // Bell icon
-            var bellBtn = UIHelper.MakeButton("btn-bell", brandRow, "🔔", 28, Hex("#F1F5F9"), Hex("#334155"), 12);
-            UIHelper.SetLayout(bellBtn.gameObject, preferredWidth: 50, preferredHeight: 46);
+            // Bell
+            var bellBtn = UIHelper.MakeButton("btn-notifications", row,
+                "", 14, Color.white, Color.white, 20);
+            UIHelper.SetLayout(bellBtn.gameObject, preferredWidth: 58, preferredHeight: 58);
+            var bellBorder = bellBtn.gameObject.AddComponent<Outline>();
+            bellBorder.effectColor    = Hex("#E2E8F0");
+            bellBorder.effectDistance = new Vector2(1, -1);
+            var bellIconGO = UIHelper.MakeRect("BellIcon", bellBtn.transform);
+            UIHelper.Stretch(bellIconGO, 12, 12, 12, 12);
+            var bellImg = bellIconGO.gameObject.AddComponent<Image>();
+            bellImg.sprite = UIHelper.GetBellSprite();
+            bellImg.color  = SlateText;
 
-            // Profile icon
-            var profBtn = UIHelper.MakeButton("btn-profile", brandRow, "👤", 28, Hex("#F1F5F9"), Hex("#334155"), 12);
-            UIHelper.SetLayout(profBtn.gameObject, preferredWidth: 50, preferredHeight: 46);
-
-            // Row 2: Back button + Title
-            var titleRow = UIHelper.MakeHorizontal("TitleRow", headerBox, 14, childForceWidth: false, childForceHeight: false);
-            UIHelper.SetLayout(titleRow.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 64, minHeight: 56);
-            titleRow.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
-
-            var backBtn = UIHelper.MakeButton("btn-back", titleRow, "‹", 50, Color.white, Hex("#0A192F"), 18);
-            UIHelper.SetLayout(backBtn.gameObject, preferredWidth: 64, preferredHeight: 64);
-            var backOutline = backBtn.gameObject.AddComponent<Outline>();
-            backOutline.effectColor = Hex("#E2E8F0");
-            backOutline.effectDistance = new Vector2(1, -1);
-
-            var titleLbl = UIHelper.MakeLabel("label-title", titleRow, "Fire & Explosion Response", 38, Hex("#0A192F"), bold: true);
-            UIHelper.SetLayout(titleLbl.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 54);
+            // Profile
+            var profBtn = UIHelper.MakeButton("btn-profile", row,
+                "", 14, Color.white, Color.white, 20);
+            UIHelper.SetLayout(profBtn.gameObject, preferredWidth: 58, preferredHeight: 58);
+            var profBorder = profBtn.gameObject.AddComponent<Outline>();
+            profBorder.effectColor    = Hex("#E2E8F0");
+            profBorder.effectDistance = new Vector2(1, -1);
+            var profIconGO = UIHelper.MakeRect("ProfIcon", profBtn.transform);
+            UIHelper.Stretch(profIconGO, 12, 12, 12, 12);
+            var profImg = profIconGO.gameObject.AddComponent<Image>();
+            profImg.sprite = UIHelper.GetProfileSprite();
+            profImg.color  = SlateText;
         }
 
-        private static void BuildHeroBanner(Transform parent)
+        // ────────────────────────────────────────────────────────────────
+        // INTRO CARD (matches reference: white card, flame icon, title, desc)
+        // ────────────────────────────────────────────────────────────────
+        private static void BuildIntroCard(Transform parent)
         {
-            var heroRT = UIHelper.MakeRect("HeroBanner", parent);
-            UIHelper.SetLayout(heroRT.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 380, minHeight: 360);
+            var card = UIHelper.MakeRect("IntroCard", parent);
+            UIHelper.SetLayout(card.gameObject,
+                flexibleWidth: true, flexWidth: 1,
+                preferredHeight: 220, minHeight: 200);
 
-            var heroImg = heroRT.gameObject.AddComponent<Image>();
-            var spr = UIHelper.LoadProjectSprite("fire_submodule_banner.jpg")
-                   ?? UIHelper.LoadProjectSprite("fire_module_icon.jpg")
-                   ?? UIHelper.LoadProjectSprite("fire_intro.jpg");
-            if (spr != null)
+            var cardImg = card.gameObject.AddComponent<Image>();
+            cardImg.color = Color.white;
+            UIHelper.SetImageRoundedSprite(cardImg, 22);
+
+            var border = card.gameObject.AddComponent<Outline>();
+            border.effectColor    = Hex("#E2E8F0");
+            border.effectDistance = new Vector2(1.5f, -1.5f);
+
+            var shadow = card.gameObject.AddComponent<Shadow>();
+            shadow.effectColor    = new Color(0, 0, 0, 0.04f);
+            shadow.effectDistance = new Vector2(0, -3f);
+
+            var row = UIHelper.MakeHorizontal("InnerRow", card, 20,
+                new RectOffset(20, 20, 16, 16),
+                childForceWidth: false, childForceHeight: false);
+            UIHelper.Stretch(row, 0, 0, 0, 0);
+            row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
+
+            // Icon area (light orange rounded square, 150×150 matches reference)
+            var iconArea = UIHelper.MakeRect("IconArea", row);
+            UIHelper.SetLayout(iconArea.gameObject,
+                preferredWidth: 150, minWidth: 140,
+                preferredHeight: 150, minHeight: 140);
+            var iaImg = iconArea.gameObject.AddComponent<Image>();
+            iaImg.color = AccentLight;
+            UIHelper.SetImageRoundedSprite(iaImg, 18);
+
+            // Module icon sprite
+            var iconSpr = UIHelper.LoadProjectSprite("icon_fire_scenario.jpg");
+            if (iconSpr != null)
             {
-                heroImg.sprite = spr;
-                heroImg.color = Color.white;
+                var iconImgGO = UIHelper.MakeRect("ModuleIcon", iconArea);
+                UIHelper.Stretch(iconImgGO, 16, 16, 16, 16);
+                var ii = iconImgGO.gameObject.AddComponent<Image>();
+                ii.sprite = iconSpr;
+                ii.preserveAspect = true;
+                ii.raycastTarget  = false;
             }
             else
             {
-                heroImg.color = Hex("#1E293B");
-            }
-            UIHelper.SetImageRoundedSprite(heroImg, 22);
-
-            // Dark gradient overlay at bottom
-            var overlayGO = UIHelper.MakeRect("DarkOverlay", heroRT);
-            UIHelper.Stretch(overlayGO, 0, 0, 0, 0);
-            var ovImg = overlayGO.gameObject.AddComponent<Image>();
-            ovImg.color = new Color(10f / 255f, 25f / 255f, 47f / 255f, 0.78f);
-            UIHelper.SetImageRoundedSprite(ovImg, 22);
-
-            // Hero content inside bottom
-            var inner = UIHelper.MakeVertical("HeroInner", heroRT, 10, new RectOffset(24, 24, 18, 20));
-            UIHelper.Stretch(inner, 0, 0, 0, 0);
-            var vlg = inner.GetComponent<VerticalLayoutGroup>();
-            vlg.childAlignment = TextAnchor.LowerLeft;
-            vlg.childForceExpandHeight = false;
-
-            // Row with Fire Icon & Title
-            var iconTitleRow = UIHelper.MakeHorizontal("IconTitleRow", inner, 14, childForceWidth: false, childForceHeight: false);
-            UIHelper.SetLayout(iconTitleRow.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 64);
-            iconTitleRow.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
-
-            var iconBox = UIHelper.MakeRect("FireIconBox", iconTitleRow);
-            UIHelper.SetLayout(iconBox.gameObject, preferredWidth: 64, preferredHeight: 64);
-            var ibImg = iconBox.gameObject.AddComponent<Image>();
-            ibImg.color = Hex("#EA580C");
-            UIHelper.SetImageRoundedSprite(ibImg, 16);
-
-            var fireIconSpr = UIHelper.GetFireEmojiSprite();
-            if (fireIconSpr != null)
-            {
-                var fImgGO = UIHelper.MakeRect("FireImg", iconBox);
-                UIHelper.Stretch(fImgGO, 8, 8, 8, 8);
-                var fi = fImgGO.gameObject.AddComponent<Image>();
-                fi.sprite = fireIconSpr;
-                fi.preserveAspect = true;
-            }
-            else
-            {
-                var iconLbl = UIHelper.MakeLabel("FireIconLbl", iconBox, "🔥", 32, Color.white, TextAlignmentOptions.Center);
-                UIHelper.Stretch(iconLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
+                // Fallback: orange flame emoji label
+                var fbLbl = UIHelper.MakeLabel("FbLbl", iconArea, "🔥", 64,
+                    AccentOrange, TextAlignmentOptions.Center);
+                UIHelper.Stretch(fbLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
             }
 
-            var heroTitle = UIHelper.MakeLabel("HeroTitle", iconTitleRow, "Fire & Explosion\nResponse", 34, Color.white, bold: true);
-            heroTitle.lineSpacing = 1.05f;
-            UIHelper.SetLayout(heroTitle.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 64);
+            // Right: text column
+            var textCol = UIHelper.MakeVertical("TextCol", row, 10,
+                childForceWidth: true, childForceHeight: false);
+            UIHelper.SetLayout(textCol.gameObject,
+                flexibleWidth: true, flexWidth: 1);
+            var tvlg = textCol.GetComponent<VerticalLayoutGroup>();
+            tvlg.childAlignment       = TextAnchor.UpperLeft;
+            tvlg.childForceExpandHeight = false;
 
-            // Subtitle
-            var heroDesc = UIHelper.MakeLabel("HeroDesc", inner,
+            // Title — 38px bold (Home module card title scale)
+            var titleLbl = UIHelper.MakeLabel("IntroTitle", textCol,
+                "Fire & Explosion Response", 38, NavyText,
+                bold: true, wrap: true);
+            titleLbl.lineSpacing = 1.05f;
+            UIHelper.SetLayout(titleLbl.gameObject,
+                flexibleWidth: true, flexWidth: 1, preferredHeight: 92);
+
+            // Description — 28px (Home module card subtitle scale)
+            var descLbl = UIHelper.MakeLabel("IntroDesc", textCol,
                 "Learn to identify, prevent and respond to fire and explosion hazards in mining and industrial environments.",
-                24, Hex("#E2E8F0"), wrap: true);
-            heroDesc.lineSpacing = 1.15f;
-            UIHelper.SetLayout(heroDesc.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 64);
+                28, SlateText, wrap: true);
+            descLbl.lineSpacing = 1.2f;
+            UIHelper.SetLayout(descLbl.gameObject,
+                flexibleWidth: true, flexWidth: 1, preferredHeight: 80);
         }
 
-        private static void BuildSectionHeader(Transform parent)
+        // ────────────────────────────────────────────────────────────────
+        // SECTION HEADING with bold left label
+        // ────────────────────────────────────────────────────────────────
+        private static void BuildSectionHeading(Transform parent, string text)
         {
-            var secCol = UIHelper.MakeVertical("SectionCol", parent, 6);
-            UIHelper.SetLayout(secCol.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 52);
-
-            var titleLbl = UIHelper.MakeLabel("label-select-scenario", secCol, "Select a Scenario", 36, Hex("#0A192F"), bold: true);
-            UIHelper.SetLayout(titleLbl.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 44);
-
-            // Orange accent line
-            var lineGO = UIHelper.MakeRect("AccentLine", secCol);
-            UIHelper.SetLayout(lineGO.gameObject, preferredWidth: 52, preferredHeight: 4);
-            var lImg = lineGO.gameObject.AddComponent<Image>();
-            lImg.color = Hex("#EA580C");
-            UIHelper.SetImageRoundedSprite(lImg, 2);
+            var lbl = UIHelper.MakeLabel("label-select-scenario", parent,
+                text, 36, NavyText, bold: true);
+            UIHelper.SetLayout(lbl.gameObject,
+                flexibleWidth: true, flexWidth: 1, preferredHeight: 50);
         }
 
-        private static void BuildScenarioCards(Transform parent)
-        {
-            var col = UIHelper.MakeVertical("ScenarioList", parent, 16);
-            UIHelper.SetLayout(col.gameObject, flexibleWidth: true, flexWidth: 1);
-            var csf = col.gameObject.AddComponent<ContentSizeFitter>();
-            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-
-            // 01 — Electrical Panel Fire
-            BuildScenarioCard(
-                parent: col,
-                btnName: "card-scenario-1",
-                numStr: "01",
-                title: "Electrical Panel Fire",
-                desc: "Handle fire in electrical panels and control rooms.",
-                imgFilename: "scenario_electrical_panel.jpg",
-                badgeText: null
-            );
-
-            // 02 — Conveyor Belt Fire
-            BuildScenarioCard(
-                parent: col,
-                btnName: "card-scenario-2",
-                numStr: "02",
-                title: "Conveyor Belt Fire",
-                desc: "Respond to fire in conveyor belt systems.",
-                imgFilename: "scenario_conveyor_belt.jpg",
-                badgeText: null
-            );
-
-            // 03 — Excavator / HEMM Fire
-            BuildScenarioCard(
-                parent: col,
-                btnName: "card-scenario-3",
-                numStr: "03",
-                title: "Excavator / HEMM Fire",
-                desc: "Handle fire in heavy earth moving machinery.",
-                imgFilename: "scenario_excavator.jpg",
-                badgeText: "Intermediate"
-            );
-        }
-
+        // ────────────────────────────────────────────────────────────────
+        // SCENARIO CARD
+        // Matches reference: numbered orange badge, icon illustration,
+        // title, desc, orange circular chevron. White bg, light border.
+        // ────────────────────────────────────────────────────────────────
         private static void BuildScenarioCard(
             Transform parent,
             string btnName,
             string numStr,
             string title,
             string desc,
-            string imgFilename,
-            string badgeText)
+            string iconFilename,
+            bool available)
         {
-            var btn = UIHelper.MakeButton(btnName, parent, "", 16, Hex("#1E293B"), Color.white, 20);
-            UIHelper.SetLayout(btn.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 200, minHeight: 190);
+            var card = UIHelper.MakeButton(btnName, parent, "",
+                16, Color.white, Color.white, 22);
+            UIHelper.SetLayout(card.gameObject,
+                flexibleWidth: true, flexWidth: 1,
+                preferredHeight: 180, minHeight: 168);
 
-            // Background Photo
-            var bgImg = btn.GetComponent<Image>();
-            var spr = UIHelper.LoadProjectSprite(imgFilename);
+            var cardImg = card.GetComponent<Image>();
+            cardImg.color = Color.white;
+            UIHelper.SetImageRoundedSprite(cardImg, 22);
+
+            var border = card.gameObject.AddComponent<Outline>();
+            border.effectColor    = Hex("#E2E8F0");
+            border.effectDistance = new Vector2(1.5f, -1.5f);
+
+            var shadow = card.gameObject.AddComponent<Shadow>();
+            shadow.effectColor    = new Color(0, 0, 0, 0.03f);
+            shadow.effectDistance = new Vector2(0, -2f);
+
+            // Inner horizontal row
+            var row = UIHelper.MakeHorizontal("Inner", card.transform, 18,
+                new RectOffset(20, 16, 16, 16),
+                childForceWidth: false, childForceHeight: false);
+            UIHelper.Stretch(row, 0, 0, 0, 0);
+            row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
+
+            // ── Left: icon square with orange number badge ──────────────
+            var iconWrap = UIHelper.MakeRect("IconWrap", row);
+            UIHelper.SetLayout(iconWrap.gameObject,
+                preferredWidth: 130, minWidth: 120,
+                preferredHeight: 130, minHeight: 120);
+
+            // Icon background (light orange)
+            var ibImg = iconWrap.gameObject.AddComponent<Image>();
+            ibImg.color = AccentLight;
+            UIHelper.SetImageRoundedSprite(ibImg, 16);
+
+            // Scenario illustration
+            var spr = UIHelper.LoadProjectSprite(iconFilename);
             if (spr != null)
             {
-                bgImg.sprite = spr;
-                bgImg.color = Color.white;
+                var iconImgGO = UIHelper.MakeRect("ScenarioIcon", iconWrap);
+                UIHelper.Stretch(iconImgGO, 14, 14, 14, 14);
+                var ii = iconImgGO.gameObject.AddComponent<Image>();
+                ii.sprite = spr;
+                ii.preserveAspect = true;
+                ii.raycastTarget  = false;
             }
 
-            // Dark tint gradient overlay so text is crisp and readable
-            var overlay = UIHelper.MakeRect("CardOverlay", btn.transform);
-            UIHelper.Stretch(overlay, 0, 0, 0, 0);
-            var ovImg = overlay.gameObject.AddComponent<Image>();
-            ovImg.color = new Color(10f / 255f, 25f / 255f, 47f / 255f, 0.72f);
-            UIHelper.SetImageRoundedSprite(ovImg, 20);
-            ovImg.raycastTarget = false;
+            // Numbered orange badge (top-left corner of icon area)
+            var badge = UIHelper.MakeRect("NumBadge", iconWrap);
+            badge.anchorMin        = new Vector2(0, 1);
+            badge.anchorMax        = new Vector2(0, 1);
+            badge.pivot            = new Vector2(0, 1);
+            badge.anchoredPosition = new Vector2(0, 0);
+            badge.sizeDelta        = new Vector2(52, 52);
+            var badgeImg = badge.gameObject.AddComponent<Image>();
+            badgeImg.color = AccentOrange;
+            UIHelper.SetImageRoundedSprite(badgeImg, 14);
 
-            // Border
-            var outline = btn.gameObject.AddComponent<Outline>();
-            outline.effectColor = new Color(1f, 1f, 1f, 0.15f);
-            outline.effectDistance = new Vector2(1, -1);
-
-            // Inner Content
-            var inner = UIHelper.MakeHorizontal("Inner", btn.transform, 14, new RectOffset(20, 20, 16, 16));
-            UIHelper.Stretch(inner, 0, 0, 0, 0);
-            inner.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
-
-            // Left Col: 01 Badge at top-left, Title & Desc at bottom-left
-            var leftCol = UIHelper.MakeVertical("LeftCol", inner, 8);
-            UIHelper.SetLayout(leftCol.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 168);
-            var lvlg = leftCol.GetComponent<VerticalLayoutGroup>();
-            lvlg.childAlignment = TextAnchor.UpperLeft;
-            lvlg.childForceExpandHeight = false;
-
-            // Scenario Number Badge (Orange rounded square)
-            var numBox = UIHelper.MakeRect("NumBadge", leftCol);
-            UIHelper.SetLayout(numBox.gameObject, preferredWidth: 54, preferredHeight: 54);
-            var nbImg = numBox.gameObject.AddComponent<Image>();
-            nbImg.color = Hex("#EA580C");
-            UIHelper.SetImageRoundedSprite(nbImg, 14);
-
-            var numLbl = UIHelper.MakeLabel("NumLbl", numBox, numStr, 28, Color.white, TextAlignmentOptions.Center, bold: true);
+            var numLbl = UIHelper.MakeLabel("Num", badge, numStr, 28,
+                Color.white, TextAlignmentOptions.Center, bold: true);
             UIHelper.Stretch(numLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
 
-            // Title
-            var titleLbl = UIHelper.MakeLabel("Title", leftCol, title, 32, Color.white, bold: true, wrap: true);
+            // ── Centre: text column ─────────────────────────────────────
+            var textCol = UIHelper.MakeVertical("TextCol", row, 8,
+                childForceWidth: true, childForceHeight: false);
+            UIHelper.SetLayout(textCol.gameObject,
+                flexibleWidth: true, flexWidth: 1);
+            var tvlg = textCol.GetComponent<VerticalLayoutGroup>();
+            tvlg.childAlignment       = TextAnchor.UpperLeft;
+            tvlg.childForceExpandHeight = false;
+
+            // Title — 34px bold
+            var titleLbl = UIHelper.MakeLabel("Title", textCol,
+                title, 34, NavyText, bold: true, wrap: true);
             titleLbl.lineSpacing = 1.05f;
-            UIHelper.SetLayout(titleLbl.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 38);
+            UIHelper.SetLayout(titleLbl.gameObject,
+                flexibleWidth: true, flexWidth: 1, preferredHeight: 42);
 
-            // Subtitle
-            var descLbl = UIHelper.MakeLabel("Desc", leftCol, desc, 24, Hex("#E2E8F0"), wrap: true);
+            // Description — 26px
+            var descLbl = UIHelper.MakeLabel("Desc", textCol,
+                desc, 26, SubText, wrap: true);
             descLbl.lineSpacing = 1.15f;
-            UIHelper.SetLayout(descLbl.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 32);
+            UIHelper.SetLayout(descLbl.gameObject,
+                flexibleWidth: true, flexWidth: 1, preferredHeight: 62);
 
-            // Optional Badge (e.g. Intermediate)
-            if (!string.IsNullOrEmpty(badgeText))
+            // Coming Soon pill
+            if (!available)
             {
-                var pill = UIHelper.MakeRect("LevelPill", leftCol);
-                UIHelper.SetLayout(pill.gameObject, preferredWidth: 180, preferredHeight: 32);
+                var pill = UIHelper.MakeRect("ComingSoonPill", textCol);
+                UIHelper.SetLayout(pill.gameObject,
+                    preferredWidth: 200, preferredHeight: 38);
                 var pImg = pill.gameObject.AddComponent<Image>();
-                pImg.color = new Color(0, 0, 0, 0.65f);
-                UIHelper.SetImageRoundedSprite(pImg, 8);
-
-                var pLbl = UIHelper.MakeLabel("LevelLbl", pill, $"📊 {badgeText}", 22, Hex("#FBBF24"), TextAlignmentOptions.Center, bold: true);
+                pImg.color = Hex("#F1F5F9");
+                UIHelper.SetImageRoundedSprite(pImg, 10);
+                var pLbl = UIHelper.MakeLabel("PillLbl", pill,
+                    "Coming Soon", 22, Hex("#64748B"),
+                    TextAlignmentOptions.Center);
                 UIHelper.Stretch(pLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
             }
 
-            // Right: Orange circular chevron button
-            var arrowBox = UIHelper.MakeRect("ArrowBox", inner);
-            UIHelper.SetLayout(arrowBox.gameObject, preferredWidth: 56, preferredHeight: 56);
-            var abImg = arrowBox.gameObject.AddComponent<Image>();
-            abImg.color = Hex("#EA580C");
-            UIHelper.SetImageRoundedSprite(abImg, 28); // Perfect circle
+            // ── Right: orange circle arrow button ───────────────────────
+            var arrowCircle = UIHelper.MakeRect("ArrowCircle", row);
+            UIHelper.SetLayout(arrowCircle.gameObject,
+                preferredWidth: 64, minWidth: 60,
+                preferredHeight: 64, minHeight: 60);
+            var acImg = arrowCircle.gameObject.AddComponent<Image>();
+            acImg.color = available ? AccentOrange : Hex("#CBD5E1");
+            UIHelper.SetImageRoundedSprite(acImg, 32);
 
-            var chevLbl = UIHelper.MakeLabel("Chevron", arrowBox, "›", 46, Color.white, TextAlignmentOptions.Center, bold: true);
-            var rt = chevLbl.GetComponent<RectTransform>();
-            UIHelper.Stretch(rt, 0, 0, 0, 0);
-            rt.anchoredPosition = new Vector2(2, 2); // Optical center
+            var chevLbl = UIHelper.MakeLabel("Chev", arrowCircle,
+                "›", 48, Color.white, TextAlignmentOptions.Center, bold: true);
+            var chevRT = chevLbl.GetComponent<RectTransform>();
+            UIHelper.Stretch(chevRT, 0, 0, 0, 0);
+            chevRT.anchoredPosition = new Vector2(2f, 1f);
         }
 
+        // ────────────────────────────────────────────────────────────────
+        // BOTTOM NAVIGATION — exact Home scale (30px, 50×50 icons, 140h)
+        // ────────────────────────────────────────────────────────────────
         private static void BuildBottomNav(Transform parent)
         {
-            var navBar = UIHelper.MakeRect("BottomNavBar", parent);
-            navBar.anchorMin = new Vector2(0, 0);
-            navBar.anchorMax = new Vector2(1, 0);
-            navBar.pivot     = new Vector2(0.5f, 0);
-            navBar.sizeDelta = new Vector2(0, 140);
+            var navRT = UIHelper.MakeRect("BottomNavBar", parent);
+            navRT.anchorMin = Vector2.zero;
+            navRT.anchorMax = new Vector2(1, 0);
+            navRT.pivot     = new Vector2(0.5f, 0);
+            navRT.sizeDelta = new Vector2(0, NAV_H);
 
-            var bg = navBar.gameObject.AddComponent<Image>();
-            bg.color = Color.white;
+            var bg = navRT.gameObject.AddComponent<Image>();
+            bg.color  = Color.white;
+            bg.sprite = UIHelper.GetWhiteSprite();
 
-            var topBorder = UIHelper.MakeRect("TopBorder", navBar);
+            var topBorder = UIHelper.MakeRect("TopBorder", navRT);
             topBorder.anchorMin = new Vector2(0, 1);
             topBorder.anchorMax = new Vector2(1, 1);
             topBorder.pivot     = new Vector2(0.5f, 1);
             topBorder.sizeDelta = new Vector2(0, 1.5f);
-            var tbImg = topBorder.gameObject.AddComponent<Image>();
-            tbImg.color = Hex("#E2E8F0");
+            topBorder.gameObject.AddComponent<Image>().color = Hex("#E2E8F0");
 
-            var hlg = navBar.gameObject.AddComponent<HorizontalLayoutGroup>();
+            var hlg = navRT.gameObject.AddComponent<HorizontalLayoutGroup>();
             hlg.childForceExpandWidth  = true;
             hlg.childForceExpandHeight = true;
             hlg.childControlWidth      = true;
             hlg.childControlHeight     = true;
             hlg.padding = new RectOffset(0, 0, 8, 20);
 
-            MakeNavItem(navBar, "nav-home",         "Home",         UIHelper.GetHomeSprite(),  true);
-            MakeNavItem(navBar, "nav-learn",        "Learn",        UIHelper.GetBookSprite(),  false);
-            MakeNavItem(navBar, "nav-progress",     "My Progress",  UIHelper.GetChartSprite(), false);
-            MakeNavItem(navBar, "nav-certificates", "Certificates", UIHelper.GetMedalSprite(), false);
+            MakeNavItem(navRT, "nav-home",         "Home",         UIHelper.GetHomeSprite(),  true);
+            MakeNavItem(navRT, "nav-learn",        "Learn",        UIHelper.GetBookSprite(),  false);
+            MakeNavItem(navRT, "nav-progress",     "My Progress",  UIHelper.GetChartSprite(), false);
+            MakeNavItem(navRT, "nav-certificates", "Certificates", UIHelper.GetMedalSprite(), false);
         }
 
-        private static void MakeNavItem(Transform parent, string name, string label, Sprite iconSprite, bool active)
+        private static void MakeNavItem(Transform parent, string name,
+            string label, Sprite iconSprite, bool active)
         {
             var activeColor = active ? Hex("#16A34A") : Hex("#334155");
 
-            var btn = UIHelper.MakeButton(name, parent, "", 14, UIColors.Transparent, Color.white, 0);
+            var btn = UIHelper.MakeButton(name, parent, "",
+                14, UIColors.Transparent, Color.white, 0);
 
-            var col = UIHelper.MakeVertical("Col", btn.transform, 6, new RectOffset(0, 0, 4, 4), childForceWidth: false, childForceHeight: false);
+            var col = UIHelper.MakeVertical("Col", btn.transform, 6,
+                new RectOffset(0, 0, 4, 4),
+                childForceWidth: false, childForceHeight: false);
             UIHelper.Stretch(col, 0, 0, 0, 0);
-            col.GetComponent<VerticalLayoutGroup>().childAlignment = TextAnchor.MiddleCenter;
+            col.GetComponent<VerticalLayoutGroup>().childAlignment =
+                TextAnchor.MiddleCenter;
 
+            // Icon — exactly 50×50 (Home value)
             var iconBox = UIHelper.MakeRect("IconBox", col);
-            UIHelper.SetLayout(iconBox.gameObject, preferredWidth: 46, minWidth: 46, preferredHeight: 46, minHeight: 46);
+            UIHelper.SetLayout(iconBox.gameObject,
+                preferredWidth: 50, minWidth: 50,
+                preferredHeight: 50, minHeight: 50);
             var img = iconBox.gameObject.AddComponent<Image>();
-            img.sprite = iconSprite;
-            img.color  = activeColor;
+            img.sprite         = iconSprite;
+            img.color          = activeColor;
             img.preserveAspect = true;
 
-            var lbl = UIHelper.MakeLabel($"label-{name}", col, label, 24, activeColor, TextAlignmentOptions.Center, bold: active);
-            UIHelper.SetLayout(lbl.gameObject, preferredWidth: 140, preferredHeight: 30);
+            // Label — exactly 30px bold (Home value)
+            var lbl = UIHelper.MakeLabel($"label-{name}", col,
+                label, 30, activeColor,
+                TextAlignmentOptions.Center, bold: active);
+            lbl.textWrappingMode = TextWrappingModes.NoWrap;
+            UIHelper.SetLayout(lbl.gameObject,
+                preferredHeight: 42, minHeight: 38);
         }
     }
 }

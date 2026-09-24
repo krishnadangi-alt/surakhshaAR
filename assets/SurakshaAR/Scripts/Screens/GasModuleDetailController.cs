@@ -10,19 +10,23 @@ using UnityEngine.UI;
 namespace SurakshaAR.Screens
 {
     /// <summary>
-    /// GasModuleDetailController:
-    /// Manages the Scenario Detail screen for Gas Leak &amp; Confined Space sub-modules.
-    /// Reads AppState.SelectedScenarioIndex (100-offset: 101 / 102 / 103).
-    /// Tapping "Start AR Training" currently routes to Assessment (Gas AR TBD).
+    /// GasModuleDetailController — Gas Scenario Detail screen.
+    ///
+    /// ALL gas modules are COMING SOON. The UI displays the scenario information
+    /// but the Start Training button is disabled and shows "Coming Soon".
+    ///
+    /// Scenarios indexed 101/102/103 (from GasScenarioSelectionController):
+    ///   101 — Underground Gas Release
+    ///   102 — Confined Space Entry
+    ///   103 — Gas Cylinder Leak
     /// </summary>
     public class GasModuleDetailController : IScreenController
     {
         private Button _btnBack, _btnStart;
-        private int _gasScenarioIndex = 1; // 1 = Underground, 2 = Detection, 3 = Confined
+        private int _gasScenarioIndex = 1;
 
         public void OnShow(GameObject root, object param)
         {
-            // Decode the 100-offset scenario index stored by GasScenarioSelectionController
             if (AppState.Instance != null)
             {
                 int raw = AppState.Instance.SelectedScenarioIndex;
@@ -36,140 +40,109 @@ namespace SurakshaAR.Screens
                 _btnBack.onClick.AddListener(GoBack);
             }
 
+            // Start button is Coming Soon — register listener but no-op
             _btnStart = UIHelper.FindButton(root, "btn-start-ar-training");
             if (_btnStart != null)
             {
                 _btnStart.onClick.RemoveAllListeners();
-                _btnStart.onClick.AddListener(OpenTrainingOrAssessment);
+                // No action — Coming Soon button does nothing
             }
 
             BindScenarioData(root);
         }
 
-        // ────────────────────────────────────────────────────────────────
+        // ──────────────────────────────────────────────────────────────────
         private void BindScenarioData(GameObject root)
         {
-            string title, subtitle, heroImg, levelBadge, duration, level, focusVal, focusSub, overview;
+            string title, subtitle, levelBadge, duration, level,
+                   focusVal, focusSub, overview;
             string[] steps;
 
             if (_gasScenarioIndex == 2)
             {
-                // Scenario 2 — Gas Detection & Ventilation
-                title      = "Gas Detection & Ventilation";
-                subtitle   = "Use gas detectors and ensure safe ventilation.";
-                heroImg    = "scenario_gas_detection.jpg";
-                levelBadge = "📊 Intermediate";
+                // Scenario 2 — Confined Space Entry
+                title      = "Confined Space Entry";
+                subtitle   = "Follow safe entry procedures and use gas detection & PPE.";
+                levelBadge = "Intermediate";
                 duration   = "~ 12 mins";
                 level      = "Intermediate";
-                focusVal   = "Detector";
-                focusSub   = "& Ventilation";
-                overview   = "Proper gas detection and ventilation are critical before entering any underground or confined area. Learn to operate a multi-gas detector, check ventilation systems and interpret alarm signals.";
+                focusVal   = "PPE Use";
+                focusSub   = "Entry";
+                overview   = "Learn the safe entry procedure for confined spaces, use gas detection equipment, verify atmospheric conditions and follow PPE requirements.";
                 steps = new string[]
                 {
-                    "Check gas detector battery & calibration",
-                    "Enter hazardous zone with detector active",
-                    "Monitor O2, CH4, CO and H2S readings",
-                    "Raise alarm if readings exceed threshold",
-                    "Activate ventilation fan or blower",
-                    "Wait for gas levels to normalise",
-                    "Re-test before authorising entry"
+                    "Identify confined space hazards",
+                    "Perform atmospheric gas testing",
+                    "Check oxygen, toxic and flammable gases",
+                    "Use appropriate PPE",
+                    "Follow entry and work permit procedure",
+                    "Safe exit and emergency response"
                 };
             }
             else if (_gasScenarioIndex == 3)
             {
-                // Scenario 3 — Confined Space Gas Testing
-                title      = "Confined Space Gas Testing";
-                subtitle   = "Pre-entry gas testing and PPE for confined spaces.";
-                heroImg    = "scenario_gas_confined.jpg";
-                levelBadge = "📊 Intermediate";
-                duration   = "~ 12 mins";
-                level      = "Intermediate";
-                focusVal   = "Confined";
-                focusSub   = "Entry PPE";
-                overview   = "Entering a confined space without proper gas testing can be fatal. Learn the pre-entry permit procedure, multi-gas testing, PPE donning and emergency rescue protocols.";
+                // Scenario 3 — Gas Cylinder Leak
+                title      = "Gas Cylinder Leak";
+                subtitle   = "Respond to a gas cylinder leak and control the hazard safely.";
+                levelBadge = "Beginner";
+                duration   = "~ 10 mins";
+                level      = "Beginner";
+                focusVal   = "Isolation";
+                focusSub   = "Procedure";
+                overview   = "Learn to identify a gas cylinder leak, isolate the source, raise the alarm and follow safe handling and shut-off procedures.";
                 steps = new string[]
                 {
-                    "Obtain Confined Space Entry Permit",
-                    "Test atmosphere (O2, LEL, toxic gases)",
-                    "Don full PPE — SCBA / airline respirator",
-                    "Station an attendant at entry point",
-                    "Enter slowly and continuously monitor",
-                    "Maintain communication with attendant",
-                    "Exit immediately if alarm triggers"
+                    "Identify cylinder leak signs",
+                    "Stop and isolate the source",
+                    "Raise alarm and inform control room",
+                    "Use appropriate PPE",
+                    "Follow safe handling and shut-off procedure",
+                    "Move to safe area and report"
                 };
             }
             else
             {
-                // Default: Scenario 1 — Underground Gas Release
+                // Scenario 1 — Underground Gas Release (default)
                 title      = "Underground Gas Release";
-                subtitle   = "Detect and respond to sudden methane/CO release.";
-                heroImg    = "scenario_gas_underground.jpg";
-                levelBadge = "📊 Beginner";
+                subtitle   = "Recognize a gas release, raise the alarm and move to a safe area.";
+                levelBadge = "Beginner";
                 duration   = "~ 10 mins";
                 level      = "Beginner";
-                focusVal   = "Emergency";
-                focusSub   = "Evacuation";
-                overview   = "A sudden gas release underground can create explosive and suffocation hazards. Learn to identify warning signs, raise the alarm, evacuate personnel and use proper PPE.";
+                focusVal   = "Gas Detector";
+                focusSub   = "Use";
+                overview   = "A gas leak has been detected in an underground mine area. Learn to identify the leak, raise the alarm, communicate the emergency and move to a safe area following proper procedures.";
                 steps = new string[]
                 {
-                    "Detect gas alarm / warning sign",
-                    "Stop work and raise alarm",
-                    "Evacuate personnel from danger zone",
-                    "Report to control room",
-                    "Do not use ignition sources",
-                    "Wear self-contained breathing apparatus",
-                    "Wait for all-clear signal before re-entry"
+                    "Identify gas leak signs and hazard area",
+                    "Activate alarm and inform control room",
+                    "Use gas detector and interpret readings",
+                    "Follow safe withdrawal procedure",
+                    "Follow ventilation and evacuation route",
+                    "Maintain safe distance and move to safe area"
                 };
             }
 
-            // ── Bind labels ───────────────────────────────────────────────
-
-            // Top header title
-            var labelTitle = UIHelper.FindTMP(root, "label-title");
-            if (labelTitle != null) labelTitle.text = title;
-
-            // Scenario meta
-            var labelScenTitle = UIHelper.FindTMP(root, "label-scenario-title");
-            if (labelScenTitle != null) labelScenTitle.text = title;
-
-            var labelScenDesc = UIHelper.FindTMP(root, "label-scenario-desc");
-            if (labelScenDesc != null) labelScenDesc.text = subtitle;
-
-            // Hero badge
-            var heroBadgeLbl = UIHelper.FindTMP(root, "label-hero-badge");
-            if (heroBadgeLbl != null) heroBadgeLbl.text = levelBadge;
-
-            // Hero photo
-            var heroPhotoContainer = UIHelper.FindRect(root, "HeroPhotoContainer");
-            if (heroPhotoContainer != null)
-            {
-                var img = heroPhotoContainer.GetComponent<Image>();
-                var spr = UIHelper.LoadProjectSprite(heroImg);
-                if (img != null && spr != null)
-                {
-                    img.sprite = spr;
-                    img.color  = Color.white;
-                }
-            }
+            // ── Bind all labels ─────────────────────────────────────────
+            UIHelper.FindTMP(root, "label-title")?.SetText(title);
+            UIHelper.FindTMP(root, "label-scenario-title")?.SetText(title);
+            UIHelper.FindTMP(root, "label-scenario-desc")?.SetText(subtitle);
+            UIHelper.FindTMP(root, "label-hero-badge")?.SetText(levelBadge);
+            UIHelper.FindTMP(root, "label-overview-body")?.SetText(overview);
 
             // Stat chips
-            var chipDurVal = UIHelper.FindRect(root, "chip-duration")?.Find("Inner/TextCol/Value")?.GetComponent<TextMeshProUGUI>();
-            if (chipDurVal != null) chipDurVal.text = duration;
+            var dur = UIHelper.FindRect(root, "chip-duration")?.Find("Inner/TextCol/Value")?.GetComponent<TextMeshProUGUI>();
+            if (dur != null) dur.text = duration;
 
-            var chipLevVal = UIHelper.FindRect(root, "chip-level")?.Find("Inner/TextCol/Value")?.GetComponent<TextMeshProUGUI>();
-            if (chipLevVal != null) chipLevVal.text = level;
+            var lev = UIHelper.FindRect(root, "chip-level")?.Find("Inner/TextCol/Value")?.GetComponent<TextMeshProUGUI>();
+            if (lev != null) lev.text = level;
 
-            var chipFocVal = UIHelper.FindRect(root, "chip-focus")?.Find("Inner/TextCol/Value")?.GetComponent<TextMeshProUGUI>();
-            if (chipFocVal != null) chipFocVal.text = focusVal;
+            var foc = UIHelper.FindRect(root, "chip-focus")?.Find("Inner/TextCol/Value")?.GetComponent<TextMeshProUGUI>();
+            if (foc != null) foc.text = focusVal;
 
-            var chipFocSub = UIHelper.FindRect(root, "chip-focus")?.Find("Inner/TextCol/Sub")?.GetComponent<TextMeshProUGUI>();
-            if (chipFocSub != null) chipFocSub.text = focusSub;
+            var focSub = UIHelper.FindRect(root, "chip-focus")?.Find("Inner/TextCol/Sub")?.GetComponent<TextMeshProUGUI>();
+            if (focSub != null) focSub.text = focusSub;
 
-            // Overview body
-            var labelOverview = UIHelper.FindTMP(root, "label-overview-body");
-            if (labelOverview != null) labelOverview.text = overview;
-
-            // Steps list — rebuild with scenario-specific content
+            // Steps list — rebuild
             var stepsList = UIHelper.FindRect(root, "steps-list");
             if (stepsList != null)
             {
@@ -180,36 +153,13 @@ namespace SurakshaAR.Screens
                     GasModuleDetailBuilder.MakeStepItem(stepsList, i + 1, steps[i]);
             }
 
-            var currentLang = AppState.Instance != null
-                ? AppState.Instance.CurrentLanguage
-                : AppLanguage.English;
+            var currentLang = AppState.Instance?.CurrentLanguage ?? AppLanguage.English;
             UIManager.Instance?.ApplyLanguageFonts(root, currentLang);
         }
 
-        // ────────────────────────────────────────────────────────────────
-        private void OpenTrainingOrAssessment()
-        {
-            // Gas AR scene is not yet implemented — route to Assessment screen.
-            // When a GasTraining scene is added, wire it through ARModuleLauncher here.
-            var gasModule = AppManager.Instance?.GetModule(ModuleId.GasLeakConfinedSpace);
-            if (gasModule != null && gasModule.isImplemented && ARModuleLauncher.Instance != null)
-            {
-                bool launched = ARModuleLauncher.Instance.TryLaunchModule(gasModule);
-                if (!launched)
-                {
-                    Debug.LogWarning("[GasModuleDetail] Gas AR scene not available, routing to Assessment.");
-                    UIManager.Instance?.ShowScreen(ScreenId.Assessment);
-                }
-            }
-            else
-            {
-                UIManager.Instance?.ShowScreen(ScreenId.Assessment);
-            }
-        }
-
+        // ──────────────────────────────────────────────────────────────────
         private void GoBack()
         {
-            // Back navigation: Gas Scenario Detail → Gas Sub-Modules Selection
             UIManager.Instance?.ShowScreen(ScreenId.GasScenarioSelection);
         }
 
