@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using SurakshaAR.Data;
+using SurakshaAR.Localization;
 using SurakshaAR.Screens;
 using SurakshaAR.UI;
 using SurakshaAR.UI.Builders;
@@ -253,9 +254,9 @@ namespace SurakshaAR.Core
 
                     tmp.font = font;
 
-                    if (lang == AppLanguage.Hindi && !string.IsNullOrEmpty(tmp.text) && UI.DevanagariShaper.HasDevanagari(tmp.text))
+                    if (lang == AppLanguage.Hindi && !string.IsNullOrEmpty(tmp.text) && DevanagariShaper.HasDevanagari(tmp.text))
                     {
-                        tmp.text = UI.DevanagariShaper.Shape(tmp.text);
+                        tmp.text = DevanagariShaper.Shape(tmp.text);
                     }
                 }
                 catch (System.Exception ex)
