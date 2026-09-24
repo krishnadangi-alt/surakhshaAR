@@ -63,6 +63,7 @@ namespace SurakshaAR.Editor
 
             if (EditorApplication.isCompiling || EditorApplication.isUpdating) return;
 
+            MultilingualValidationCapture.CheckTrigger();
             RealWorkerFireValidation.CheckTrigger();
 
             if (File.Exists(ReadyFile))

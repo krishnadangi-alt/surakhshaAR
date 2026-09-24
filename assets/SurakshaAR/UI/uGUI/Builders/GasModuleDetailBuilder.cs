@@ -131,8 +131,8 @@ namespace SurakshaAR.UI.Builders
                 flexibleWidth: true, flexWidth: 1, preferredHeight: 60);
 
             var langPill = UIHelper.MakeButton("btn-language-picker", row,
-                "🌐 EN ▾", 26, Hex("#F1F5F9"), SlateText, 14);
-            UIHelper.SetLayout(langPill.gameObject, preferredWidth: 130, preferredHeight: 60);
+                "English", 26, Hex("#F1F5F9"), SlateText, 14);
+            UIHelper.SetLayout(langPill.gameObject, preferredWidth: 160, preferredHeight: 60);
 
             var bellBtn = UIHelper.MakeButton("btn-bell", row, "", 14,
                 Color.white, Color.white, 20);
@@ -220,13 +220,18 @@ namespace SurakshaAR.UI.Builders
                 childForceWidth: true, childForceHeight: false);
             UIHelper.SetLayout(col.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 124, minHeight: 114);
+                minHeight: 114);
+
+            var cvlg = col.GetComponent<VerticalLayoutGroup>();
+            cvlg.childForceExpandHeight = false;
+            var csf = col.gameObject.AddComponent<ContentSizeFitter>();
+            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             var row = UIHelper.MakeHorizontal("TitleRow", col.transform, 14,
                 childForceWidth: false, childForceHeight: false);
             UIHelper.SetLayout(row.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 58);
+                minHeight: 58);
             row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
             var badge = UIHelper.MakeRect("GasBox", row);
@@ -241,16 +246,17 @@ namespace SurakshaAR.UI.Builders
             UIHelper.Stretch(gasLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
 
             var titleLbl = UIHelper.MakeLabel("label-scenario-title", row,
-                "Underground Gas Release", 46, DarkText, bold: true, wrap: false);
+                "Underground Gas Release", 46, DarkText, bold: true, wrap: true);
+            titleLbl.lineSpacing = 1.05f;
             UIHelper.SetLayout(titleLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 56);
+                flexibleWidth: true, flexWidth: 1, minHeight: 56);
 
             var descLbl = UIHelper.MakeLabel("label-scenario-desc", col.transform,
                 "Recognize a gas release, raise the alarm and move to a safe area.",
                 34, MutedText, wrap: true);
             descLbl.lineSpacing = 1.15f;
             UIHelper.SetLayout(descLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 50);
+                flexibleWidth: true, flexWidth: 1, minHeight: 48);
         }
 
         // ─────────────────────────────────────────────────────────────────
@@ -264,7 +270,7 @@ namespace SurakshaAR.UI.Builders
 
             BuildChip(row, "chip-duration", "⏱",  "~ 10 mins",    "Duration");
             BuildChip(row, "chip-level",    "📊", "Beginner",      "Level");
-            BuildChip(row, "chip-focus",    "🔍", "Gas Detector",  "Use");
+            BuildChip(row, "chip-focus",    "⚡", "Gas Detector",  "Use");
         }
 
         private static void BuildChip(Transform parent, string name,
@@ -314,7 +320,10 @@ namespace SurakshaAR.UI.Builders
                 childForceWidth: true, childForceHeight: false);
             UIHelper.SetLayout(box.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 196, minHeight: 180);
+                minHeight: 160);
+
+            var csf = box.gameObject.AddComponent<ContentSizeFitter>();
+            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             var headRow = UIHelper.MakeHorizontal("HeadRow", box.transform, 12,
                 childForceWidth: false, childForceHeight: false);
@@ -322,9 +331,12 @@ namespace SurakshaAR.UI.Builders
                 flexibleWidth: true, flexWidth: 1, preferredHeight: 48);
             headRow.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
-            var docIcon = UIHelper.MakeLabel("DocIcon", headRow,
-                "📄", 32, AccentBlue, TextAlignmentOptions.Center);
-            UIHelper.SetLayout(docIcon.gameObject, preferredWidth: 40, preferredHeight: 40);
+            var bar = UIHelper.MakeRect("AccentBar", headRow);
+            UIHelper.SetLayout(bar.gameObject, preferredWidth: 6, preferredHeight: 38);
+            var barImg = bar.gameObject.AddComponent<Image>();
+            barImg.color  = AccentBlue;
+            barImg.sprite = UIHelper.GetWhiteSprite();
+            UIHelper.SetImageRoundedSprite(barImg, 3);
 
             var headLbl = UIHelper.MakeLabel("OverviewHead", headRow,
                 "Scenario Overview", 44, DarkText, bold: true);
@@ -336,7 +348,7 @@ namespace SurakshaAR.UI.Builders
                 34, SlateText, wrap: true);
             bodyLbl.lineSpacing = 1.25f;
             UIHelper.SetLayout(bodyLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 136);
+                flexibleWidth: true, flexWidth: 1, minHeight: 80);
         }
 
         // ─────────────────────────────────────────────────────────────────
@@ -346,7 +358,10 @@ namespace SurakshaAR.UI.Builders
                 childForceWidth: true, childForceHeight: false);
             UIHelper.SetLayout(box.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 510, minHeight: 480);
+                minHeight: 400);
+
+            var csf = box.gameObject.AddComponent<ContentSizeFitter>();
+            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             var headRow = UIHelper.MakeHorizontal("HeadRow", box.transform, 12,
                 childForceWidth: false, childForceHeight: false);
@@ -370,6 +385,8 @@ namespace SurakshaAR.UI.Builders
                 childForceWidth: true, childForceHeight: false);
             UIHelper.SetLayout(stepsCol.gameObject,
                 flexibleWidth: true, flexWidth: 1);
+            var scCsf = stepsCol.gameObject.AddComponent<ContentSizeFitter>();
+            scCsf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             string[] defaultSteps =
             {
@@ -392,8 +409,11 @@ namespace SurakshaAR.UI.Builders
                 childForceWidth: false, childForceHeight: false);
             UIHelper.SetLayout(row.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 64, minHeight: 58);
+                minHeight: 58);
             row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
+
+            var csf = row.gameObject.AddComponent<ContentSizeFitter>();
+            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             var badge = UIHelper.MakeRect("Badge", row);
             UIHelper.SetLayout(badge.gameObject,
@@ -413,7 +433,7 @@ namespace SurakshaAR.UI.Builders
                 stepText, 34, DarkText, wrap: true);
             lbl.lineSpacing = 1.15f;
             UIHelper.SetLayout(lbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 54);
+                flexibleWidth: true, flexWidth: 1, minHeight: 48);
         }
 
         // ─────────────────────────────────────────────────────────────────

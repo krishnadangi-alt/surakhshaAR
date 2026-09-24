@@ -22,6 +22,383 @@ namespace SurakshaAR.Localization
         public static readonly Dictionary<string, Dictionary<AppLanguage, string>> Table =
             new Dictionary<string, Dictionary<AppLanguage, string>>
         {
+            { "fire.module.title", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Fire & Explosion Response" },
+                { AppLanguage.Hindi,   "आग एवं विस्फोट रोकथाम" },
+                { AppLanguage.Santali, "ᱥᱮᱸᱜᱮᱞ ᱟᱨ ᱵᱷᱚᱢ ᱯᱚᱨᱚᱠ" } } },
+            { "fire.module.desc", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Learn to identify, prevent and respond to fire and explosion hazards in mining and industrial environments." },
+                { AppLanguage.Hindi,   "खदानों और औद्योगिक क्षेत्रों में आग और विस्फोट के खतरों को पहचानें, रोकें और सुरक्षित कार्रवाई करना सीखें।" },
+                { AppLanguage.Santali, "ᱠᱷᱟᱫᱟᱱ ᱟᱨ ᱠᱟᱹᱨᱜᱟᱲ ᱨᱮ ᱥᱮᱸᱜᱮᱞ ᱟᱨ ᱵᱷᱚᱢ ᱵᱚᱛᱚᱨ ᱪᱤᱱᱦᱟᱹᱣ, ᱟᱴᱠᱟᱣ ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱛᱮ ᱠᱟᱹᱢᱤ ᱥᱮᱪᱮᱫ ᱢᱮ ᱾" } } },
+            { "scenario.select.heading", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Select a Scenario" },
+                { AppLanguage.Hindi,   "प्रशिक्षण परिदृश्य चुनें" },
+                { AppLanguage.Santali, "ᱥᱮᱪᱮᱫ ᱦᱟᱞᱚᱛ ᱵᱟᱪᱷᱟᱣ ᱢᱮ" } } },
+            { "scenario.fire.electrical.title", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Electrical Panel Fire" },
+                { AppLanguage.Hindi,   "विद्युत पैनल में आग" },
+                { AppLanguage.Santali, "ᱵᱤᱡᱽᱞᱤ ᱯᱮᱱᱟᱞ ᱥᱮᱸᱜᱮᱞ" } } },
+            { "scenario.fire.electrical.desc", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Handle fire in electrical panels and control rooms." },
+                { AppLanguage.Hindi,   "विद्युत पैनल और कंट्रोल रूम में आग पर सुरक्षित नियंत्रण पाएँ।" },
+                { AppLanguage.Santali, "ᱵᱤᱡᱽᱞᱤ ᱯᱮᱱᱟᱞ ᱟᱨ ᱠᱚᱱᱴᱨᱚᱞ ᱚᱲᱟᱜ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱢᱮ ᱾" } } },
+            { "scenario.fire.electrical.overview", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "A fire may start in an electrical control panel due to short circuit, overload or equipment failure. Learn to identify the hazard, activate the alarm and use the correct extinguisher to control the fire safely." },
+                { AppLanguage.Hindi,   "शॉर्ट सर्किट, ओवरलोड या उपकरण खराबी से विद्युत कंट्रोल पैनल में आग लग सकती है। खतरे की पहचान करें, अलार्म बजाएँ और सुरक्षित तरीके से सही अग्निशामक का उपयोग करें।" },
+                { AppLanguage.Santali, "ᱥᱚᱨᱴ ᱥᱟᱨᱠᱤᱴ ᱥᱮ ᱥᱟᱢᱟᱱ ᱵᱟᱹᱲᱤᱡ ᱛᱮ ᱵᱤᱡᱽᱞᱤ ᱯᱮᱱᱟᱞ ᱨᱮ ᱥᱮᱸᱜᱮᱞ ᱞᱟᱜᱟᱣ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ ᱾ ᱵᱚᱛᱚᱨ ᱪᱤᱱᱦᱟᱹᱣ, ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱟᱨ ᱥᱟᱹᱨᱤ ᱤᱬᱤᱡᱤᱡ ᱛᱮ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱥᱮᱪᱮᱫ ᱢᱮ ᱾" } } },
+            { "scenario.fire.conveyor.title", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Conveyor Belt Fire" },
+                { AppLanguage.Hindi,   "कन्वेयर बेल्ट में आग" },
+                { AppLanguage.Santali, "ᱠᱚᱱᱵᱷᱮᱭᱟᱨ ᱵᱮᱞᱴ ᱥᱮᱸᱜᱮᱞ" } } },
+            { "scenario.fire.conveyor.desc", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Respond to fire in conveyor belt systems." },
+                { AppLanguage.Hindi,   "कन्वेयर बेल्ट सिस्टम में आग लगने पर त्वरित कार्रवाई करें।" },
+                { AppLanguage.Santali, "ᱠᱚᱱᱵᱷᱮᱭᱟᱨ ᱵᱮᱞᱴ ᱥᱤᱥᱴᱚᱢ ᱨᱮ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱢᱮ ᱾" } } },
+            { "scenario.fire.conveyor.overview", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "A fire has been detected on the conveyor belt system. Learn to raise the alarm, stop and isolate the conveyor, and respond to the fire safely." },
+                { AppLanguage.Hindi,   "कन्वेयर बेल्ट प्रणाली पर आग का पता चला है। अलार्म बजाना, कन्वेयर को आपातकालीन स्टॉप से रोकना और सुरक्षित दूरी से आग बुझाना सीखें।" },
+                { AppLanguage.Santali, "ᱠᱚᱱᱵᱷᱮᱭᱟᱨ ᱵᱮᱞᱴ ᱨᱮ ᱥᱮᱸᱜᱮᱞ ᱧᱟᱢ ᱟᱠᱟᱱᱟ ᱾ ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ, ᱠᱚᱱᱵᱷᱮᱭᱟᱨ ᱵᱚᱸᱫᱽ ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱛᱮ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱥᱮᱪᱮᱫ ᱢᱮ ᱾" } } },
+            { "scenario.fire.excavator.title", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Excavator / HEMM Fire" },
+                { AppLanguage.Hindi,   "एक्सावेटर / भारी मशीनरी (HEMM) में आग" },
+                { AppLanguage.Santali, "ᱮᱠᱥᱟᱵᱷᱮᱴᱟᱨ / ᱦᱮᱢ (HEMM) ᱥᱮᱸᱜᱮᱞ" } } },
+            { "scenario.fire.excavator.desc", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Handle fire in heavy earth moving machinery." },
+                { AppLanguage.Hindi,   "भारी खनन मशीनरी (HEMM) में आग लगने पर नियंत्रण पाएँ।" },
+                { AppLanguage.Santali, "ᱢᱟᱨᱟᱝ ᱠᱷᱟᱫᱟᱱ ᱢᱮᱥᱤᱱ ᱨᱮ ᱥᱮᱸᱜᱮᱞ ᱥᱟᱢᱵᱽᱲᱟᱣ ᱢᱮ ᱾" } } },
+            { "scenario.fire.excavator.overview", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "A fire has started in a heavy earth moving machine. Learn to stop the machine, raise the alarm and respond to the fire while maintaining a safe distance." },
+                { AppLanguage.Hindi,   "भारी खनन मशीन में आग लग गई है। मशीन को सुरक्षित रूप से बंद करना, अलार्म बजाना और सुरक्षित दूरी बनाए रखते हुए आग पर काबू पाना सीखें।" },
+                { AppLanguage.Santali, "ᱢᱟᱨᱟᱝ ᱢᱮᱥᱤᱱ ᱨᱮ ᱥᱮᱸᱜᱮᱞ ᱡᱩᱞ ᱮᱱᱟ ᱾ ᱢᱮᱥᱤᱱ ᱵᱚᱸᱫᱽ ᱠᱟᱛᱮ ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱟᱨ ᱥᱟᱺᱜᱤᱧ ᱠᱷᱚᱱ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱥᱮᱪᱮᱫ ᱢᱮ ᱾" } } },
+            { "fire.sop.step1", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Identify fire hazard" },
+                { AppLanguage.Hindi,   "अग्नि का खतरा पहचानें" },
+                { AppLanguage.Santali, "ᱥᱮᱸᱜᱮᱞ ᱵᱚᱛᱚᱨ ᱪᱤᱱᱦᱟᱹᱣ ᱢᱮ" } } },
+            { "fire.sop.step2", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Activate fire alarm" },
+                { AppLanguage.Hindi,   "फायर अलार्म सक्रिय करें" },
+                { AppLanguage.Santali, "ᱯᱷᱟᱭᱟᱨ ᱮᱞᱟᱨᱢ ᱪᱟᱹᱞᱩᱭ ᱢᱮ" } } },
+            { "fire.sop.step3", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Select correct extinguisher" },
+                { AppLanguage.Hindi,   "सही अग्निशामक चुनें" },
+                { AppLanguage.Santali, "ᱥᱟᱹᱨᱤ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡᱤᱡ ᱵᱟᱪᱷᱟᱣ ᱢᱮ" } } },
+            { "fire.sop.step4", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Remove safety pin" },
+                { AppLanguage.Hindi,   "सेफ्टी पिन निकालें" },
+                { AppLanguage.Santali, "ᱥᱮᱯᱷᱴᱤ ᱯᱤᱱ ᱚᱨ ᱚᱰᱚᱠ ᱢᱮ" } } },
+            { "fire.sop.step5", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Grip and aim at fire base" },
+                { AppLanguage.Hindi,   "आग के आधार की ओर निशाना लगाएँ" },
+                { AppLanguage.Santali, "ᱥᱮᱸᱜᱮᱞ ᱵᱩᱴᱟᱹ ᱨᱮ ᱴᱟᱨᱜᱮᱴ ᱢᱮ" } } },
+            { "fire.sop.step6", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Press and spray" },
+                { AppLanguage.Hindi,   "स्प्रे करके आग बुझाएँ" },
+                { AppLanguage.Santali, "ᱞᱤᱱ ᱠᱟᱛᱮ ᱥᱯᱨᱮ ᱢᱮ" } } },
+            { "fire.conveyor.step1", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Detect smoke/fire on conveyor" },
+                { AppLanguage.Hindi,   "कन्वेयर पर धुआँ या आग पहचानें" },
+                { AppLanguage.Santali, "ᱠᱚᱱᱵᱷᱮᱭᱟᱨ ᱨᱮ ᱫᱷᱩᱶᱟᱹ ᱥᱮ ᱥᱮᱸᱜᱮᱞ ᱧᱮᱞ ᱢᱮ" } } },
+            { "fire.conveyor.step2", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Raise alarm" },
+                { AppLanguage.Hindi,   "आपातकालीन अलार्म बजाएँ" },
+                { AppLanguage.Santali, "ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱢᱮ" } } },
+            { "fire.conveyor.step3", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Stop and isolate conveyor (E-Stop)" },
+                { AppLanguage.Hindi,   "इमरजेंसी स्टॉप (E-Stop) दबाकर कन्वेयर बंद करें" },
+                { AppLanguage.Santali, "E-Stop ᱞᱤᱱ ᱠᱟᱛᱮ ᱠᱚᱱᱵᱷᱮᱭᱟᱨ ᱵᱚᱸᱫᱽ ᱢᱮ" } } },
+            { "fire.conveyor.step4", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Keep workers away from danger zone" },
+                { AppLanguage.Hindi,   "कर्मियों को खतरे के क्षेत्र से दूर रखें" },
+                { AppLanguage.Santali, "ᱠᱟᱹᱢᱤᱭᱟᱹ ᱠᱚ ᱵᱚᱛᱚᱨ ᱡᱟᱭᱜᱟ ᱠᱷᱚᱱ ᱥᱟᱺᱜᱤᱧ ᱫᱚᱦᱚ ᱠᱚᱣᱟ" } } },
+            { "fire.conveyor.step5", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Use appropriate firefighting equipment" },
+                { AppLanguage.Hindi,   "उपयुक्त अग्निशामक उपकरण का प्रयोग करें" },
+                { AppLanguage.Santali, "ᱴᱷᱤᱠ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱥᱟᱢᱟᱱ ᱵᱮᱵᱷᱟᱨ ᱢᱮ" } } },
+            { "fire.conveyor.step6", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Control the fire if safe" },
+                { AppLanguage.Hindi,   "सुरक्षित होने पर आग पर नियंत्रण पाएँ" },
+                { AppLanguage.Santali, "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱛᱟᱦᱮᱸᱱ ᱠᱷᱟᱱ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱢᱮ" } } },
+            { "fire.excavator.step1", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Detect engine/machine fire" },
+                { AppLanguage.Hindi,   "इंजन या मशीन में आग की पहचान करें" },
+                { AppLanguage.Santali, "ᱤᱧᱡᱤᱱ ᱨᱮ ᱥᱮᱸᱜᱮᱞ ᱧᱮᱞ ᱪᱤᱱᱦᱟᱹᱣ ᱢᱮ" } } },
+            { "fire.excavator.step2", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Stop the machine safely" },
+                { AppLanguage.Hindi,   "मशीन को सुरक्षित रूप से रोकें" },
+                { AppLanguage.Santali, "ᱢᱮᱥᱤᱱ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱛᱮ ᱛᱷᱟᱢᱵᱷᱟᱣ ᱢᱮ" } } },
+            { "fire.excavator.step3", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Raise alarm and inform control room" },
+                { AppLanguage.Hindi,   "अलार्म बजाएँ और कंट्रोल रूम को सूचित करें" },
+                { AppLanguage.Santali, "ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱟᱨ ᱠᱚᱱᱴᱨᱚᱞ ᱚᱲᱟᱜ ᱨᱮ ᱵᱟᱰᱟᱭ ᱦᱚᱪᱚ ᱢᱮ" } } },
+            { "fire.excavator.step4", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Exit the operator area" },
+                { AppLanguage.Hindi,   "ऑपरेटर केबिन से सुरक्षित बाहर निकलें" },
+                { AppLanguage.Santali, "ᱚᱯᱟᱨᱮᱴᱟᱨ ᱠᱮᱵᱤᱱ ᱠᱷᱚᱱ ᱵᱟᱦᱨᱮ ᱚᱰᱚᱠ ᱢᱮ" } } },
+            { "fire.excavator.step5", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Maintain safe distance" },
+                { AppLanguage.Hindi,   "सुरक्षित दूरी बनाए रखें" },
+                { AppLanguage.Santali, "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱺᱜᱤᱧ ᱫᱚᱦᱚ ᱢᱮ" } } },
+            { "fire.excavator.step6", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Use appropriate extinguisher" },
+                { AppLanguage.Hindi,   "उपयुक्त अग्निशामक का उपयोग करें" },
+                { AppLanguage.Santali, "ᱴᱷᱤᱠ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡᱤᱡ ᱵᱮᱵᱷᱟᱨ ᱢᱮ" } } },
+            { "gas.module.title", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Gas Leak & Confined Space" },
+                { AppLanguage.Hindi,   "गैस रिसाव एवं सीमित स्थान" },
+                { AppLanguage.Santali, "ᱜᱮᱥ ᱞᱤᱠ ᱟᱨ ᱥᱟᱸᱜᱷᱟᱨ ᱡᱟᱭᱜᱟ" } } },
+            { "gas.module.desc", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Identify hazardous gases, follow confined-space procedures, and select proper Personal Protective Equipment (PPE)." },
+                { AppLanguage.Hindi,   "खतरनाक गैसों की पहचान करना, सीमित स्थानों में सुरक्षा प्रक्रियाओं का पालन करना और व्यक्तिगत सुरक्षा उपकरण (PPE) का सही उपयोग करना।" },
+                { AppLanguage.Santali, "ᱵᱤᱥ ᱜᱮᱥ ᱪᱤᱱᱦᱟᱹᱣ, ᱥᱟᱸᱜᱷᱟᱨ ᱡᱟᱭᱜᱟ ᱨᱮ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱱᱤᱭᱟᱹᱢ ᱢᱟᱱᱟᱣ ᱟᱨ PPE ᱵᱮᱵᱷᱟᱨ ᱢᱮ ᱾" } } },
+            { "scenario.gas.underground.title", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Underground Gas Release" },
+                { AppLanguage.Hindi,   "भूमिगत खदान में गैस रिसाव" },
+                { AppLanguage.Santali, "ᱚᱛ ᱵᱷᱤᱛᱨᱤ ᱜᱮᱥ ᱚᱰᱚᱠ" } } },
+            { "scenario.gas.underground.desc", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Recognize a gas release, raise the alarm and move to a safe area." },
+                { AppLanguage.Hindi,   "गैस रिसाव की पहचान करें, अलार्म बजाएँ और सुरक्षित स्थान पर जाएँ।" },
+                { AppLanguage.Santali, "ᱜᱮᱥ ᱚᱰᱚᱠ ᱪᱤᱱᱦᱟᱹᱣ ᱢᱮ, ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱡᱟᱭᱜᱟ ᱛᱮ ᱪᱟᱞᱟᱜ ᱢᱮ ᱾" } } },
+            { "scenario.gas.underground.overview", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "A gas leak has been detected in an underground mine area. Learn to identify the leak, raise the alarm, communicate the emergency and move to a safe area following proper procedures." },
+                { AppLanguage.Hindi,   "भूमिगत खदान क्षेत्र में गैस रिसाव का पता चला है। रिसाव की पहचान करना, अलार्म बजाना, आपात सूचना देना और तय प्रक्रिया के अनुसार सुरक्षित क्षेत्र में पहुँचना सीखें।" },
+                { AppLanguage.Santali, "ᱚᱛ ᱵᱷᱤᱛᱨᱤ ᱠᱷᱟᱫᱟᱱ ᱨᱮ ᱜᱮᱥ ᱞᱤᱠ ᱧᱟᱢ ᱟᱠᱟᱱᱟ ᱾ ᱞᱤᱠ ᱪᱤᱱᱦᱟᱹᱣ, ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱟᱨ ᱱᱤᱭᱚᱢ ᱞᱮᱠᱟᱛᱮ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱡᱟᱭᱜᱟ ᱛᱮ ᱪᱟᱞᱟᱜ ᱥᱮᱪᱮᱫ ᱢᱮ ᱾" } } },
+            { "scenario.gas.confined.title", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Confined Space Entry" },
+                { AppLanguage.Hindi,   "सीमित स्थान में सुरक्षित प्रवेश" },
+                { AppLanguage.Santali, "ᱥᱟᱸᱜᱷᱟᱨ ᱡᱟᱭᱜᱟ ᱨᱮ ᱵᱚᱞᱚᱱ" } } },
+            { "scenario.gas.confined.desc", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Follow safe entry procedures and use gas detection & PPE." },
+                { AppLanguage.Hindi,   "सुरक्षित प्रवेश प्रक्रिया का पालन करें और गैस डिटेक्टर एवं PPE का उपयोग करें।" },
+                { AppLanguage.Santali, "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱵᱚᱞᱚᱱ ᱱᱤᱭᱚᱢ ᱢᱟᱱᱟᱣ ᱟᱨ ᱜᱮᱥ ᱰᱤᱴᱮᱠᱴᱚᱨ ᱥᱟᱶ PPE ᱵᱮᱵᱷᱟᱨ ᱢᱮ ᱾" } } },
+            { "scenario.gas.confined.overview", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Learn the safe entry procedure for confined spaces, use gas detection equipment, verify atmospheric conditions and follow PPE requirements." },
+                { AppLanguage.Hindi,   "सीमित स्थानों में प्रवेश की मानक सुरक्षा प्रक्रिया सीखें, गैस डिटेक्टर से वायु गुणवत्ता जाँचें और आवश्यक PPE पहनें।" },
+                { AppLanguage.Santali, "ᱥᱟᱸᱜᱷᱟᱨ ᱡᱟᱭᱜᱟ ᱨᱮ ᱵᱚᱞᱚᱱ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱱᱤᱭᱚᱢ ᱥᱮᱪᱮᱫ ᱢᱮ, ᱜᱮᱥ ᱯᱚᱨᱚᱠ ᱥᱟᱢᱟᱱ ᱛᱮ ᱦᱚᱭ ᱧᱮᱞ ᱟᱨ PPE ᱦᱚᱨᱚᱜ ᱢᱮ ᱾" } } },
+            { "scenario.gas.cylinder.title", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Gas Cylinder Leak" },
+                { AppLanguage.Hindi,   "गैस सिलेंडर रिसाव" },
+                { AppLanguage.Santali, "ᱜᱮᱥ ᱥᱤᱞᱤᱱᱰᱟᱨ ᱞᱤᱠ" } } },
+            { "scenario.gas.cylinder.desc", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Respond to a gas cylinder leak and control the hazard safely." },
+                { AppLanguage.Hindi,   "गैस सिलेंडर रिसाव की पहचान करें और खतरे को सुरक्षित रूप से नियंत्रित करें।" },
+                { AppLanguage.Santali, "ᱜᱮᱥ ᱥᱤᱞᱤᱱᱰᱟᱨ ᱞᱤᱠ ᱥᱟᱢᱵᱽᱲᱟᱣ ᱟᱨ ᱵᱚᱛᱚᱨ ᱠᱷᱚᱱ ᱨᱩᱠᱷᱤᱭᱟᱹᱜ ᱢᱮ ᱾" } } },
+            { "scenario.gas.cylinder.overview", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Learn to identify a gas cylinder leak, isolate the source, raise the alarm and follow safe handling and shut-off procedures." },
+                { AppLanguage.Hindi,   "गैस सिलेंडर रिसाव की पहचान करना, मुख्य वाल्व बंद कर स्रोत अलग करना, अलार्म बजाना और सुरक्षित शट-ऑफ प्रक्रिया का पालन करना सीखें।" },
+                { AppLanguage.Santali, "ᱜᱮᱥ ᱥᱤᱞᱤᱱᱰᱟᱨ ᱞᱤᱠ ᱪᱤᱱᱦᱟᱹᱣ, ᱢᱩᱬᱩᱛ ᱵᱷᱟᱞᱵᱽ ᱵᱚᱸᱫᱽ, ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱴ-ᱚᱯᱷ ᱱᱤᱭᱚᱢ ᱢᱟᱱᱟᱣ ᱢᱮ ᱾" } } },
+            { "gas.underground.step1", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Identify gas leak signs and hazard area" },
+                { AppLanguage.Hindi,   "गैस रिसाव के लक्षण और खतरे के क्षेत्र को पहचानें" },
+                { AppLanguage.Santali, "ᱜᱮᱥ ᱞᱤᱠ ᱪᱤᱱᱦᱟᱹ ᱟᱨ ᱵᱚᱛᱚᱨ ᱡᱟᱭᱜᱟ ᱪᱤᱱᱦᱟᱹᱣ ᱢᱮ" } } },
+            { "gas.underground.step2", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Activate alarm and inform control room" },
+                { AppLanguage.Hindi,   "अलार्म बजाएँ और कंट्रोल रूम को सूचित करें" },
+                { AppLanguage.Santali, "ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱟᱨ ᱠᱚᱱᱴᱨᱚᱞ ᱚᱲᱟᱜ ᱨᱮ ᱞᱟᱹᱭ ᱢᱮ" } } },
+            { "gas.underground.step3", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Use gas detector and interpret readings" },
+                { AppLanguage.Hindi,   "गैस डिटेक्टर का उपयोग कर रीडिंग जाँचें" },
+                { AppLanguage.Santali, "ᱜᱮᱥ ᱰᱤᱴᱮᱠᱴᱚᱨ ᱵᱮᱵᱷᱟᱨ ᱠᱟᱛᱮ ᱨᱤᱰᱤᱝ ᱧᱮᱞ ᱢᱮ" } } },
+            { "gas.underground.step4", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Follow safe withdrawal procedure" },
+                { AppLanguage.Hindi,   "सुरक्षित निकासी प्रक्रिया का पालन करें" },
+                { AppLanguage.Santali, "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱚᱰᱚᱠᱚᱜ ᱱᱤᱭᱚᱢ ᱯᱟᱸᱡᱟᱭ ᱢᱮ" } } },
+            { "gas.underground.step5", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Follow ventilation and evacuation route" },
+                { AppLanguage.Hindi,   "वेंटिलेशन दिशा और आपात निकास मार्ग का पालन करें" },
+                { AppLanguage.Santali, "ᱦᱚᱭ ᱦᱤᱡᱩᱜ ᱥᱮᱫ ᱟᱨ ᱮᱢᱟᱨᱡᱮᱱᱥᱤ ᱰᱟᱦᱟᱨ ᱛᱮ ᱪᱟᱞᱟᱜ ᱢᱮ" } } },
+            { "gas.underground.step6", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Maintain safe distance and move to safe area" },
+                { AppLanguage.Hindi,   "सुरक्षित दूरी बनाए रखें और सुरक्षित क्षेत्र में पहुँचें" },
+                { AppLanguage.Santali, "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱺᱜᱤᱧ ᱫᱚᱦᱚ ᱠᱟᱛᱮ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱡᱟᱭᱜᱟ ᱨᱮ ᱥᱮᱴᱮᱨᱚᱜ ᱢᱮ" } } },
+            { "gas.confined.step1", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Identify confined space hazards" },
+                { AppLanguage.Hindi,   "सीमित स्थान के खतरों की पहचान करें" },
+                { AppLanguage.Santali, "ᱥᱟᱸᱜᱷᱟᱨ ᱡᱟᱭᱜᱟ ᱵᱚᱛᱚᱨ ᱪᱤᱱᱦᱟᱹᱣ ᱢᱮ" } } },
+            { "gas.confined.step2", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Perform atmospheric gas testing" },
+                { AppLanguage.Hindi,   "गैस परीक्षण उपकरण से वायुमंडलीय जाँच करें" },
+                { AppLanguage.Santali, "ᱥᱟᱢᱟᱱ ᱛᱮ ᱦᱚᱭ ᱜᱮᱥ ᱵᱤᱰᱟᱹᱣ ᱢᱮ" } } },
+            { "gas.confined.step3", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Check oxygen, toxic and flammable gases" },
+                { AppLanguage.Hindi,   "ऑक्सीजन, जहरीली और ज्वलनशील गैसों की जाँच करें" },
+                { AppLanguage.Santali, "ᱚᱠᱥᱤᱡᱮᱱ, ᱵᱤᱥ ᱟᱨ ᱡᱩᱞᱩᱜ ᱜᱮᱥ ᱯᱚᱨᱚᱠ ᱢᱮ" } } },
+            { "gas.confined.step4", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Use appropriate PPE" },
+                { AppLanguage.Hindi,   "उपयुक्त PPE और सुरक्षा उपकरण पहनें" },
+                { AppLanguage.Santali, "ᱴᱷᱤᱠ PPE ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱢᱟᱱ ᱦᱚᱨᱚᱜ ᱢᱮ" } } },
+            { "gas.confined.step5", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Follow entry and work permit procedure" },
+                { AppLanguage.Hindi,   "कार्य परमिट (Work Permit) प्रक्रिया का पालन करें" },
+                { AppLanguage.Santali, "ᱠᱟᱹᱢᱤ ᱯᱟᱨᱢᱤᱴ (Work Permit) ᱱᱤᱭᱚᱢ ᱢᱟᱱᱟᱣ ᱢᱮ" } } },
+            { "gas.confined.step6", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Safe exit and emergency response" },
+                { AppLanguage.Hindi,   "सुरक्षित निकास और आपात प्रतिक्रिया सुनिश्चित करें" },
+                { AppLanguage.Santali, "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱚᱰᱚᱠ ᱟᱨ ᱮᱢᱟᱨᱡᱮᱱᱥᱤ ᱠᱟᱹᱢᱤ ᱯᱩᱨᱟᱹᱣ ᱢᱮ" } } },
+            { "gas.cylinder.step1", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Identify cylinder leak signs" },
+                { AppLanguage.Hindi,   "सिलेंडर रिसाव के संकेतों की पहचान करें" },
+                { AppLanguage.Santali, "ᱥᱤᱞᱤᱱᱰᱟᱨ ᱞᱤᱠ ᱪᱤᱱᱦᱟᱹ ᱪᱤᱱᱦᱟᱹᱣ ᱢᱮ" } } },
+            { "gas.cylinder.step2", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Stop and isolate the source" },
+                { AppLanguage.Hindi,   "मुख्य वाल्व बंद कर स्रोत को अलग करें" },
+                { AppLanguage.Santali, "ᱵᱷᱟᱞᱵᱽ ᱵᱚᱸᱫᱽ ᱠᱟᱛᱮ ᱞᱤᱠ ᱡᱟᱭᱜᱟ ᱵᱷᱮᱜᱟᱨ ᱢᱮ" } } },
+            { "gas.cylinder.step3", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Raise alarm and inform control room" },
+                { AppLanguage.Hindi,   "अलार्म बजाएँ और कंट्रोल रूम को सूचित करें" },
+                { AppLanguage.Santali, "ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱟᱨ ᱠᱚᱱᱴᱨᱚᱞ ᱚᱲᱟᱜ ᱨᱮ ᱞᱟᱹᱭ ᱢᱮ" } } },
+            { "gas.cylinder.step4", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Use appropriate PPE" },
+                { AppLanguage.Hindi,   "उपयुक्त सुरक्षा उपकरण (PPE) का उपयोग करें" },
+                { AppLanguage.Santali, "ᱴᱷᱤᱠ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱢᱟᱱ (PPE) ᱵᱮᱵᱷᱟᱨ ᱢᱮ" } } },
+            { "gas.cylinder.step5", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Follow safe handling and shut-off procedure" },
+                { AppLanguage.Hindi,   "सुरक्षित शट-ऑफ प्रक्रिया का पालन करें" },
+                { AppLanguage.Santali, "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱴ-ᱚᱯᱷ ᱱᱤᱭᱚᱢ ᱢᱟᱱᱟᱣ ᱢᱮ" } } },
+            { "gas.cylinder.step6", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Move to safe area and report" },
+                { AppLanguage.Hindi,   "सुरक्षित स्थान पर पहुँचें और रिपोर्ट दर्ज करें" },
+                { AppLanguage.Santali, "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱡᱟᱭᱜᱟ ᱛᱮ ᱪᱟᱞᱟᱜ ᱟᱨ ᱨᱤᱯᱳᱨᱴ ᱮᱢ ᱢᱮ" } } },
+            { "ui.overview.heading", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Scenario Overview" },
+                { AppLanguage.Hindi,   "परिदृश्य विवरण" },
+                { AppLanguage.Santali, "ᱦᱟᱞᱚᱛ ᱨᱮᱱᱟᱜ ᱵᱤᱵᱽᱨᱚᱬ" } } },
+            { "ui.training.include", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Training will include" },
+                { AppLanguage.Hindi,   "प्रशिक्षण में शामिल है" },
+                { AppLanguage.Santali, "ᱥᱮᱪᱮᱫ ᱨᱮ ᱥᱮᱞᱮᱫ ᱢᱮᱱᱟᱜᱼᱟ" } } },
+            { "ui.coming_soon", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Coming Soon" },
+                { AppLanguage.Hindi,   "जल्द उपलब्ध होगा" },
+                { AppLanguage.Santali, "ᱞᱚᱜᱚᱱ ᱜᱮ ᱦᱤᱡᱩᱜ ᱠᱟᱱᱟ" } } },
+            { "ui.start_training", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Start Training" },
+                { AppLanguage.Hindi,   "प्रशिक्षण शुरू करें" },
+                { AppLanguage.Santali, "ᱥᱮᱪᱮᱫ ᱮᱦᱚᱵ ᱢᱮ" } } },
+            { "ui.start_ar_training", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Start AR Training" },
+                { AppLanguage.Hindi,   "AR प्रशिक्षण शुरू करें" },
+                { AppLanguage.Santali, "AR ᱥᱮᱪᱮᱫ ᱮᱦᱚᱵ ᱢᱮ" } } },
+            { "chip.label.duration", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Duration" },
+                { AppLanguage.Hindi,   "अवधि" },
+                { AppLanguage.Santali, "ᱚᱠᱛᱚ" } } },
+            { "chip.label.level", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Level" },
+                { AppLanguage.Hindi,   "स्तर" },
+                { AppLanguage.Santali, "ᱛᱷᱚᱠ" } } },
+            { "chip.val.beginner", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Beginner" },
+                { AppLanguage.Hindi,   "शुरुआती" },
+                { AppLanguage.Santali, "ᱮᱛᱚᱦᱚᱵ" } } },
+            { "chip.val.intermediate", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Intermediate" },
+                { AppLanguage.Hindi,   "मध्यम" },
+                { AppLanguage.Santali, "ᱛᱟᱞᱟᱢᱟᱞᱟ" } } },
+            { "chip.val.10mins", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "~ 10 mins" },
+                { AppLanguage.Hindi,   "~ 10 मिनट" },
+                { AppLanguage.Santali, "~ ᱑᱐ ᱴᱤᱯᱤᱲ" } } },
+            { "chip.val.12mins", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "~ 12 mins" },
+                { AppLanguage.Hindi,   "~ 12 मिनट" },
+                { AppLanguage.Santali, "~ ᱑᱒ ᱴᱤᱯᱤᱲ" } } },
+            { "chip.val.extinguisher", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Extinguisher" },
+                { AppLanguage.Hindi,   "अग्निशामक" },
+                { AppLanguage.Santali, "ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡᱤᱡ" } } },
+            { "chip.sub.use", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Use" },
+                { AppLanguage.Hindi,   "उपयोग" },
+                { AppLanguage.Santali, "ᱵᱮᱵᱷᱟᱨ" } } },
+            { "chip.val.isolation", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Isolation" },
+                { AppLanguage.Hindi,   "आइसोलेशन" },
+                { AppLanguage.Santali, "ᱵᱷᱮᱜᱟᱨ" } } },
+            { "chip.sub.evacuation", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "& Evacuation" },
+                { AppLanguage.Hindi,   "एवं निकासी" },
+                { AppLanguage.Santali, "ᱟᱨ ᱚᱰᱚᱠ" } } },
+            { "chip.val.emergency", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Emergency" },
+                { AppLanguage.Hindi,   "आपातकालीन" },
+                { AppLanguage.Santali, "ᱮᱢᱟᱨᱡᱮᱱᱥᱤ" } } },
+            { "chip.sub.response", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Response" },
+                { AppLanguage.Hindi,   "कार्रवाई" },
+                { AppLanguage.Santali, "ᱠᱟᱹᱢᱤ" } } },
+            { "chip.val.gas_detector", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Gas Detector" },
+                { AppLanguage.Hindi,   "गैस डिटेक्टर" },
+                { AppLanguage.Santali, "ᱜᱮᱥ ᱰᱤᱴᱮᱠᱴᱚᱨ" } } },
+            { "chip.val.ppe_use", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "PPE Use" },
+                { AppLanguage.Hindi,   "PPE उपयोग" },
+                { AppLanguage.Santali, "PPE ᱵᱮᱵᱷᱟᱨ" } } },
+            { "chip.sub.entry", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Entry" },
+                { AppLanguage.Hindi,   "प्रवेश" },
+                { AppLanguage.Santali, "ᱵᱚᱞᱚᱱ" } } },
+            { "chip.sub.procedure", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Procedure" },
+                { AppLanguage.Hindi,   "प्रक्रिया" },
+                { AppLanguage.Santali, "ᱱᱤᱭᱚᱢ" } } },
+            { "inst.header.title", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Training Instructions" },
+                { AppLanguage.Hindi,   "प्रशिक्षण निर्देश" },
+                { AppLanguage.Santali, "ᱥᱮᱪᱮᱫ ᱫᱤᱥᱟᱹ ᱩᱫᱩᱜ" } } },
+            { "inst.banner.title", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Before You Start" },
+                { AppLanguage.Hindi,   "शुरू करने से पहले" },
+                { AppLanguage.Santali, "ᱮᱦᱚᱵ ᱢᱟᱬᱟᱝ ᱨᱮ" } } },
+            { "inst.banner.desc", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Follow the instructions below for the best training experience." },
+                { AppLanguage.Hindi,   "सर्वोत्तम प्रशिक्षण अनुभव के लिए नीचे दिए गए निर्देशों का पालन करें।" },
+                { AppLanguage.Santali, "ᱵᱷᱟᱹᱜᱤ ᱥᱮᱪᱮᱫ ᱧᱟᱢ ᱞᱟᱹᱜᱤᱫ ᱞᱟᱛᱟᱨ ᱨᱮᱱᱟᱜ ᱫᱤᱥᱟᱹ ᱩᱫᱩᱜ ᱢᱟᱱᱟᱣ ᱢᱮ ᱾" } } },
+            { "inst.card.1", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Use in a safe, open area with good lighting." },
+                { AppLanguage.Hindi,   "अच्छी रोशनी वाले सुरक्षित और खुले क्षेत्र में उपयोग करें।" },
+                { AppLanguage.Santali, "ᱱᱟᱯᱟᱭ ᱢᱟᱨᱥᱟᱞ ᱟᱱ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱟᱨ ᱡᱷᱤᱡ ᱡᱟᱭᱜᱟ ᱨᱮ ᱵᱮᱵᱷᱟᱨ ᱢᱮ ᱾" } } },
+            { "inst.card.2", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Allow camera and motion permissions." },
+                { AppLanguage.Hindi,   "कैमरा और मोशन (सेंसर) अनुमति की अनुमति दें।" },
+                { AppLanguage.Santali, "ᱠᱮᱢᱮᱨᱟ ᱟᱨ ᱦᱤᱞᱟᱹᱣ ᱨᱮᱱᱟᱜ ᱪᱷᱟᱹᱲ ᱮᱢ ᱢᱮ ᱾" } } },
+            { "inst.card.3", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Follow on-screen guidance and complete all steps." },
+                { AppLanguage.Hindi,   "स्क्रीन पर दिए गए निर्देशों का पालन करें और सभी चरण पूरे करें।" },
+                { AppLanguage.Santali, "ᱥᱠᱨᱤᱱ ᱨᱮ ᱧᱮᱞᱚᱜ ᱠᱟᱱ ᱫᱤᱥᱟᱹ ᱯᱟᱸᱡᱟ ᱠᱟᱛᱮ ᱡᱚᱛᱚ ᱛᱷᱚᱠ ᱯᱩᱨᱟᱹᱣ ᱢᱮ ᱾" } } },
+            { "inst.card.4", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Do not try real equipment. This is a training simulation." },
+                { AppLanguage.Hindi,   "असली उपकरणों पर प्रयास न करें। यह एक प्रशिक्षण सिमुलेशन है।" },
+                { AppLanguage.Santali, "ᱥᱟᱹᱨᱤ ᱥᱟᱢᱟᱱ ᱨᱮ ᱟᱞᱚᱢ ᱠᱩᱨᱩᱢᱩᱴᱩᱭᱟ ᱾ ᱱᱚᱣᱟ ᱫᱚ ᱥᱮᱪᱮᱫ ᱮᱠᱞᱟ ᱠᱟᱱᱟ ᱾" } } },
+            { "inst.card.5", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Your performance will be recorded for assessment." },
+                { AppLanguage.Hindi,   "आपके प्रदर्शन को मूल्यांकन के लिए रिकॉर्ड किया जाएगा।" },
+                { AppLanguage.Santali, "ᱟᱢᱟᱜ ᱠᱟᱹᱢᱤ ᱯᱚᱨᱚᱠ ᱞᱟᱹᱜᱤᱫ ᱨᱮᱠᱚᱨᱰ ᱦᱩᱭᱩᱜᱼᱟ ᱾" } } },
+            { "inst.checkbox.agreement", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "I understand the instructions and am ready to start." },
+                { AppLanguage.Hindi,   "मैं निर्देशों को समझता हूँ और शुरू करने के लिए तैयार हूँ।" },
+                { AppLanguage.Santali, "ᱤᱧ ᱫᱤᱥᱟᱹ ᱩᱫᱩᱜ ᱤᱧ ᱵᱩᱡᱷᱟᱹᱣ ᱠᱮᱫᱼᱟ ᱟᱨ ᱮᱦᱚᱵ ᱞᱟᱹᱜᱤᱫ ᱥᱟᱯᱲᱟᱣ ᱢᱮᱱᱟᱹᱧᱟ ᱾" } } },
+            { "inst.btn.start", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Start Training" },
+                { AppLanguage.Hindi,   "प्रशिक्षण शुरू करें" },
+                { AppLanguage.Santali, "ᱥᱮᱪᱮᱫ ᱮᱦᱚᱵ ᱢᱮ" } } },
+            { "nav.home", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Home" },
+                { AppLanguage.Hindi,   "होम" },
+                { AppLanguage.Santali, "ᱚᱲᱟᱜ" } } },
+            { "nav.learn", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Learn" },
+                { AppLanguage.Hindi,   "सीखें" },
+                { AppLanguage.Santali, "ᱥᱮᱪᱮᱫ" } } },
+            { "nav.progress", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Progress" },
+                { AppLanguage.Hindi,   "प्रगति" },
+                { AppLanguage.Santali, "ᱞᱟᱦᱟᱱᱛᱤ" } } },
+            { "nav.certificates", new Dictionary<AppLanguage, string> {
+                { AppLanguage.English, "Certificates" },
+                { AppLanguage.Hindi,   "प्रमाणपत्र" },
+                { AppLanguage.Santali, "ᱥᱟᱠᱷᱤ" } } },
+
             { "assessment.confirmSubmit", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Are you sure you want to submit your assessment?" },
                 { AppLanguage.Hindi,   "क्या आप निश्चित रूप से अपना मूल्यांकन जमा करना चाहते हैं?" },

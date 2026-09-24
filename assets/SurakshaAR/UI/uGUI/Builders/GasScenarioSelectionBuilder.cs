@@ -140,8 +140,8 @@ namespace SurakshaAR.UI.Builders
                 flexibleWidth: true, flexWidth: 1, preferredHeight: 60);
 
             var langPill = UIHelper.MakeButton("btn-language-picker", row,
-                "🌐 EN ▾", 26, Hex("#F1F5F9"), SlateText, 14);
-            UIHelper.SetLayout(langPill.gameObject, preferredWidth: 130, preferredHeight: 60);
+                "English", 26, Hex("#F1F5F9"), SlateText, 14);
+            UIHelper.SetLayout(langPill.gameObject, preferredWidth: 160, preferredHeight: 60);
 
             var bellBtn = UIHelper.MakeButton("btn-notifications", row,
                 "", 14, Color.white, Color.white, 20);
@@ -170,7 +170,7 @@ namespace SurakshaAR.UI.Builders
             var card = UIHelper.MakeRect("IntroCard", parent);
             UIHelper.SetLayout(card.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 300, minHeight: 280);
+                minHeight: 280);
 
             var cardImg = card.gameObject.AddComponent<Image>();
             cardImg.color  = Color.white;
@@ -185,10 +185,19 @@ namespace SurakshaAR.UI.Builders
             shadow.effectColor    = new Color(0, 0, 0, 0.05f);
             shadow.effectDistance = new Vector2(0, -3f);
 
-            var row = UIHelper.MakeHorizontal("InnerRow", card, 22,
-                new RectOffset(24, 24, 20, 20),
+            var cvlg = card.gameObject.AddComponent<VerticalLayoutGroup>();
+            cvlg.padding = new RectOffset(24, 24, 20, 20);
+            cvlg.childForceExpandWidth  = true;
+            cvlg.childForceExpandHeight = false;
+            cvlg.childControlWidth      = true;
+            cvlg.childControlHeight     = true;
+
+            var csf = card.gameObject.AddComponent<ContentSizeFitter>();
+            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+            var row = UIHelper.MakeHorizontal("InnerRow", card.transform, 22,
                 childForceWidth: false, childForceHeight: false);
-            UIHelper.Stretch(row, 0, 0, 0, 0);
+            UIHelper.SetLayout(row.gameObject, flexibleWidth: true, flexWidth: 1, minHeight: 240);
             row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
             var iconArea = UIHelper.MakeRect("IconArea", row);
@@ -229,14 +238,14 @@ namespace SurakshaAR.UI.Builders
                 bold: true, wrap: true);
             titleLbl.lineSpacing = 1.05f;
             UIHelper.SetLayout(titleLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 110);
+                flexibleWidth: true, flexWidth: 1, minHeight: 56);
 
             var descLbl = UIHelper.MakeLabel("IntroDesc", textCol,
                 "Practice gas detection, safe withdrawal, ventilation awareness and confined space precautions.",
                 34, MutedText, wrap: true);
             descLbl.lineSpacing = 1.15f;
             UIHelper.SetLayout(descLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 130);
+                flexibleWidth: true, flexWidth: 1, minHeight: 88);
         }
 
         // ─────────────────────────────────────────────────────────────────
@@ -270,7 +279,7 @@ namespace SurakshaAR.UI.Builders
                 16, Color.white, Color.white, 24);
             UIHelper.SetLayout(card.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 250, minHeight: 240);
+                minHeight: 240);
 
             var cardImg = card.GetComponent<Image>();
             cardImg.color  = Color.white;
@@ -285,10 +294,19 @@ namespace SurakshaAR.UI.Builders
             shadow.effectColor    = new Color(0, 0, 0, 0.04f);
             shadow.effectDistance = new Vector2(0, -3f);
 
+            var cvlg = card.gameObject.AddComponent<VerticalLayoutGroup>();
+            cvlg.padding = new RectOffset(20, 20, 16, 16);
+            cvlg.childForceExpandWidth  = true;
+            cvlg.childForceExpandHeight = false;
+            cvlg.childControlWidth      = true;
+            cvlg.childControlHeight     = true;
+
+            var csf = card.gameObject.AddComponent<ContentSizeFitter>();
+            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
             var row = UIHelper.MakeHorizontal("Inner", card.transform, 20,
-                new RectOffset(20, 20, 16, 16),
                 childForceWidth: false, childForceHeight: false);
-            UIHelper.Stretch(row, 0, 0, 0, 0);
+            UIHelper.SetLayout(row.gameObject, flexibleWidth: true, flexWidth: 1, minHeight: 200);
             row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
             var iconWrap = UIHelper.MakeRect("IconWrap", row);
@@ -340,13 +358,13 @@ namespace SurakshaAR.UI.Builders
                 title, 46, DarkText, bold: true, wrap: true);
             titleLbl.lineSpacing = 1.05f;
             UIHelper.SetLayout(titleLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 60);
+                flexibleWidth: true, flexWidth: 1, minHeight: 56);
 
             var descLbl = UIHelper.MakeLabel("Desc", textCol,
                 desc, 34, MutedText, wrap: true);
             descLbl.lineSpacing = 1.15f;
             UIHelper.SetLayout(descLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 88);
+                flexibleWidth: true, flexWidth: 1, minHeight: 80);
 
             var arrowCircle = UIHelper.MakeRect("ArrowCircle", row);
             UIHelper.SetLayout(arrowCircle.gameObject,

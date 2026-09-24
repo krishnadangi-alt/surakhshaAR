@@ -18,12 +18,19 @@ namespace SurakshaAR.Screens
         private Button _btnBack;
         private Button _btnStartTraining;
         private Button _btnAgreementToggle;
+        private Button _btnLangPicker;
+        private TextMeshProUGUI _langPillText;
         private Image _checkSquareImg;
         private TextMeshProUGUI _checkMarkSymbol;
         private bool _isAgreed = true; // Checked by default as shown in reference UI
 
         public void OnShow(GameObject root, object param)
         {
+            var loc = AppManager.Instance?.Localization ?? LocalizationManager.Instance;
+            var currentLang = AppState.Instance != null
+                ? AppState.Instance.CurrentLanguage
+                : (loc != null ? loc.CurrentLanguage : AppLanguage.English);
+
             _btnBack = UIHelper.FindButton(root, "btn-back");
             if (_btnBack != null)
             {
@@ -36,11 +43,67 @@ namespace SurakshaAR.Screens
             {
                 _btnStartTraining.onClick.RemoveAllListeners();
                 _btnStartTraining.onClick.AddListener(LaunchFireARScenario);
+
+                var startLbl = _btnStartTraining.GetComponentInChildren<TextMeshProUGUI>();
+                if (startLbl != null && loc != null)
+                {
+                    startLbl.text = loc.Get("inst.btn.start");
+                }
+            }
+
+            _btnLangPicker = UIHelper.FindButton(root, "btn-language-picker");
+            if (_btnLangPicker != null)
+            {
+                _langPillText = _btnLangPicker.GetComponentInChildren<TextMeshProUGUI>();
+                if (_langPillText != null)
+                {
+                    _langPillText.font = UIHelper.GetFontForLanguage(currentLang);
+                    _langPillText.text = currentLang switch
+                    {
+                        AppLanguage.Hindi => DevanagariShaper.Shape("हिन्दी"),
+                        AppLanguage.Santali => "ᱥᱟᱱᱛᱟᱲᱤ",
+                        _ => "English"
+                    };
+                }
+                _btnLangPicker.onClick.RemoveAllListeners();
+                _btnLangPicker.onClick.AddListener(CycleLanguage);
+            }
+
+            // ── Localize Header ──────────────────────────────────────────
+            var titleLbl = UIHelper.FindTMP(root, "label-title");
+            if (titleLbl != null && loc != null)
+            {
+                titleLbl.text = loc.Get("inst.header.title");
+            }
+
+            // ── Localize Banner ──────────────────────────────────────────
+            var headLbl = root.transform.Find("ScrollArea/Viewport/Content/InfoBanner/InnerRow/TextCol/HeadLbl")?.GetComponent<TextMeshProUGUI>();
+            if (headLbl != null && loc != null) headLbl.text = loc.Get("inst.banner.title");
+
+            var descLbl = root.transform.Find("ScrollArea/Viewport/Content/InfoBanner/InnerRow/TextCol/DescLbl")?.GetComponent<TextMeshProUGUI>();
+            if (descLbl != null && loc != null) descLbl.text = loc.Get("inst.banner.desc");
+
+            // ── Localize Instruction Cards ───────────────────────────────
+            var cards = new[] { "card-inst-1", "card-inst-2", "card-inst-3", "card-inst-4", "card-inst-5" };
+            for (int i = 0; i < cards.Length; i++)
+            {
+                var cardText = root.transform.Find($"ScrollArea/Viewport/Content/CardsCol/{cards[i]}/CardRow/TextLbl")?.GetComponent<TextMeshProUGUI>();
+                if (cardText != null && loc != null)
+                {
+                    cardText.text = loc.Get($"inst.card.{i + 1}");
+                }
+            }
+
+            // ── Localize Agreement Checkbox ──────────────────────────────
+            var agreeLbl = UIHelper.FindTMP(root, "label-agreement-text");
+            if (agreeLbl != null && loc != null)
+            {
+                agreeLbl.text = loc.Get("inst.checkbox.agreement");
             }
 
             _btnAgreementToggle = UIHelper.FindButton(root, "btn-agreement-toggle");
-            _checkSquareImg = root.transform.Find("ScrollArea/Viewport/Content/AgreementBox/Row/check-box-square")?.GetComponent<Image>();
-            _checkMarkSymbol = root.transform.Find("ScrollArea/Viewport/Content/AgreementBox/Row/check-box-square/check-mark-symbol")?.GetComponent<TextMeshProUGUI>();
+            _checkSquareImg = UIHelper.FindRect(root, "check-box-square")?.GetComponent<Image>();
+            _checkMarkSymbol = UIHelper.FindTMP(root, "check-mark-symbol");
 
             if (_btnAgreementToggle != null)
             {
@@ -50,10 +113,27 @@ namespace SurakshaAR.Screens
 
             UpdateCheckboxVisuals();
 
-            var currentLang = AppState.Instance != null
-                ? AppState.Instance.CurrentLanguage
-                : AppLanguage.English;
             UIManager.Instance?.ApplyLanguageFonts(root, currentLang);
+            Canvas.ForceUpdateCanvases();
+            var rootRT = root.GetComponent<RectTransform>();
+            if (rootRT != null)
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(rootRT);
+            }
+        }
+
+        private void CycleLanguage()
+        {
+            var current = AppState.Instance != null ? AppState.Instance.CurrentLanguage : AppLanguage.English;
+            AppLanguage nextLang = current switch
+            {
+                AppLanguage.English => AppLanguage.Hindi,
+                AppLanguage.Hindi => AppLanguage.Santali,
+                _ => AppLanguage.English
+            };
+
+            AppState.Instance?.SetLanguage(nextLang);
+            UIManager.Instance?.RefreshCurrentScreen();
         }
 
         private void ToggleAgreement()
@@ -133,6 +213,7 @@ namespace SurakshaAR.Screens
             if (_btnBack != null) _btnBack.onClick.RemoveAllListeners();
             if (_btnStartTraining != null) _btnStartTraining.onClick.RemoveAllListeners();
             if (_btnAgreementToggle != null) _btnAgreementToggle.onClick.RemoveAllListeners();
+            if (_btnLangPicker != null) _btnLangPicker.onClick.RemoveAllListeners();
         }
     }
 }

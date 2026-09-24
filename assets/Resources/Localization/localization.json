@@ -3159,6 +3159,758 @@
       "hi_roman": "",
       "sat": "ᱠᱷᱟᱫᱟᱱ ᱟᱨ ᱠᱟᱹᱨᱜᱟᱲ ᱠᱟᱹᱢᱤᱭᱟᱹ ᱠᱚ ᱞᱟᱹᱜᱤᱫ ᱮ.ᱟᱨ. ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱮᱪᱮᱫ",
       "sat_roman": ""
+    },
+    {
+      "key": "fire.module.title",
+      "en": "Fire & Explosion Response",
+      "hi": "आग एवं विस्फोट रोकथाम",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱟᱨ ᱵᱷᱚᱢ ᱯᱚᱨᱚᱠ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.module.desc",
+      "en": "Learn to identify, prevent and respond to fire and explosion hazards in mining and industrial environments.",
+      "hi": "खदानों और औद्योगिक क्षेत्रों में आग और विस्फोट के खतरों को पहचानें, रोकें और सुरक्षित कार्रवाई करना सीखें।",
+      "hi_roman": "",
+      "sat": "ᱠᱷᱟᱫᱟᱱ ᱟᱨ ᱠᱟᱹᱨᱜᱟᱲ ᱨᱮ ᱥᱮᱸᱜᱮᱞ ᱟᱨ ᱵᱷᱚᱢ ᱵᱚᱛᱚᱨ ᱪᱤᱱᱦᱟᱹᱣ, ᱟᱴᱠᱟᱣ ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱛᱮ ᱠᱟᱹᱢᱤ ᱥᱮᱪᱮᱫ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.select.heading",
+      "en": "Select a Scenario",
+      "hi": "प्रशिक्षण परिदृश्य चुनें",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ ᱦᱟᱞᱚᱛ ᱵᱟᱪᱷᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.fire.electrical.title",
+      "en": "Electrical Panel Fire",
+      "hi": "विद्युत पैनल में आग",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱡᱽᱞᱤ ᱯᱮᱱᱟᱞ ᱥᱮᱸᱜᱮᱞ",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.fire.electrical.desc",
+      "en": "Handle fire in electrical panels and control rooms.",
+      "hi": "विद्युत पैनल और कंट्रोल रूम में आग पर सुरक्षित नियंत्रण पाएँ।",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱡᱽᱞᱤ ᱯᱮᱱᱟᱞ ᱟᱨ ᱠᱚᱱᱴᱨᱚᱞ ᱚᱲᱟᱜ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.fire.electrical.overview",
+      "en": "A fire may start in an electrical control panel due to short circuit, overload or equipment failure. Learn to identify the hazard, activate the alarm and use the correct extinguisher to control the fire safely.",
+      "hi": "शॉर्ट सर्किट, ओवरलोड या उपकरण खराबी से विद्युत कंट्रोल पैनल में आग लग सकती है। खतरे की पहचान करें, अलार्म बजाएँ और सुरक्षित तरीके से सही अग्निशामक का उपयोग करें।",
+      "hi_roman": "",
+      "sat": "ᱥᱚᱨᱴ ᱥᱟᱨᱠᱤᱴ ᱥᱮ ᱥᱟᱢᱟᱱ ᱵᱟᱹᱲᱤᱡ ᱛᱮ ᱵᱤᱡᱽᱞᱤ ᱯᱮᱱᱟᱞ ᱨᱮ ᱥᱮᱸᱜᱮᱞ ᱞᱟᱜᱟᱣ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ ᱾ ᱵᱚᱛᱚᱨ ᱪᱤᱱᱦᱟᱹᱣ, ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱟᱨ ᱥᱟᱹᱨᱤ ᱤᱬᱤᱡᱤᱡ ᱛᱮ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱥᱮᱪᱮᱫ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.fire.conveyor.title",
+      "en": "Conveyor Belt Fire",
+      "hi": "कन्वेयर बेल्ट में आग",
+      "hi_roman": "",
+      "sat": "ᱠᱚᱱᱵᱷᱮᱭᱟᱨ ᱵᱮᱞᱴ ᱥᱮᱸᱜᱮᱞ",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.fire.conveyor.desc",
+      "en": "Respond to fire in conveyor belt systems.",
+      "hi": "कन्वेयर बेल्ट सिस्टम में आग लगने पर त्वरित कार्रवाई करें।",
+      "hi_roman": "",
+      "sat": "ᱠᱚᱱᱵᱷᱮᱭᱟᱨ ᱵᱮᱞᱴ ᱥᱤᱥᱴᱚᱢ ᱨᱮ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.fire.conveyor.overview",
+      "en": "A fire has been detected on the conveyor belt system. Learn to raise the alarm, stop and isolate the conveyor, and respond to the fire safely.",
+      "hi": "कन्वेयर बेल्ट प्रणाली पर आग का पता चला है। अलार्म बजाना, कन्वेयर को आपातकालीन स्टॉप से रोकना और सुरक्षित दूरी से आग बुझाना सीखें।",
+      "hi_roman": "",
+      "sat": "ᱠᱚᱱᱵᱷᱮᱭᱟᱨ ᱵᱮᱞᱴ ᱨᱮ ᱥᱮᱸᱜᱮᱞ ᱧᱟᱢ ᱟᱠᱟᱱᱟ ᱾ ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ, ᱠᱚᱱᱵᱷᱮᱭᱟᱨ ᱵᱚᱸᱫᱽ ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱛᱮ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱥᱮᱪᱮᱫ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.fire.excavator.title",
+      "en": "Excavator / HEMM Fire",
+      "hi": "एक्सावेटर / भारी मशीनरी (HEMM) में आग",
+      "hi_roman": "",
+      "sat": "ᱮᱠᱥᱟᱵᱷᱮᱴᱟᱨ / ᱦᱮᱢ (HEMM) ᱥᱮᱸᱜᱮᱞ",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.fire.excavator.desc",
+      "en": "Handle fire in heavy earth moving machinery.",
+      "hi": "भारी खनन मशीनरी (HEMM) में आग लगने पर नियंत्रण पाएँ।",
+      "hi_roman": "",
+      "sat": "ᱢᱟᱨᱟᱝ ᱠᱷᱟᱫᱟᱱ ᱢᱮᱥᱤᱱ ᱨᱮ ᱥᱮᱸᱜᱮᱞ ᱥᱟᱢᱵᱽᱲᱟᱣ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.fire.excavator.overview",
+      "en": "A fire has started in a heavy earth moving machine. Learn to stop the machine, raise the alarm and respond to the fire while maintaining a safe distance.",
+      "hi": "भारी खनन मशीन में आग लग गई है। मशीन को सुरक्षित रूप से बंद करना, अलार्म बजाना और सुरक्षित दूरी बनाए रखते हुए आग पर काबू पाना सीखें।",
+      "hi_roman": "",
+      "sat": "ᱢᱟᱨᱟᱝ ᱢᱮᱥᱤᱱ ᱨᱮ ᱥᱮᱸᱜᱮᱞ ᱡᱩᱞ ᱮᱱᱟ ᱾ ᱢᱮᱥᱤᱱ ᱵᱚᱸᱫᱽ ᱠᱟᱛᱮ ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱟᱨ ᱥᱟᱺᱜᱤᱧ ᱠᱷᱚᱱ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱥᱮᱪᱮᱫ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step1",
+      "en": "Identify fire hazard",
+      "hi": "अग्नि का खतरा पहचानें",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱵᱚᱛᱚᱨ ᱪᱤᱱᱦᱟᱹᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step2",
+      "en": "Activate fire alarm",
+      "hi": "फायर अलार्म सक्रिय करें",
+      "hi_roman": "",
+      "sat": "ᱯᱷᱟᱭᱟᱨ ᱮᱞᱟᱨᱢ ᱪᱟᱹᱞᱩᱭ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step3",
+      "en": "Select correct extinguisher",
+      "hi": "सही अग्निशामक चुनें",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱹᱨᱤ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡᱤᱡ ᱵᱟᱪᱷᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step4",
+      "en": "Remove safety pin",
+      "hi": "सेफ्टी पिन निकालें",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱯᱷᱴᱤ ᱯᱤᱱ ᱚᱨ ᱚᱰᱚᱠ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step5",
+      "en": "Grip and aim at fire base",
+      "hi": "आग के आधार की ओर निशाना लगाएँ",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱵᱩᱴᱟᱹ ᱨᱮ ᱴᱟᱨᱜᱮᱴ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.sop.step6",
+      "en": "Press and spray",
+      "hi": "स्प्रे करके आग बुझाएँ",
+      "hi_roman": "",
+      "sat": "ᱞᱤᱱ ᱠᱟᱛᱮ ᱥᱯᱨᱮ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.conveyor.step1",
+      "en": "Detect smoke/fire on conveyor",
+      "hi": "कन्वेयर पर धुआँ या आग पहचानें",
+      "hi_roman": "",
+      "sat": "ᱠᱚᱱᱵᱷᱮᱭᱟᱨ ᱨᱮ ᱫᱷᱩᱶᱟᱹ ᱥᱮ ᱥᱮᱸᱜᱮᱞ ᱧᱮᱞ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.conveyor.step2",
+      "en": "Raise alarm",
+      "hi": "आपातकालीन अलार्म बजाएँ",
+      "hi_roman": "",
+      "sat": "ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.conveyor.step3",
+      "en": "Stop and isolate conveyor (E-Stop)",
+      "hi": "इमरजेंसी स्टॉप (E-Stop) दबाकर कन्वेयर बंद करें",
+      "hi_roman": "",
+      "sat": "E-Stop ᱞᱤᱱ ᱠᱟᱛᱮ ᱠᱚᱱᱵᱷᱮᱭᱟᱨ ᱵᱚᱸᱫᱽ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.conveyor.step4",
+      "en": "Keep workers away from danger zone",
+      "hi": "कर्मियों को खतरे के क्षेत्र से दूर रखें",
+      "hi_roman": "",
+      "sat": "ᱠᱟᱹᱢᱤᱭᱟᱹ ᱠᱚ ᱵᱚᱛᱚᱨ ᱡᱟᱭᱜᱟ ᱠᱷᱚᱱ ᱥᱟᱺᱜᱤᱧ ᱫᱚᱦᱚ ᱠᱚᱣᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.conveyor.step5",
+      "en": "Use appropriate firefighting equipment",
+      "hi": "उपयुक्त अग्निशामक उपकरण का प्रयोग करें",
+      "hi_roman": "",
+      "sat": "ᱴᱷᱤᱠ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱥᱟᱢᱟᱱ ᱵᱮᱵᱷᱟᱨ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.conveyor.step6",
+      "en": "Control the fire if safe",
+      "hi": "सुरक्षित होने पर आग पर नियंत्रण पाएँ",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱛᱟᱦᱮᱸᱱ ᱠᱷᱟᱱ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.excavator.step1",
+      "en": "Detect engine/machine fire",
+      "hi": "इंजन या मशीन में आग की पहचान करें",
+      "hi_roman": "",
+      "sat": "ᱤᱧᱡᱤᱱ ᱨᱮ ᱥᱮᱸᱜᱮᱞ ᱧᱮᱞ ᱪᱤᱱᱦᱟᱹᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.excavator.step2",
+      "en": "Stop the machine safely",
+      "hi": "मशीन को सुरक्षित रूप से रोकें",
+      "hi_roman": "",
+      "sat": "ᱢᱮᱥᱤᱱ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱛᱮ ᱛᱷᱟᱢᱵᱷᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.excavator.step3",
+      "en": "Raise alarm and inform control room",
+      "hi": "अलार्म बजाएँ और कंट्रोल रूम को सूचित करें",
+      "hi_roman": "",
+      "sat": "ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱟᱨ ᱠᱚᱱᱴᱨᱚᱞ ᱚᱲᱟᱜ ᱨᱮ ᱵᱟᱰᱟᱭ ᱦᱚᱪᱚ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.excavator.step4",
+      "en": "Exit the operator area",
+      "hi": "ऑपरेटर केबिन से सुरक्षित बाहर निकलें",
+      "hi_roman": "",
+      "sat": "ᱚᱯᱟᱨᱮᱴᱟᱨ ᱠᱮᱵᱤᱱ ᱠᱷᱚᱱ ᱵᱟᱦᱨᱮ ᱚᱰᱚᱠ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.excavator.step5",
+      "en": "Maintain safe distance",
+      "hi": "सुरक्षित दूरी बनाए रखें",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱺᱜᱤᱧ ᱫᱚᱦᱚ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "fire.excavator.step6",
+      "en": "Use appropriate extinguisher",
+      "hi": "उपयुक्त अग्निशामक का उपयोग करें",
+      "hi_roman": "",
+      "sat": "ᱴᱷᱤᱠ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡᱤᱡ ᱵᱮᱵᱷᱟᱨ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.module.title",
+      "en": "Gas Leak & Confined Space",
+      "hi": "गैस रिसाव एवं सीमित स्थान",
+      "hi_roman": "",
+      "sat": "ᱜᱮᱥ ᱞᱤᱠ ᱟᱨ ᱥᱟᱸᱜᱷᱟᱨ ᱡᱟᱭᱜᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.module.desc",
+      "en": "Identify hazardous gases, follow confined-space procedures, and select proper Personal Protective Equipment (PPE).",
+      "hi": "खतरनाक गैसों की पहचान करना, सीमित स्थानों में सुरक्षा प्रक्रियाओं का पालन करना और व्यक्तिगत सुरक्षा उपकरण (PPE) का सही उपयोग करना।",
+      "hi_roman": "",
+      "sat": "ᱵᱤᱥ ᱜᱮᱥ ᱪᱤᱱᱦᱟᱹᱣ, ᱥᱟᱸᱜᱷᱟᱨ ᱡᱟᱭᱜᱟ ᱨᱮ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱱᱤᱭᱟᱹᱢ ᱢᱟᱱᱟᱣ ᱟᱨ PPE ᱵᱮᱵᱷᱟᱨ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.gas.underground.title",
+      "en": "Underground Gas Release",
+      "hi": "भूमिगत खदान में गैस रिसाव",
+      "hi_roman": "",
+      "sat": "ᱚᱛ ᱵᱷᱤᱛᱨᱤ ᱜᱮᱥ ᱚᱰᱚᱠ",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.gas.underground.desc",
+      "en": "Recognize a gas release, raise the alarm and move to a safe area.",
+      "hi": "गैस रिसाव की पहचान करें, अलार्म बजाएँ और सुरक्षित स्थान पर जाएँ।",
+      "hi_roman": "",
+      "sat": "ᱜᱮᱥ ᱚᱰᱚᱠ ᱪᱤᱱᱦᱟᱹᱣ ᱢᱮ, ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱡᱟᱭᱜᱟ ᱛᱮ ᱪᱟᱞᱟᱜ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.gas.underground.overview",
+      "en": "A gas leak has been detected in an underground mine area. Learn to identify the leak, raise the alarm, communicate the emergency and move to a safe area following proper procedures.",
+      "hi": "भूमिगत खदान क्षेत्र में गैस रिसाव का पता चला है। रिसाव की पहचान करना, अलार्म बजाना, आपात सूचना देना और तय प्रक्रिया के अनुसार सुरक्षित क्षेत्र में पहुँचना सीखें।",
+      "hi_roman": "",
+      "sat": "ᱚᱛ ᱵᱷᱤᱛᱨᱤ ᱠᱷᱟᱫᱟᱱ ᱨᱮ ᱜᱮᱥ ᱞᱤᱠ ᱧᱟᱢ ᱟᱠᱟᱱᱟ ᱾ ᱞᱤᱠ ᱪᱤᱱᱦᱟᱹᱣ, ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱟᱨ ᱱᱤᱭᱚᱢ ᱞᱮᱠᱟᱛᱮ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱡᱟᱭᱜᱟ ᱛᱮ ᱪᱟᱞᱟᱜ ᱥᱮᱪᱮᱫ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.gas.confined.title",
+      "en": "Confined Space Entry",
+      "hi": "सीमित स्थान में सुरक्षित प्रवेश",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱸᱜᱷᱟᱨ ᱡᱟᱭᱜᱟ ᱨᱮ ᱵᱚᱞᱚᱱ",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.gas.confined.desc",
+      "en": "Follow safe entry procedures and use gas detection & PPE.",
+      "hi": "सुरक्षित प्रवेश प्रक्रिया का पालन करें और गैस डिटेक्टर एवं PPE का उपयोग करें।",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱵᱚᱞᱚᱱ ᱱᱤᱭᱚᱢ ᱢᱟᱱᱟᱣ ᱟᱨ ᱜᱮᱥ ᱰᱤᱴᱮᱠᱴᱚᱨ ᱥᱟᱶ PPE ᱵᱮᱵᱷᱟᱨ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.gas.confined.overview",
+      "en": "Learn the safe entry procedure for confined spaces, use gas detection equipment, verify atmospheric conditions and follow PPE requirements.",
+      "hi": "सीमित स्थानों में प्रवेश की मानक सुरक्षा प्रक्रिया सीखें, गैस डिटेक्टर से वायु गुणवत्ता जाँचें और आवश्यक PPE पहनें।",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱸᱜᱷᱟᱨ ᱡᱟᱭᱜᱟ ᱨᱮ ᱵᱚᱞᱚᱱ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱱᱤᱭᱚᱢ ᱥᱮᱪᱮᱫ ᱢᱮ, ᱜᱮᱥ ᱯᱚᱨᱚᱠ ᱥᱟᱢᱟᱱ ᱛᱮ ᱦᱚᱭ ᱧᱮᱞ ᱟᱨ PPE ᱦᱚᱨᱚᱜ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.gas.cylinder.title",
+      "en": "Gas Cylinder Leak",
+      "hi": "गैस सिलेंडर रिसाव",
+      "hi_roman": "",
+      "sat": "ᱜᱮᱥ ᱥᱤᱞᱤᱱᱰᱟᱨ ᱞᱤᱠ",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.gas.cylinder.desc",
+      "en": "Respond to a gas cylinder leak and control the hazard safely.",
+      "hi": "गैस सिलेंडर रिसाव की पहचान करें और खतरे को सुरक्षित रूप से नियंत्रित करें।",
+      "hi_roman": "",
+      "sat": "ᱜᱮᱥ ᱥᱤᱞᱤᱱᱰᱟᱨ ᱞᱤᱠ ᱥᱟᱢᱵᱽᱲᱟᱣ ᱟᱨ ᱵᱚᱛᱚᱨ ᱠᱷᱚᱱ ᱨᱩᱠᱷᱤᱭᱟᱹᱜ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "scenario.gas.cylinder.overview",
+      "en": "Learn to identify a gas cylinder leak, isolate the source, raise the alarm and follow safe handling and shut-off procedures.",
+      "hi": "गैस सिलेंडर रिसाव की पहचान करना, मुख्य वाल्व बंद कर स्रोत अलग करना, अलार्म बजाना और सुरक्षित शट-ऑफ प्रक्रिया का पालन करना सीखें।",
+      "hi_roman": "",
+      "sat": "ᱜᱮᱥ ᱥᱤᱞᱤᱱᱰᱟᱨ ᱞᱤᱠ ᱪᱤᱱᱦᱟᱹᱣ, ᱢᱩᱬᱩᱛ ᱵᱷᱟᱞᱵᱽ ᱵᱚᱸᱫᱽ, ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱴ-ᱚᱯᱷ ᱱᱤᱭᱚᱢ ᱢᱟᱱᱟᱣ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.underground.step1",
+      "en": "Identify gas leak signs and hazard area",
+      "hi": "गैस रिसाव के लक्षण और खतरे के क्षेत्र को पहचानें",
+      "hi_roman": "",
+      "sat": "ᱜᱮᱥ ᱞᱤᱠ ᱪᱤᱱᱦᱟᱹ ᱟᱨ ᱵᱚᱛᱚᱨ ᱡᱟᱭᱜᱟ ᱪᱤᱱᱦᱟᱹᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.underground.step2",
+      "en": "Activate alarm and inform control room",
+      "hi": "अलार्म बजाएँ और कंट्रोल रूम को सूचित करें",
+      "hi_roman": "",
+      "sat": "ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱟᱨ ᱠᱚᱱᱴᱨᱚᱞ ᱚᱲᱟᱜ ᱨᱮ ᱞᱟᱹᱭ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.underground.step3",
+      "en": "Use gas detector and interpret readings",
+      "hi": "गैस डिटेक्टर का उपयोग कर रीडिंग जाँचें",
+      "hi_roman": "",
+      "sat": "ᱜᱮᱥ ᱰᱤᱴᱮᱠᱴᱚᱨ ᱵᱮᱵᱷᱟᱨ ᱠᱟᱛᱮ ᱨᱤᱰᱤᱝ ᱧᱮᱞ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.underground.step4",
+      "en": "Follow safe withdrawal procedure",
+      "hi": "सुरक्षित निकासी प्रक्रिया का पालन करें",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱚᱰᱚᱠᱚᱜ ᱱᱤᱭᱚᱢ ᱯᱟᱸᱡᱟᱭ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.underground.step5",
+      "en": "Follow ventilation and evacuation route",
+      "hi": "वेंटिलेशन दिशा और आपात निकास मार्ग का पालन करें",
+      "hi_roman": "",
+      "sat": "ᱦᱚᱭ ᱦᱤᱡᱩᱜ ᱥᱮᱫ ᱟᱨ ᱮᱢᱟᱨᱡᱮᱱᱥᱤ ᱰᱟᱦᱟᱨ ᱛᱮ ᱪᱟᱞᱟᱜ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.underground.step6",
+      "en": "Maintain safe distance and move to safe area",
+      "hi": "सुरक्षित दूरी बनाए रखें और सुरक्षित क्षेत्र में पहुँचें",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱺᱜᱤᱧ ᱫᱚᱦᱚ ᱠᱟᱛᱮ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱡᱟᱭᱜᱟ ᱨᱮ ᱥᱮᱴᱮᱨᱚᱜ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.confined.step1",
+      "en": "Identify confined space hazards",
+      "hi": "सीमित स्थान के खतरों की पहचान करें",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱸᱜᱷᱟᱨ ᱡᱟᱭᱜᱟ ᱵᱚᱛᱚᱨ ᱪᱤᱱᱦᱟᱹᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.confined.step2",
+      "en": "Perform atmospheric gas testing",
+      "hi": "गैस परीक्षण उपकरण से वायुमंडलीय जाँच करें",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱢᱟᱱ ᱛᱮ ᱦᱚᱭ ᱜᱮᱥ ᱵᱤᱰᱟᱹᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.confined.step3",
+      "en": "Check oxygen, toxic and flammable gases",
+      "hi": "ऑक्सीजन, जहरीली और ज्वलनशील गैसों की जाँच करें",
+      "hi_roman": "",
+      "sat": "ᱚᱠᱥᱤᱡᱮᱱ, ᱵᱤᱥ ᱟᱨ ᱡᱩᱞᱩᱜ ᱜᱮᱥ ᱯᱚᱨᱚᱠ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.confined.step4",
+      "en": "Use appropriate PPE",
+      "hi": "उपयुक्त PPE और सुरक्षा उपकरण पहनें",
+      "hi_roman": "",
+      "sat": "ᱴᱷᱤᱠ PPE ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱢᱟᱱ ᱦᱚᱨᱚᱜ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.confined.step5",
+      "en": "Follow entry and work permit procedure",
+      "hi": "कार्य परमिट (Work Permit) प्रक्रिया का पालन करें",
+      "hi_roman": "",
+      "sat": "ᱠᱟᱹᱢᱤ ᱯᱟᱨᱢᱤᱴ (Work Permit) ᱱᱤᱭᱚᱢ ᱢᱟᱱᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.confined.step6",
+      "en": "Safe exit and emergency response",
+      "hi": "सुरक्षित निकास और आपात प्रतिक्रिया सुनिश्चित करें",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱚᱰᱚᱠ ᱟᱨ ᱮᱢᱟᱨᱡᱮᱱᱥᱤ ᱠᱟᱹᱢᱤ ᱯᱩᱨᱟᱹᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.cylinder.step1",
+      "en": "Identify cylinder leak signs",
+      "hi": "सिलेंडर रिसाव के संकेतों की पहचान करें",
+      "hi_roman": "",
+      "sat": "ᱥᱤᱞᱤᱱᱰᱟᱨ ᱞᱤᱠ ᱪᱤᱱᱦᱟᱹ ᱪᱤᱱᱦᱟᱹᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.cylinder.step2",
+      "en": "Stop and isolate the source",
+      "hi": "मुख्य वाल्व बंद कर स्रोत को अलग करें",
+      "hi_roman": "",
+      "sat": "ᱵᱷᱟᱞᱵᱽ ᱵᱚᱸᱫᱽ ᱠᱟᱛᱮ ᱞᱤᱠ ᱡᱟᱭᱜᱟ ᱵᱷᱮᱜᱟᱨ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.cylinder.step3",
+      "en": "Raise alarm and inform control room",
+      "hi": "अलार्म बजाएँ और कंट्रोल रूम को सूचित करें",
+      "hi_roman": "",
+      "sat": "ᱮᱞᱟᱨᱢ ᱵᱟᱡᱟᱣ ᱟᱨ ᱠᱚᱱᱴᱨᱚᱞ ᱚᱲᱟᱜ ᱨᱮ ᱞᱟᱹᱭ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.cylinder.step4",
+      "en": "Use appropriate PPE",
+      "hi": "उपयुक्त सुरक्षा उपकरण (PPE) का उपयोग करें",
+      "hi_roman": "",
+      "sat": "ᱴᱷᱤᱠ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱢᱟᱱ (PPE) ᱵᱮᱵᱷᱟᱨ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.cylinder.step5",
+      "en": "Follow safe handling and shut-off procedure",
+      "hi": "सुरक्षित शट-ऑफ प्रक्रिया का पालन करें",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱥᱟᱴ-ᱚᱯᱷ ᱱᱤᱭᱚᱢ ᱢᱟᱱᱟᱣ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "gas.cylinder.step6",
+      "en": "Move to safe area and report",
+      "hi": "सुरक्षित स्थान पर पहुँचें और रिपोर्ट दर्ज करें",
+      "hi_roman": "",
+      "sat": "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱡᱟᱭᱜᱟ ᱛᱮ ᱪᱟᱞᱟᱜ ᱟᱨ ᱨᱤᱯᱳᱨᱴ ᱮᱢ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "ui.overview.heading",
+      "en": "Scenario Overview",
+      "hi": "परिदृश्य विवरण",
+      "hi_roman": "",
+      "sat": "ᱦᱟᱞᱚᱛ ᱨᱮᱱᱟᱜ ᱵᱤᱵᱽᱨᱚᱬ",
+      "sat_roman": ""
+    },
+    {
+      "key": "ui.training.include",
+      "en": "Training will include",
+      "hi": "प्रशिक्षण में शामिल है",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ ᱨᱮ ᱥᱮᱞᱮᱫ ᱢᱮᱱᱟᱜᱼᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "ui.coming_soon",
+      "en": "Coming Soon",
+      "hi": "जल्द उपलब्ध होगा",
+      "hi_roman": "",
+      "sat": "ᱞᱚᱜᱚᱱ ᱜᱮ ᱦᱤᱡᱩᱜ ᱠᱟᱱᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "ui.start_training",
+      "en": "Start Training",
+      "hi": "प्रशिक्षण शुरू करें",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ ᱮᱦᱚᱵ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "ui.start_ar_training",
+      "en": "Start AR Training",
+      "hi": "AR प्रशिक्षण शुरू करें",
+      "hi_roman": "",
+      "sat": "AR ᱥᱮᱪᱮᱫ ᱮᱦᱚᱵ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "chip.label.duration",
+      "en": "Duration",
+      "hi": "अवधि",
+      "hi_roman": "",
+      "sat": "ᱚᱠᱛᱚ",
+      "sat_roman": ""
+    },
+    {
+      "key": "chip.label.level",
+      "en": "Level",
+      "hi": "स्तर",
+      "hi_roman": "",
+      "sat": "ᱛᱷᱚᱠ",
+      "sat_roman": ""
+    },
+    {
+      "key": "chip.val.beginner",
+      "en": "Beginner",
+      "hi": "शुरुआती",
+      "hi_roman": "",
+      "sat": "ᱮᱛᱚᱦᱚᱵ",
+      "sat_roman": ""
+    },
+    {
+      "key": "chip.val.intermediate",
+      "en": "Intermediate",
+      "hi": "मध्यम",
+      "hi_roman": "",
+      "sat": "ᱛᱟᱞᱟᱢᱟᱞᱟ",
+      "sat_roman": ""
+    },
+    {
+      "key": "chip.val.10mins",
+      "en": "~ 10 mins",
+      "hi": "~ 10 मिनट",
+      "hi_roman": "",
+      "sat": "~ ᱑᱐ ᱴᱤᱯᱤᱲ",
+      "sat_roman": ""
+    },
+    {
+      "key": "chip.val.12mins",
+      "en": "~ 12 mins",
+      "hi": "~ 12 मिनट",
+      "hi_roman": "",
+      "sat": "~ ᱑᱒ ᱴᱤᱯᱤᱲ",
+      "sat_roman": ""
+    },
+    {
+      "key": "chip.val.extinguisher",
+      "en": "Extinguisher",
+      "hi": "अग्निशामक",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡᱤᱡ",
+      "sat_roman": ""
+    },
+    {
+      "key": "chip.sub.use",
+      "en": "Use",
+      "hi": "उपयोग",
+      "hi_roman": "",
+      "sat": "ᱵᱮᱵᱷᱟᱨ",
+      "sat_roman": ""
+    },
+    {
+      "key": "chip.val.isolation",
+      "en": "Isolation",
+      "hi": "आइसोलेशन",
+      "hi_roman": "",
+      "sat": "ᱵᱷᱮᱜᱟᱨ",
+      "sat_roman": ""
+    },
+    {
+      "key": "chip.sub.evacuation",
+      "en": "& Evacuation",
+      "hi": "एवं निकासी",
+      "hi_roman": "",
+      "sat": "ᱟᱨ ᱚᱰᱚᱠ",
+      "sat_roman": ""
+    },
+    {
+      "key": "chip.val.emergency",
+      "en": "Emergency",
+      "hi": "आपातकालीन",
+      "hi_roman": "",
+      "sat": "ᱮᱢᱟᱨᱡᱮᱱᱥᱤ",
+      "sat_roman": ""
+    },
+    {
+      "key": "chip.sub.response",
+      "en": "Response",
+      "hi": "कार्रवाई",
+      "hi_roman": "",
+      "sat": "ᱠᱟᱹᱢᱤ",
+      "sat_roman": ""
+    },
+    {
+      "key": "chip.val.gas_detector",
+      "en": "Gas Detector",
+      "hi": "गैस डिटेक्टर",
+      "hi_roman": "",
+      "sat": "ᱜᱮᱥ ᱰᱤᱴᱮᱠᱴᱚᱨ",
+      "sat_roman": ""
+    },
+    {
+      "key": "chip.val.ppe_use",
+      "en": "PPE Use",
+      "hi": "PPE उपयोग",
+      "hi_roman": "",
+      "sat": "PPE ᱵᱮᱵᱷᱟᱨ",
+      "sat_roman": ""
+    },
+    {
+      "key": "chip.sub.entry",
+      "en": "Entry",
+      "hi": "प्रवेश",
+      "hi_roman": "",
+      "sat": "ᱵᱚᱞᱚᱱ",
+      "sat_roman": ""
+    },
+    {
+      "key": "chip.sub.procedure",
+      "en": "Procedure",
+      "hi": "प्रक्रिया",
+      "hi_roman": "",
+      "sat": "ᱱᱤᱭᱚᱢ",
+      "sat_roman": ""
+    },
+    {
+      "key": "inst.header.title",
+      "en": "Training Instructions",
+      "hi": "प्रशिक्षण निर्देश",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ ᱫᱤᱥᱟᱹ ᱩᱫᱩᱜ",
+      "sat_roman": ""
+    },
+    {
+      "key": "inst.banner.title",
+      "en": "Before You Start",
+      "hi": "शुरू करने से पहले",
+      "hi_roman": "",
+      "sat": "ᱮᱦᱚᱵ ᱢᱟᱬᱟᱝ ᱨᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "inst.banner.desc",
+      "en": "Follow the instructions below for the best training experience.",
+      "hi": "सर्वोत्तम प्रशिक्षण अनुभव के लिए नीचे दिए गए निर्देशों का पालन करें।",
+      "hi_roman": "",
+      "sat": "ᱵᱷᱟᱹᱜᱤ ᱥᱮᱪᱮᱫ ᱧᱟᱢ ᱞᱟᱹᱜᱤᱫ ᱞᱟᱛᱟᱨ ᱨᱮᱱᱟᱜ ᱫᱤᱥᱟᱹ ᱩᱫᱩᱜ ᱢᱟᱱᱟᱣ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "inst.card.1",
+      "en": "Use in a safe, open area with good lighting.",
+      "hi": "अच्छी रोशनी वाले सुरक्षित और खुले क्षेत्र में उपयोग करें।",
+      "hi_roman": "",
+      "sat": "ᱱᱟᱯᱟᱭ ᱢᱟᱨᱥᱟᱞ ᱟᱱ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱟᱨ ᱡᱷᱤᱡ ᱡᱟᱭᱜᱟ ᱨᱮ ᱵᱮᱵᱷᱟᱨ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "inst.card.2",
+      "en": "Allow camera and motion permissions.",
+      "hi": "कैमरा और मोशन (सेंसर) अनुमति की अनुमति दें।",
+      "hi_roman": "",
+      "sat": "ᱠᱮᱢᱮᱨᱟ ᱟᱨ ᱦᱤᱞᱟᱹᱣ ᱨᱮᱱᱟᱜ ᱪᱷᱟᱹᱲ ᱮᱢ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "inst.card.3",
+      "en": "Follow on-screen guidance and complete all steps.",
+      "hi": "स्क्रीन पर दिए गए निर्देशों का पालन करें और सभी चरण पूरे करें।",
+      "hi_roman": "",
+      "sat": "ᱥᱠᱨᱤᱱ ᱨᱮ ᱧᱮᱞᱚᱜ ᱠᱟᱱ ᱫᱤᱥᱟᱹ ᱯᱟᱸᱡᱟ ᱠᱟᱛᱮ ᱡᱚᱛᱚ ᱛᱷᱚᱠ ᱯᱩᱨᱟᱹᱣ ᱢᱮ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "inst.card.4",
+      "en": "Do not try real equipment. This is a training simulation.",
+      "hi": "असली उपकरणों पर प्रयास न करें। यह एक प्रशिक्षण सिमुलेशन है।",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱹᱨᱤ ᱥᱟᱢᱟᱱ ᱨᱮ ᱟᱞᱚᱢ ᱠᱩᱨᱩᱢᱩᱴᱩᱭᱟ ᱾ ᱱᱚᱣᱟ ᱫᱚ ᱥᱮᱪᱮᱫ ᱮᱠᱞᱟ ᱠᱟᱱᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "inst.card.5",
+      "en": "Your performance will be recorded for assessment.",
+      "hi": "आपके प्रदर्शन को मूल्यांकन के लिए रिकॉर्ड किया जाएगा।",
+      "hi_roman": "",
+      "sat": "ᱟᱢᱟᱜ ᱠᱟᱹᱢᱤ ᱯᱚᱨᱚᱠ ᱞᱟᱹᱜᱤᱫ ᱨᱮᱠᱚᱨᱰ ᱦᱩᱭᱩᱜᱼᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "inst.checkbox.agreement",
+      "en": "I understand the instructions and am ready to start.",
+      "hi": "मैं निर्देशों को समझता हूँ और शुरू करने के लिए तैयार हूँ।",
+      "hi_roman": "",
+      "sat": "ᱤᱧ ᱫᱤᱥᱟᱹ ᱩᱫᱩᱜ ᱤᱧ ᱵᱩᱡᱷᱟᱹᱣ ᱠᱮᱫᱼᱟ ᱟᱨ ᱮᱦᱚᱵ ᱞᱟᱹᱜᱤᱫ ᱥᱟᱯᱲᱟᱣ ᱢᱮᱱᱟᱹᱧᱟ ᱾",
+      "sat_roman": ""
+    },
+    {
+      "key": "inst.btn.start",
+      "en": "Start Training",
+      "hi": "प्रशिक्षण शुरू करें",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ ᱮᱦᱚᱵ ᱢᱮ",
+      "sat_roman": ""
+    },
+    {
+      "key": "nav.home",
+      "en": "Home",
+      "hi": "होम",
+      "hi_roman": "",
+      "sat": "ᱚᱲᱟᱜ",
+      "sat_roman": ""
+    },
+    {
+      "key": "nav.learn",
+      "en": "Learn",
+      "hi": "सीखें",
+      "hi_roman": "",
+      "sat": "ᱥᱮᱪᱮᱫ",
+      "sat_roman": ""
+    },
+    {
+      "key": "nav.progress",
+      "en": "Progress",
+      "hi": "प्रगति",
+      "hi_roman": "",
+      "sat": "ᱞᱟᱦᱟᱱᱛᱤ",
+      "sat_roman": ""
+    },
+    {
+      "key": "nav.certificates",
+      "en": "Certificates",
+      "hi": "प्रमाणपत्र",
+      "hi_roman": "",
+      "sat": "ᱥᱟᱠᱷᱤ",
+      "sat_roman": ""
     }
   ]
 }

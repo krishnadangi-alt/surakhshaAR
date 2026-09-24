@@ -29,6 +29,11 @@ namespace SurakshaAR.Screens
                 _scenarioIndex = AppState.Instance.SelectedScenarioIndex;
             }
 
+            var loc = AppManager.Instance?.Localization;
+            var currentLang = AppState.Instance != null
+                ? AppState.Instance.CurrentLanguage
+                : (loc != null ? loc.CurrentLanguage : AppLanguage.English);
+
             _btnBack = UIHelper.FindButton(root, "btn-back");
             if (_btnBack != null)
             {
@@ -43,22 +48,72 @@ namespace SurakshaAR.Screens
                 _btnStart.onClick.AddListener(OpenTrainingInstructions);
             }
 
+            // Language Picker Pill: Cycle English -> Hindi -> Santali -> English
+            var langPill = UIHelper.FindButton(root, "btn-language-picker");
+            if (langPill != null)
+            {
+                var pillText = langPill.GetComponentInChildren<TextMeshProUGUI>();
+                if (pillText != null)
+                {
+                    pillText.font = UIHelper.GetFontForLanguage(currentLang);
+                    switch (currentLang)
+                    {
+                        case AppLanguage.Hindi:
+                            pillText.text = DevanagariShaper.Shape("हिन्दी");
+                            break;
+                        case AppLanguage.Santali:
+                            pillText.text = "ᱥᱟᱱᱛᱟᱲᱤ";
+                            break;
+                        default:
+                            pillText.text = "English";
+                            break;
+                    }
+                }
+
+                langPill.onClick.RemoveAllListeners();
+                langPill.onClick.AddListener(() =>
+                {
+                    var nextLang = currentLang switch
+                    {
+                        AppLanguage.English => AppLanguage.Hindi,
+                        AppLanguage.Hindi   => AppLanguage.Santali,
+                        _                   => AppLanguage.English
+                    };
+                    if (AppState.Instance != null) AppState.Instance.SetLanguage(nextLang);
+                    else AppManager.Instance?.Localization?.SetLanguage(nextLang);
+                });
+            }
+
             // Bottom Navigation
             _navHome         = UIHelper.FindButton(root, "nav-home");
             _navLearn        = UIHelper.FindButton(root, "nav-learn");
             _navProgress     = UIHelper.FindButton(root, "nav-progress");
             _navCertificates = UIHelper.FindButton(root, "nav-certificates");
 
-            if (_navHome         != null) { _navHome.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.HomeDashboard)); }
-            if (_navLearn        != null) { _navLearn.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.ModuleSelection)); }
-            if (_navProgress     != null) { _navProgress.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.Progress)); }
-            if (_navCertificates != null) { _navCertificates.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.Certificate)); }
+            if (_navHome         != null) { _navHome.onClick.RemoveAllListeners(); _navHome.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.HomeDashboard)); }
+            if (_navLearn        != null) { _navLearn.onClick.RemoveAllListeners(); _navLearn.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.ModuleSelection)); }
+            if (_navProgress     != null) { _navProgress.onClick.RemoveAllListeners(); _navProgress.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.Progress)); }
+            if (_navCertificates != null) { _navCertificates.onClick.RemoveAllListeners(); _navCertificates.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.Certificate)); }
+
+            // Localize Bottom Nav Labels
+            if (loc != null)
+            {
+                var hLbl = _navHome?.transform.Find("Text")?.GetComponent<TextMeshProUGUI>();
+                if (hLbl != null) hLbl.text = loc.Get("nav.home");
+                var lLbl = _navLearn?.transform.Find("Text")?.GetComponent<TextMeshProUGUI>();
+                if (lLbl != null) lLbl.text = loc.Get("nav.learn");
+                var pLbl = _navProgress?.transform.Find("Text")?.GetComponent<TextMeshProUGUI>();
+                if (pLbl != null) pLbl.text = loc.Get("nav.progress");
+                var cLbl = _navCertificates?.transform.Find("Text")?.GetComponent<TextMeshProUGUI>();
+                if (cLbl != null) cLbl.text = loc.Get("nav.certificates");
+            }
 
             BindScenarioData(root);
         }
 
         private void BindScenarioData(GameObject root)
         {
+            var loc = AppManager.Instance?.Localization;
             string title;
             string subtitle;
             string heroImg;
@@ -73,68 +128,67 @@ namespace SurakshaAR.Screens
             if (_scenarioIndex == 2)
             {
                 // Scenario 2 — Conveyor Belt Fire (Coming Soon)
-                title               = "Conveyor Belt Fire";
-                subtitle            = "Respond to fire in conveyor belt systems.";
+                title               = loc?.Get("scenario.fire.conveyor.title") ?? "Conveyor Belt Fire";
+                subtitle            = loc?.Get("scenario.fire.conveyor.desc") ?? "Respond to fire in conveyor belt systems.";
                 heroImg             = "icon_conveyor_belt_fire.jpg";
                 scenarioNumberBadge = "02";
-                duration            = "~ 12 mins";
-                level               = "Intermediate";
-                focusVal            = "Isolation";
-                focusSub            = "& Evacuation";
-                overview            = "A fire has been detected on the conveyor belt system. Learn to raise the alarm, stop and isolate the conveyor, and respond to the fire safely.";
+                duration            = loc?.Get("chip.val.12mins") ?? "~ 12 mins";
+                level               = loc?.Get("chip.val.intermediate") ?? "Intermediate";
+                focusVal            = loc?.Get("chip.val.isolation") ?? "Isolation";
+                focusSub            = loc?.Get("chip.sub.evacuation") ?? "& Evacuation";
+                overview            = loc?.Get("scenario.fire.conveyor.overview") ?? "A fire has been detected on the conveyor belt system. Learn to raise the alarm, stop and isolate the conveyor, and respond to the fire safely.";
                 steps = new string[]
                 {
-                    "Detect smoke/fire on conveyor",
-                    "Raise alarm",
-                    "Stop and isolate conveyor (E-Stop)",
-                    "Keep workers away from danger zone",
-                    "Use appropriate firefighting equipment",
-                    "Control the fire if safe"
+                    loc?.Get("fire.conveyor.step1") ?? "Detect smoke/fire on conveyor",
+                    loc?.Get("fire.conveyor.step2") ?? "Raise alarm",
+                    loc?.Get("fire.conveyor.step3") ?? "Stop and isolate conveyor (E-Stop)",
+                    loc?.Get("fire.conveyor.step4") ?? "Keep workers away from danger zone",
+                    loc?.Get("fire.conveyor.step5") ?? "Use appropriate firefighting equipment",
+                    loc?.Get("fire.conveyor.step6") ?? "Control the fire if safe"
                 };
             }
             else if (_scenarioIndex == 3)
             {
                 // Scenario 3 — Excavator / HEMM Fire (Coming Soon)
-                title               = "Excavator / HEMM Fire";
-                subtitle            = "Handle fire in heavy earth moving machinery.";
+                title               = loc?.Get("scenario.fire.excavator.title") ?? "Excavator / HEMM Fire";
+                subtitle            = loc?.Get("scenario.fire.excavator.desc") ?? "Handle fire in heavy earth moving machinery.";
                 heroImg             = "icon_excavator_hemm_fire.jpg";
                 scenarioNumberBadge = "03";
-                duration            = "~ 12 mins";
-                level               = "Intermediate";
-                focusVal            = "Emergency";
-                focusSub            = "Response";
-                overview            = "A fire has started in a heavy earth moving machine. Learn to stop the machine, raise the alarm and respond to the fire while maintaining a safe distance.";
+                duration            = loc?.Get("chip.val.12mins") ?? "~ 12 mins";
+                level               = loc?.Get("chip.val.intermediate") ?? "Intermediate";
+                focusVal            = loc?.Get("chip.val.emergency") ?? "Emergency";
+                focusSub            = loc?.Get("chip.sub.response") ?? "Response";
+                overview            = loc?.Get("scenario.fire.excavator.overview") ?? "A fire has started in a heavy earth moving machine. Learn to stop the machine, raise the alarm and respond to the fire while maintaining a safe distance.";
                 steps = new string[]
                 {
-                    "Detect engine/machine fire",
-                    "Stop the machine safely",
-                    "Raise alarm and inform control room",
-                    "Exit the operator area",
-                    "Maintain safe distance",
-                    "Use appropriate extinguisher"
+                    loc?.Get("fire.excavator.step1") ?? "Detect engine/machine fire",
+                    loc?.Get("fire.excavator.step2") ?? "Stop the machine safely",
+                    loc?.Get("fire.excavator.step3") ?? "Raise alarm and inform control room",
+                    loc?.Get("fire.excavator.step4") ?? "Exit the operator area",
+                    loc?.Get("fire.excavator.step5") ?? "Maintain safe distance",
+                    loc?.Get("fire.excavator.step6") ?? "Use appropriate extinguisher"
                 };
             }
             else
             {
                 // Scenario 1 — Electrical Panel Fire (AVAILABLE — real AR)
-                title               = "Electrical Panel Fire";
-                subtitle            = "Handle fire in electrical panels and control rooms.";
+                title               = loc?.Get("scenario.fire.electrical.title") ?? "Electrical Panel Fire";
+                subtitle            = loc?.Get("scenario.fire.electrical.desc") ?? "Handle fire in electrical panels and control rooms.";
                 heroImg             = "icon_electrical_panel_fire.jpg";
                 scenarioNumberBadge = "01";
-                duration            = "~ 10 mins";
-                level               = "Beginner";
-                focusVal            = "Extinguisher";
-                focusSub            = "Use";
-                overview            = "A fire may start in an electrical control panel due to short circuit, overload or equipment failure. Learn to identify the hazard, activate the alarm and use the correct extinguisher to control the fire safely.";
-                // Exactly 6 steps — matches the real FireScenarioFlowManager workflow
+                duration            = loc?.Get("chip.val.10mins") ?? "~ 10 mins";
+                level               = loc?.Get("chip.val.beginner") ?? "Beginner";
+                focusVal            = loc?.Get("chip.val.extinguisher") ?? "Extinguisher";
+                focusSub            = loc?.Get("chip.sub.use") ?? "Use";
+                overview            = loc?.Get("scenario.fire.electrical.overview") ?? "A fire may start in an electrical control panel due to short circuit, overload or equipment failure. Learn to identify the hazard, activate the alarm and use the correct extinguisher to control the fire safely.";
                 steps = new string[]
                 {
-                    "Identify fire hazard",
-                    "Activate fire alarm",
-                    "Select correct extinguisher",
-                    "Remove safety pin",
-                    "Grip and aim at fire base",
-                    "Press and spray"
+                    loc?.Get("fire.sop.step1") ?? "Identify fire hazard",
+                    loc?.Get("fire.sop.step2") ?? "Activate fire alarm",
+                    loc?.Get("fire.sop.step3") ?? "Select correct extinguisher",
+                    loc?.Get("fire.sop.step4") ?? "Remove safety pin",
+                    loc?.Get("fire.sop.step5") ?? "Grip and aim at fire base",
+                    loc?.Get("fire.sop.step6") ?? "Press and spray"
                 };
             }
 
@@ -174,15 +228,26 @@ namespace SurakshaAR.Screens
             // Stat Chips
             var chipDurVal = UIHelper.FindRect(root, "chip-duration")?.Find("Inner/TextCol/Value")?.GetComponent<TextMeshProUGUI>();
             if (chipDurVal != null) chipDurVal.text = duration;
+            var chipDurSub = UIHelper.FindRect(root, "chip-duration")?.Find("Inner/TextCol/Sub")?.GetComponent<TextMeshProUGUI>();
+            if (chipDurSub != null && loc != null) chipDurSub.text = loc.Get("chip.label.duration");
 
             var chipLevVal = UIHelper.FindRect(root, "chip-level")?.Find("Inner/TextCol/Value")?.GetComponent<TextMeshProUGUI>();
             if (chipLevVal != null) chipLevVal.text = level;
+            var chipLevSub = UIHelper.FindRect(root, "chip-level")?.Find("Inner/TextCol/Sub")?.GetComponent<TextMeshProUGUI>();
+            if (chipLevSub != null && loc != null) chipLevSub.text = loc.Get("chip.label.level");
 
             var chipFocVal = UIHelper.FindRect(root, "chip-focus")?.Find("Inner/TextCol/Value")?.GetComponent<TextMeshProUGUI>();
             if (chipFocVal != null) chipFocVal.text = focusVal;
 
             var chipFocSub = UIHelper.FindRect(root, "chip-focus")?.Find("Inner/TextCol/Sub")?.GetComponent<TextMeshProUGUI>();
             if (chipFocSub != null) chipFocSub.text = focusSub;
+
+            // Section Headings
+            var overviewHead = UIHelper.FindTMP(root, "OverviewHead");
+            if (overviewHead != null && loc != null) overviewHead.text = loc.Get("ui.overview.heading");
+
+            var trainingHead = UIHelper.FindTMP(root, "TrainingHead");
+            if (trainingHead != null && loc != null) trainingHead.text = loc.Get("ui.training.include");
 
             // Overview Body
             var labelOverview = UIHelper.FindTMP(root, "label-overview-body");
@@ -211,12 +276,12 @@ namespace SurakshaAR.Screens
                 if (_scenarioIndex == 1)
                 {
                     if (btnImg != null) btnImg.color = UIColors.Hex("#EA580C");
-                    if (btnTxt != null) btnTxt.text = "▶   Start Training";
+                    if (btnTxt != null) btnTxt.text = loc?.Get("ui.start_training") ?? "Start AR Training";
                 }
                 else
                 {
                     if (btnImg != null) btnImg.color = UIColors.Hex("#94A3B8");
-                    if (btnTxt != null) btnTxt.text = "Coming Soon";
+                    if (btnTxt != null) btnTxt.text = loc?.Get("ui.coming_soon") ?? "Coming Soon";
                 }
             }
 

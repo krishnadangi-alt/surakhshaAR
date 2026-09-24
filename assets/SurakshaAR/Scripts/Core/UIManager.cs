@@ -228,10 +228,21 @@ namespace SurakshaAR.Core
                         tmpRT.localScale = s;
                     }
 
+                    // Protect icon-only labels from font changes that would cause missing emoji glyphs
+                    if (tmp.name == "Icon" || tmp.name.Contains("IconLbl") || tmp.name == "OverviewIcon" || tmp.name == "TrainingIcon" || tmp.name == "ILbl" || tmp.name.EndsWith("Symbol"))
+                    {
+                        continue;
+                    }
+
                     // On language selection screen, protect each individual language card's title/subtitle so they always display in their own native script
                     var parentCard = tmp.GetComponentInParent<Button>();
                     if (parentCard != null)
                     {
+                        if (parentCard.name == "btn-language-picker")
+                        {
+                            tmp.font = font;
+                            continue;
+                        }
                         if (parentCard.name == "row-hindi")
                         {
                             var hiFont = UI.UIHelper.GetDevanagariFont();

@@ -37,34 +37,107 @@ namespace SurakshaAR.Screens
 
             _btnBack = UIHelper.FindButton(root, "btn-back");
             if (_btnBack != null)
+            {
+                _btnBack.onClick.RemoveAllListeners();
                 _btnBack.onClick.AddListener(OnBack);
+            }
 
+            // Language Picker Pill: Cycle English -> Hindi -> Santali -> English
+            var langPill = UIHelper.FindButton(root, "btn-language-picker");
+            if (langPill != null)
+            {
+                var pillText = langPill.GetComponentInChildren<TextMeshProUGUI>();
+                if (pillText != null)
+                {
+                    pillText.font = UIHelper.GetFontForLanguage(currentLang);
+                    switch (currentLang)
+                    {
+                        case AppLanguage.Hindi:
+                            pillText.text = DevanagariShaper.Shape("हिन्दी");
+                            break;
+                        case AppLanguage.Santali:
+                            pillText.text = "ᱥᱟᱱᱛᱟᱲᱤ";
+                            break;
+                        default:
+                            pillText.text = "English";
+                            break;
+                    }
+                }
+
+                langPill.onClick.RemoveAllListeners();
+                langPill.onClick.AddListener(() =>
+                {
+                    var nextLang = currentLang switch
+                    {
+                        AppLanguage.English => AppLanguage.Hindi,
+                        AppLanguage.Hindi   => AppLanguage.Santali,
+                        _                   => AppLanguage.English
+                    };
+                    if (AppState.Instance != null) AppState.Instance.SetLanguage(nextLang);
+                    else AppManager.Instance?.Localization?.SetLanguage(nextLang);
+                });
+            }
+
+            // Top Header Title
             var titleLbl = UIHelper.FindTMP(root, "label-title");
             if (titleLbl != null && loc != null)
             {
-                string t = loc.Get("module.fire.title");
-                if (!string.IsNullOrEmpty(t) && t != "module.fire.title") titleLbl.text = t;
+                titleLbl.text = loc.Get("fire.module.title");
+            }
+
+            // Intro Card Title & Description
+            var introTitle = root.transform.Find("ScrollArea/Viewport/Content/IntroCard/InnerRow/TextCol/IntroTitle")?.GetComponent<TextMeshProUGUI>();
+            if (introTitle != null && loc != null)
+            {
+                introTitle.text = loc.Get("fire.module.title");
+            }
+            var introDesc = root.transform.Find("ScrollArea/Viewport/Content/IntroCard/InnerRow/TextCol/IntroDesc")?.GetComponent<TextMeshProUGUI>();
+            if (introDesc != null && loc != null)
+            {
+                introDesc.text = loc.Get("fire.module.desc");
+            }
+
+            // Section Heading: "Select a Scenario"
+            var secHead = UIHelper.FindTMP(root, "label-select-scenario");
+            if (secHead != null && loc != null)
+            {
+                secHead.text = loc.Get("scenario.select.heading");
             }
 
             // Card 1: 01 Electrical Panel Fire
             _cardScenario1 = UIHelper.FindButton(root, "card-scenario-1");
             if (_cardScenario1 != null)
             {
+                _cardScenario1.onClick.RemoveAllListeners();
                 _cardScenario1.onClick.AddListener(() => OnSelectScenario(1, "Electrical Panel Fire"));
+                var c1Title = _cardScenario1.transform.Find("Inner/TextCol/Title")?.GetComponent<TextMeshProUGUI>();
+                if (c1Title != null && loc != null) c1Title.text = loc.Get("scenario.fire.electrical.title");
+                var c1Desc = _cardScenario1.transform.Find("Inner/TextCol/Desc")?.GetComponent<TextMeshProUGUI>();
+                if (c1Desc != null && loc != null) c1Desc.text = loc.Get("scenario.fire.electrical.desc");
             }
 
             // Card 2: 02 Conveyor Belt Fire
             _cardScenario2 = UIHelper.FindButton(root, "card-scenario-2");
             if (_cardScenario2 != null)
             {
+                _cardScenario2.onClick.RemoveAllListeners();
                 _cardScenario2.onClick.AddListener(() => OnSelectScenario(2, "Conveyor Belt Fire"));
+                var c2Title = _cardScenario2.transform.Find("Inner/TextCol/Title")?.GetComponent<TextMeshProUGUI>();
+                if (c2Title != null && loc != null) c2Title.text = loc.Get("scenario.fire.conveyor.title");
+                var c2Desc = _cardScenario2.transform.Find("Inner/TextCol/Desc")?.GetComponent<TextMeshProUGUI>();
+                if (c2Desc != null && loc != null) c2Desc.text = loc.Get("scenario.fire.conveyor.desc");
             }
 
             // Card 3: 03 Excavator / HEMM Fire
             _cardScenario3 = UIHelper.FindButton(root, "card-scenario-3");
             if (_cardScenario3 != null)
             {
+                _cardScenario3.onClick.RemoveAllListeners();
                 _cardScenario3.onClick.AddListener(() => OnSelectScenario(3, "Excavator / HEMM Fire"));
+                var c3Title = _cardScenario3.transform.Find("Inner/TextCol/Title")?.GetComponent<TextMeshProUGUI>();
+                if (c3Title != null && loc != null) c3Title.text = loc.Get("scenario.fire.excavator.title");
+                var c3Desc = _cardScenario3.transform.Find("Inner/TextCol/Desc")?.GetComponent<TextMeshProUGUI>();
+                if (c3Desc != null && loc != null) c3Desc.text = loc.Get("scenario.fire.excavator.desc");
             }
 
             // Bottom Navigation
@@ -73,10 +146,23 @@ namespace SurakshaAR.Screens
             _navProgress     = UIHelper.FindButton(root, "nav-progress");
             _navCertificates = UIHelper.FindButton(root, "nav-certificates");
 
-            if (_navHome         != null) { _navHome.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.HomeDashboard)); }
-            if (_navLearn        != null) { _navLearn.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.ModuleSelection)); }
-            if (_navProgress     != null) { _navProgress.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.Progress)); }
-            if (_navCertificates != null) { _navCertificates.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.Certificate)); }
+            if (_navHome         != null) { _navHome.onClick.RemoveAllListeners(); _navHome.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.HomeDashboard)); }
+            if (_navLearn        != null) { _navLearn.onClick.RemoveAllListeners(); _navLearn.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.ModuleSelection)); }
+            if (_navProgress     != null) { _navProgress.onClick.RemoveAllListeners(); _navProgress.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.Progress)); }
+            if (_navCertificates != null) { _navCertificates.onClick.RemoveAllListeners(); _navCertificates.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.Certificate)); }
+
+            // Localize Bottom Nav Labels
+            if (loc != null)
+            {
+                var hLbl = _navHome?.transform.Find("Text")?.GetComponent<TextMeshProUGUI>();
+                if (hLbl != null) hLbl.text = loc.Get("nav.home");
+                var lLbl = _navLearn?.transform.Find("Text")?.GetComponent<TextMeshProUGUI>();
+                if (lLbl != null) lLbl.text = loc.Get("nav.learn");
+                var pLbl = _navProgress?.transform.Find("Text")?.GetComponent<TextMeshProUGUI>();
+                if (pLbl != null) pLbl.text = loc.Get("nav.progress");
+                var cLbl = _navCertificates?.transform.Find("Text")?.GetComponent<TextMeshProUGUI>();
+                if (cLbl != null) cLbl.text = loc.Get("nav.certificates");
+            }
 
             UIManager.Instance?.ApplyLanguageFonts(root, currentLang);
         }

@@ -139,8 +139,8 @@ namespace SurakshaAR.UI.Builders
 
             // Language picker pill
             var langPill = UIHelper.MakeButton("btn-language-picker", row,
-                "🌐 EN ▾", 26, Hex("#F1F5F9"), SlateText, 14);
-            UIHelper.SetLayout(langPill.gameObject, preferredWidth: 130, preferredHeight: 60);
+                "English", 26, Hex("#F1F5F9"), SlateText, 14);
+            UIHelper.SetLayout(langPill.gameObject, preferredWidth: 160, preferredHeight: 60);
 
             // Bell notification button
             var bellBtn = UIHelper.MakeButton("btn-bell", row, "", 14,
@@ -236,13 +236,18 @@ namespace SurakshaAR.UI.Builders
                 childForceWidth: true, childForceHeight: false);
             UIHelper.SetLayout(col.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 124, minHeight: 114);
+                minHeight: 114);
+
+            var cvlg = col.GetComponent<VerticalLayoutGroup>();
+            cvlg.childForceExpandHeight = false;
+            var csf = col.gameObject.AddComponent<ContentSizeFitter>();
+            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             var row = UIHelper.MakeHorizontal("TitleRow", col.transform, 14,
                 childForceWidth: false, childForceHeight: false);
             UIHelper.SetLayout(row.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 58);
+                minHeight: 58);
             row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
             var badge = UIHelper.MakeRect("FlameBox", row);
@@ -258,9 +263,10 @@ namespace SurakshaAR.UI.Builders
 
             // Title: 46px bold (Learn/Progress screen module title scale)
             var titleLbl = UIHelper.MakeLabel("label-scenario-title", row,
-                "Electrical Panel Fire", 46, DarkText, bold: true, wrap: false);
+                "Electrical Panel Fire", 46, DarkText, bold: true, wrap: true);
+            titleLbl.lineSpacing = 1.05f;
             UIHelper.SetLayout(titleLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 56);
+                flexibleWidth: true, flexWidth: 1, minHeight: 56);
 
             // Description: 34px (Learn/Progress screen description scale)
             var descLbl = UIHelper.MakeLabel("label-scenario-desc", col.transform,
@@ -268,7 +274,7 @@ namespace SurakshaAR.UI.Builders
                 34, MutedText, wrap: true);
             descLbl.lineSpacing = 1.15f;
             UIHelper.SetLayout(descLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 50);
+                flexibleWidth: true, flexWidth: 1, minHeight: 48);
         }
 
         // ────────────────────────────────────────────────────────────────
@@ -284,7 +290,7 @@ namespace SurakshaAR.UI.Builders
 
             BuildChip(row, "chip-duration", "⏱",  "~ 10 mins",    "Duration");
             BuildChip(row, "chip-level",    "📊", "Beginner",      "Level");
-            BuildChip(row, "chip-focus",    "🧯", "Extinguisher",  "Use");
+            BuildChip(row, "chip-focus",    "⚡", "Extinguisher",  "Use");
         }
 
         private static void BuildChip(Transform parent, string name,
@@ -338,7 +344,10 @@ namespace SurakshaAR.UI.Builders
                 childForceWidth: true, childForceHeight: false);
             UIHelper.SetLayout(box.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 196, minHeight: 180);
+                minHeight: 160);
+
+            var csf = box.gameObject.AddComponent<ContentSizeFitter>();
+            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             var headRow = UIHelper.MakeHorizontal("HeadRow", box.transform, 12,
                 childForceWidth: false, childForceHeight: false);
@@ -346,9 +355,12 @@ namespace SurakshaAR.UI.Builders
                 flexibleWidth: true, flexWidth: 1, preferredHeight: 48);
             headRow.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
-            var docIcon = UIHelper.MakeLabel("DocIcon", headRow,
-                "📄", 32, AccentOrange, TextAlignmentOptions.Center);
-            UIHelper.SetLayout(docIcon.gameObject, preferredWidth: 40, preferredHeight: 40);
+            var bar = UIHelper.MakeRect("AccentBar", headRow);
+            UIHelper.SetLayout(bar.gameObject, preferredWidth: 6, preferredHeight: 38);
+            var barImg = bar.gameObject.AddComponent<Image>();
+            barImg.color  = AccentOrange;
+            barImg.sprite = UIHelper.GetWhiteSprite();
+            UIHelper.SetImageRoundedSprite(barImg, 3);
 
             // Heading: 44px bold (matches Progress screen section headers)
             var headLbl = UIHelper.MakeLabel("OverviewHead", headRow,
@@ -362,7 +374,7 @@ namespace SurakshaAR.UI.Builders
                 34, SlateText, wrap: true);
             bodyLbl.lineSpacing = 1.25f;
             UIHelper.SetLayout(bodyLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 136);
+                flexibleWidth: true, flexWidth: 1, minHeight: 80);
         }
 
         // ────────────────────────────────────────────────────────────────
@@ -374,7 +386,10 @@ namespace SurakshaAR.UI.Builders
                 childForceWidth: true, childForceHeight: false);
             UIHelper.SetLayout(box.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 510, minHeight: 480);
+                minHeight: 400);
+
+            var csf = box.gameObject.AddComponent<ContentSizeFitter>();
+            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             var headRow = UIHelper.MakeHorizontal("HeadRow", box.transform, 12,
                 childForceWidth: false, childForceHeight: false);
@@ -399,6 +414,8 @@ namespace SurakshaAR.UI.Builders
                 childForceWidth: true, childForceHeight: false);
             UIHelper.SetLayout(stepsCol.gameObject,
                 flexibleWidth: true, flexWidth: 1);
+            var scCsf = stepsCol.gameObject.AddComponent<ContentSizeFitter>();
+            scCsf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             string[] defaultSteps =
             {
@@ -423,8 +440,11 @@ namespace SurakshaAR.UI.Builders
                 childForceWidth: false, childForceHeight: false);
             UIHelper.SetLayout(row.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 64, minHeight: 58);
+                minHeight: 58);
             row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
+
+            var csf = row.gameObject.AddComponent<ContentSizeFitter>();
+            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             // Circular orange number badge
             var badge = UIHelper.MakeRect("Badge", row);
@@ -446,7 +466,7 @@ namespace SurakshaAR.UI.Builders
                 stepText, 34, DarkText, wrap: true);
             lbl.lineSpacing = 1.15f;
             UIHelper.SetLayout(lbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 54);
+                flexibleWidth: true, flexWidth: 1, minHeight: 48);
         }
 
         // ────────────────────────────────────────────────────────────────
@@ -460,7 +480,7 @@ namespace SurakshaAR.UI.Builders
                 preferredHeight: 96, minHeight: 90);
 
             var btn = UIHelper.MakeButton("btn-start-ar-training", btnRow,
-                "▶   Start Training", 36, AccentOrange, Color.white, 20);
+                "Start AR Training", 36, AccentOrange, Color.white, 20);
             UIHelper.Stretch(btn.GetComponent<RectTransform>(), 0, 0, 0, 0);
 
             var btnLbl = btn.GetComponentInChildren<TextMeshProUGUI>();

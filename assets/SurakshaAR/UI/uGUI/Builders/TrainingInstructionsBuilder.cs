@@ -136,8 +136,8 @@ namespace SurakshaAR.UI.Builders
                 flexibleWidth: true, flexWidth: 1, preferredHeight: 60);
 
             var langPill = UIHelper.MakeButton("btn-language-picker", row,
-                "🌐 EN ▾", 26, Hex("#F1F5F9"), SlateText, 14);
-            UIHelper.SetLayout(langPill.gameObject, preferredWidth: 130, preferredHeight: 60);
+                "English", 26, Hex("#F1F5F9"), SlateText, 14);
+            UIHelper.SetLayout(langPill.gameObject, preferredWidth: 160, preferredHeight: 60);
 
             var bellBtn = UIHelper.MakeButton("btn-bell", row, "", 14,
                 Color.white, Color.white, 20);
@@ -168,7 +168,17 @@ namespace SurakshaAR.UI.Builders
             var banner = UIHelper.MakeRect("InfoBanner", parent);
             UIHelper.SetLayout(banner.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 190, minHeight: 175);
+                minHeight: 180);
+
+            var bvlg = banner.gameObject.AddComponent<VerticalLayoutGroup>();
+            bvlg.padding = new RectOffset(24, 24, 20, 20);
+            bvlg.childForceExpandWidth  = true;
+            bvlg.childForceExpandHeight = false;
+            bvlg.childControlWidth      = true;
+            bvlg.childControlHeight     = true;
+
+            var bCsf = banner.gameObject.AddComponent<ContentSizeFitter>();
+            bCsf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             var bImg = banner.gameObject.AddComponent<Image>();
             bImg.color  = AccentLight;
@@ -183,11 +193,13 @@ namespace SurakshaAR.UI.Builders
             shadow.effectColor    = new Color(0, 0, 0, 0.04f);
             shadow.effectDistance = new Vector2(0, -3f);
 
-            var row = UIHelper.MakeHorizontal("InnerRow", banner, 20,
-                new RectOffset(24, 24, 20, 20),
+            var row = UIHelper.MakeHorizontal("InnerRow", banner.transform, 20,
                 childForceWidth: false, childForceHeight: false);
-            UIHelper.Stretch(row, 0, 0, 0, 0);
-            row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
+            UIHelper.SetLayout(row.gameObject, flexibleWidth: true, flexWidth: 1, minHeight: 140);
+            var rHlg = row.GetComponent<HorizontalLayoutGroup>();
+            rHlg.childAlignment = TextAnchor.MiddleLeft;
+            rHlg.childControlWidth = true;
+            rHlg.childForceExpandWidth = false;
 
             // Orange (i) circle icon
             var iconBox = UIHelper.MakeRect("InfoIconBox", row);
@@ -206,22 +218,25 @@ namespace SurakshaAR.UI.Builders
             // Text column
             var textCol = UIHelper.MakeVertical("TextCol", row, 6,
                 childForceWidth: true, childForceHeight: false);
-            UIHelper.SetLayout(textCol.gameObject, flexibleWidth: true, flexWidth: 1);
-            var tvlg = textCol.GetComponent<VerticalLayoutGroup>();
-            tvlg.childAlignment       = TextAnchor.MiddleLeft;
-            tvlg.childForceExpandHeight = false;
+            UIHelper.SetLayout(textCol.gameObject, flexibleWidth: true, flexWidth: 1, minHeight: 130);
+            var tcVlg = textCol.GetComponent<VerticalLayoutGroup>();
+            tcVlg.childAlignment = TextAnchor.MiddleLeft;
+            tcVlg.childControlWidth = true;
+            tcVlg.childForceExpandWidth = true;
 
             var headLbl = UIHelper.MakeLabel("HeadLbl", textCol,
                 "Before You Start", 44, Hex("#9A3412"), bold: true);
+            headLbl.textWrappingMode = TextWrappingModes.Normal;
             UIHelper.SetLayout(headLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 52);
+                flexibleWidth: true, flexWidth: 1, minHeight: 52);
 
             var descLbl = UIHelper.MakeLabel("DescLbl", textCol,
                 "Follow the instructions below for the best training experience.",
                 34, Hex("#C2410C"), wrap: true);
             descLbl.lineSpacing = 1.15f;
+            descLbl.textWrappingMode = TextWrappingModes.Normal;
             UIHelper.SetLayout(descLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 88);
+                flexibleWidth: true, flexWidth: 1, minHeight: 72);
         }
 
         // ────────────────────────────────────────────────────────────────
@@ -233,7 +248,12 @@ namespace SurakshaAR.UI.Builders
                 childForceWidth: true, childForceHeight: false);
             UIHelper.SetLayout(col.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 864, minHeight: 800);
+                minHeight: 800);
+            var colVlg = col.GetComponent<VerticalLayoutGroup>();
+            colVlg.childControlWidth = true;
+            colVlg.childForceExpandWidth = true;
+            var colCsf = col.gameObject.AddComponent<ContentSizeFitter>();
+            colCsf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             // 1. Safe open area
             BuildSingleCard(col.transform, "card-inst-1",
@@ -267,7 +287,17 @@ namespace SurakshaAR.UI.Builders
             var card = UIHelper.MakeRect(cardName, parent);
             UIHelper.SetLayout(card.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 160, minHeight: 150);
+                minHeight: 140);
+
+            var cvlg = card.gameObject.AddComponent<VerticalLayoutGroup>();
+            cvlg.padding = new RectOffset(24, 24, 18, 18);
+            cvlg.childForceExpandWidth  = true;
+            cvlg.childForceExpandHeight = false;
+            cvlg.childControlWidth      = true;
+            cvlg.childControlHeight     = true;
+
+            var cardCsf = card.gameObject.AddComponent<ContentSizeFitter>();
+            cardCsf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             var cImg = card.gameObject.AddComponent<Image>();
             cImg.color  = Color.white;
@@ -282,11 +312,13 @@ namespace SurakshaAR.UI.Builders
             shadow.effectColor    = new Color(0, 0, 0, 0.03f);
             shadow.effectDistance = new Vector2(0, -2f);
 
-            var row = UIHelper.MakeHorizontal("CardRow", card, 20,
-                new RectOffset(24, 24, 18, 18),
+            var row = UIHelper.MakeHorizontal("CardRow", card.transform, 20,
                 childForceWidth: false, childForceHeight: false);
-            UIHelper.Stretch(row, 0, 0, 0, 0);
-            row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
+            UIHelper.SetLayout(row.gameObject, flexibleWidth: true, flexWidth: 1, minHeight: 104);
+            var rHlg = row.GetComponent<HorizontalLayoutGroup>();
+            rHlg.childAlignment = TextAnchor.MiddleLeft;
+            rHlg.childControlWidth = true;
+            rHlg.childForceExpandWidth = false;
 
             // Colored circle icon container
             var iconBox = UIHelper.MakeRect("IconBox", row);
@@ -306,8 +338,9 @@ namespace SurakshaAR.UI.Builders
             var textLbl = UIHelper.MakeLabel("TextLbl", row,
                 text, 34, DarkText, wrap: true);
             textLbl.lineSpacing = 1.18f;
+            textLbl.textWrappingMode = TextWrappingModes.Normal;
             UIHelper.SetLayout(textLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 88);
+                flexibleWidth: true, flexWidth: 1, minHeight: 68);
         }
 
         // ────────────────────────────────────────────────────────────────
@@ -318,7 +351,17 @@ namespace SurakshaAR.UI.Builders
             var box = UIHelper.MakeRect("AgreementBox", parent);
             UIHelper.SetLayout(box.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 110, minHeight: 100);
+                minHeight: 100);
+
+            var bvlg = box.gameObject.AddComponent<VerticalLayoutGroup>();
+            bvlg.padding = new RectOffset(24, 24, 18, 18);
+            bvlg.childForceExpandWidth  = true;
+            bvlg.childForceExpandHeight = false;
+            bvlg.childControlWidth      = true;
+            bvlg.childControlHeight     = true;
+
+            var boxCsf = box.gameObject.AddComponent<ContentSizeFitter>();
+            boxCsf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             var cImg = box.gameObject.AddComponent<Image>();
             cImg.color  = Color.white;
@@ -332,11 +375,13 @@ namespace SurakshaAR.UI.Builders
             var btn = box.gameObject.AddComponent<Button>();
             btn.name = "btn-agreement-toggle";
 
-            var row = UIHelper.MakeHorizontal("Row", box, 18,
-                new RectOffset(24, 24, 16, 16),
+            var row = UIHelper.MakeHorizontal("Row", box.transform, 18,
                 childForceWidth: false, childForceHeight: false);
-            UIHelper.Stretch(row, 0, 0, 0, 0);
-            row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
+            UIHelper.SetLayout(row.gameObject, flexibleWidth: true, flexWidth: 1, minHeight: 64);
+            var rHlg = row.GetComponent<HorizontalLayoutGroup>();
+            rHlg.childAlignment = TextAnchor.MiddleLeft;
+            rHlg.childControlWidth = true;
+            rHlg.childForceExpandWidth = false;
 
             // Green Checkbox Square
             var checkSquare = UIHelper.MakeRect("check-box-square", row);
@@ -356,9 +401,10 @@ namespace SurakshaAR.UI.Builders
             var lbl = UIHelper.MakeLabel("label-agreement-text", row,
                 "I understand the instructions and am ready to start.",
                 34, NavyText, bold: true, wrap: true);
-            lbl.lineSpacing = 1.1f;
+            lbl.lineSpacing = 1.12f;
+            lbl.textWrappingMode = TextWrappingModes.Normal;
             UIHelper.SetLayout(lbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 72);
+                flexibleWidth: true, flexWidth: 1, minHeight: 60);
         }
 
         // ────────────────────────────────────────────────────────────────
@@ -385,7 +431,7 @@ namespace SurakshaAR.UI.Builders
             tbImg.color = Hex("#E2E8F0");
 
             var btn = UIHelper.MakeButton("btn-start-training", bar,
-                "▶   Start Training", 36, SafetyGreen, Color.white, 20);
+                "Start Training", 36, SafetyGreen, Color.white, 20);
             var rt = btn.GetComponent<RectTransform>();
             rt.anchorMin = new Vector2(0, 0.5f);
             rt.anchorMax = new Vector2(1, 0.5f);

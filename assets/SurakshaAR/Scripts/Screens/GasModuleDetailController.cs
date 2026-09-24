@@ -35,6 +35,11 @@ namespace SurakshaAR.Screens
                 _gasScenarioIndex = (raw >= 101 && raw <= 103) ? raw - 100 : 1;
             }
 
+            var loc = AppManager.Instance?.Localization;
+            var currentLang = AppState.Instance != null
+                ? AppState.Instance.CurrentLanguage
+                : (loc != null ? loc.CurrentLanguage : AppLanguage.English);
+
             _btnBack = UIHelper.FindButton(root, "btn-back");
             if (_btnBack != null)
             {
@@ -49,16 +54,65 @@ namespace SurakshaAR.Screens
                 _btnStart.onClick.RemoveAllListeners();
             }
 
+            // Language Picker Pill: Cycle English -> Hindi -> Santali -> English
+            var langPill = UIHelper.FindButton(root, "btn-language-picker");
+            if (langPill != null)
+            {
+                var pillText = langPill.GetComponentInChildren<TextMeshProUGUI>();
+                if (pillText != null)
+                {
+                    pillText.font = UIHelper.GetFontForLanguage(currentLang);
+                    switch (currentLang)
+                    {
+                        case AppLanguage.Hindi:
+                            pillText.text = DevanagariShaper.Shape("हिन्दी");
+                            break;
+                        case AppLanguage.Santali:
+                            pillText.text = "ᱥᱟᱱᱛᱟᱲᱤ";
+                            break;
+                        default:
+                            pillText.text = "English";
+                            break;
+                    }
+                }
+
+                langPill.onClick.RemoveAllListeners();
+                langPill.onClick.AddListener(() =>
+                {
+                    var nextLang = currentLang switch
+                    {
+                        AppLanguage.English => AppLanguage.Hindi,
+                        AppLanguage.Hindi   => AppLanguage.Santali,
+                        _                   => AppLanguage.English
+                    };
+                    if (AppState.Instance != null) AppState.Instance.SetLanguage(nextLang);
+                    else AppManager.Instance?.Localization?.SetLanguage(nextLang);
+                });
+            }
+
             // Bottom Navigation
             _navHome         = UIHelper.FindButton(root, "nav-home");
             _navLearn        = UIHelper.FindButton(root, "nav-learn");
             _navProgress     = UIHelper.FindButton(root, "nav-progress");
             _navCertificates = UIHelper.FindButton(root, "nav-certificates");
 
-            if (_navHome         != null) { _navHome.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.HomeDashboard)); }
-            if (_navLearn        != null) { _navLearn.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.ModuleSelection)); }
-            if (_navProgress     != null) { _navProgress.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.Progress)); }
-            if (_navCertificates != null) { _navCertificates.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.Certificate)); }
+            if (_navHome         != null) { _navHome.onClick.RemoveAllListeners(); _navHome.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.HomeDashboard)); }
+            if (_navLearn        != null) { _navLearn.onClick.RemoveAllListeners(); _navLearn.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.ModuleSelection)); }
+            if (_navProgress     != null) { _navProgress.onClick.RemoveAllListeners(); _navProgress.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.Progress)); }
+            if (_navCertificates != null) { _navCertificates.onClick.RemoveAllListeners(); _navCertificates.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.Certificate)); }
+
+            // Localize Bottom Nav Labels
+            if (loc != null)
+            {
+                var hLbl = _navHome?.transform.Find("Text")?.GetComponent<TextMeshProUGUI>();
+                if (hLbl != null) hLbl.text = loc.Get("nav.home");
+                var lLbl = _navLearn?.transform.Find("Text")?.GetComponent<TextMeshProUGUI>();
+                if (lLbl != null) lLbl.text = loc.Get("nav.learn");
+                var pLbl = _navProgress?.transform.Find("Text")?.GetComponent<TextMeshProUGUI>();
+                if (pLbl != null) pLbl.text = loc.Get("nav.progress");
+                var cLbl = _navCertificates?.transform.Find("Text")?.GetComponent<TextMeshProUGUI>();
+                if (cLbl != null) cLbl.text = loc.Get("nav.certificates");
+            }
 
             BindScenarioData(root);
         }
@@ -66,6 +120,7 @@ namespace SurakshaAR.Screens
         // ──────────────────────────────────────────────────────────────────
         private void BindScenarioData(GameObject root)
         {
+            var loc = AppManager.Instance?.Localization;
             string title, subtitle, scenarioNumberBadge, duration, level,
                    focusVal, focusSub, overview;
             string[] steps;
@@ -73,64 +128,64 @@ namespace SurakshaAR.Screens
             if (_gasScenarioIndex == 2)
             {
                 // Scenario 2 — Confined Space Entry
-                title               = "Confined Space Entry";
-                subtitle            = "Follow safe entry procedures and use gas detection & PPE.";
+                title               = loc?.Get("scenario.gas.confined.title") ?? "Confined Space Entry";
+                subtitle            = loc?.Get("scenario.gas.confined.desc") ?? "Follow safe entry procedures and use gas detection & PPE.";
                 scenarioNumberBadge = "02";
-                duration            = "~ 12 mins";
-                level               = "Intermediate";
-                focusVal            = "PPE Use";
-                focusSub            = "Entry";
-                overview            = "Learn the safe entry procedure for confined spaces, use gas detection equipment, verify atmospheric conditions and follow PPE requirements.";
+                duration            = loc?.Get("chip.val.12mins") ?? "~ 12 mins";
+                level               = loc?.Get("chip.val.intermediate") ?? "Intermediate";
+                focusVal            = loc?.Get("chip.val.ppe_use") ?? "PPE Use";
+                focusSub            = loc?.Get("chip.sub.entry") ?? "Entry";
+                overview            = loc?.Get("scenario.gas.confined.overview") ?? "Learn the safe entry procedure for confined spaces, use gas detection equipment, verify atmospheric conditions and follow PPE requirements.";
                 steps = new string[]
                 {
-                    "Identify confined space hazards",
-                    "Perform atmospheric gas testing",
-                    "Check oxygen, toxic and flammable gases",
-                    "Use appropriate PPE",
-                    "Follow entry and work permit procedure",
-                    "Safe exit and emergency response"
+                    loc?.Get("gas.confined.step1") ?? "Identify confined space hazards",
+                    loc?.Get("gas.confined.step2") ?? "Perform atmospheric gas testing",
+                    loc?.Get("gas.confined.step3") ?? "Check oxygen, toxic and flammable gases",
+                    loc?.Get("gas.confined.step4") ?? "Use appropriate PPE",
+                    loc?.Get("gas.confined.step5") ?? "Follow entry and work permit procedure",
+                    loc?.Get("gas.confined.step6") ?? "Safe exit and emergency response"
                 };
             }
             else if (_gasScenarioIndex == 3)
             {
                 // Scenario 3 — Gas Cylinder Leak
-                title               = "Gas Cylinder Leak";
-                subtitle            = "Respond to a gas cylinder leak and control the hazard safely.";
+                title               = loc?.Get("scenario.gas.cylinder.title") ?? "Gas Cylinder Leak";
+                subtitle            = loc?.Get("scenario.gas.cylinder.desc") ?? "Respond to a gas cylinder leak and control the hazard safely.";
                 scenarioNumberBadge = "03";
-                duration            = "~ 10 mins";
-                level               = "Beginner";
-                focusVal            = "Isolation";
-                focusSub            = "Procedure";
-                overview            = "Learn to identify a gas cylinder leak, isolate the source, raise the alarm and follow safe handling and shut-off procedures.";
+                duration            = loc?.Get("chip.val.10mins") ?? "~ 10 mins";
+                level               = loc?.Get("chip.val.beginner") ?? "Beginner";
+                focusVal            = loc?.Get("chip.val.isolation") ?? "Isolation";
+                focusSub            = loc?.Get("chip.sub.procedure") ?? "Procedure";
+                overview            = loc?.Get("scenario.gas.cylinder.overview") ?? "Learn to identify a gas cylinder leak, isolate the source, raise the alarm and follow safe handling and shut-off procedures.";
                 steps = new string[]
                 {
-                    "Identify cylinder leak signs",
-                    "Stop and isolate the source",
-                    "Raise alarm and inform control room",
-                    "Use appropriate PPE",
-                    "Follow safe handling and shut-off procedure",
-                    "Move to safe area and report"
+                    loc?.Get("gas.cylinder.step1") ?? "Identify cylinder leak signs",
+                    loc?.Get("gas.cylinder.step2") ?? "Stop and isolate the source",
+                    loc?.Get("gas.cylinder.step3") ?? "Raise alarm and inform control room",
+                    loc?.Get("gas.cylinder.step4") ?? "Use appropriate PPE",
+                    loc?.Get("gas.cylinder.step5") ?? "Follow safe handling and shut-off procedure",
+                    loc?.Get("gas.cylinder.step6") ?? "Move to safe area and report"
                 };
             }
             else
             {
                 // Scenario 1 — Underground Gas Release (default)
-                title               = "Underground Gas Release";
-                subtitle            = "Recognize a gas release, raise the alarm and move to a safe area.";
+                title               = loc?.Get("scenario.gas.underground.title") ?? "Underground Gas Release";
+                subtitle            = loc?.Get("scenario.gas.underground.desc") ?? "Recognize a gas release, raise the alarm and move to a safe area.";
                 scenarioNumberBadge = "01";
-                duration            = "~ 10 mins";
-                level               = "Beginner";
-                focusVal            = "Gas Detector";
-                focusSub            = "Use";
-                overview            = "A gas leak has been detected in an underground mine area. Learn to identify the leak, raise the alarm, communicate the emergency and move to a safe area following proper procedures.";
+                duration            = loc?.Get("chip.val.10mins") ?? "~ 10 mins";
+                level               = loc?.Get("chip.val.beginner") ?? "Beginner";
+                focusVal            = loc?.Get("chip.val.gas_detector") ?? "Gas Detector";
+                focusSub            = loc?.Get("chip.sub.use") ?? "Use";
+                overview            = loc?.Get("scenario.gas.underground.overview") ?? "A gas leak has been detected in an underground mine area. Learn to identify the leak, raise the alarm, communicate the emergency and move to a safe area following proper procedures.";
                 steps = new string[]
                 {
-                    "Identify gas leak signs and hazard area",
-                    "Activate alarm and inform control room",
-                    "Use gas detector and interpret readings",
-                    "Follow safe withdrawal procedure",
-                    "Follow ventilation and evacuation route",
-                    "Maintain safe distance and move to safe area"
+                    loc?.Get("gas.underground.step1") ?? "Identify gas leak signs and hazard area",
+                    loc?.Get("gas.underground.step2") ?? "Activate alarm and inform control room",
+                    loc?.Get("gas.underground.step3") ?? "Use gas detector and interpret readings",
+                    loc?.Get("gas.underground.step4") ?? "Follow safe withdrawal procedure",
+                    loc?.Get("gas.underground.step5") ?? "Follow ventilation and evacuation route",
+                    loc?.Get("gas.underground.step6") ?? "Maintain safe distance and move to safe area"
                 };
             }
 
@@ -144,15 +199,36 @@ namespace SurakshaAR.Screens
             // Stat chips
             var dur = UIHelper.FindRect(root, "chip-duration")?.Find("Inner/TextCol/Value")?.GetComponent<TextMeshProUGUI>();
             if (dur != null) dur.text = duration;
+            var durSub = UIHelper.FindRect(root, "chip-duration")?.Find("Inner/TextCol/Sub")?.GetComponent<TextMeshProUGUI>();
+            if (durSub != null && loc != null) durSub.text = loc.Get("chip.label.duration");
 
             var lev = UIHelper.FindRect(root, "chip-level")?.Find("Inner/TextCol/Value")?.GetComponent<TextMeshProUGUI>();
             if (lev != null) lev.text = level;
+            var levSub = UIHelper.FindRect(root, "chip-level")?.Find("Inner/TextCol/Sub")?.GetComponent<TextMeshProUGUI>();
+            if (levSub != null && loc != null) levSub.text = loc.Get("chip.label.level");
 
             var foc = UIHelper.FindRect(root, "chip-focus")?.Find("Inner/TextCol/Value")?.GetComponent<TextMeshProUGUI>();
             if (foc != null) foc.text = focusVal;
 
             var focSub = UIHelper.FindRect(root, "chip-focus")?.Find("Inner/TextCol/Sub")?.GetComponent<TextMeshProUGUI>();
             if (focSub != null) focSub.text = focusSub;
+
+            // Section Headings
+            var overviewHead = UIHelper.FindTMP(root, "OverviewHead");
+            if (overviewHead != null && loc != null) overviewHead.text = loc.Get("ui.overview.heading");
+
+            var trainingHead = UIHelper.FindTMP(root, "TrainingHead");
+            if (trainingHead != null && loc != null) trainingHead.text = loc.Get("ui.training.include");
+
+            // Coming Soon button
+            if (_btnStart != null)
+            {
+                var btnTxt = _btnStart.GetComponentInChildren<TextMeshProUGUI>();
+                if (btnTxt != null && loc != null)
+                {
+                    btnTxt.text = loc.Get("ui.coming_soon");
+                }
+            }
 
             // Steps list — rebuild
             var stepsList = UIHelper.FindRect(root, "steps-list");
@@ -165,7 +241,9 @@ namespace SurakshaAR.Screens
                     GasModuleDetailBuilder.MakeStepItem(stepsList, i + 1, steps[i]);
             }
 
-            var currentLang = AppState.Instance?.CurrentLanguage ?? AppLanguage.English;
+            var currentLang = AppState.Instance != null
+                ? AppState.Instance.CurrentLanguage
+                : (loc != null ? loc.CurrentLanguage : AppLanguage.English);
             UIManager.Instance?.ApplyLanguageFonts(root, currentLang);
         }
 
