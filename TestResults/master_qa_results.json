@@ -1,8 +1,8 @@
 {
-    "timestamp": "2026-09-23T07:15:15.7037521Z",
+    "timestamp": "2026-09-24T21:19:25.3415414Z",
     "total": 31,
-    "passed": 21,
-    "failed": 10,
+    "passed": 20,
+    "failed": 11,
     "tests": [
         {
             "id": "TEST-00",
@@ -14,25 +14,25 @@
             "id": "TEST-01",
             "name": "English Canonical Language Coverage",
             "passed": true,
-            "details": "Total Keys: 395, Missing English: 0, Active: English"
+            "details": "Total Keys: 489, Missing English: 0, Active: English"
         },
         {
             "id": "TEST-02",
             "name": "Hindi Devanagari & Industrial Wording Audit",
-            "passed": true,
-            "details": "Total Keys: 395, Missing Hindi: 0, English Leaks: 0"
+            "passed": false,
+            "details": "Total Keys: 489, Missing Hindi: 0, English Leaks: 1"
         },
         {
             "id": "TEST-03",
             "name": "Santali Genuine Ol Chiki Audit",
             "passed": true,
-            "details": "Verified Ol Chiki: 395, Clean Empty Fallbacks: 0, Invalid/Romanized: 0"
+            "details": "Verified Ol Chiki: 489, Clean Empty Fallbacks: 0, Invalid/Romanized: 0"
         },
         {
             "id": "TEST-04",
             "name": "Live Dynamic Language Switching Without Restart",
             "passed": true,
-            "details": "EN: 'Submit' -> HI: 'जमा करें' -> SAT: 'ᱡᱚᱢᱟ ᱢᱮ' -> EN: 'Submit'"
+            "details": "EN: 'Submit' -> HI: 'जमा कर' -> SAT: 'ᱡᱚᱢᱟ ᱢᱮ' -> EN: 'Submit'"
         },
         {
             "id": "TEST-05",
@@ -188,7 +188,7 @@
             "id": "TEST-30",
             "name": "Zero Unity Engine Compilation & Runtime Errors",
             "passed": false,
-            "details": "All Preceding Tests Passed: 21/30, Regressions: 9"
+            "details": "All Preceding Tests Passed: 20/30, Regressions: 10"
         }
     ]
 }

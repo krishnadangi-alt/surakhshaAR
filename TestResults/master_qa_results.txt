@@ -1,17 +1,17 @@
 ================================================================================
 [SurakshaAR] MASTER 30-POINT QA TEST SUITE EXECUTION
-Timestamp: 2026-09-23 12:45:15
+Timestamp: 2026-09-25 02:49:25
 ================================================================================
 [PASS] TEST-00: Android Native Locale Detection & LocaleResolver Mapping
        Detail: hi-IN -> Hindi, sat-IN -> Santali, en-IN -> English, Detected: English
 [PASS] TEST-01: English Canonical Language Coverage
-       Detail: Total Keys: 395, Missing English: 0, Active: English
-[PASS] TEST-02: Hindi Devanagari & Industrial Wording Audit
-       Detail: Total Keys: 395, Missing Hindi: 0, English Leaks: 0
+       Detail: Total Keys: 489, Missing English: 0, Active: English
+[FAIL] TEST-02: Hindi Devanagari & Industrial Wording Audit
+       Detail: Total Keys: 489, Missing Hindi: 0, English Leaks: 1
 [PASS] TEST-03: Santali Genuine Ol Chiki Audit
-       Detail: Verified Ol Chiki: 395, Clean Empty Fallbacks: 0, Invalid/Romanized: 0
+       Detail: Verified Ol Chiki: 489, Clean Empty Fallbacks: 0, Invalid/Romanized: 0
 [PASS] TEST-04: Live Dynamic Language Switching Without Restart
-       Detail: EN: 'Submit' -> HI: 'जमा करें' -> SAT: 'ᱡᱚᱢᱟ ᱢᱮ' -> EN: 'Submit'
+       Detail: EN: 'Submit' -> HI: 'जमा कर' -> SAT: 'ᱡᱚᱢᱟ ᱢᱮ' -> EN: 'Submit'
 [PASS] TEST-05: Profile Back Button Navigation
        Detail: btn-back Found: True, Click Event Dispatched: True
 [PASS] TEST-06: Profile Edit Flow & Modal Invocation
@@ -63,7 +63,7 @@ Timestamp: 2026-09-23 12:45:15
 [FAIL] TEST-29: Certificate Eligibility Rule Matrix Verification
        Detail: This cannot be used during play mode, please use SceneManager.LoadScene()/SceneManager.LoadSceneAsync() instead.
 [FAIL] TEST-30: Zero Unity Engine Compilation & Runtime Errors
-       Detail: All Preceding Tests Passed: 21/30, Regressions: 9
+       Detail: All Preceding Tests Passed: 20/30, Regressions: 10
 ================================================================================
-[SurakshaAR MASTER QA SUMMARY] 21 / 31 TESTS PASSED
+[SurakshaAR MASTER QA SUMMARY] 20 / 31 TESTS PASSED
 ================================================================================

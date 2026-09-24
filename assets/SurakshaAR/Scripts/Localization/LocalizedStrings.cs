@@ -385,7 +385,7 @@ namespace SurakshaAR.Localization
             { "nav.home", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Home" },
                 { AppLanguage.Hindi,   "होम" },
-                { AppLanguage.Santali, "ᱚᱲᱟᱜ" } } },
+                { AppLanguage.Santali, "ᱢᱩᱬᱩᱛ" } } },
             { "nav.learn", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Learn" },
                 { AppLanguage.Hindi,   "सीखें" },
@@ -397,7 +397,7 @@ namespace SurakshaAR.Localization
             { "nav.certificates", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Certificates" },
                 { AppLanguage.Hindi,   "प्रमाणपत्र" },
-                { AppLanguage.Santali, "ᱥᱟᱠᱷᱤ" } } },
+                { AppLanguage.Santali, "ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ" } } },
 
             { "assessment.confirmSubmit", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Are you sure you want to submit your assessment?" },
@@ -630,7 +630,7 @@ namespace SurakshaAR.Localization
             { "certificate.latestBadge", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "LATEST ISSUED CREDENTIAL" },
                 { AppLanguage.Hindi,   "नवीनतम जारी प्रमाणपत्र" },
-                { AppLanguage.Santali, "ᱱᱟᱣᱟ ᱮᱢ ᱟᱠᱟᱱ ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ" } } },
+                { AppLanguage.Santali, "★ ᱱᱟᱣᱟ ᱮᱢ ᱟᱠᱟᱱ ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ" } } },
             { "certificate.qrSub", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Scan this QR code using Google Lens or any smartphone camera to view official compliance certificate directly." },
                 { AppLanguage.Hindi,   "आधिकारिक प्रमाणपत्र देखने के लिए Google Lens या किसी भी स्मार्टफ़ोन कैमरे से यह क्यूआर कोड स्कैन करें।" },
@@ -658,7 +658,7 @@ namespace SurakshaAR.Localization
             { "certificate.viewImage", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Open Certificate Image >" },
                 { AppLanguage.Hindi,   "प्रमाणपत्र चित्र देखें >" },
-                { AppLanguage.Santali, "ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱪᱤᱛᱟᱹᱨ ᱧᱮᱞ ᱢᱮ >" } } },
+                { AppLanguage.Santali, "ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱪᱤᱛᱟᱹᱨ ᱧᱮᱞ ᱢᱮ ↗" } } },
             { "common.back", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Back" },
                 { AppLanguage.Hindi,   "वापस" },
@@ -670,7 +670,7 @@ namespace SurakshaAR.Localization
             { "common.certificates", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Certificates" },
                 { AppLanguage.Hindi,   "प्रमाणपत्र" },
-                { AppLanguage.Santali, "ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱠᱚ" } } },
+                { AppLanguage.Santali, "ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ" } } },
             { "common.close", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Close" },
                 { AppLanguage.Hindi,   "बंद करें" },
@@ -698,7 +698,7 @@ namespace SurakshaAR.Localization
             { "common.home", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Home" },
                 { AppLanguage.Hindi,   "होम" },
-                { AppLanguage.Santali, "ᱢᱩᱞ ᱥᱟᱦᱴᱟ" } } },
+                { AppLanguage.Santali, "ᱢᱩᱬᱩᱛ" } } },
             { "common.learn", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Learn" },
                 { AppLanguage.Hindi,   "सीखें" },
@@ -706,15 +706,15 @@ namespace SurakshaAR.Localization
             { "common.loading", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Loading..." },
                 { AppLanguage.Hindi,   "लोड हो रहा है..." },
-                { AppLanguage.Santali, "ᱞᱟᱫᱮᱜ ᱠᱟᱱᱟ..." } } },
+                { AppLanguage.Santali, "ᱞᱟᱫᱮᱜ ᱠᱟᱱᱟ.. ᱾" } } },
             { "common.myProgress", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "My Progress" },
                 { AppLanguage.Hindi,   "मेरी प्रगति" },
-                { AppLanguage.Santali, "ᱤᱧᱟᱜ ᱞᱟᱦᱟᱱᱛᱤ" } } },
+                { AppLanguage.Santali, "ᱞᱟᱦᱟᱱᱛᱤ" } } },
             { "common.networkUnavailable", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Network connection unavailable." },
                 { AppLanguage.Hindi,   "नेटवर्क कनेक्शन उपलब्ध नहीं है।" },
-                { AppLanguage.Santali, "ᱱᱮᱴᱣᱚᱨᱠ ᱡᱚᱲᱟᱣ ᱵᱟᱹᱱᱩᱜᱼᱟ ᱾" } } },
+                { AppLanguage.Santali, "ᱱᱮᱴᱣᱚᱨᱠ ᱡᱚᱲᱟᱣ ᱵᱟᱹᱱᱩᱜᱼᱟ" } } },
             { "common.next", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Next" },
                 { AppLanguage.Hindi,   "आगे" },
@@ -794,15 +794,15 @@ namespace SurakshaAR.Localization
             { "fire.actionHint.step3", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Select CO₂ Extinguisher" },
                 { AppLanguage.Hindi,   "CO₂ अग्निशामक चुनें" },
-                { AppLanguage.Santali, "CO2 ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱵᱟᱪᱷᱟᱣ ᱢᱮ" } } },
+                { AppLanguage.Santali, "ᱥᱟᱹᱨᱤ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡᱤᱡ ᱵᱟᱪᱷᱟᱣ ᱢᱮ" } } },
             { "fire.actionHint.step4", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Pull Safety Pin" },
                 { AppLanguage.Hindi,   "सुरक्षा पिन निकालें" },
-                { AppLanguage.Santali, "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱯᱤᱱ ᱚᱨ ᱚᱰᱚᱠ ᱢᱮ" } } },
+                { AppLanguage.Santali, "ᱥᱮᱯᱷᱴᱤ ᱯᱤᱱ ᱚᱨ ᱚᱰᱚᱠ ᱢᱮ" } } },
             { "fire.actionHint.step5", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Aim Horn at Base" },
                 { AppLanguage.Hindi,   "आग के आधार पर निशाना लगाएँ" },
-                { AppLanguage.Santali, "ᱥᱮᱸᱜᱮᱞ ᱵᱩᱴᱟᱹ ᱥᱮᱫ ᱫᱷᱮᱭᱟᱱ ᱢᱮ" } } },
+                { AppLanguage.Santali, "ᱥᱮᱸᱜᱮᱞ ᱵᱩᱴᱟᱹ ᱥᱮᱫ ᱫᱤᱥᱟᱹ ᱢᱮ" } } },
             { "fire.actionHint.step6", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Press & Hold to Spray" },
                 { AppLanguage.Hindi,   "स्प्रे करने के लिए दबाकर रखें" },
@@ -814,11 +814,11 @@ namespace SurakshaAR.Localization
             { "fire.ar.completionTitle", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Fire Extinguished!" },
                 { AppLanguage.Hindi,   "आग बुझ गई!" },
-                { AppLanguage.Santali, "ᱥᱮᱸᱜᱮᱞ ᱤᱨᱤᱡ ᱮᱱᱟ!" } } },
+                { AppLanguage.Santali, "ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱮᱱᱟ!" } } },
             { "fire.ar.placementPrompt", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Scanning for surface..." },
                 { AppLanguage.Hindi,   "सतह खोज रहे हैं..." },
-                { AppLanguage.Santali, "ᱚᱛ ᱥᱮᱸᱫᱽᱨᱟᱜ ᱠᱟᱱᱟ..." } } },
+                { AppLanguage.Santali, "ᱚᱛ ᱥᱮᱸᱫᱽᱨᱟᱜ ᱠᱟᱱᱟ.. ᱾" } } },
             { "fire.ar.readyToSpray", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Ready to Spray" },
                 { AppLanguage.Hindi,   "स्प्रे के लिए तैयार" },
@@ -834,7 +834,7 @@ namespace SurakshaAR.Localization
             { "fire.ar.spraying", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Spraying..." },
                 { AppLanguage.Hindi,   "स्प्रे हो रहा है..." },
-                { AppLanguage.Santali, "ᱤᱨᱤᱡ ᱪᱟᱞᱟᱜ ᱠᱟᱱᱟ..." } } },
+                { AppLanguage.Santali, "ᱤᱬᱤᱡ ᱪᱟᱞᱟᱜ ᱠᱟᱱᱟ.. ᱾" } } },
             { "fire.ar.stepOf", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Step {0} of {1}" },
                 { AppLanguage.Hindi,   "चरण {0} / {1}" },
@@ -882,15 +882,15 @@ namespace SurakshaAR.Localization
             { "fire.feedback.prematureSpray", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Remove the safety pin before spraying." },
                 { AppLanguage.Hindi,   "स्प्रे करने से पहले सुरक्षा पिन निकालें।" },
-                { AppLanguage.Santali, "ᱪᱷᱤᱴᱠᱟᱹᱣ ᱢᱟᱲᱟᱝ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱯᱤᱱ ᱚᱰᱚᱠ ᱢᱮ ᱾" } } },
+                { AppLanguage.Santali, "ᱪᱷᱤᱴᱠᱟᱹᱣ ᱢᱟᱲᱟᱝ ᱥᱮᱯᱷᱴᱤ ᱯᱤᱱ ᱚᱰᱚᱠ ᱢᱮ ᱾" } } },
             { "fire.feedback.removePinBeforeHandle", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Remove the safety pin before using the handle." },
                 { AppLanguage.Hindi,   "लीवर दबाने से पहले सुरक्षा पिन निकालें।" },
-                { AppLanguage.Santali, "ᱦᱮᱱᱰᱮᱞ ᱵᱮᱵᱷᱟᱨ ᱢᱟᱲᱟᱝ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱯᱤᱱ ᱚᱰᱚᱠ ᱢᱮ ᱾" } } },
+                { AppLanguage.Santali, "ᱦᱮᱱᱰᱮᱞ ᱵᱮᱵᱷᱟᱨ ᱢᱟᱲᱟᱝ ᱥᱮᱯᱷᱴᱤ ᱯᱤᱱ ᱚᱰᱚᱠ ᱢᱮ ᱾" } } },
             { "fire.feedback.removePinFirst", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Remove the safety pin first." },
                 { AppLanguage.Hindi,   "पहले सुरक्षा पिन निकालें।" },
-                { AppLanguage.Santali, "ᱢᱟᱲᱟᱝ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱯᱤᱱ ᱚᱰᱚᱠ ᱢᱮ ᱾" } } },
+                { AppLanguage.Santali, "ᱢᱟᱲᱟᱝ ᱥᱮᱯᱷᱴᱤ ᱯᱤᱱ ᱚᱰᱚᱠ ᱢᱮ ᱾" } } },
             { "fire.feedback.selectExtinguisherFirst", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Select the CO₂ extinguisher first." },
                 { AppLanguage.Hindi,   "पहले CO₂ अग्निशामक का चयन करें।" },
@@ -926,7 +926,7 @@ namespace SurakshaAR.Localization
             { "fire.guidance.step4.body", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Tap and pull the safety pin out before using the handle." },
                 { AppLanguage.Hindi,   "हैंडल अनलॉक करने के लिए सुरक्षा पिन निकालें।" },
-                { AppLanguage.Santali, "ᱦᱮᱱᱰᱮᱞ ᱵᱮᱵᱷᱟᱨ ᱢᱟᱲᱟᱝ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱯᱤᱱ ᱚᱨ ᱚᱰᱚᱠ ᱢᱮ ᱾" } } },
+                { AppLanguage.Santali, "ᱦᱮᱱᱰᱮᱞ ᱵᱮᱵᱷᱟᱨ ᱢᱟᱲᱟᱝ ᱥᱮᱯᱷᱴᱤ ᱯᱤᱱ ᱚᱨ ᱚᱰᱚᱠ ᱢᱮ ᱾" } } },
             { "fire.guidance.step5.body", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Aim the nozzle at the base of the fire, not the flames." },
                 { AppLanguage.Hindi,   "इंसुलेटेड हॉर्न को पकड़ें। लपटों पर नहीं, सीधे आग के आधार पर निशाना लगाएँ।" },
@@ -942,7 +942,7 @@ namespace SurakshaAR.Localization
             { "fire.intro.desc", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "In this scenario, an electrical equipment fire breaks out in a mining facility.\nFollow standard operating procedures (SOP) to safely respond and evacuate." },
                 { AppLanguage.Hindi,   "इस परिदृश्य में, खनन परिसर के विद्युत उपकरण में आग लग जाती है।\nसुरक्षित बचाव और निकासी के लिए मानक संचालन प्रक्रिया (SOP) का पालन करें।" },
-                { AppLanguage.Santali, "ᱥᱮᱸᱜᱮᱞ ᱤᱨᱤᱡ ᱨᱮᱱᱟᱜ PASS ᱱᱤᱭᱟᱹᱢ ᱥᱮᱪᱮᱫ ᱢᱮ: ᱚᱨ, ᱫᱷᱮᱭᱟᱱ, ᱞᱤᱢᱵᱩᱫ, ᱟᱨ ᱟᱹᱪᱩᱨ ᱾" } } },
+                { AppLanguage.Santali, "ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱨᱮᱱᱟᱜ PASS ᱱᱤᱭᱟᱹᱢ ᱥᱮᱪᱮᱫ ᱢᱮ: ᱚᱨ, ᱫᱷᱮᱭᱟᱱ, ᱞᱤᱢᱵᱩᱫ, ᱟᱨ ᱟᱹᱪᱩᱨ ᱾" } } },
             { "fire.intro.hint", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Scan the floor and tap the reticle to anchor the 3D training scenario." },
                 { AppLanguage.Hindi,   "फर्श को स्कैन करें और 3D प्रशिक्षण परिदृश्य स्थापित करने के लिए रेटिकल पर टैप करें।" },
@@ -994,7 +994,7 @@ namespace SurakshaAR.Localization
             { "fire.sop.step2.hint", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Always alert others before attempting to fight a fire alone. Never skip the alarm." },
                 { AppLanguage.Hindi,   "अकेले आग बुझाने का प्रयास करने से पहले हमेशा दूसरों को सतर्क करें। अलार्म को कभी न छोड़ें।" },
-                { AppLanguage.Santali, "ᱮᱠᱞᱟ ᱥᱮᱸᱜᱮᱞ ᱤᱨᱤᱡ ᱞᱟᱦᱟᱨᱮ ᱮᱴᱟᱜ ᱦᱚᱲ ᱦᱩᱥᱤᱭᱟᱹᱨ ᱠᱚ ᱢᱮ ᱾ ᱮᱞᱟᱨᱢ ᱚᱛᱟ ᱟᱞᱚᱢ ᱵᱟᱹᱜᱤᱭᱟ ᱾" } } },
+                { AppLanguage.Santali, "ᱮᱠᱞᱟ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱞᱟᱦᱟᱨᱮ ᱮᱴᱟᱜ ᱦᱚᱲ ᱦᱩᱥᱤᱭᱟᱹᱨ ᱠᱚ ᱢᱮ ᱾ ᱮᱞᱟᱨᱢ ᱚᱛᱟ ᱟᱞᱚᱢ ᱵᱟᱹᱜᱤᱭᱟ ᱾" } } },
             { "fire.sop.step2.title", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Activate Fire Alarm" },
                 { AppLanguage.Hindi,   "फायर अलार्म सक्रिय करें" },
@@ -1002,11 +1002,11 @@ namespace SurakshaAR.Localization
             { "fire.sop.step3.action", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Equip CO₂ Extinguisher" },
                 { AppLanguage.Hindi,   "CO₂ अग्निशामक चुनें" },
-                { AppLanguage.Santali, "ᱴᱷᱤᱠ ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱵᱟᱪᱷᱟᱣ ᱢᱮ" } } },
+                { AppLanguage.Santali, "ᱴᱷᱤᱠ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡᱤᱡ ᱵᱟᱪᱷᱟᱣ ᱢᱮ" } } },
             { "fire.sop.step3.desc", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Examine the burning equipment. Tap on the CO2 Extinguisher (Black band) in your surroundings to equip it." },
                 { AppLanguage.Hindi,   "जलते हुए उपकरण की जाँच करें और विद्युत आग के लिए सही CO₂ अग्निशामक चुनें।" },
-                { AppLanguage.Santali, "ᱡᱩᱞᱩᱜ ᱠᱟᱱ ᱥᱟᱢᱟᱱ ᱧᱮᱞ ᱢᱮ ᱾ ᱵᱤᱡᱽᱞᱤ ᱥᱮᱸᱜᱮᱞ ᱞᱟᱹᱜᱤᱫ CO2 ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ (ᱦᱮᱸᱫᱮ ᱯᱟᱹᱴᱤ) ᱵᱟᱪᱷᱟᱣ ᱢᱮ ᱾" } } },
+                { AppLanguage.Santali, "ᱡᱩᱞᱩᱜ ᱠᱟᱱ ᱥᱟᱢᱟᱱ ᱧᱮᱞ ᱢᱮ ᱾ ᱵᱤᱡᱽᱞᱤ ᱥᱮᱸᱜᱮᱞ ᱞᱟᱹᱜᱤᱫ CO2 ᱤᱬᱤᱡ ᱥᱟᱢᱟᱱ (ᱦᱮᱸᱫᱮ ᱯᱟᱹᱴᱤ) ᱵᱟᱪᱷᱟᱣ ᱢᱮ ᱾" } } },
             { "fire.sop.step3.hint", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "DANGER: Never use Water or Foam on live electrical panels! Electrocution hazard." },
                 { AppLanguage.Hindi,   "खतरा: चालू विद्युत पैनलों पर कभी भी पानी या फोम का उपयोग न करें! करंट लगने का गंभीर जोखिम है।" },
@@ -1014,15 +1014,15 @@ namespace SurakshaAR.Localization
             { "fire.sop.step3.title", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Select CO₂ Extinguisher" },
                 { AppLanguage.Hindi,   "सही अग्निशामक यंत्र चुनें" },
-                { AppLanguage.Santali, "ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱵᱟᱪᱷᱟᱣ ᱢᱮ" } } },
+                { AppLanguage.Santali, "ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡᱤᱡ ᱵᱟᱪᱷᱟᱣ ᱢᱮ" } } },
             { "fire.sop.step4.action", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Pull Safety Pin" },
                 { AppLanguage.Hindi,   "सुरक्षा पिन निकालें" },
-                { AppLanguage.Santali, "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱯᱤᱱ ᱚᱨ ᱚᱰᱚᱠ ᱢᱮ" } } },
+                { AppLanguage.Santali, "ᱥᱮᱯᱷᱴᱤ ᱯᱤᱱ ᱚᱨ ᱚᱰᱚᱠ ᱢᱮ" } } },
             { "fire.sop.step4.desc", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Tap the safety pin on the extinguisher handle to break the tamper seal and unlock the lever." },
                 { AppLanguage.Hindi,   "हैंडल अनलॉक करने के लिए सुरक्षा पिन निकालें।" },
-                { AppLanguage.Santali, "ᱥᱤᱞ ᱨᱟᱹᱯᱩᱫ ᱞᱟᱹᱜᱤᱫ ᱟᱨ ᱞᱤᱵᱷᱟᱨ ᱠᱷᱩᱞᱟᱹ ᱞᱟᱹᱜᱤᱫ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱯᱤᱱ ᱚᱨ ᱚᱰᱚᱠ ᱢᱮ ᱾" } } },
+                { AppLanguage.Santali, "ᱥᱤᱞ ᱨᱟᱹᱯᱩᱫ ᱞᱟᱹᱜᱤᱫ ᱟᱨ ᱞᱤᱵᱷᱟᱨ ᱠᱷᱩᱞᱟᱹ ᱞᱟᱹᱜᱤᱫ ᱥᱮᱯᱷᱴᱤ ᱯᱤᱱ ᱚᱨ ᱚᱰᱚᱠ ᱢᱮ ᱾" } } },
             { "fire.sop.step4.hint", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Twist slightly and pull firmly. Do not squeeze the lever while pulling." },
                 { AppLanguage.Hindi,   "पिन को थोड़ा घुमाएँ और मजबूती से बाहर खींचें। खींचते समय लीवर को न दबाएँ।" },
@@ -1034,11 +1034,11 @@ namespace SurakshaAR.Localization
             { "fire.sop.step5.action", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Aim Horn at Base" },
                 { AppLanguage.Hindi,   "आग के आधार पर निशाना लगाएँ" },
-                { AppLanguage.Santali, "ᱥᱮᱸᱜᱮᱞ ᱵᱩᱴᱟᱹ ᱥᱮᱫ ᱫᱷᱮᱭᱟᱱ ᱢᱮ" } } },
+                { AppLanguage.Santali, "ᱥᱮᱸᱜᱮᱞ ᱵᱩᱴᱟᱹ ᱥᱮᱫ ᱫᱤᱥᱟᱹ ᱢᱮ" } } },
             { "fire.sop.step5.desc", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Hold the insulated discharge horn. Aim directly at the fuel base of the fire, not at the high flames." },
                 { AppLanguage.Hindi,   "इंसुलेटेड हॉर्न को पकड़ें। लपटों पर नहीं, सीधे आग के आधार पर निशाना लगाएँ।" },
-                { AppLanguage.Santali, "ᱦᱚᱨᱱ ᱥᱟᱵ ᱢᱮ ᱾ ᱪᱮᱛᱟᱱ ᱞᱟᱯᱟᱴ ᱵᱟᱝ ᱠᱟᱛᱮ ᱥᱮᱸᱜᱮᱞ ᱨᱮᱱᱟᱜ ᱵᱩᱴᱟᱹ (ᱤᱸᱫᱷᱚᱱ) ᱥᱮᱫ ᱫᱷᱮᱭᱟᱱ ᱢᱮ ᱾" } } },
+                { AppLanguage.Santali, "ᱦᱚᱨᱱ ᱥᱟᱵ ᱢᱮ ᱾ ᱪᱮᱛᱟᱱ ᱞᱟᱯᱟᱴ ᱵᱟᱝ ᱠᱟᱛᱮ ᱥᱮᱸᱜᱮᱞ ᱨᱮᱱᱟᱜ ᱵᱩᱴᱟᱹ (ᱤᱸᱫᱷᱚᱱ) ᱥᱮᱫ ᱫᱤᱥᱟᱹ ᱢᱮ ᱾" } } },
             { "fire.sop.step5.hint", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Aiming at the flames allows the fire to continue feeding from the combustible base." },
                 { AppLanguage.Hindi,   "लपटों पर निशाना साधने से आग आधार से सुलगती रहती है।" },
@@ -1046,7 +1046,7 @@ namespace SurakshaAR.Localization
             { "fire.sop.step5.title", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Aim at Base of Fire" },
                 { AppLanguage.Hindi,   "आग के आधार पर निशाना लगाएँ" },
-                { AppLanguage.Santali, "ᱫᱷᱮᱭᱟᱱ ᱢᱮ (A)" } } },
+                { AppLanguage.Santali, "ᱫᱤᱥᱟᱹ ᱢᱮ (A)" } } },
             { "fire.sop.step6.action", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Press Handle & Spray" },
                 { AppLanguage.Hindi,   "हैंडल दबाकर स्प्रे करें" },
@@ -1054,23 +1054,23 @@ namespace SurakshaAR.Localization
             { "fire.sop.step6.actionStop", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Release Handle (Stop Spray)" },
                 { AppLanguage.Hindi,   "हैंडल छोड़ें (स्प्रे रोकें)" },
-                { AppLanguage.Santali, "ᱤᱨᱤᱡ ᱦᱩᱭᱮᱱᱟ" } } },
+                { AppLanguage.Santali, "ᱤᱬᱤᱡ ᱦᱩᱭᱮᱱᱟ" } } },
             { "fire.sop.step6.desc", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Squeeze the operating lever or tap the button below to discharge spray. Sweep side-to-side across the fuel base until the fire is completely out." },
                 { AppLanguage.Hindi,   "हैंडल दबाकर रखें और आग बुझने तक उसके आधार पर दायें-बायें स्प्रे करें।" },
-                { AppLanguage.Santali, "ᱞᱤᱵᱷᱟᱨ ᱞᱤᱢᱵᱩᱫ ᱢᱮ ᱟᱨ ᱞᱟᱛᱟᱨ ᱵᱟᱴᱚᱱ ᱚᱛᱟᱭ ᱢᱮ ᱾ ᱥᱮᱸᱜᱮᱞ ᱵᱟᱝ ᱤᱨᱤᱡᱚᱜ ᱫᱷᱟᱹᱵᱤᱡ ᱵᱩᱴᱟᱹ ᱨᱮ ᱱᱚᱣᱟ ᱠᱷᱚᱱ ᱦᱟᱱᱛᱮ ᱟᱹᱪᱩᱨ ᱠᱟᱛᱮ ᱤᱨᱤᱡ ᱢᱮ ᱾" } } },
+                { AppLanguage.Santali, "ᱞᱤᱵᱷᱟᱨ ᱞᱤᱢᱵᱩᱫ ᱢᱮ ᱟᱨ ᱞᱟᱛᱟᱨ ᱵᱟᱴᱚᱱ ᱚᱛᱟᱭ ᱢᱮ ᱾ ᱥᱮᱸᱜᱮᱞ ᱵᱟᱝ ᱤᱬᱤᱡᱚᱜ ᱫᱷᱟᱹᱵᱤᱡ ᱵᱩᱴᱟᱹ ᱨᱮ ᱱᱚᱣᱟ ᱠᱷᱚᱱ ᱦᱟᱱᱛᱮ ᱟᱹᱪᱩᱨ ᱠᱟᱛᱮ ᱤᱬᱤᱡ ᱢᱮ ᱾" } } },
             { "fire.sop.step6.hint", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Maintain continuous discharge for 10 seconds until all flames and smoke cease." },
                 { AppLanguage.Hindi,   "आग और धुआँ पूरी तरह समाप्त होने तक लगातार 10 सेकंड स्प्रे करते रहें।" },
-                { AppLanguage.Santali, "ᱞᱟᱯᱟᱴ ᱟᱨ ᱫᱷᱩᱶᱟᱹ ᱵᱟᱝ ᱪᱟᱵᱟᱜ ᱫᱷᱟᱹᱵᱤᱡ ᱑᱐ ᱥᱮᱠᱮᱱᱰ ᱞᱮᱛᱟᱲ ᱤᱨᱤᱡ ᱪᱟᱞᱟᱣ ᱢᱮ ᱾" } } },
+                { AppLanguage.Santali, "ᱞᱟᱯᱟᱴ ᱟᱨ ᱫᱷᱩᱶᱟᱹ ᱵᱟᱝ ᱪᱟᱵᱟᱜ ᱫᱷᱟᱹᱵᱤᱡ ᱑᱐ ᱥᱮᱠᱮᱱᱰ ᱞᱮᱛᱟᱲ ᱤᱬᱤᱡ ᱪᱟᱞᱟᱣ ᱢᱮ ᱾" } } },
             { "fire.sop.step6.sprayingDesc", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Spraying active! Sweep side-to-side across the fuel base. Keep particles directly on the fire." },
                 { AppLanguage.Hindi,   "स्प्रे जारी है! आग के आधार पर दायें-बायें स्वीप करें। स्प्रे को सीधे आग पर रखें।" },
-                { AppLanguage.Santali, "ᱤᱨᱤᱡ ᱪᱟᱞᱟᱜ ᱠᱟᱱᱟ! ᱥᱮᱸᱜᱮᱞ ᱵᱩᱴᱟᱹ ᱨᱮ ᱱᱚᱣᱟ ᱠᱷᱚᱱ ᱦᱟᱱᱛᱮ ᱟᱹᱪᱩᱨ ᱢᱮ ᱾ ᱤᱨᱤᱡ ᱫᱟᱜ ᱥᱮᱸᱜᱮᱞ ᱨᱮ ᱫᱚᱦᱚᱭ ᱢᱮ ᱾" } } },
+                { AppLanguage.Santali, "ᱤᱬᱤᱡ ᱪᱟᱞᱟᱜ ᱠᱟᱱᱟ! ᱥᱮᱸᱜᱮᱞ ᱵᱩᱴᱟᱹ ᱨᱮ ᱱᱚᱣᱟ ᱠᱷᱚᱱ ᱦᱟᱱᱛᱮ ᱟᱹᱪᱩᱨ ᱢᱮ ᱾ ᱤᱬᱤᱡ ᱫᱟᱜ ᱥᱮᱸᱜᱮᱞ ᱨᱮ ᱫᱚᱦᱚᱭ ᱢᱮ ᱾" } } },
             { "fire.sop.step6.title", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Extinguish the Fire (PASS)" },
                 { AppLanguage.Hindi,   "हैंडल दबाकर स्प्रे करें" },
-                { AppLanguage.Santali, "ᱞᱤᱢᱵᱩᱫ ᱟᱨ ᱟᱹᱪᱩᱨ (S-S)" } } },
+                { AppLanguage.Santali, "ᱞᱤᱵᱷᱟᱨ ᱞᱤᱱ ᱠᱟᱛᱮ ᱥᱯᱨᱮ ᱢᱮ (PASS)" } } },
             { "fire.sop.step7.action", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Proceed to Emergency Exit" },
                 { AppLanguage.Hindi,   "आपातकालीन निकास की ओर बढ़ें" },
@@ -1078,11 +1078,11 @@ namespace SurakshaAR.Localization
             { "fire.sop.step7.desc", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "The fire is suppressed. Back away slowly while keeping visual contact. Follow the emergency EXIT signs to the assembly point." },
                 { AppLanguage.Hindi,   "आग बुझा दी गई है। निरंतर नजर रखते हुए धीरे-धीरे पीछे हटें और आपातकालीन निकास संकेतों का पालन करते हुए सुरक्षित स्थान पर जाएँ।" },
-                { AppLanguage.Santali, "ᱥᱮᱸᱜᱮᱞ ᱤᱨᱤᱡ ᱮᱱᱟ ᱾ ᱥᱮᱸᱜᱮᱞ ᱧᱮᱞ ᱛᱩᱞᱩᱡ ᱵᱟᱹᱭ-ᱵᱟᱹᱭ ᱛᱮ ᱛᱟᱭᱚᱢᱚᱜ ᱢᱮ ᱟᱨ ᱟᱯᱚᱛᱠᱟᱲᱤᱱ ᱚᱰᱚᱠ ᱰᱟᱦᱟᱨ ᱛᱮ ᱥᱟᱺᱜᱤᱧ ᱡᱟᱭᱜᱟ ᱛᱮ ᱪᱟᱞᱟᱜ ᱢᱮ ᱾" } } },
+                { AppLanguage.Santali, "ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱮᱱᱟ ᱾ ᱥᱮᱸᱜᱮᱞ ᱧᱮᱞ ᱛᱩᱞᱩᱡ ᱵᱟᱹᱭ-ᱵᱟᱹᱭ ᱛᱮ ᱛᱟᱭᱚᱢᱚᱜ ᱢᱮ ᱟᱨ ᱟᱯᱚᱛᱠᱟᱲᱤᱱ ᱚᱰᱚᱠ ᱰᱟᱦᱟᱨ ᱛᱮ ᱥᱟᱺᱜᱤᱧ ᱡᱟᱭᱜᱟ ᱛᱮ ᱪᱟᱞᱟᱜ ᱢᱮ ᱾" } } },
             { "fire.sop.step7.hint", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Never turn your back on a suppressed fire due to re-ignition risk." },
                 { AppLanguage.Hindi,   "पुनः आग भड़कने के जोखिम के कारण कभी भी बुझी हुई आग की ओर पीठ न करें।" },
-                { AppLanguage.Santali, "ᱫᱚᱦᱲᱟ ᱡᱩᱞᱩᱜ ᱵᱚᱛᱚᱨ ᱠᱷᱟᱹᱛᱤᱨ ᱤᱨᱤᱡ ᱟᱠᱟᱱ ᱥᱮᱸᱜᱮᱞ ᱥᱮᱫ ᱛᱟᱭᱚᱢ ᱟᱞᱚᱢ ᱠᱚᱭᱚᱜᱼᱟ ᱾" } } },
+                { AppLanguage.Santali, "ᱫᱚᱦᱲᱟ ᱡᱩᱞᱩᱜ ᱵᱚᱛᱚᱨ ᱠᱷᱟᱹᱛᱤᱨ ᱤᱬᱤᱡ ᱟᱠᱟᱱ ᱥᱮᱸᱜᱮᱞ ᱥᱮᱫ ᱛᱟᱭᱚᱢ ᱟᱞᱚᱢ ᱠᱚᱭᱚᱜᱼᱟ ᱾" } } },
             { "fire.sop.step7.title", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Safe Evacuation" },
                 { AppLanguage.Hindi,   "सुरक्षित निकासी" },
@@ -1094,7 +1094,7 @@ namespace SurakshaAR.Localization
             { "fire.timeout.desc", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "The 7-minute time limit has been reached. The fire was not suppressed in time. You must now evacuate via the emergency exit." },
                 { AppLanguage.Hindi,   "निर्धारित समय सीमा समाप्त हो गई है। आग समय पर नहीं बुझाई जा सकी। अब आपको आपातकालीन निकास से सुरक्षित बाहर निकलना होगा।" },
-                { AppLanguage.Santali, "᱗ ᱢᱤᱱᱤᱴ ᱚᱠᱛᱚ ᱪᱟᱵᱟ ᱮᱱᱟ ᱾ ᱥᱮᱸᱜᱮᱞ ᱚᱠᱛᱚ ᱨᱮ ᱵᱟᱝ ᱤᱨᱤᱡ ᱞᱮᱱᱟ ᱾ ᱱᱤᱛ ᱟᱯᱚᱛᱠᱟᱲᱤᱱ ᱰᱟᱦᱟᱨ ᱛᱮ ᱚᱰᱚᱠᱚᱜ ᱢᱮ ᱾" } } },
+                { AppLanguage.Santali, "᱗ ᱢᱤᱱᱤᱴ ᱚᱠᱛᱚ ᱪᱟᱵᱟ ᱮᱱᱟ ᱾ ᱥᱮᱸᱜᱮᱞ ᱚᱠᱛᱚ ᱨᱮ ᱵᱟᱝ ᱤᱬᱤᱡ ᱞᱮᱱᱟ ᱾ ᱱᱤᱛ ᱟᱯᱚᱛᱠᱟᱲᱤᱱ ᱰᱟᱦᱟᱨ ᱛᱮ ᱚᱰᱚᱠᱚᱜ ᱢᱮ ᱾" } } },
             { "fire.timeout.hint", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Safety first: Never remain in a hazard zone once the emergency timeout is reached." },
                 { AppLanguage.Hindi,   "सुरक्षा सर्वोपरि: आपातकालीन समय समाप्त होने पर खतरे के क्षेत्र में कभी न रहें।" },
@@ -1106,7 +1106,7 @@ namespace SurakshaAR.Localization
             { "fire.toast.aim.sub", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Ready for sweep discharge." },
                 { AppLanguage.Hindi,   "स्प्रे और स्वीप के लिए तैयार।" },
-                { AppLanguage.Santali, "ᱤᱨᱤᱡ ᱞᱟᱹᱜᱤᱫ ᱥᱟᱯᱲᱟᱣ ᱮᱱᱟ ᱾" } } },
+                { AppLanguage.Santali, "ᱤᱬᱤᱡ ᱞᱟᱹᱜᱤᱫ ᱥᱟᱯᱲᱟᱣ ᱮᱱᱟ ᱾" } } },
             { "fire.toast.aim.title", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Nozzle Aimed at Base!" },
                 { AppLanguage.Hindi,   "आधार पर निशाना लगाया गया!" },
@@ -1122,11 +1122,11 @@ namespace SurakshaAR.Localization
             { "fire.toast.ext.sub", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Prepare extinguisher for operation." },
                 { AppLanguage.Hindi,   "अग्निशामक को संचालन के लिए तैयार करें।" },
-                { AppLanguage.Santali, "ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱪᱟᱞᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱥᱟᱯᱲᱟᱣ ᱢᱮ ᱾" } } },
+                { AppLanguage.Santali, "ᱤᱬᱤᱡ ᱥᱟᱢᱟᱱ ᱪᱟᱞᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱥᱟᱯᱲᱟᱣ ᱢᱮ ᱾" } } },
             { "fire.toast.ext.title", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "CO₂ Extinguisher Equipped!" },
                 { AppLanguage.Hindi,   "CO₂ अग्निशामक चयनित!" },
-                { AppLanguage.Santali, "CO2 ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱵᱟᱪᱷᱟᱣ ᱮᱱᱟ!" } } },
+                { AppLanguage.Santali, "CO2 ᱤᱬᱤᱡ ᱥᱟᱢᱟᱱ ᱵᱟᱪᱷᱟᱣ ᱮᱱᱟ!" } } },
             { "fire.toast.extinguished.sub", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Proceed to emergency exit safely." },
                 { AppLanguage.Hindi,   "अब आपातकालीन निकास की ओर सुरक्षित बढ़ें।" },
@@ -1134,7 +1134,7 @@ namespace SurakshaAR.Localization
             { "fire.toast.extinguished.title", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Fire Extinguished!" },
                 { AppLanguage.Hindi,   "आग पूरी तरह बुझ गई!" },
-                { AppLanguage.Santali, "ᱥᱮᱸᱜᱮᱞ ᱤᱨᱤᱡ ᱮᱱᱟ!" } } },
+                { AppLanguage.Santali, "ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱮᱱᱟ!" } } },
             { "fire.toast.hazard.sub", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Activate the fire alarm immediately!" },
                 { AppLanguage.Hindi,   "तुरंत फायर अलार्म सक्रिय करें!" },
@@ -1146,11 +1146,11 @@ namespace SurakshaAR.Localization
             { "fire.toast.pin.sub", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Handle unlocked. Extinguisher is armed and ready." },
                 { AppLanguage.Hindi,   "लीवर अनलॉक हुआ। अग्निशामक उपयोग के लिए तैयार है।" },
-                { AppLanguage.Santali, "ᱞᱤᱵᱷᱟᱨ ᱠᱷᱩᱞᱟᱹ ᱮᱱᱟ ᱾ ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱥᱟᱯᱲᱟᱣ ᱢᱮᱱᱟᱜᱼᱟ ᱾" } } },
+                { AppLanguage.Santali, "ᱞᱤᱵᱷᱟᱨ ᱠᱷᱩᱞᱟᱹ ᱮᱱᱟ ᱾ ᱤᱬᱤᱡ ᱥᱟᱢᱟᱱ ᱥᱟᱯᱲᱟᱣ ᱢᱮᱱᱟᱜᱼᱟ ᱾" } } },
             { "fire.toast.pin.title", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Safety Pin Removed!" },
                 { AppLanguage.Hindi,   "सुरक्षा पिन निकाली गई!" },
-                { AppLanguage.Santali, "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱯᱤᱱ ᱚᱰᱚᱠ ᱮᱱᱟ!" } } },
+                { AppLanguage.Santali, "ᱥᱮᱯᱷᱴᱤ ᱯᱤᱱ ᱚᱰᱚᱠ ᱮᱱᱟ!" } } },
             { "fire.voice.comingSoon", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Voice guidance coming soon" },
                 { AppLanguage.Hindi,   "वॉयस गाइडेंस जल्द आएगी" },
@@ -1166,7 +1166,7 @@ namespace SurakshaAR.Localization
             { "fire.voice.speaking", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Speaking..." },
                 { AppLanguage.Hindi,   "बोल रहे हैं..." },
-                { AppLanguage.Santali, "ᱨᱚᱲ ᱠᱟᱱᱟᱭ..." } } },
+                { AppLanguage.Santali, "ᱨᱚᱲ ᱠᱟᱱᱟᱭ.. ᱾" } } },
             { "fire.voice.stopBtn", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Stop" },
                 { AppLanguage.Hindi,   "रोकें" },
@@ -1182,7 +1182,7 @@ namespace SurakshaAR.Localization
             { "home.fire.subtitle", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Electrical Fire, Extinguisher & Evacuation SOP" },
                 { AppLanguage.Hindi,   "खतरों की पहचान, अग्निशामक यंत्र का उपयोग और सुरक्षित निकासी" },
-                { AppLanguage.Santali, "ᱵᱤᱡᱽᱞᱤ ᱥᱮᱸᱜᱮᱞ, ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱟᱨ ᱚᱰᱚᱠ SOP" } } },
+                { AppLanguage.Santali, "ᱵᱤᱡᱽᱞᱤ ᱥᱮᱸᱜᱮᱞ, ᱤᱬᱤᱡ ᱥᱟᱢᱟᱱ ᱟᱨ ᱚᱰᱚᱠ SOP" } } },
             { "home.fire.title", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Fire & Explosion Response" },
                 { AppLanguage.Hindi,   "आग एवं विस्फोट से निपटने की प्रक्रिया" },
@@ -1230,11 +1230,11 @@ namespace SurakshaAR.Localization
             { "home.navCertificates", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Certificates" },
                 { AppLanguage.Hindi,   "प्रमाणपत्र" },
-                { AppLanguage.Santali, "ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱠᱚ" } } },
+                { AppLanguage.Santali, "ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ" } } },
             { "home.navHome", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Home" },
                 { AppLanguage.Hindi,   "होम" },
-                { AppLanguage.Santali, "ᱢᱩᱞ ᱥᱟᱦᱴᱟ" } } },
+                { AppLanguage.Santali, "ᱢᱩᱬᱩᱛ" } } },
             { "home.navLearn", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Learn" },
                 { AppLanguage.Hindi,   "सीखें" },
@@ -1242,7 +1242,7 @@ namespace SurakshaAR.Localization
             { "home.navProgress", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "My Progress" },
                 { AppLanguage.Hindi,   "मेरी प्रगति" },
-                { AppLanguage.Santali, "ᱤᱧᱟᱜ ᱞᱟᱦᱟᱱᱛᱤ" } } },
+                { AppLanguage.Santali, "ᱞᱟᱦᱟᱱᱛᱤ" } } },
             { "home.overallProgress", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Overall Progress" },
                 { AppLanguage.Hindi,   "कुल प्रगति" },
@@ -1406,7 +1406,7 @@ namespace SurakshaAR.Localization
             { "module.fire.description", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Learn to identify fire hazards, use extinguishers, activate alarms and evacuate safely in industrial environments." },
                 { AppLanguage.Hindi,   "आग के खतरों की पहचान करना, अग्निशामक यंत्र का उपयोग करना, फायर अलार्म सक्रिय करना और आपात स्थिति में सुरक्षित तरीके से निकासी करना।" },
-                { AppLanguage.Santali, "ᱥᱮᱸᱜᱮᱞ ᱵᱚᱛᱚᱨ ᱪᱤᱱᱦᱟᱹᱣ, ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱵᱮᱵᱷᱟᱨ, ᱮᱞᱟᱨᱢ ᱪᱟᱞᱟᱣ ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱛᱮ ᱚᱰᱚᱠᱚᱜ ᱥᱮᱪᱮᱫ ᱢᱮ ᱾" } } },
+                { AppLanguage.Santali, "ᱥᱮᱸᱜᱮᱞ ᱵᱚᱛᱚᱨ ᱪᱤᱱᱦᱟᱹᱣ, ᱤᱬᱤᱡ ᱥᱟᱢᱟᱱ ᱵᱮᱵᱷᱟᱨ, ᱮᱞᱟᱨᱢ ᱪᱟᱞᱟᱣ ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱛᱮ ᱚᱰᱚᱠᱚᱜ ᱥᱮᱪᱮᱫ ᱢᱮ ᱾" } } },
             { "module.fire.learn.1", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Identify various classes of fire hazards" },
                 { AppLanguage.Hindi,   "विभिन्न श्रेणियों के अग्नि खतरों की पहचान करें" },
@@ -1414,7 +1414,7 @@ namespace SurakshaAR.Localization
             { "module.fire.learn.2", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Locate and operate appropriate safety equipment" },
                 { AppLanguage.Hindi,   "उपयुक्त अग्निशामक का चयन एवं संचालन करें" },
-                { AppLanguage.Santali, "ᱴᱷᱤᱠ ᱥᱮᱸᱜᱮᱞ ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱵᱟᱪᱷᱟᱣ ᱟᱨ ᱪᱟᱞᱟᱣ ᱢᱮ" } } },
+                { AppLanguage.Santali, "ᱴᱷᱤᱠ ᱥᱮᱸᱜᱮᱞ ᱤᱬᱤᱡ ᱥᱟᱢᱟᱱ ᱵᱟᱪᱷᱟᱣ ᱟᱨ ᱪᱟᱞᱟᱣ ᱢᱮ" } } },
             { "module.fire.learn.3", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Follow the PASS technique and safety procedures" },
                 { AppLanguage.Hindi,   "PASS तकनीक और सुरक्षा प्रक्रियाओं का पालन करें" },
@@ -1430,7 +1430,7 @@ namespace SurakshaAR.Localization
             { "module.fire.subtitle", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Electrical Fire, Extinguisher & Evacuation SOP" },
                 { AppLanguage.Hindi,   "खतरों की पहचान, अग्निशामक यंत्र का उपयोग और सुरक्षित निकासी" },
-                { AppLanguage.Santali, "ᱵᱤᱡᱽᱞᱤ ᱥᱮᱸᱜᱮᱞ, ᱤᱨᱤᱡ ᱥᱟᱢᱟᱱ ᱟᱨ ᱚᱰᱚᱠ SOP" } } },
+                { AppLanguage.Santali, "ᱵᱤᱡᱽᱞᱤ ᱥᱮᱸᱜᱮᱞ, ᱤᱬᱤᱡ ᱥᱟᱢᱟᱱ ᱟᱨ ᱚᱰᱚᱠ SOP" } } },
             { "module.fire.title", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Fire & Explosion Response" },
                 { AppLanguage.Hindi,   "आग एवं विस्फोट से निपटने की प्रक्रिया" },
@@ -1502,7 +1502,7 @@ namespace SurakshaAR.Localization
             { "module.statusComingSoon", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "COMING SOON" },
                 { AppLanguage.Hindi,   "जल्द आ रहा है" },
-                { AppLanguage.Santali, "ᱞᱚᱜᱚᱱ ᱦᱤᱡᱩᱜ ᱠᱟᱱᱟ" } } },
+                { AppLanguage.Santali, "ᱞᱚᱜᱚᱱ ᱜᱮ ᱦᱤᱡᱩᱜ ᱠᱟᱱᱟ" } } },
             { "module.statusLocked", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "LOCKED" },
                 { AppLanguage.Hindi,   "प्रतिबंधित" },
@@ -1522,11 +1522,11 @@ namespace SurakshaAR.Localization
             { "moduleDetail.learnPoint1", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Step-by-step SOP for live electrical panel fires" },
                 { AppLanguage.Hindi,   "चालू विद्युत पैनल की आग के लिए चरणबद्ध एसओपी" },
-                { AppLanguage.Santali, "ᱵᱤᱡᱽᱞᱤ ᱯᱮᱱᱟᱞ ᱥᱮᱸᱜᱮᱞ ᱞᱟᱹᱜᱤᱫ ᱫᱷᱟᱯ-ᱫᱷᱟᱯ ᱮᱥ.ᱳ.ᱯᱤ." } } },
+                { AppLanguage.Santali, "ᱵᱤᱡᱽᱞᱤ ᱯᱮᱱᱟᱞ ᱥᱮᱸᱜᱮᱞ ᱞᱟᱹᱜᱤᱫ ᱫᱷᱟᱯ-ᱫᱷᱟᱯ ᱮᱥ.ᱳ.ᱯᱤ ᱾" } } },
             { "moduleDetail.learnPoint2", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Class C extinguisher selection and safety pin operation" },
                 { AppLanguage.Hindi,   "वर्ग C अग्निशामक का चयन और सुरक्षा पिन संचालन" },
-                { AppLanguage.Santali, "ᱠᱞᱟᱥ C ᱤᱬᱤᱡᱤᱡ ᱵᱟᱪᱷᱟᱣ ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱯᱤᱱ ᱚᱰᱚᱠ" } } },
+                { AppLanguage.Santali, "ᱠᱞᱟᱥ C ᱤᱬᱤᱡᱤᱡ ᱵᱟᱪᱷᱟᱣ ᱟᱨ ᱥᱮᱯᱷᱴᱤ ᱯᱤᱱ ᱚᱰᱚᱠ" } } },
             { "moduleDetail.learnPoint3", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "PASS method: Pull, Aim, Squeeze, Sweep technique" },
                 { AppLanguage.Hindi,   "PASS विधि: पिन खींचना, निशाना लगाना, दबाना और झाड़ना" },
@@ -1970,7 +1970,7 @@ namespace SurakshaAR.Localization
             { "splash.appName", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "SurakshaAR" },
                 { AppLanguage.Hindi,   "सुरक्षाAR" },
-                { AppLanguage.Santali, "ᱥᱩᱨᱚᱠᱷᱟ ᱮ.ᱟᱨ." } } },
+                { AppLanguage.Santali, "ᱥᱩᱨᱚᱠᱷᱟ ᱮ.ᱟᱨ" } } },
             { "splash.footer", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "SAFE WORKERS, STRONGER INDIA" },
                 { AppLanguage.Hindi,   "सुरक्षित श्रमिक, सशक्त भारत" },

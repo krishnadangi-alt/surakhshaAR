@@ -104,13 +104,13 @@ namespace SurakshaAR.Screens
             // Localize Bottom Nav Labels
             if (loc != null)
             {
-                var hLbl = _navHome?.transform.Find("Text")?.GetComponent<TextMeshProUGUI>();
+                var hLbl = UIHelper.FindTMP(root, "label-nav-home") ?? _navHome?.GetComponentInChildren<TextMeshProUGUI>();
                 if (hLbl != null) hLbl.text = loc.Get("nav.home");
-                var lLbl = _navLearn?.transform.Find("Text")?.GetComponent<TextMeshProUGUI>();
+                var lLbl = UIHelper.FindTMP(root, "label-nav-learn") ?? _navLearn?.GetComponentInChildren<TextMeshProUGUI>();
                 if (lLbl != null) lLbl.text = loc.Get("nav.learn");
-                var pLbl = _navProgress?.transform.Find("Text")?.GetComponent<TextMeshProUGUI>();
+                var pLbl = UIHelper.FindTMP(root, "label-nav-progress") ?? _navProgress?.GetComponentInChildren<TextMeshProUGUI>();
                 if (pLbl != null) pLbl.text = loc.Get("nav.progress");
-                var cLbl = _navCertificates?.transform.Find("Text")?.GetComponent<TextMeshProUGUI>();
+                var cLbl = UIHelper.FindTMP(root, "label-nav-certificates") ?? _navCertificates?.GetComponentInChildren<TextMeshProUGUI>();
                 if (cLbl != null) cLbl.text = loc.Get("nav.certificates");
             }
 

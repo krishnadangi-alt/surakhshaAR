@@ -24,7 +24,7 @@ namespace SurakshaAR.Core
     [DisallowMultipleComponent]
     public sealed class UIManager : MonoBehaviour
     {
-        public static UIManager Instance { get; private set; }
+        public static UIManager Instance { get; set; }
 
         // ── Public state ──────────────────────────────────────────────
         public ScreenId CurrentScreen { get; private set; }

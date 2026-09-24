@@ -54,7 +54,7 @@ namespace SurakshaAR.Editor
                 if (AppState.Instance == null)
                 {
                     var go = new GameObject("AppState");
-                    go.AddComponent<AppState>();
+                    AppState.Instance = go.AddComponent<AppState>();
                 }
                 AppState.Instance.SetUser("TEST-001", "Miner Operator", false, "Fire Safety Trainee");
 
@@ -68,7 +68,7 @@ namespace SurakshaAR.Editor
                 if (UIManager.Instance == null)
                 {
                     var uiGo = new GameObject("UIManager");
-                    uiGo.AddComponent<UIManager>();
+                    UIManager.Instance = uiGo.AddComponent<UIManager>();
                 }
 
                 // Ensure font fallback chains
@@ -91,6 +91,18 @@ namespace SurakshaAR.Editor
                     {
                         AppManager.Instance.InitializeForTesting(lang);
                     }
+
+                    // 0. Home Dashboard
+                    CaptureScreen(
+                        $"home_{code}.png",
+                        () =>
+                        {
+                            var go = HomeDashboardBuilder.Build();
+                            var ctrl = new HomeDashboardController();
+                            ctrl.OnShow(go, null);
+                            return go;
+                        },
+                        sb, ref totalCaptured);
 
                     // 1. Fire Scenario Selection
                     CaptureScreen(
@@ -169,7 +181,7 @@ namespace SurakshaAR.Editor
                 }
 
                 sb.AppendLine("\n================================================================================");
-                sb.AppendLine($"[SUMMARY] Total screenshots successfully rendered: {totalCaptured} / 18");
+                sb.AppendLine($"[SUMMARY] Total screenshots successfully rendered: {totalCaptured} / 21");
                 sb.AppendLine("================================================================================");
             }
             catch (Exception ex)
