@@ -80,7 +80,7 @@ def render_public_verification_page(
             "pill_bg": "#dcfce7",
             "pill_color": "#15803d",
             "pill_text": "✓ सफलतापूर्वक पूरा किया गया",
-            "icon_svg": """<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>""",
+            "icon_svg": """<path stroke-linecap="round" stroke-linejoin="round" stroke-width="8.5" stroke="#ffffff" fill="none" d="M28 50 L42 64 L72 34"/>""",
         },
         "PENDING": {
             "card_bg": "#fffbeb",
@@ -91,7 +91,7 @@ def render_public_verification_page(
             "pill_bg": "#fef3c7",
             "pill_color": "#b45309",
             "pill_text": "⏳ समीक्षाधीन (Pending Review)",
-            "icon_svg": """<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>""",
+            "icon_svg": """<circle cx="50" cy="50" r="22" stroke="#ffffff" stroke-width="6" fill="none"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="6" stroke="#ffffff" fill="none" d="M50 36 V50 L60 56"/>""",
         },
         "REVOKED": {
             "card_bg": "#fef2f2",
@@ -102,7 +102,7 @@ def render_public_verification_page(
             "pill_bg": "#fee2e2",
             "pill_color": "#b91c1c",
             "pill_text": "⚠ रद्द (Revoked)",
-            "icon_svg": """<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>""",
+            "icon_svg": """<path stroke-linecap="round" stroke-linejoin="round" stroke-width="6" stroke="#ffffff" fill="none" d="M50 26 L74 68 H26 Z M50 42 V54 M50 60 V62"/>""",
         },
         "EXPIRED": {
             "card_bg": "#f8fafc",
@@ -113,7 +113,7 @@ def render_public_verification_page(
             "pill_bg": "#f1f5f9",
             "pill_color": "#475569",
             "pill_text": "⚠ वैधता समाप्त (Expired)",
-            "icon_svg": """<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>""",
+            "icon_svg": """<circle cx="50" cy="50" r="22" stroke="#ffffff" stroke-width="6" fill="none"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="6" stroke="#ffffff" fill="none" d="M50 34 V50 L62 50"/>""",
         },
         "INVALID": {
             "card_bg": "#fef2f2",
@@ -124,7 +124,7 @@ def render_public_verification_page(
             "pill_bg": "#fee2e2",
             "pill_color": "#991b1b",
             "pill_text": "✕ अमान्य (Invalid)",
-            "icon_svg": """<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>""",
+            "icon_svg": """<path stroke-linecap="round" stroke-linejoin="round" stroke-width="8" stroke="#ffffff" fill="none" d="M34 34 L66 66 M66 34 L34 66"/>""",
         },
     }
 

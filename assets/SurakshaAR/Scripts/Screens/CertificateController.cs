@@ -342,14 +342,19 @@ namespace SurakshaAR.Screens
                 var metaLbl = UIHelper.FindTMP(_spotlightGO, "label-latest-meta");
                 if (metaLbl != null) metaLbl.text = $"Cert ID: {latestIssued.certificate_number}  •  Issued: {latestIssued.issued_at?.Split('T')[0]}";
 
+                // Load official certificate preview image (with updated QR)
+                var certPreviewImg = UIHelper.FindRect(_spotlightGO, "image-latest-cert-preview")?.GetComponent<Image>();
+                if (certPreviewImg != null && AppManager.Instance != null)
+                {
+                    AppManager.Instance.StartCoroutine(LoadCertImageRoutine(latestIssued.certificate_number, certPreviewImg));
+                }
+
                 // Wire Open Full Certificate Image button
                 var btnViewImage = UIHelper.FindButton(_spotlightGO, "btn-view-image");
                 if (btnViewImage != null)
                 {
                     btnViewImage.onClick.RemoveAllListeners();
-                    string imgUrl = !string.IsNullOrEmpty(latestIssued.public_image_url)
-                        ? latestIssued.public_image_url
-                        : (latestIssued.certificate_number == "SUR-2026-0002" ? "https://files.catbox.moe/t1l5lb.png" : "https://files.catbox.moe/hge6s4.png");
+                    string imgUrl = $"https://surakhshaar.onrender.com/api/v1/certificates/{latestIssued.certificate_number}/image";
                     btnViewImage.onClick.AddListener(() => Application.OpenURL(imgUrl));
                 }
 
@@ -501,9 +506,7 @@ namespace SurakshaAR.Screens
 
             bool isIssued = statusStr == "ISSUED" || statusStr == "active";
 
-            string imgUrl = !string.IsNullOrEmpty(cert.public_image_url)
-                ? cert.public_image_url
-                : (cert.certificate_number == "SUR-2026-0002" ? "https://files.catbox.moe/t1l5lb.png" : "https://files.catbox.moe/hge6s4.png");
+            string imgUrl = $"https://surakhshaar.onrender.com/api/v1/certificates/{cert.certificate_number}/image";
 
             var loc = AppManager.Instance?.Localization;
             string viewImgText = loc?.Get("certificate.viewImage") ?? "View Image ↗";
@@ -542,6 +545,64 @@ namespace SurakshaAR.Screens
                 string verifyUrl = $"https://surakhshaar.onrender.com/verify/{cert.certificate_number}";
                 Application.OpenURL(verifyUrl);
             });
+        }
+
+        private IEnumerator LoadCertImageRoutine(string certNumber, Image targetImage)
+        {
+            if (targetImage == null) yield break;
+
+            // 1. Try local disk / Resources
+            Texture2D localTex = Resources.Load<Texture2D>($"Images/cert_{certNumber}");
+            if (localTex == null)
+            {
+                localTex = Resources.Load<Texture2D>("Images/certificate_preview_krishna");
+            }
+            if (localTex == null)
+            {
+                string localPath = Path.Combine(Application.dataPath, "Resources", "Images", $"cert_{certNumber}.png");
+                if (File.Exists(localPath))
+                {
+                    try
+                    {
+                        byte[] bytes = File.ReadAllBytes(localPath);
+                        localTex = new Texture2D(2, 2);
+                        localTex.LoadImage(bytes);
+                    }
+                    catch { }
+                }
+            }
+
+            if (localTex != null)
+            {
+                targetImage.sprite = Sprite.Create(localTex, new Rect(0, 0, localTex.width, localTex.height), new Vector2(0.5f, 0.5f));
+                targetImage.color = Color.white;
+                yield break;
+            }
+
+            // 2. Fetch from backend endpoint
+            string baseUrl = "https://surakhshaar.onrender.com/api/v1";
+            if (SurakshaApiClient.Instance != null && !string.IsNullOrEmpty(SurakshaApiClient.Instance.BaseUrl))
+                baseUrl = SurakshaApiClient.Instance.BaseUrl;
+
+            string imgUrl = $"{baseUrl}/certificates/{certNumber}/image";
+            using (UnityWebRequest req = UnityWebRequest.Get(imgUrl))
+            {
+                req.timeout = 8;
+                yield return req.SendWebRequest();
+                if (req.result == UnityWebRequest.Result.Success && req.downloadHandler != null)
+                {
+                    byte[] rawBytes = req.downloadHandler.data;
+                    if (rawBytes != null && rawBytes.Length > 0)
+                    {
+                        Texture2D dlTex = new Texture2D(2, 2);
+                        if (dlTex.LoadImage(rawBytes))
+                        {
+                            targetImage.sprite = Sprite.Create(dlTex, new Rect(0, 0, dlTex.width, dlTex.height), new Vector2(0.5f, 0.5f));
+                            targetImage.color = Color.white;
+                        }
+                    }
+                }
+            }
         }
 
         private IEnumerator LoadQrImageRoutine(string certNumber, Image targetImage)

@@ -129,7 +129,7 @@ namespace SurakshaAR.UI.Builders
         private static void BuildLatestCertificateSpotlight(Transform parent)
         {
             var card = UIHelper.MakeVertical("LatestCertSpotlight", parent, 16, new RectOffset(24, 24, 24, 24));
-            UIHelper.SetLayout(card.gameObject, preferredHeight: 630, minHeight: 580);
+            UIHelper.SetLayout(card.gameObject, preferredHeight: 1120, minHeight: 1040);
             var cardImg = card.gameObject.AddComponent<Image>();
             cardImg.color = Color.white;
             UIHelper.SetImageRoundedSprite(cardImg, 24);
@@ -159,6 +159,27 @@ namespace SurakshaAR.UI.Builders
             // Cert Number & Date
             var metaLbl = UIHelper.MakeLabel("label-latest-meta", card, "Certificate ID: SUR-2026-0002  •  Issued: 21 Sep 2026", 28, UIColors.TextSecondary);
             UIHelper.SetLayout(metaLbl.gameObject, preferredHeight: 34);
+
+            // ── Official Certificate Preview Frame ────────────────────────
+            var certPreviewBox = UIHelper.MakeVertical("CertPreviewBox", card, 6, new RectOffset(8, 8, 8, 8));
+            UIHelper.SetLayout(certPreviewBox.gameObject, preferredHeight: 440);
+            var certPreviewBoxImg = certPreviewBox.gameObject.AddComponent<Image>();
+            certPreviewBoxImg.color = UIColors.Hex("#F8FAFC");
+            UIHelper.SetImageRoundedSprite(certPreviewBoxImg, 16);
+            var previewOutline = certPreviewBox.gameObject.AddComponent<Outline>();
+            previewOutline.effectColor = UIColors.Hex("#CBD5E1");
+            previewOutline.effectDistance = new Vector2(1, -1);
+
+            var certImgGO = UIHelper.MakeRect("image-latest-cert-preview", certPreviewBox);
+            UIHelper.SetLayout(certImgGO.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 424);
+            var certImg = certImgGO.gameObject.AddComponent<Image>();
+            certImg.preserveAspect = true;
+            certImg.color = Color.white;
+            Texture2D defaultCertTex = Resources.Load<Texture2D>("Images/certificate_preview_krishna");
+            if (defaultCertTex != null)
+            {
+                certImg.sprite = Sprite.Create(defaultCertTex, new Rect(0, 0, defaultCertTex.width, defaultCertTex.height), new Vector2(0.5f, 0.5f));
+            }
 
             // ── QR Code Showcase Section ──────────────────────────────────
             var qrRow = UIHelper.MakeHorizontal("SpotlightQrRow", card, 16);
