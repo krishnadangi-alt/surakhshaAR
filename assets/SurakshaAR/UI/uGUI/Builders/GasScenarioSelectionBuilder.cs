@@ -29,7 +29,7 @@ namespace SurakshaAR.UI.Builders
         private static readonly Color SlateText     = UIColors.Hex("#334155");
         private static readonly Color SubText       = UIColors.Hex("#64748B");
 
-        private const float NAV_H = 140f;
+        private const float NAV_H = 165f;
 
         private static Color Hex(string h) => UIColors.Hex(h);
 

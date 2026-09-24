@@ -5,28 +5,39 @@ using UnityEngine.UI;
 namespace SurakshaAR.UI.Builders
 {
     /// <summary>
-    /// Scenario Detail Screen (Fire &amp; Explosion) — reference-accurate rebuild.
+    /// Scenario Detail Screen (Fire &amp; Explosion) — reference-accurate full-screen rebuild.
     ///
-    /// TYPOGRAPHY — Home Dashboard system (CanvasScaler 1080×2400):
-    ///   Screen title   = 40px bold
-    ///   Scenario title = 38px bold   (Home card title)
-    ///   Scenario desc  = 28px        (Home card subtitle)
-    ///   Chip label     = 22px
-    ///   Chip value     = 26px bold
-    ///   Overview body  = 26px
-    ///   Step text      = 26px
-    ///   Button text    = 32px bold
+    /// TYPOGRAPHY — Unified with Learn (ModuleSelection) &amp; Progress screens (CanvasScaler 1080×2400):
+    ///   Header title   = 48px bold
+    ///   Scenario title = 46px bold   (matches Learn/Progress card titles)
+    ///   Scenario desc  = 34px        (matches Learn/Progress descriptions)
+    ///   Hero badge     = 32px bold   ("01", "02", "03" scenario number)
+    ///   Chip value     = 30px bold
+    ///   Chip label     = 24px
+    ///   Section heads  = 44px bold   (matches Progress section headings)
+    ///   Overview body  = 34px        (matches Learn/Progress body text)
+    ///   Step text      = 34px        (matches Learn/Progress body text)
+    ///   Step number    = 26px bold
+    ///   Start button   = 36px bold
+    ///   Bottom nav     = 30px bold
     ///
-    /// VISUAL: Icon illustration area (not a photo), stat chips,
-    ///         6-step numbered list (fire workflow only has 6 SOP steps),
-    ///         "Start Training" sticky bar in orange.
+    /// LAYOUT:
+    ///   - Fixed 4-tab bottom navigation bar (height 165px, Home active).
+    ///   - Scrollable area filling the full screen above the bottom nav.
+    ///   - Large hero illustration card (480px height) with "01" badge at top-left.
+    ///   - Ample breathing room, perfectly proportional on 1080×2400 canvas.
     /// </summary>
     public static class ModuleDetailBuilder
     {
+        private const float NAV_H = 165f;
+
         private static readonly Color AccentOrange = UIColors.Hex("#EA580C");
         private static readonly Color AccentLight  = UIColors.Hex("#FFF7ED");
+        private static readonly Color AccentBorder = UIColors.Hex("#FFEDD5");
         private static readonly Color NavyText     = UIColors.Hex("#0A192F");
+        private static readonly Color DarkText     = UIColors.Hex("#0F172A");
         private static readonly Color SlateText    = UIColors.Hex("#334155");
+        private static readonly Color MutedText    = UIColors.Hex("#475569");
         private static readonly Color SubText      = UIColors.Hex("#64748B");
 
         private static Color Hex(string h) => UIColors.Hex(h);
@@ -34,19 +45,24 @@ namespace SurakshaAR.UI.Builders
         public static GameObject Build()
         {
             var root = new GameObject("ModuleDetailScreen");
-            root.AddComponent<RectTransform>();
+            var rootRT = root.AddComponent<RectTransform>();
+            rootRT.anchorMin = Vector2.zero;
+            rootRT.anchorMax = Vector2.one;
+            rootRT.offsetMin = Vector2.zero;
+            rootRT.offsetMax = Vector2.zero;
+
             var rootImg = root.AddComponent<Image>();
             rootImg.color  = Hex("#F8FAFC");
             rootImg.sprite = UIHelper.GetWhiteSprite();
 
-            // Sticky bottom Start button
-            BuildStickyBottomBar(root.transform);
+            // ── 1. Fixed Bottom Navigation Bar (matches Learn/Progress/Home) ──
+            BuildBottomNav(root.transform);
 
-            // Scrollable body — sits above sticky button (100h)
+            // ── 2. Full-Screen Scrollable Area ─────────────────────────────
             var scrollRoot = UIHelper.MakeRect("ScrollArea", root.transform);
             scrollRoot.anchorMin = Vector2.zero;
             scrollRoot.anchorMax = Vector2.one;
-            scrollRoot.offsetMin = new Vector2(0, 100);
+            scrollRoot.offsetMin = new Vector2(0, NAV_H);
             scrollRoot.offsetMax = Vector2.zero;
 
             var sr = scrollRoot.gameObject.AddComponent<ScrollRect>();
@@ -67,183 +83,196 @@ namespace SurakshaAR.UI.Builders
             content.anchorMin = new Vector2(0, 1);
             content.anchorMax = new Vector2(1, 1);
             content.pivot     = new Vector2(0.5f, 1);
+            content.offsetMin = Vector2.zero;
+            content.offsetMax = Vector2.zero;
             content.sizeDelta = Vector2.zero;
             sr.content        = content;
 
             var vlg = content.gameObject.AddComponent<VerticalLayoutGroup>();
-            vlg.spacing              = 22;
-            vlg.padding              = new RectOffset(28, 28, 18, 40);
+            vlg.spacing                = 24;
+            vlg.padding                = new RectOffset(30, 30, 18, 48);
             vlg.childForceExpandWidth  = true;
             vlg.childForceExpandHeight = false;
             vlg.childControlWidth      = true;
-            vlg.childControlHeight     = false;
+            vlg.childControlHeight     = true; // Required for LayoutElements to drive heights
 
             var csf = content.gameObject.AddComponent<ContentSizeFitter>();
             csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-            // Sections in order matching reference image
+            // Sections in order matching reference image:
             BuildTopHeader(content);
-            BuildHeroIconArea(content);    // icon illustration — no photo
+            BuildHeroIconArea(content);
             BuildScenarioTitleRow(content);
             BuildStatChips(content);
             BuildOverviewSection(content);
             BuildTrainingStepsList(content);
+            BuildStartButton(content);
 
             return root;
         }
 
         // ────────────────────────────────────────────────────────────────
-        // 1. TOP HEADER (back + title + bell + profile)
+        // 1. TOP HEADER (back button + screen title + right icon buttons)
         // ────────────────────────────────────────────────────────────────
         private static void BuildTopHeader(Transform parent)
         {
-            var row = UIHelper.MakeHorizontal("TopHeaderRow", parent, 12,
+            var row = UIHelper.MakeHorizontal("TopHeaderRow", parent, 14,
                 childForceWidth: false, childForceHeight: false);
             UIHelper.SetLayout(row.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 72, minHeight: 64);
-            row.GetComponent<HorizontalLayoutGroup>().childAlignment =
-                TextAnchor.MiddleLeft;
+                preferredHeight: 80, minHeight: 74);
+            row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
             var backBtn = UIHelper.MakeButton("btn-back", row,
-                "‹", 56, Color.white, NavyText, 18);
-            UIHelper.SetLayout(backBtn.gameObject,
-                preferredWidth: 70, preferredHeight: 70);
-            backBtn.gameObject.AddComponent<Outline>().effectColor = Hex("#E2E8F0");
+                "‹", 52, Color.white, NavyText, 20);
+            UIHelper.SetLayout(backBtn.gameObject, preferredWidth: 72, preferredHeight: 72);
+            var bOutline = backBtn.gameObject.AddComponent<Outline>();
+            bOutline.effectColor    = Hex("#E2E8F0");
+            bOutline.effectDistance = new Vector2(1, -1);
 
             var titleLbl = UIHelper.MakeLabel("label-title", row,
-                "Electrical Panel Fire", 40, NavyText, bold: true);
+                "Electrical Panel Fire", 48, NavyText, bold: true);
+            titleLbl.textWrappingMode = TextWrappingModes.NoWrap;
+            titleLbl.overflowMode     = TextOverflowModes.Ellipsis;
             UIHelper.SetLayout(titleLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 54);
+                flexibleWidth: true, flexWidth: 1, preferredHeight: 60);
 
+            // Language picker pill
+            var langPill = UIHelper.MakeButton("btn-language-picker", row,
+                "🌐 EN ▾", 26, Hex("#F1F5F9"), SlateText, 14);
+            UIHelper.SetLayout(langPill.gameObject, preferredWidth: 130, preferredHeight: 60);
+
+            // Bell notification button
             var bellBtn = UIHelper.MakeButton("btn-bell", row, "", 14,
                 Color.white, Color.white, 20);
-            UIHelper.SetLayout(bellBtn.gameObject, preferredWidth: 58, preferredHeight: 58);
+            UIHelper.SetLayout(bellBtn.gameObject, preferredWidth: 60, preferredHeight: 60);
             bellBtn.gameObject.AddComponent<Outline>().effectColor = Hex("#E2E8F0");
             var bellGO = UIHelper.MakeRect("BellIcon", bellBtn.transform);
-            UIHelper.Stretch(bellGO, 12, 12, 12, 12);
-            bellGO.gameObject.AddComponent<Image>().sprite = UIHelper.GetBellSprite();
+            UIHelper.Stretch(bellGO, 14, 14, 14, 14);
+            var bellImg = bellGO.gameObject.AddComponent<Image>();
+            bellImg.sprite        = UIHelper.GetBellSprite();
+            bellImg.preserveAspect = true;
 
+            // Profile button
             var profBtn = UIHelper.MakeButton("btn-profile", row, "", 14,
                 Color.white, Color.white, 20);
-            UIHelper.SetLayout(profBtn.gameObject, preferredWidth: 58, preferredHeight: 58);
+            UIHelper.SetLayout(profBtn.gameObject, preferredWidth: 60, preferredHeight: 60);
             profBtn.gameObject.AddComponent<Outline>().effectColor = Hex("#E2E8F0");
             var profGO = UIHelper.MakeRect("ProfIcon", profBtn.transform);
-            UIHelper.Stretch(profGO, 12, 12, 12, 12);
-            profGO.gameObject.AddComponent<Image>().sprite = UIHelper.GetProfileSprite();
+            UIHelper.Stretch(profGO, 14, 14, 14, 14);
+            var profImg = profGO.gameObject.AddComponent<Image>();
+            profImg.sprite        = UIHelper.GetProfileSprite();
+            profImg.preserveAspect = true;
         }
 
         // ────────────────────────────────────────────────────────────────
-        // 2. HERO ICON AREA (reference: large icon illustration, NOT photo)
-        //    Light orange rounded rectangle, scenario icon + number badge
+        // 2. HERO ICON AREA (prominent illustration card matching reference)
+        //    Warm rounded card (480px), "01" badge top-left, centered illustration
         // ────────────────────────────────────────────────────────────────
         private static void BuildHeroIconArea(Transform parent)
         {
             var heroCard = UIHelper.MakeRect("HeroPhotoContainer", parent);
             UIHelper.SetLayout(heroCard.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 320, minHeight: 300);
+                preferredHeight: 480, minHeight: 460);
 
             var heroImg = heroCard.gameObject.AddComponent<Image>();
-            heroImg.color = AccentLight;
-            UIHelper.SetImageRoundedSprite(heroImg, 22);
+            heroImg.color  = AccentLight;
+            heroImg.sprite = UIHelper.GetWhiteSprite();
+            UIHelper.SetImageRoundedSprite(heroImg, 26);
 
             var border = heroCard.gameObject.AddComponent<Outline>();
-            border.effectColor    = Hex("#FFEDD5");
+            border.effectColor    = AccentBorder;
             border.effectDistance = new Vector2(1.5f, -1.5f);
 
-            // Centred icon illustration
+            var shadow = heroCard.gameObject.AddComponent<Shadow>();
+            shadow.effectColor    = new Color(0, 0, 0, 0.05f);
+            shadow.effectDistance = new Vector2(0, -3f);
+
+            // Centred icon illustration (fills card gracefully)
             var iconGO = UIHelper.MakeRect("ScenarioIconImg", heroCard);
             iconGO.anchorMin = new Vector2(0.5f, 0.5f);
             iconGO.anchorMax = new Vector2(0.5f, 0.5f);
             iconGO.pivot     = new Vector2(0.5f, 0.5f);
-            iconGO.sizeDelta = new Vector2(240, 240);
+            iconGO.sizeDelta = new Vector2(440, 380);
             var sIconImg = iconGO.gameObject.AddComponent<Image>();
+            sIconImg.preserveAspect = true;
             var spr = UIHelper.LoadProjectSprite("icon_electrical_panel_fire.jpg");
             if (spr != null)
             {
                 sIconImg.sprite = spr;
                 sIconImg.color  = Color.white;
-                sIconImg.preserveAspect = true;
             }
             else
             {
                 sIconImg.color = AccentOrange;
             }
 
-            // Level badge pill (bottom-right)
-            var badgePill = UIHelper.MakeRect("HeroLevelBadge", heroCard);
-            badgePill.anchorMin        = new Vector2(1, 0);
-            badgePill.anchorMax        = new Vector2(1, 0);
-            badgePill.pivot            = new Vector2(1, 0);
-            badgePill.anchoredPosition = new Vector2(-16, 14);
-            badgePill.sizeDelta        = new Vector2(190, 48);
+            // Scenario number badge at top-left ("01", "02", "03" matching reference image)
+            var numBadge = UIHelper.MakeRect("HeroNumBadge", heroCard);
+            numBadge.anchorMin        = new Vector2(0, 1);
+            numBadge.anchorMax        = new Vector2(0, 1);
+            numBadge.pivot            = new Vector2(0, 1);
+            numBadge.anchoredPosition = new Vector2(24, -24);
+            numBadge.sizeDelta        = new Vector2(92, 58);
 
-            var bpImg = badgePill.gameObject.AddComponent<Image>();
-            bpImg.color = Hex("#FFF7ED");
-            UIHelper.SetImageRoundedSprite(bpImg, 12);
+            var nbImg = numBadge.gameObject.AddComponent<Image>();
+            nbImg.color  = AccentOrange;
+            nbImg.sprite = UIHelper.GetWhiteSprite();
+            UIHelper.SetImageRoundedSprite(nbImg, 14);
 
-            var bpBorder = badgePill.gameObject.AddComponent<Outline>();
-            bpBorder.effectColor    = Hex("#FFEDD5");
-            bpBorder.effectDistance = new Vector2(1, -1);
-
-            var bpLbl = UIHelper.MakeLabel("label-hero-badge", badgePill,
-                "Beginner", 24, AccentOrange,
+            var nbLbl = UIHelper.MakeLabel("label-hero-badge", numBadge,
+                "01", 32, Color.white,
                 TextAlignmentOptions.Center, bold: true);
-            UIHelper.Stretch(bpLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
+            UIHelper.Stretch(nbLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
         }
 
         // ────────────────────────────────────────────────────────────────
-        // 3. SCENARIO TITLE ROW (icon badge + title + subtitle)
+        // 3. SCENARIO TITLE ROW (flame badge + 46px bold title + 34px desc)
         // ────────────────────────────────────────────────────────────────
         private static void BuildScenarioTitleRow(Transform parent)
         {
-            var col = UIHelper.MakeVertical("ScenarioMeta", parent, 8,
+            var col = UIHelper.MakeVertical("ScenarioMeta", parent, 6,
                 childForceWidth: true, childForceHeight: false);
             UIHelper.SetLayout(col.gameObject,
-                flexibleWidth: true, flexWidth: 1);
+                flexibleWidth: true, flexWidth: 1,
+                preferredHeight: 124, minHeight: 114);
 
-            // Title row: small orange flame badge + scenario name
-            var row = UIHelper.MakeHorizontal("TitleRow", col.transform, 12,
+            var row = UIHelper.MakeHorizontal("TitleRow", col.transform, 14,
                 childForceWidth: false, childForceHeight: false);
             UIHelper.SetLayout(row.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 56);
-            row.GetComponent<HorizontalLayoutGroup>().childAlignment =
-                TextAnchor.MiddleLeft;
+                preferredHeight: 58);
+            row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
             var badge = UIHelper.MakeRect("FlameBox", row);
-            UIHelper.SetLayout(badge.gameObject,
-                preferredWidth: 48, preferredHeight: 48);
+            UIHelper.SetLayout(badge.gameObject, preferredWidth: 54, preferredHeight: 54);
             var bImg = badge.gameObject.AddComponent<Image>();
-            bImg.color = AccentOrange;
-            UIHelper.SetImageRoundedSprite(bImg, 12);
+            bImg.color  = AccentOrange;
+            bImg.sprite = UIHelper.GetWhiteSprite();
+            UIHelper.SetImageRoundedSprite(bImg, 14);
+
             var flameLbl = UIHelper.MakeLabel("FlameLbl", badge,
-                "🔥", 28, Color.white, TextAlignmentOptions.Center);
+                "🔥", 32, Color.white, TextAlignmentOptions.Center);
             UIHelper.Stretch(flameLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
 
-            // Scenario title — 38px bold (Home module card title)
+            // Title: 46px bold (Learn/Progress screen module title scale)
             var titleLbl = UIHelper.MakeLabel("label-scenario-title", row,
-                "Electrical Panel Fire", 38, NavyText,
-                bold: true, wrap: false);
+                "Electrical Panel Fire", 46, DarkText, bold: true, wrap: false);
             UIHelper.SetLayout(titleLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 50);
+                flexibleWidth: true, flexWidth: 1, preferredHeight: 56);
 
-            // Subtitle — 28px (Home card subtitle)
-            var descLbl = UIHelper.MakeLabel("label-scenario-desc",
-                col.transform,
+            // Description: 34px (Learn/Progress screen description scale)
+            var descLbl = UIHelper.MakeLabel("label-scenario-desc", col.transform,
                 "Handle fire in electrical panels and control rooms.",
-                28, SlateText, wrap: true);
+                34, MutedText, wrap: true);
             descLbl.lineSpacing = 1.15f;
             UIHelper.SetLayout(descLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 40);
+                flexibleWidth: true, flexWidth: 1, preferredHeight: 50);
         }
 
         // ────────────────────────────────────────────────────────────────
-        // 4. STAT CHIPS (Duration · Level · Equipment)
-        //    Reference: 3 chips in a row, icon + two text lines each
+        // 4. STAT CHIPS (Duration · Level · Focus/Equipment)
         // ────────────────────────────────────────────────────────────────
         private static void BuildStatChips(Transform parent)
         {
@@ -251,7 +280,7 @@ namespace SurakshaAR.UI.Builders
                 childForceWidth: false, childForceHeight: false);
             UIHelper.SetLayout(row.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 90, minHeight: 82);
+                preferredHeight: 104, minHeight: 98);
 
             BuildChip(row, "chip-duration", "⏱",  "~ 10 mins",    "Duration");
             BuildChip(row, "chip-level",    "📊", "Beginner",      "Level");
@@ -263,124 +292,114 @@ namespace SurakshaAR.UI.Builders
         {
             var chip = UIHelper.MakeRect(name, parent);
             UIHelper.SetLayout(chip.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 86);
+                flexibleWidth: true, flexWidth: 1, preferredHeight: 100);
 
             var cImg = chip.gameObject.AddComponent<Image>();
-            cImg.color = Hex("#F8FAFC");
-            UIHelper.SetImageRoundedSprite(cImg, 14);
+            cImg.color  = Hex("#F8FAFC");
+            cImg.sprite = UIHelper.GetWhiteSprite();
+            UIHelper.SetImageRoundedSprite(cImg, 16);
 
             var border = chip.gameObject.AddComponent<Outline>();
             border.effectColor    = Hex("#E2E8F0");
             border.effectDistance = new Vector2(1, -1);
 
-            var innerRow = UIHelper.MakeHorizontal("Inner", chip, 8,
-                new RectOffset(12, 8, 8, 8),
+            var innerRow = UIHelper.MakeHorizontal("Inner", chip, 10,
+                new RectOffset(12, 10, 10, 10),
                 childForceWidth: false, childForceHeight: false);
             UIHelper.Stretch(innerRow, 0, 0, 0, 0);
-            innerRow.GetComponent<HorizontalLayoutGroup>().childAlignment =
-                TextAnchor.MiddleLeft;
+            innerRow.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
-            // Icon
             var iconLbl = UIHelper.MakeLabel("Icon", innerRow,
-                icon, 28, AccentOrange, TextAlignmentOptions.Center);
-            UIHelper.SetLayout(iconLbl.gameObject,
-                preferredWidth: 36, preferredHeight: 36);
+                icon, 32, AccentOrange, TextAlignmentOptions.Center);
+            UIHelper.SetLayout(iconLbl.gameObject, preferredWidth: 40, preferredHeight: 40);
 
-            // Two-line text
             var textCol = UIHelper.MakeVertical("TextCol", innerRow, 0,
                 childForceWidth: true, childForceHeight: false);
-            UIHelper.SetLayout(textCol.gameObject,
-                flexibleWidth: true, flexWidth: 1);
+            UIHelper.SetLayout(textCol.gameObject, flexibleWidth: true, flexWidth: 1);
             textCol.GetComponent<VerticalLayoutGroup>().childForceExpandHeight = false;
 
+            // Value: 30px bold
             var valLbl = UIHelper.MakeLabel("Value", textCol,
-                value, 26, NavyText, bold: true);
-            UIHelper.SetLayout(valLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 32);
+                value, 30, DarkText, bold: true);
+            UIHelper.SetLayout(valLbl.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 38);
 
+            // Subtitle: 24px
             var subLbl = UIHelper.MakeLabel("Sub", textCol,
-                label, 20, SubText);
-            UIHelper.SetLayout(subLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 26);
+                label, 24, SubText);
+            UIHelper.SetLayout(subLbl.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 30);
         }
 
         // ────────────────────────────────────────────────────────────────
-        // 5. SCENARIO OVERVIEW
+        // 5. SCENARIO OVERVIEW (44px heading + 34px body text)
         // ────────────────────────────────────────────────────────────────
         private static void BuildOverviewSection(Transform parent)
         {
             var box = UIHelper.MakeVertical("OverviewBox", parent, 10,
                 childForceWidth: true, childForceHeight: false);
             UIHelper.SetLayout(box.gameObject,
-                flexibleWidth: true, flexWidth: 1);
+                flexibleWidth: true, flexWidth: 1,
+                preferredHeight: 196, minHeight: 180);
 
-            // Heading row: orange doc icon + "Scenario Overview"
-            var headRow = UIHelper.MakeHorizontal("HeadRow", box.transform, 10,
+            var headRow = UIHelper.MakeHorizontal("HeadRow", box.transform, 12,
                 childForceWidth: false, childForceHeight: false);
             UIHelper.SetLayout(headRow.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 44);
-            headRow.GetComponent<HorizontalLayoutGroup>().childAlignment =
-                TextAnchor.MiddleLeft;
+                flexibleWidth: true, flexWidth: 1, preferredHeight: 48);
+            headRow.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
             var docIcon = UIHelper.MakeLabel("DocIcon", headRow,
-                "📄", 26, AccentOrange, TextAlignmentOptions.Center);
-            UIHelper.SetLayout(docIcon.gameObject,
-                preferredWidth: 36, preferredHeight: 36);
+                "📄", 32, AccentOrange, TextAlignmentOptions.Center);
+            UIHelper.SetLayout(docIcon.gameObject, preferredWidth: 40, preferredHeight: 40);
 
+            // Heading: 44px bold (matches Progress screen section headers)
             var headLbl = UIHelper.MakeLabel("OverviewHead", headRow,
-                "Scenario Overview", 32, NavyText, bold: true);
+                "Scenario Overview", 44, DarkText, bold: true);
             UIHelper.SetLayout(headLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 42);
+                flexibleWidth: true, flexWidth: 1, preferredHeight: 48);
 
-            // Body — 26px matches Home body scale
-            var bodyLbl = UIHelper.MakeLabel("label-overview-body",
-                box.transform,
+            // Body: 34px (matches Learn/Progress body text)
+            var bodyLbl = UIHelper.MakeLabel("label-overview-body", box.transform,
                 "A fire may start in an electrical control panel due to short circuit, overload or equipment failure. Learn to identify the hazard, activate the alarm and use the correct extinguisher to control the fire safely.",
-                26, SlateText, wrap: true);
+                34, SlateText, wrap: true);
             bodyLbl.lineSpacing = 1.25f;
             UIHelper.SetLayout(bodyLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 110);
+                flexibleWidth: true, flexWidth: 1, preferredHeight: 136);
         }
 
         // ────────────────────────────────────────────────────────────────
-        // 6. TRAINING STEPS LIST
-        //    Reference fire workflow has exactly 6 SOP steps (no step 7)
+        // 6. TRAINING STEPS LIST (44px heading + 6 numbered 34px steps)
         // ────────────────────────────────────────────────────────────────
         private static void BuildTrainingStepsList(Transform parent)
         {
             var box = UIHelper.MakeVertical("TrainingStepsBox", parent, 14,
                 childForceWidth: true, childForceHeight: false);
             UIHelper.SetLayout(box.gameObject,
-                flexibleWidth: true, flexWidth: 1);
+                flexibleWidth: true, flexWidth: 1,
+                preferredHeight: 510, minHeight: 480);
 
-            // Section heading: orange left bar + "Training will include"
             var headRow = UIHelper.MakeHorizontal("HeadRow", box.transform, 12,
                 childForceWidth: false, childForceHeight: false);
             UIHelper.SetLayout(headRow.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 44);
-            headRow.GetComponent<HorizontalLayoutGroup>().childAlignment =
-                TextAnchor.MiddleLeft;
+                flexibleWidth: true, flexWidth: 1, preferredHeight: 48);
+            headRow.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
             var bar = UIHelper.MakeRect("Bar", headRow);
-            UIHelper.SetLayout(bar.gameObject, preferredWidth: 5, preferredHeight: 32);
+            UIHelper.SetLayout(bar.gameObject, preferredWidth: 6, preferredHeight: 38);
             var barImg = bar.gameObject.AddComponent<Image>();
-            barImg.color = AccentOrange;
-            UIHelper.SetImageRoundedSprite(barImg, 2);
+            barImg.color  = AccentOrange;
+            barImg.sprite = UIHelper.GetWhiteSprite();
+            UIHelper.SetImageRoundedSprite(barImg, 3);
 
+            // Heading: 44px bold
             var headLbl = UIHelper.MakeLabel("TrainingHead", headRow,
-                "Training will include", 32, NavyText, bold: true);
+                "Training will include", 44, DarkText, bold: true);
             UIHelper.SetLayout(headLbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 42);
+                flexibleWidth: true, flexWidth: 1, preferredHeight: 48);
 
-            // Steps container
-            var stepsCol = UIHelper.MakeVertical("steps-list", box.transform, 12,
+            var stepsCol = UIHelper.MakeVertical("steps-list", box.transform, 10,
                 childForceWidth: true, childForceHeight: false);
             UIHelper.SetLayout(stepsCol.gameObject,
                 flexibleWidth: true, flexWidth: 1);
-            stepsCol.gameObject.AddComponent<ContentSizeFitter>().verticalFit =
-                ContentSizeFitter.FitMode.PreferredSize;
 
-            // Default 6 steps for Electrical Panel Fire
             string[] defaultSteps =
             {
                 "Identify fire hazard",
@@ -396,8 +415,7 @@ namespace SurakshaAR.UI.Builders
         }
 
         /// <summary>
-        /// Creates a single numbered step row — also called at runtime by
-        /// ModuleDetailController to swap step content.
+        /// Creates a single numbered step row with 34px text and 26px badge.
         /// </summary>
         public static void MakeStepItem(Transform parent, int stepNum, string stepText)
         {
@@ -405,66 +423,127 @@ namespace SurakshaAR.UI.Builders
                 childForceWidth: false, childForceHeight: false);
             UIHelper.SetLayout(row.gameObject,
                 flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 52, minHeight: 46);
-            row.GetComponent<HorizontalLayoutGroup>().childAlignment =
-                TextAnchor.MiddleLeft;
+                preferredHeight: 64, minHeight: 58);
+            row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
-            // Circular orange number badge (matches reference exactly)
+            // Circular orange number badge
             var badge = UIHelper.MakeRect("Badge", row);
             UIHelper.SetLayout(badge.gameObject,
-                preferredWidth: 44, minWidth: 42,
-                preferredHeight: 44, minHeight: 42);
+                preferredWidth: 48, minWidth: 48,
+                preferredHeight: 48, minHeight: 48);
             var bImg = badge.gameObject.AddComponent<Image>();
-            bImg.color = AccentOrange;
-            UIHelper.SetImageRoundedSprite(bImg, 22);
+            bImg.color  = AccentOrange;
+            bImg.sprite = UIHelper.GetWhiteSprite();
+            UIHelper.SetImageRoundedSprite(bImg, 24);
 
             var numLbl = UIHelper.MakeLabel("Num", badge,
-                stepNum.ToString(), 24, Color.white,
+                stepNum.ToString(), 26, Color.white,
                 TextAlignmentOptions.Center, bold: true);
             UIHelper.Stretch(numLbl.GetComponent<RectTransform>(), 0, 0, 0, 0);
 
-            // Step text — 26px matches Home body
+            // Step text: 34px (matching Learn/Progress body text)
             var lbl = UIHelper.MakeLabel("StepLbl", row,
-                stepText, 26, NavyText, wrap: true);
+                stepText, 34, DarkText, wrap: true);
             lbl.lineSpacing = 1.15f;
             UIHelper.SetLayout(lbl.gameObject,
-                flexibleWidth: true, flexWidth: 1, preferredHeight: 48);
+                flexibleWidth: true, flexWidth: 1, preferredHeight: 54);
         }
 
         // ────────────────────────────────────────────────────────────────
-        // STICKY BOTTOM BAR — "Start Training" in orange
+        // 7. START TRAINING BUTTON (36px bold white in orange capsule)
         // ────────────────────────────────────────────────────────────────
-        private static void BuildStickyBottomBar(Transform parent)
+        private static void BuildStartButton(Transform parent)
         {
-            var bar = UIHelper.MakeRect("StickyBottomBar", parent);
-            bar.anchorMin = Vector2.zero;
-            bar.anchorMax = new Vector2(1, 0);
-            bar.pivot     = new Vector2(0.5f, 0);
-            bar.sizeDelta = new Vector2(0, 100);
+            var btnRow = UIHelper.MakeRect("StartBtnRow", parent);
+            UIHelper.SetLayout(btnRow.gameObject,
+                flexibleWidth: true, flexWidth: 1,
+                preferredHeight: 96, minHeight: 90);
 
-            var bg = bar.gameObject.AddComponent<Image>();
-            bg.color  = Color.white;
-            bg.sprite = UIHelper.GetWhiteSprite();
-
-            var topBorder = UIHelper.MakeRect("TopBorder", bar);
-            topBorder.anchorMin = new Vector2(0, 1);
-            topBorder.anchorMax = new Vector2(1, 1);
-            topBorder.pivot     = new Vector2(0.5f, 1);
-            topBorder.sizeDelta = new Vector2(0, 1.5f);
-            topBorder.gameObject.AddComponent<Image>().color = Hex("#E2E8F0");
-
-            // "▶ Start Training" — 32px bold, orange background
-            var btn = UIHelper.MakeButton("btn-start-ar-training", bar,
-                "▶  Start Training", 32, AccentOrange, Color.white, 18);
-            var rt = btn.GetComponent<RectTransform>();
-            rt.anchorMin = new Vector2(0, 0.5f);
-            rt.anchorMax = new Vector2(1, 0.5f);
-            rt.pivot     = new Vector2(0.5f, 0.5f);
-            rt.offsetMin = new Vector2(28, -33);
-            rt.offsetMax = new Vector2(-28, 33);
+            var btn = UIHelper.MakeButton("btn-start-ar-training", btnRow,
+                "▶   Start Training", 36, AccentOrange, Color.white, 20);
+            UIHelper.Stretch(btn.GetComponent<RectTransform>(), 0, 0, 0, 0);
 
             var btnLbl = btn.GetComponentInChildren<TextMeshProUGUI>();
             if (btnLbl != null) btnLbl.fontStyle = FontStyles.Bold;
+        }
+
+        // ────────────────────────────────────────────────────────────────
+        // 8. BOTTOM NAVIGATION BAR (matches Home / Learn / Progress)
+        // ────────────────────────────────────────────────────────────────
+        private static void BuildBottomNav(Transform parent)
+        {
+            var navRT = UIHelper.MakeRect("BottomNavBar", parent);
+            navRT.anchorMin = Vector2.zero;
+            navRT.anchorMax = new Vector2(1, 0);
+            navRT.pivot     = new Vector2(0.5f, 0f);
+            navRT.sizeDelta = new Vector2(0, NAV_H);
+            navRT.anchoredPosition = Vector2.zero;
+
+            var bg = navRT.gameObject.AddComponent<Image>();
+            bg.color  = Color.white;
+            bg.sprite = UIHelper.GetWhiteSprite();
+
+            var topBorder = UIHelper.MakeRect("TopBorder", navRT);
+            topBorder.anchorMin = new Vector2(0, 1);
+            topBorder.anchorMax = new Vector2(1, 1);
+            topBorder.pivot     = new Vector2(0.5f, 1f);
+            topBorder.sizeDelta = new Vector2(0, 1.5f);
+            topBorder.anchoredPosition = Vector2.zero;
+            topBorder.gameObject.AddComponent<Image>().color = Hex("#E2E8F0");
+            topBorder.gameObject.AddComponent<LayoutElement>().ignoreLayout = true;
+
+            var hlg = navRT.gameObject.AddComponent<HorizontalLayoutGroup>();
+            hlg.childForceExpandWidth  = true;
+            hlg.childForceExpandHeight = true;
+            hlg.childControlWidth      = true;
+            hlg.childControlHeight     = true;
+            hlg.padding = new RectOffset(0, 0, 8, 20);
+
+            MakeNavItem(navRT, "nav-home",         "Home",         UIHelper.GetHomeSprite(),  true);
+            MakeNavItem(navRT, "nav-learn",        "Learn",        UIHelper.GetBookSprite(),  false);
+            MakeNavItem(navRT, "nav-progress",     "My Progress",  UIHelper.GetChartSprite(), false);
+            MakeNavItem(navRT, "nav-certificates", "Certificates", UIHelper.GetMedalSprite(), false);
+        }
+
+        private static void MakeNavItem(Transform parent, string name,
+            string label, Sprite iconSprite, bool active)
+        {
+            var activeColor = active ? Hex("#059669") : Hex("#94A3B8");
+            var fontSize    = 30f;
+
+            var btn = UIHelper.MakeButton(name, parent, "", 14,
+                UIColors.Transparent, Color.white, 0);
+
+            var col = UIHelper.MakeVertical("Col", btn.transform, 6,
+                new RectOffset(0, 0, 4, 4),
+                childForceWidth: false, childForceHeight: false);
+            UIHelper.Stretch(col, 0, 0, 0, 0);
+            col.GetComponent<VerticalLayoutGroup>().childAlignment = TextAnchor.MiddleCenter;
+
+            var iconBox = UIHelper.MakeRect("IconBox", col);
+            UIHelper.SetLayout(iconBox.gameObject,
+                preferredWidth: 50, minWidth: 50, preferredHeight: 50, minHeight: 50);
+            var iconImg = iconBox.gameObject.AddComponent<Image>();
+            iconImg.sprite        = iconSprite;
+            iconImg.color         = activeColor;
+            iconImg.preserveAspect = true;
+
+            var lbl = UIHelper.MakeLabel($"label-{name}", col, label,
+                fontSize, activeColor, TextAlignmentOptions.Center, bold: true);
+            lbl.textWrappingMode = TextWrappingModes.NoWrap;
+            lbl.overflowMode     = TextOverflowModes.Overflow;
+            UIHelper.SetLayout(lbl.gameObject, preferredHeight: 42, minHeight: 38);
+
+            var indRow = UIHelper.MakeRect("IndRow", col);
+            UIHelper.SetLayout(indRow.gameObject,
+                preferredWidth: 64, minWidth: 64, preferredHeight: 6, minHeight: 6);
+            if (active)
+            {
+                var indImg = indRow.gameObject.AddComponent<Image>();
+                indImg.color  = Hex("#059669");
+                indImg.sprite = UIHelper.GetWhiteSprite();
+                UIHelper.SetImageRoundedSprite(indImg, 3);
+            }
         }
     }
 }

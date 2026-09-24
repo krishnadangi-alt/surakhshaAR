@@ -14,10 +14,12 @@ namespace SurakshaAR.Screens
     /// Manages the Scenario Detail screen for Electrical Panel Fire,
     /// Conveyor Belt Fire, and Excavator / HEMM Fire.
     /// Tapping "Start AR Training" routes directly to Training Instructions (Screen 6).
+    /// Includes full 4-tab bottom navigation bar support.
     /// </summary>
     public class ModuleDetailController : IScreenController
     {
         private Button _btnBack, _btnStart;
+        private Button _navHome, _navLearn, _navProgress, _navCertificates;
         private int _scenarioIndex = 1;
 
         public void OnShow(GameObject root, object param)
@@ -41,6 +43,17 @@ namespace SurakshaAR.Screens
                 _btnStart.onClick.AddListener(OpenTrainingInstructions);
             }
 
+            // Bottom Navigation
+            _navHome         = UIHelper.FindButton(root, "nav-home");
+            _navLearn        = UIHelper.FindButton(root, "nav-learn");
+            _navProgress     = UIHelper.FindButton(root, "nav-progress");
+            _navCertificates = UIHelper.FindButton(root, "nav-certificates");
+
+            if (_navHome         != null) { _navHome.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.HomeDashboard)); }
+            if (_navLearn        != null) { _navLearn.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.ModuleSelection)); }
+            if (_navProgress     != null) { _navProgress.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.Progress)); }
+            if (_navCertificates != null) { _navCertificates.onClick.AddListener(() => UIManager.Instance?.ShowScreen(ScreenId.Certificate)); }
+
             BindScenarioData(root);
         }
 
@@ -49,7 +62,7 @@ namespace SurakshaAR.Screens
             string title;
             string subtitle;
             string heroImg;
-            string levelBadge;
+            string scenarioNumberBadge;
             string duration;
             string level;
             string focusVal;
@@ -60,15 +73,15 @@ namespace SurakshaAR.Screens
             if (_scenarioIndex == 2)
             {
                 // Scenario 2 — Conveyor Belt Fire (Coming Soon)
-                title      = "Conveyor Belt Fire";
-                subtitle   = "Respond to fire in conveyor belt systems.";
-                heroImg    = "icon_conveyor_belt_fire.jpg";
-                levelBadge = "Intermediate";
-                duration   = "~ 12 mins";
-                level      = "Intermediate";
-                focusVal   = "Isolation";
-                focusSub   = "& Evacuation";
-                overview   = "A fire has been detected on the conveyor belt system. Learn to raise the alarm, stop and isolate the conveyor, and respond to the fire safely.";
+                title               = "Conveyor Belt Fire";
+                subtitle            = "Respond to fire in conveyor belt systems.";
+                heroImg             = "icon_conveyor_belt_fire.jpg";
+                scenarioNumberBadge = "02";
+                duration            = "~ 12 mins";
+                level               = "Intermediate";
+                focusVal            = "Isolation";
+                focusSub            = "& Evacuation";
+                overview            = "A fire has been detected on the conveyor belt system. Learn to raise the alarm, stop and isolate the conveyor, and respond to the fire safely.";
                 steps = new string[]
                 {
                     "Detect smoke/fire on conveyor",
@@ -82,15 +95,15 @@ namespace SurakshaAR.Screens
             else if (_scenarioIndex == 3)
             {
                 // Scenario 3 — Excavator / HEMM Fire (Coming Soon)
-                title      = "Excavator / HEMM Fire";
-                subtitle   = "Handle fire in heavy earth moving machinery.";
-                heroImg    = "icon_excavator_hemm_fire.jpg";
-                levelBadge = "Intermediate";
-                duration   = "~ 12 mins";
-                level      = "Intermediate";
-                focusVal   = "Emergency";
-                focusSub   = "Response";
-                overview   = "A fire has started in a heavy earth moving machine. Learn to stop the machine, raise the alarm and respond to the fire while maintaining a safe distance.";
+                title               = "Excavator / HEMM Fire";
+                subtitle            = "Handle fire in heavy earth moving machinery.";
+                heroImg             = "icon_excavator_hemm_fire.jpg";
+                scenarioNumberBadge = "03";
+                duration            = "~ 12 mins";
+                level               = "Intermediate";
+                focusVal            = "Emergency";
+                focusSub            = "Response";
+                overview            = "A fire has started in a heavy earth moving machine. Learn to stop the machine, raise the alarm and respond to the fire while maintaining a safe distance.";
                 steps = new string[]
                 {
                     "Detect engine/machine fire",
@@ -104,15 +117,15 @@ namespace SurakshaAR.Screens
             else
             {
                 // Scenario 1 — Electrical Panel Fire (AVAILABLE — real AR)
-                title      = "Electrical Panel Fire";
-                subtitle   = "Handle fire in electrical panels and control rooms.";
-                heroImg    = "icon_electrical_panel_fire.jpg";
-                levelBadge = "Beginner";
-                duration   = "~ 10 mins";
-                level      = "Beginner";
-                focusVal   = "Extinguisher";
-                focusSub   = "Use";
-                overview   = "A fire may start in an electrical control panel due to short circuit, overload or equipment failure. Learn to identify the hazard, activate the alarm and use the correct extinguisher to control the fire safely.";
+                title               = "Electrical Panel Fire";
+                subtitle            = "Handle fire in electrical panels and control rooms.";
+                heroImg             = "icon_electrical_panel_fire.jpg";
+                scenarioNumberBadge = "01";
+                duration            = "~ 10 mins";
+                level               = "Beginner";
+                focusVal            = "Extinguisher";
+                focusSub            = "Use";
+                overview            = "A fire may start in an electrical control panel due to short circuit, overload or equipment failure. Learn to identify the hazard, activate the alarm and use the correct extinguisher to control the fire safely.";
                 // Exactly 6 steps — matches the real FireScenarioFlowManager workflow
                 steps = new string[]
                 {
@@ -137,15 +150,14 @@ namespace SurakshaAR.Screens
             var labelScenarioDesc = UIHelper.FindTMP(root, "label-scenario-desc");
             if (labelScenarioDesc != null) labelScenarioDesc.text = subtitle;
 
-            // Hero Badge
+            // Hero Number Badge ("01", "02", "03")
             var heroBadgeLbl = UIHelper.FindTMP(root, "label-hero-badge");
-            if (heroBadgeLbl != null) heroBadgeLbl.text = levelBadge;
+            if (heroBadgeLbl != null) heroBadgeLbl.text = scenarioNumberBadge;
 
             // Hero icon illustration (swap the centred icon sprite)
             var heroPhotoContainer = UIHelper.FindRect(root, "HeroPhotoContainer");
             if (heroPhotoContainer != null)
             {
-                // Update the centred ScenarioIconImg child
                 var iconImgRT = heroPhotoContainer.Find("ScenarioIconImg");
                 if (iconImgRT != null)
                 {
@@ -191,6 +203,23 @@ namespace SurakshaAR.Screens
                 }
             }
 
+            // Start Button styling for Coming Soon scenarios
+            if (_btnStart != null)
+            {
+                var btnImg = _btnStart.GetComponent<Image>();
+                var btnTxt = _btnStart.GetComponentInChildren<TextMeshProUGUI>();
+                if (_scenarioIndex == 1)
+                {
+                    if (btnImg != null) btnImg.color = UIColors.Hex("#EA580C");
+                    if (btnTxt != null) btnTxt.text = "▶   Start Training";
+                }
+                else
+                {
+                    if (btnImg != null) btnImg.color = UIColors.Hex("#94A3B8");
+                    if (btnTxt != null) btnTxt.text = "Coming Soon";
+                }
+            }
+
             var currentLang = AppState.Instance != null
                 ? AppState.Instance.CurrentLanguage
                 : AppLanguage.English;
@@ -203,7 +232,6 @@ namespace SurakshaAR.Screens
             // Scenarios 2 and 3 are Coming Soon — do nothing.
             if (_scenarioIndex == 1)
                 UIManager.Instance?.ShowScreen(ScreenId.TrainingInstructions);
-            // else: Coming Soon — button is disabled visually; no-op here.
         }
 
         private void GoBack()
@@ -216,6 +244,10 @@ namespace SurakshaAR.Screens
         {
             if (_btnBack != null) _btnBack.onClick.RemoveAllListeners();
             if (_btnStart != null) _btnStart.onClick.RemoveAllListeners();
+            if (_navHome != null) _navHome.onClick.RemoveAllListeners();
+            if (_navLearn != null) _navLearn.onClick.RemoveAllListeners();
+            if (_navProgress != null) _navProgress.onClick.RemoveAllListeners();
+            if (_navCertificates != null) _navCertificates.onClick.RemoveAllListeners();
         }
     }
 }

@@ -31,8 +31,8 @@ namespace SurakshaAR.UI.Builders
         private static readonly Color SlateText    = UIColors.Hex("#334155");
         private static readonly Color SubText      = UIColors.Hex("#64748B");
 
-        // Home canvas constants (matches HomeDashboardBuilder)
-        private const float NAV_H = 140f;  // bottom nav height
+        // Home canvas constants (matches HomeDashboardBuilder and ModuleSelectionBuilder)
+        private const float NAV_H = 165f;  // bottom nav height
 
         private static Color Hex(string h) => UIColors.Hex(h);
 
