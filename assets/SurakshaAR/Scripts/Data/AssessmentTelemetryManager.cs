@@ -336,9 +336,13 @@ namespace SurakshaAR.Data
         // ── Day 1 Common Assessment Event Handlers ───────────────────────
         private int GetCurrentWorkerId()
         {
-            if (AppState.Instance != null && int.TryParse(AppState.Instance.EmployeeId, out int workerId))
+            if (AppState.Instance != null && !string.IsNullOrEmpty(AppState.Instance.EmployeeId))
             {
-                return workerId;
+                string digits = System.Text.RegularExpressions.Regex.Replace(AppState.Instance.EmployeeId, @"[^\d]", "");
+                if (int.TryParse(digits, out int id))
+                {
+                    return id;
+                }
             }
             return 1;
         }

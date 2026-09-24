@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 1460ce3e6d8bc694ab54a194b332e191
+ModelImporter:
+  serializedVersion: 24600
+  internalIDToNameTable: []
+  externalObjects: {}
+  materials:
+    materialImportMode: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  globalScale: 1
+  useFileScale: 1
+  importVisibility: 1
+  importCameras: 0
+  importLights: 0

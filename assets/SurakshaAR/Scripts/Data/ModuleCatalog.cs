@@ -50,8 +50,8 @@ namespace SurakshaAR.Data
                 "module.gas.learn.1", "module.gas.learn.2", "module.gas.learn.3", "module.gas.learn.4"
             };
             gas.isLocked = false;
-            gas.isImplemented = false;
-            gas.arSceneName = "";
+            gas.isImplemented = true;
+            gas.arSceneName = "AR_gas_Foundation";
             list.Add(gas);
 
             // ---- Machinery Safety (UI only, AR not built yet) ----
