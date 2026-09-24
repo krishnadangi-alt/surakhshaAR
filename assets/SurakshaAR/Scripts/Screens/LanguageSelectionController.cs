@@ -124,7 +124,7 @@ namespace SurakshaAR.Screens
             if (lbl != null)
             {
                 string cont = loc.Get("language.continue");
-                lbl.text = $"{cont}  →";
+                lbl.text = $"{cont}  >";
             }
         }
 

@@ -93,7 +93,7 @@ namespace SurakshaAR.UI.Builders
             bottomAreaRT.offsetMax = new Vector2(-56f, 186f); // 126px height
 
             var btn = UIHelper.MakeButton("btn-continue", bottomAreaRT,
-                "Continue  →", 42f, UIColors.Hex("#0A192F"), Color.white, 28f);
+                "Continue  >", 42f, UIColors.Hex("#0A192F"), Color.white, 28f);
             var btnRT = btn.GetComponent<RectTransform>();
             UIHelper.Stretch(btnRT, 0, 0, 0, 0);
 

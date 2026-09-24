@@ -251,9 +251,9 @@ namespace SurakshaAR.Localization
                 { AppLanguage.Hindi,   "अभी तक कोई प्रमाणपत्र जारी नहीं हुआ" },
                 { AppLanguage.Santali, "ᱱᱤᱛ ᱫᱷᱟᱹᱵᱤᱡ ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱵᱟᱝ ᱮᱢ ᱟᱠᱟᱱᱟ" } } },
             { "certificate.latestBadge", new Dictionary<AppLanguage, string> {
-                { AppLanguage.English, "★ LATEST ISSUED CREDENTIAL" },
-                { AppLanguage.Hindi,   "★ नवीनतम जारी प्रमाणपत्र" },
-                { AppLanguage.Santali, "★ ᱱᱟᱣᱟ ᱮᱢ ᱟᱠᱟᱱ ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ" } } },
+                { AppLanguage.English, "LATEST ISSUED CREDENTIAL" },
+                { AppLanguage.Hindi,   "नवीनतम जारी प्रमाणपत्र" },
+                { AppLanguage.Santali, "ᱱᱟᱣᱟ ᱮᱢ ᱟᱠᱟᱱ ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ" } } },
             { "certificate.qrSub", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Scan this QR code using Google Lens or any smartphone camera to view official compliance certificate directly." },
                 { AppLanguage.Hindi,   "आधिकारिक प्रमाणपत्र देखने के लिए Google Lens या किसी भी स्मार्टफ़ोन कैमरे से यह क्यूआर कोड स्कैन करें।" },
@@ -279,9 +279,9 @@ namespace SurakshaAR.Localization
                 { AppLanguage.Hindi,   "ऑनलाइन सत्यापित करें" },
                 { AppLanguage.Santali, "ᱚᱱᱞᱟᱭᱤᱱ ᱨᱮ ᱯᱚᱨᱚᱠ ᱢᱮ" } } },
             { "certificate.viewImage", new Dictionary<AppLanguage, string> {
-                { AppLanguage.English, "Open Certificate Image ↗" },
-                { AppLanguage.Hindi,   "प्रमाणपत्र चित्र देखें ↗" },
-                { AppLanguage.Santali, "ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱪᱤᱛᱟᱹᱨ ᱧᱮᱞ ᱢᱮ ↗" } } },
+                { AppLanguage.English, "Open Certificate Image >" },
+                { AppLanguage.Hindi,   "प्रमाणपत्र चित्र देखें >" },
+                { AppLanguage.Santali, "ᱥᱟᱠᱷᱤ ᱥᱟᱠᱟᱢ ᱪᱤᱛᱟᱹᱨ ᱧᱮᱞ ᱢᱮ >" } } },
             { "common.back", new Dictionary<AppLanguage, string> {
                 { AppLanguage.English, "Back" },
                 { AppLanguage.Hindi,   "वापस" },
