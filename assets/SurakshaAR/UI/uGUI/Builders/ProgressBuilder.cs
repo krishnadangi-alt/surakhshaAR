@@ -221,7 +221,7 @@ namespace SurakshaAR.UI.Builders
         {
             var item = new GameObject(rowName);
             item.transform.SetParent(parent, false);
-            UIHelper.SetLayout(item, preferredHeight: 260, minHeight: 220);
+            UIHelper.SetLayout(item, preferredHeight: 285, minHeight: 265);
 
             var itemImg = item.AddComponent<Image>();
             itemImg.color  = locked ? Hex("#F8FAFC") : Color.white;
@@ -232,7 +232,7 @@ namespace SurakshaAR.UI.Builders
             outline.effectColor    = Hex("#E2E8F0");
             outline.effectDistance = new Vector2(1.5f, -1.5f);
 
-            var inner = UIHelper.MakeHorizontal("Inner", item.transform, 18,
+            var inner = UIHelper.MakeHorizontal("Inner", item.transform, 16,
                 new RectOffset(22, 22, 18, 18),
                 childForceWidth: false, childForceHeight: false);
             UIHelper.Stretch(inner, 0, 0, 0, 0);
@@ -258,54 +258,62 @@ namespace SurakshaAR.UI.Builders
             }
 
             // Text column
-            var textCol = UIHelper.MakeVertical("TextCol", inner, 6);
+            var textCol = UIHelper.MakeVertical("TextCol", inner, 8);
             UIHelper.SetLayout(textCol.gameObject, flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 190, minHeight: 130);
-            textCol.GetComponent<VerticalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
+                preferredHeight: 215, minHeight: 180);
+            var textVlg = textCol.GetComponent<VerticalLayoutGroup>();
+            textVlg.childAlignment = TextAnchor.MiddleLeft;
+            textVlg.childControlWidth = true;
+            textVlg.childControlHeight = true;
+            textVlg.childForceExpandHeight = false;
 
             var titleColor = Hex("#0F172A");
             var descColor  = Hex("#64748B");
 
             var titleLbl = UIHelper.MakeLabel($"label-title-{rowName}", textCol,
                 title, 42, titleColor, TextAlignmentOptions.Left, bold: true);
-            titleLbl.lineSpacing = 2f;
+            titleLbl.lineSpacing = 1.06f;
             titleLbl.textWrappingMode = TextWrappingModes.Normal;
-            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 68, minHeight: 48);
+            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 104, minHeight: 52);
 
             var descLbl = UIHelper.MakeLabel($"label-desc-{rowName}", textCol,
-                desc, 32, descColor, TextAlignmentOptions.Left);
-            descLbl.lineSpacing = 3f;
+                desc, 30, descColor, TextAlignmentOptions.Left);
+            descLbl.lineSpacing = 1.15f;
             descLbl.textWrappingMode = TextWrappingModes.Normal;
-            UIHelper.SetLayout(descLbl.gameObject, preferredHeight: 88, minHeight: 56);
+            UIHelper.SetLayout(descLbl.gameObject, preferredHeight: 96, minHeight: 54);
 
             // Right side: status + chevron horizontal row
-            var rightRow = UIHelper.MakeHorizontal("RightRow", inner, 12,
+            var rightRow = UIHelper.MakeHorizontal("RightRow", inner, 10,
                 new RectOffset(0, 0, 0, 0),
                 childForceWidth: false, childForceHeight: false);
-            UIHelper.SetLayout(rightRow.gameObject, preferredWidth: 270, minWidth: 210,
-                preferredHeight: 60);
-            rightRow.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleRight;
+            UIHelper.SetLayout(rightRow.gameObject, preferredWidth: 260, minWidth: 200,
+                preferredHeight: 70);
+            var rrHlg = rightRow.GetComponent<HorizontalLayoutGroup>();
+            rrHlg.childAlignment = TextAnchor.MiddleRight;
+            rrHlg.childControlWidth = true;
+            rrHlg.childControlHeight = true;
 
             if (locked)
             {
                 var notStartedLbl = UIHelper.MakeLabel($"label-status-{rowName}", rightRow,
                     "Not Started", 30, Hex("#64748B"), TextAlignmentOptions.Right, bold: true);
-                UIHelper.SetLayout(notStartedLbl.gameObject, preferredHeight: 42, minHeight: 40);
+                UIHelper.SetLayout(notStartedLbl.gameObject, preferredHeight: 50, minHeight: 40);
             }
             else
             {
                 // Placeholder — will be overwritten by controller with real data
                 var statusLbl = UIHelper.MakeLabel($"label-status-{rowName}", rightRow,
                     "—", 30, Hex("#059669"), TextAlignmentOptions.Right, bold: true);
-                UIHelper.SetLayout(statusLbl.gameObject, preferredHeight: 42, minHeight: 40);
+                statusLbl.textWrappingMode = TextWrappingModes.Normal;
+                UIHelper.SetLayout(statusLbl.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 64, minHeight: 40);
             }
 
             // Arrow chevron
             var arrowColor = Hex("#94A3B8");
             var arrowLbl   = UIHelper.MakeLabel($"arrow-{rowName}", rightRow,
-                ">", 44, arrowColor, TextAlignmentOptions.Right, bold: false);
+                ">", 38, arrowColor, TextAlignmentOptions.Right, bold: true);
             UIHelper.SetLayout(arrowLbl.gameObject,
-                preferredWidth: 28, minWidth: 24, preferredHeight: 42, minHeight: 40);
+                preferredWidth: 22, minWidth: 20, preferredHeight: 40, minHeight: 36);
         }
 
         // =================================================================
@@ -315,7 +323,7 @@ namespace SurakshaAR.UI.Builders
         {
             var card = new GameObject("RetentionCard");
             card.transform.SetParent(parent, false);
-            UIHelper.SetLayout(card, preferredHeight: 620, minHeight: 500);
+            UIHelper.SetLayout(card, preferredHeight: 680, minHeight: 620);
 
             var cardImg = card.AddComponent<Image>();
             cardImg.color  = Color.white;

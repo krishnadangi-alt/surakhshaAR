@@ -18,7 +18,7 @@ namespace SurakshaAR.UI.Builders
     public static class ModuleSelectionBuilder
     {
         private const float NAV_H   = 165f;
-        private const float HDR_H   = 195f;
+        private const float HDR_H   = 220f;
         private static Color Hex(string h) => UIColors.Hex(h);
 
         public static GameObject Build()
@@ -50,7 +50,7 @@ namespace SurakshaAR.UI.Builders
             headerImg.sprite = UIHelper.GetWhiteSprite();
 
             var headerRow = UIHelper.MakeHorizontal("HeaderRow", header, 18,
-                new RectOffset(24, 24, 20, 20),
+                new RectOffset(24, 24, 24, 24),
                 childForceWidth: false, childForceHeight: false);
             UIHelper.Stretch(headerRow, 0, 0, 0, 0);
             headerRow.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
@@ -58,11 +58,11 @@ namespace SurakshaAR.UI.Builders
             // Back button
             var backBtn = UIHelper.MakeButton("btn-back", headerRow, "‹", 48,
                 new Color(1, 1, 1, 0.18f), Color.white, 24);
-            UIHelper.SetLayout(backBtn.gameObject, preferredWidth: 72, minWidth: 72,
-                preferredHeight: 72, minHeight: 72);
+            UIHelper.SetLayout(backBtn.gameObject, preferredWidth: 76, minWidth: 76,
+                preferredHeight: 76, minHeight: 76);
 
-            // Title + subtitle column
-            var titleCol = UIHelper.MakeVertical("TitleCol", headerRow, 8);
+            // Title + subtitle column (ample breathing space, no collision)
+            var titleCol = UIHelper.MakeVertical("TitleCol", headerRow, 10);
             UIHelper.SetLayout(titleCol.gameObject, flexibleWidth: true, flexWidth: 1);
             var tcVlg = titleCol.GetComponent<VerticalLayoutGroup>();
             tcVlg.childAlignment = TextAnchor.MiddleLeft;
@@ -71,15 +71,15 @@ namespace SurakshaAR.UI.Builders
             tcVlg.childForceExpandHeight = false;
 
             var titleLbl = UIHelper.MakeLabel("label-title", titleCol,
-                "Select Training Module", 46, Color.white, TextAlignmentOptions.Left, bold: true);
+                "Select Training Module", 52, Color.white, TextAlignmentOptions.Left, bold: true);
             titleLbl.lineSpacing = 1.05f;
-            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 56, minHeight: 48);
+            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 64, minHeight: 56);
 
             var subLbl = UIHelper.MakeLabel("label-sub", titleCol,
-                "Build Skills for a Safer Tomorrow", 28, Hex("#A7F3D0"), TextAlignmentOptions.Left);
+                "Build Skills for a Safer Tomorrow", 32, Hex("#A7F3D0"), TextAlignmentOptions.Left);
             subLbl.lineSpacing = 1.15f;
             subLbl.textWrappingMode = TextWrappingModes.Normal;
-            UIHelper.SetLayout(subLbl.gameObject, preferredHeight: 68, minHeight: 54);
+            UIHelper.SetLayout(subLbl.gameObject, preferredHeight: 74, minHeight: 56);
 
             // ── 3. Scrollable Module List ─────────────────────────────────
             var scrollRoot = UIHelper.MakeRect("ScrollArea", root.transform);
@@ -145,7 +145,7 @@ namespace SurakshaAR.UI.Builders
             var card = new GameObject(cardName);
             card.transform.SetParent(parent, false);
             UIHelper.SetLayout(card.gameObject, flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 310, minHeight: 295);
+                preferredHeight: 345, minHeight: 325);
 
             var cardImg = card.AddComponent<Image>();
             cardImg.color  = isLocked ? Hex("#F8FAFC") : Color.white;
@@ -168,7 +168,7 @@ namespace SurakshaAR.UI.Builders
             }
 
             // ── Main vertical column ──────────────────────────────────────
-            var mainCol = UIHelper.MakeVertical("MainCol", card.transform, 14,
+            var mainCol = UIHelper.MakeVertical("MainCol", card.transform, 16,
                 new RectOffset(22, 22, 20, 20));
             UIHelper.Stretch(mainCol, 0, 0, 0, 0);
             mainCol.GetComponent<VerticalLayoutGroup>().childForceExpandWidth = true;
@@ -176,13 +176,13 @@ namespace SurakshaAR.UI.Builders
             // ── Top row: icon + title/desc + arrow ────────────────────────
             var topRow = UIHelper.MakeHorizontal("TopRow", mainCol, 16,
                 childForceWidth: false, childForceHeight: false);
-            UIHelper.SetLayout(topRow.gameObject, preferredHeight: 175, minHeight: 160);
+            UIHelper.SetLayout(topRow.gameObject, preferredHeight: 185, minHeight: 170);
             topRow.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
 
-            // Icon box (106×106 rounded square)
+            // Icon box (112×112 rounded square)
             var iconBox = UIHelper.MakeRect("IconBox", topRow);
-            UIHelper.SetLayout(iconBox.gameObject, preferredWidth: 106, minWidth: 106,
-                preferredHeight: 106, minHeight: 106);
+            UIHelper.SetLayout(iconBox.gameObject, preferredWidth: 112, minWidth: 112,
+                preferredHeight: 112, minHeight: 112);
             var iconBoxImg = iconBox.gameObject.AddComponent<Image>();
             iconBoxImg.color  = iconBg;
             UIHelper.SetImageRoundedSprite(iconBoxImg, 22);
@@ -190,7 +190,7 @@ namespace SurakshaAR.UI.Builders
             if (iconSprite != null)
             {
                 var iconGO  = UIHelper.MakeRect("ModuleIcon", iconBox);
-                UIHelper.AnchorCenter(iconGO, 66, 66);
+                UIHelper.AnchorCenter(iconGO, 68, 68);
                 var iconImg = iconGO.gameObject.AddComponent<Image>();
                 iconImg.sprite         = iconSprite;
                 iconImg.preserveAspect = true;
@@ -201,7 +201,7 @@ namespace SurakshaAR.UI.Builders
             // Text column (title + description)
             var textCol = UIHelper.MakeVertical("TextCol", topRow, 8);
             UIHelper.SetLayout(textCol.gameObject, flexibleWidth: true, flexWidth: 1,
-                preferredHeight: 175, minHeight: 160);
+                preferredHeight: 185, minHeight: 170);
             var textVlg = textCol.GetComponent<VerticalLayoutGroup>();
             textVlg.childAlignment = TextAnchor.MiddleLeft;
             textVlg.childControlWidth = true;
@@ -211,39 +211,41 @@ namespace SurakshaAR.UI.Builders
             var titleColor  = Hex("#0F172A");
             var descColor   = Hex("#334155");
 
+            // Title: 42px bold (matching My Progress)
             var titleLbl = UIHelper.MakeLabel($"label-title-{cardName}", textCol,
-                title, 38, titleColor, TextAlignmentOptions.Left, bold: true);
-            titleLbl.lineSpacing = 1.05f;
+                title, 42, titleColor, TextAlignmentOptions.Left, bold: true);
+            titleLbl.lineSpacing = 1.06f;
             titleLbl.textWrappingMode = TextWrappingModes.Normal;
-            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 84, minHeight: 70);
+            UIHelper.SetLayout(titleLbl.gameObject, preferredHeight: 96, minHeight: 70);
 
+            // Description: 30px (matching My Progress)
             var descLbl = UIHelper.MakeLabel($"label-desc-{cardName}", textCol,
-                description, 26, descColor, TextAlignmentOptions.Left);
+                description, 30, descColor, TextAlignmentOptions.Left);
             descLbl.lineSpacing = 1.15f;
             descLbl.textWrappingMode = TextWrappingModes.Normal;
-            UIHelper.SetLayout(descLbl.gameObject, preferredHeight: 74, minHeight: 60);
+            UIHelper.SetLayout(descLbl.gameObject, preferredHeight: 84, minHeight: 60);
 
             // Right arrow
             var arrowColor = isLocked ? Hex("#CBD5E1") : Hex("#94A3B8");
             var arrowLbl   = UIHelper.MakeLabel("ArrowLbl", topRow,
-                ">", 32, arrowColor, TextAlignmentOptions.Right, bold: true);
+                ">", 36, arrowColor, TextAlignmentOptions.Right, bold: true);
             UIHelper.SetLayout(arrowLbl.gameObject,
                 preferredWidth: 26, minWidth: 26, preferredHeight: 40, minHeight: 40);
 
             // ── Bottom row: tag chip + status pill ────────────────────────
             var botRow = UIHelper.MakeHorizontal("BotRow", mainCol, 14,
-                childForceWidth: false, childForceHeight: false);
-            UIHelper.SetLayout(botRow.gameObject, preferredHeight: 52, minHeight: 48);
+                childForceWidth: false, childForceHeight: false,
+                childControlWidth: true, childControlHeight: true);
+            UIHelper.SetLayout(botRow.gameObject, preferredHeight: 56, minHeight: 52);
             var botHlg = botRow.GetComponent<HorizontalLayoutGroup>();
             botHlg.childAlignment = TextAnchor.MiddleLeft;
-            botHlg.childControlWidth = false;
-            botHlg.childControlHeight = false;
 
             // "📖 Training Module" left chip
             var chip = UIHelper.MakeHorizontal("TypeChip", botRow, 10,
                 new RectOffset(16, 16, 8, 8),
-                childForceWidth: false, childForceHeight: false);
-            UIHelper.SetLayout(chip.gameObject, preferredWidth: 235, minWidth: 210, preferredHeight: 50, minHeight: 46);
+                childForceWidth: false, childForceHeight: false,
+                childControlWidth: true, childControlHeight: true);
+            UIHelper.SetLayout(chip.gameObject, preferredWidth: 250, minWidth: 220, preferredHeight: 52, minHeight: 48);
             chip.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
             var chipImg = chip.gameObject.AddComponent<Image>();
             chipImg.color  = Hex("#F1F5F9");
@@ -258,17 +260,16 @@ namespace SurakshaAR.UI.Builders
             bookImg.preserveAspect = true;
 
             var chipLbl = UIHelper.MakeLabel($"label-type-{cardName}", chip,
-                typeLabel ?? "Training Module", 25, Hex("#334155"), TextAlignmentOptions.Left, bold: true, wrap: false);
+                typeLabel ?? "Training Module", 26, Hex("#334155"), TextAlignmentOptions.Left, bold: true, wrap: false);
             chipLbl.overflowMode = TextOverflowModes.Ellipsis;
-            UIHelper.SetLayout(chipLbl.gameObject, preferredHeight: 34, minHeight: 30);
+            UIHelper.SetLayout(chipLbl.gameObject, preferredHeight: 36, minHeight: 30);
 
-            // Status pill (Available / Locked / THEORY / ASSESSMENT)
-            var pillGO  = new GameObject("StatusPill");
-            pillGO.transform.SetParent(botRow, false);
-            UIHelper.SetLayout(pillGO.gameObject,
-                preferredWidth: 320, minWidth: 270, preferredHeight: 50, minHeight: 46);
+            // Status pill (Available / Locked / THEORY / ASSESSMENT) — properly sized RectTransform prevents text overlap
+            var pillRT = UIHelper.MakeRect("StatusPill", botRow);
+            UIHelper.SetLayout(pillRT.gameObject,
+                preferredWidth: 360, minWidth: 300, preferredHeight: 52, minHeight: 48);
 
-            var pillImg = pillGO.AddComponent<Image>();
+            var pillImg = pillRT.gameObject.AddComponent<Image>();
             if (isLocked)
             {
                 pillImg.color = Hex("#E2E8F0");
@@ -281,9 +282,10 @@ namespace SurakshaAR.UI.Builders
             }
             UIHelper.SetImageRoundedSprite(pillImg, 14);
 
-            var pillRow = UIHelper.MakeHorizontal("PillRow", pillGO.transform, 8,
+            var pillRow = UIHelper.MakeHorizontal("PillRow", pillRT, 8,
                 new RectOffset(16, 16, 8, 8),
-                childForceWidth: false, childForceHeight: false);
+                childForceWidth: false, childForceHeight: false,
+                childControlWidth: true, childControlHeight: true);
             UIHelper.Stretch(pillRow, 0, 0, 0, 0);
             pillRow.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleCenter;
 
@@ -300,10 +302,10 @@ namespace SurakshaAR.UI.Builders
 
             var pillLbl = UIHelper.MakeLabel($"label-status-{cardName}", pillRow,
                 statusLabel ?? (isLocked ? "Locked" : "Available"),
-                25, isLocked ? Hex("#64748B") : statusColor,
+                26, isLocked ? Hex("#64748B") : statusColor,
                 TextAlignmentOptions.Center, bold: true, wrap: false);
             pillLbl.overflowMode = TextOverflowModes.Ellipsis;
-            UIHelper.SetLayout(pillLbl.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 34, minHeight: 30);
+            UIHelper.SetLayout(pillLbl.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 36, minHeight: 30);
 
             return card;
         }

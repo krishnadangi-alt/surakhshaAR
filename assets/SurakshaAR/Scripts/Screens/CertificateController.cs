@@ -434,20 +434,20 @@ namespace SurakshaAR.Screens
 
         private void CreateCertificateCard(Transform parent, CertApiItem cert, string baseUrl)
         {
-            var card = UIHelper.MakeVertical($"CertCard_{cert.id}", parent, 12, new RectOffset(22, 22, 20, 20));
-            UIHelper.SetLayout(card.gameObject, preferredHeight: 285, minHeight: 270);
+            var card = UIHelper.MakeVertical($"CertCard_{cert.id}", parent, 14, new RectOffset(24, 24, 22, 22));
+            UIHelper.SetLayout(card.gameObject, preferredHeight: 340, minHeight: 320);
             var cardImg = card.gameObject.AddComponent<Image>();
             cardImg.color = UIColors.Card;
-            UIHelper.SetImageRoundedSprite(cardImg, 20);
+            UIHelper.SetImageRoundedSprite(cardImg, 22);
 
-            // Row 1: Module Title & Status Badge
-            var row1 = UIHelper.MakeHorizontal("Row1", card, 12);
-            UIHelper.SetLayout(row1.gameObject, preferredHeight: 44);
+            // Row 1: Module Title & Status Badge (42px bold matching My Progress)
+            var row1 = UIHelper.MakeHorizontal("Row1", card, 14);
+            UIHelper.SetLayout(row1.gameObject, preferredHeight: 52);
 
-            var title = UIHelper.MakeLabel("Title", row1, cert.module_snapshot ?? "Fire & Explosion Response", 36, UIColors.PrimaryDark, bold: true);
-            UIHelper.SetLayout(title.gameObject, flexibleWidth: true, flexWidth: 1);
+            var title = UIHelper.MakeLabel("Title", row1, cert.module_snapshot ?? "Fire & Explosion Response", 42, UIColors.PrimaryDark, bold: true);
+            UIHelper.SetLayout(title.gameObject, flexibleWidth: true, flexWidth: 1, preferredHeight: 52);
 
-            // Status Badge
+            // Status Badge (26px bold)
             string statusStr = cert.status ?? "PENDING_REVIEW";
             Color badgeBg = UIColors.Hex("#FEF3C7");
             Color badgeText = UIColors.Hex("#B45309");
@@ -473,36 +473,36 @@ namespace SurakshaAR.Screens
             }
 
             var badgeBox = UIHelper.MakeRect("StatusBadge", row1);
-            UIHelper.SetLayout(badgeBox.gameObject, preferredWidth: 190, preferredHeight: 40);
+            UIHelper.SetLayout(badgeBox.gameObject, preferredWidth: 200, preferredHeight: 46);
             var bImg = badgeBox.gameObject.AddComponent<Image>();
             bImg.color = badgeBg;
-            UIHelper.SetImageRoundedSprite(bImg, 12);
-            var bTxt = UIHelper.MakeLabel("StatusText", badgeBox, statusDisplay, 24, badgeText, TextAlignmentOptions.Center, bold: true);
+            UIHelper.SetImageRoundedSprite(bImg, 14);
+            var bTxt = UIHelper.MakeLabel("StatusText", badgeBox, statusDisplay, 26, badgeText, TextAlignmentOptions.Center, bold: true);
             UIHelper.Stretch(bTxt.GetComponent<RectTransform>(), 0, 0, 0, 0);
 
-            // Row 2: Worker Recipient Name
+            // Row 2: Worker Recipient Name (30px bold)
             string workerName = !string.IsNullOrEmpty(cert.worker_name_snapshot) ? cert.worker_name_snapshot : "Krishna";
             var row2Worker = UIHelper.MakeLabel("WorkerLbl", card,
                 $"Recipient: {workerName}  •  {cert.employee_id_snapshot ?? "EMP-PROD-CERT"}",
                 30, UIColors.Hex("#0F172A"), bold: true);
-            UIHelper.SetLayout(row2Worker.gameObject, preferredHeight: 36);
+            UIHelper.SetLayout(row2Worker.gameObject, preferredHeight: 38);
 
-            // Row 3: Score & Competency
+            // Row 3: Score & Competency (30px bold)
             var row2 = UIHelper.MakeLabel("ScoreLbl", card,
                 $"Score: {cert.score_snapshot:F0} / 100  •  Competency: {cert.competency_snapshot ?? "Grade A"}",
-                28, UIColors.TextPrimary, bold: true);
-            UIHelper.SetLayout(row2.gameObject, preferredHeight: 34);
+                30, UIColors.TextPrimary, bold: true);
+            UIHelper.SetLayout(row2.gameObject, preferredHeight: 38);
 
-            // Row 4: Meta (Cert ID & Date)
+            // Row 4: Meta (Cert ID & Date) (26px)
             string dateStr = cert.issued_at != null ? cert.issued_at.Split('T')[0] : "Pending Review";
             var row3 = UIHelper.MakeLabel("MetaLbl", card,
                 $"ID: {cert.certificate_number}  •  Date: {dateStr}",
-                24, UIColors.TextSecondary);
-            UIHelper.SetLayout(row3.gameObject, preferredHeight: 30);
+                26, UIColors.TextSecondary);
+            UIHelper.SetLayout(row3.gameObject, preferredHeight: 34);
 
-            // Row 5: Actions (View Image, Download, Verify)
+            // Row 5: Actions (View Image, Download, Verify) (28px bold, height 70)
             var row4 = UIHelper.MakeHorizontal("ActionsRow", card, 12);
-            UIHelper.SetLayout(row4.gameObject, preferredHeight: 64);
+            UIHelper.SetLayout(row4.gameObject, preferredHeight: 70);
 
             bool isIssued = statusStr == "ISSUED" || statusStr == "active";
 
@@ -511,15 +511,15 @@ namespace SurakshaAR.Screens
             var loc = AppManager.Instance?.Localization;
             string viewImgText = loc?.Get("certificate.viewImage") ?? "View Image >";
             if (viewImgText.Contains("↗")) viewImgText = viewImgText.Replace("↗", ">");
-            var imgBtn = UIHelper.MakeButton("btn-open-image", row4, viewImgText, 26, UIColors.Hex("#FEF3C7"), UIColors.Hex("#B45309"), 14);
-            UIHelper.SetLayout(imgBtn.gameObject, preferredWidth: 200, preferredHeight: 64);
+            var imgBtn = UIHelper.MakeButton("btn-open-image", row4, viewImgText, 28, UIColors.Hex("#FEF3C7"), UIColors.Hex("#B45309"), 14);
+            UIHelper.SetLayout(imgBtn.gameObject, preferredWidth: 205, preferredHeight: 70);
             imgBtn.onClick.AddListener(() => Application.OpenURL(imgUrl));
 
             string dlText = isIssued ? (loc?.Get("certificate.downloadPdf") ?? "Download PDF") : "PDF Unavailable";
-            var dlBtn = UIHelper.MakeButton("btn-dl", row4, dlText, 26,
+            var dlBtn = UIHelper.MakeButton("btn-dl", row4, dlText, 28,
                 isIssued ? UIColors.SafetyGreen : UIColors.Hex("#E2E8F0"),
                 isIssued ? Color.white : UIColors.Hex("#94A3B8"), 14);
-            UIHelper.SetLayout(dlBtn.gameObject, preferredWidth: 220, preferredHeight: 64);
+            UIHelper.SetLayout(dlBtn.gameObject, preferredWidth: 220, preferredHeight: 70);
 
             if (isIssued)
             {
@@ -535,8 +535,8 @@ namespace SurakshaAR.Screens
             }
 
             string verifyText = loc?.Get("certificate.verifyOnline") ?? "Verify Online";
-            var viewBtn = UIHelper.MakeButton("btn-view", row4, verifyText, 26, Color.white, UIColors.PrimaryDark, 14);
-            UIHelper.SetLayout(viewBtn.gameObject, preferredWidth: 190, preferredHeight: 64);
+            var viewBtn = UIHelper.MakeButton("btn-view", row4, verifyText, 28, Color.white, UIColors.PrimaryDark, 14);
+            UIHelper.SetLayout(viewBtn.gameObject, preferredWidth: 195, preferredHeight: 70);
             var vBorder = viewBtn.gameObject.AddComponent<Outline>();
             vBorder.effectColor = UIColors.Border;
             vBorder.effectDistance = new Vector2(1, -1);
