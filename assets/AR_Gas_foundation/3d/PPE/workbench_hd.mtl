@@ -1,0 +1,13 @@
+newmtl 01_Steel
+Ka 0.2 0.2 0.2
+Kd 0.3 0.32 0.35
+Ks 0.5 0.5 0.5
+Ns 30
+illum 2
+
+newmtl 02_Wood
+Ka 0.2 0.2 0.2
+Kd 0.38 0.40 0.43
+Ks 0.5 0.5 0.5
+Ns 30
+illum 2

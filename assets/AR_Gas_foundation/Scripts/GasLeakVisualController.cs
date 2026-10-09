@@ -2,6 +2,13 @@ using UnityEngine;
 
 public class GasLeakVisualController : MonoBehaviour
 {
+    public static GasLeakVisualController Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+    }
+
     [Header("Gas Appearance")]
     [SerializeField] private Color gasColor = new Color(0.82f, 0.94f, 0.86f, 0.16f);
     [SerializeField] private float emissionRate = 24f;
@@ -39,49 +46,33 @@ public class GasLeakVisualController : MonoBehaviour
         if (cylinder == null) return;
 
         Transform leakPoint = FindLeakPoint(cylinder.transform);
-
-        if (leakPoint != null)
+        if (leakPoint == null)
         {
-            Debug.Log("[GasAR] GAS LEAK: Leak source found at " + leakPoint.name + " (local pos: " + leakPoint.localPosition + ")");
-        }
-        else
-        {
-            Debug.LogWarning("[GasAR] Gas Leak: No LeakPoint found on cylinder. Creating default at upper valve.");
             GameObject lpObj = new GameObject("LeakPoint");
             lpObj.transform.SetParent(cylinder.transform, false);
-            lpObj.transform.localPosition = new Vector3(0f, 1.05f, 0f);
-            lpObj.transform.localRotation = Quaternion.identity;
             leakPoint = lpObj.transform;
         }
 
-        if (gasLeakVFXPrefab != null)
+        // Align leakPoint to the physical upper valve / regulator connection point
+        GameObject regulatorObj = GameObject.Find("Real_Gas_Regulator");
+        if (regulatorObj != null)
         {
-            gasEffectObject = Instantiate(gasLeakVFXPrefab, leakPoint);
-            gasEffectObject.transform.localPosition = Vector3.up * leakOffset;
-            gasEffectObject.transform.localRotation = Quaternion.identity;
-            gasEffectObject.name = "REALISTIC_GAS_LEAK_VFX";
-
-            gasParticles = gasEffectObject.GetComponentInChildren<ParticleSystem>(true);
-            if (gasParticles == null)
-            {
-                Debug.LogError("[GasAR] GasLeakVFX prefab has no ParticleSystem.");
-                Destroy(gasEffectObject);
-                gasEffectObject = null;
-                return;
-            }
-
-            ConfigureParticleSystem(gasParticles);
+            leakPoint.position = regulatorObj.transform.position + new Vector3(-0.035f, -0.01f, 0f);
         }
         else
         {
-            gasEffectObject = new GameObject("REALISTIC_GAS_LEAK_VFX");
-            gasEffectObject.transform.SetParent(leakPoint, false);
-            gasEffectObject.transform.localPosition = Vector3.up * leakOffset;
-            gasEffectObject.transform.localRotation = Quaternion.identity;
-
-            gasParticles = gasEffectObject.AddComponent<ParticleSystem>();
-            ConfigureParticleSystem(gasParticles);
+            leakPoint.position = cylinder.transform.position + new Vector3(0.04f, 0.61f, 0f);
         }
+
+        Debug.Log($"[GasAR] GAS LEAK: Leak source positioned at {leakPoint.name} (world pos: {leakPoint.position})");
+
+        gasEffectObject = new GameObject("REALISTIC_GAS_LEAK_VFX");
+        gasEffectObject.transform.SetParent(leakPoint, false);
+        gasEffectObject.transform.localPosition = Vector3.zero;
+        gasEffectObject.transform.localRotation = Quaternion.identity;
+
+        gasParticles = gasEffectObject.AddComponent<ParticleSystem>();
+        ConfigureParticleSystem(gasParticles);
 
         gasParticles.Play(true);
         Debug.Log("[GasAR] REALISTIC GAS LEAK VFX ATTACHED TO LEAK POINT & STARTED");
@@ -118,53 +109,49 @@ public class GasLeakVisualController : MonoBehaviour
         ParticleSystem.MainModule main = ps.main;
         main.loop = true;
         main.playOnAwake = false;
-        main.duration = 5f;
-        main.startLifetime = new ParticleSystem.MinMaxCurve(
-            particleLifetime * 0.65f,
-            particleLifetime
-        );
-        main.startSpeed = new ParticleSystem.MinMaxCurve(0.01f, 0.045f);
-        main.startSize = new ParticleSystem.MinMaxCurve(
-            startSize * 0.7f,
-            startSize
-        );
-        main.startColor = gasColor;
+        main.duration = 4f;
+        main.startLifetime = new ParticleSystem.MinMaxCurve(1.1f, 1.7f); // Short lifetime: limits vertical column and disperses
+        main.startSpeed = new ParticleSystem.MinMaxCurve(0.10f, 0.20f); // Gentle escape speed
+        main.startSize = new ParticleSystem.MinMaxCurve(0.04f, 0.07f);  // Starts small at the nozzle (4-7cm)
+        main.startColor = new Color(0.92f, 0.95f, 0.97f, 0.25f);        // Soft semi-transparent white/very-light-gray vapor
         main.simulationSpace = ParticleSystemSimulationSpace.World;
+        main.scalingMode = ParticleSystemScalingMode.Local;
         main.maxParticles = 160;
 
         ParticleSystem.EmissionModule emission = ps.emission;
         emission.enabled = true;
-        emission.rateOverTime = emissionRate;
+        emission.rateOverTime = 38f; // Dense overlapping puffs that merge seamlessly into vapor
 
         ParticleSystem.ShapeModule shape = ps.shape;
         shape.enabled = true;
-        shape.shapeType = ParticleSystemShapeType.Sphere;
-        shape.radius = 0.012f;
+        shape.shapeType = ParticleSystemShapeType.Cone;
+        shape.angle = 16f;
+        shape.radius = 0.012f; // Localized at the connection
 
         ParticleSystem.VelocityOverLifetimeModule velocity = ps.velocityOverLifetime;
         velocity.enabled = true;
         velocity.space = ParticleSystemSimulationSpace.World;
-        velocity.x = new ParticleSystem.MinMaxCurve(-outwardSpeed, outwardSpeed);
-        velocity.y = new ParticleSystem.MinMaxCurve(upwardSpeed * 0.45f, upwardSpeed);
-        velocity.z = new ParticleSystem.MinMaxCurve(-outwardSpeed, outwardSpeed);
+        velocity.x = new ParticleSystem.MinMaxCurve(-0.035f, 0.035f);
+        velocity.y = new ParticleSystem.MinMaxCurve(0.08f, 0.17f); // Gentle rising
+        velocity.z = new ParticleSystem.MinMaxCurve(-0.035f, 0.035f);
 
         ParticleSystem.NoiseModule noise = ps.noise;
         noise.enabled = true;
-        noise.strength = 0.28f;
-        noise.frequency = 0.35f;
-        noise.scrollSpeed = 0.18f;
+        noise.strength = 0.12f;
+        noise.frequency = 0.45f;
+        noise.scrollSpeed = 0.20f;
         noise.octaveCount = 2;
 
         ParticleSystem.SizeOverLifetimeModule size = ps.sizeOverLifetime;
         size.enabled = true;
 
+        // Billows and expands smoothly as it moves away from nozzle
         AnimationCurve sizeCurve = new AnimationCurve(
-            new Keyframe(0f, 0.16f),
-            new Keyframe(0.18f, 0.38f),
-            new Keyframe(0.45f, 0.72f),
-            new Keyframe(1f, 1f)
+            new Keyframe(0f, 0.35f),
+            new Keyframe(0.25f, 0.70f),
+            new Keyframe(0.60f, 1.20f),
+            new Keyframe(1f, 1.65f)
         );
-
         size.size = new ParticleSystem.MinMaxCurve(1f, sizeCurve);
 
         ParticleSystem.ColorOverLifetimeModule color = ps.colorOverLifetime;
@@ -174,26 +161,17 @@ public class GasLeakVisualController : MonoBehaviour
         gradient.SetKeys(
             new[]
             {
-                new GradientColorKey(
-                    new Color(gasColor.r, gasColor.g, gasColor.b),
-                    0f
-                ),
-                new GradientColorKey(
-                    new Color(gasColor.r, gasColor.g, gasColor.b),
-                    0.45f
-                ),
-                new GradientColorKey(
-                    new Color(gasColor.r, gasColor.g, gasColor.b),
-                    1f
-                )
+                new GradientColorKey(new Color(0.93f, 0.96f, 0.98f), 0f),
+                new GradientColorKey(new Color(0.90f, 0.94f, 0.96f), 0.5f),
+                new GradientColorKey(new Color(0.88f, 0.92f, 0.95f), 1f)
             },
             new[]
             {
-                new GradientAlphaKey(0f, 0f),
-                new GradientAlphaKey(gasColor.a, 0.08f),
-                new GradientAlphaKey(gasColor.a * 0.8f, 0.32f),
-                new GradientAlphaKey(gasColor.a * 0.42f, 0.72f),
-                new GradientAlphaKey(0f, 1f)
+                new GradientAlphaKey(0.0f, 0f),
+                new GradientAlphaKey(0.35f, 0.12f),  // Dense near the leak source (first 20-30 cm)
+                new GradientAlphaKey(0.22f, 0.40f),  // Gradually expands and softens
+                new GradientAlphaKey(0.07f, 0.70f),  // Disperses
+                new GradientAlphaKey(0.0f, 1.0f)     // Fully dissipates
             }
         );
 
@@ -247,7 +225,7 @@ public class GasLeakVisualController : MonoBehaviour
 
         gasTexture = CreateSoftGasTexture();
 
-        // URP & Standard Transparent Particle Configuration (Eliminates black card/rectangle artifacts)
+        // URP & Standard Transparent Particle Configuration
         if (gasMaterial.HasProperty("_Surface")) gasMaterial.SetFloat("_Surface", 1f); // 1 = Transparent
         if (gasMaterial.HasProperty("_Blend")) gasMaterial.SetFloat("_Blend", 0f); // 0 = Alpha Blend
         if (gasMaterial.HasProperty("_SrcBlend")) gasMaterial.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha);
@@ -265,9 +243,9 @@ public class GasLeakVisualController : MonoBehaviour
         if (gasMaterial.HasProperty("_MainTex"))
             gasMaterial.SetTexture("_MainTex", gasTexture);
         if (gasMaterial.HasProperty("_BaseColor"))
-            gasMaterial.SetColor("_BaseColor", gasColor);
+            gasMaterial.SetColor("_BaseColor", Color.white);
         if (gasMaterial.HasProperty("_Color"))
-            gasMaterial.SetColor("_Color", gasColor);
+            gasMaterial.SetColor("_Color", Color.white);
 
         gasMaterial.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
 
@@ -297,8 +275,12 @@ public class GasLeakVisualController : MonoBehaviour
                 float ny = (y / (float)(resolution - 1)) * 2f - 1f;
 
                 float distance = Mathf.Sqrt(nx * nx + ny * ny);
-                float alpha = Mathf.Clamp01(1f - distance);
-                alpha = Mathf.Pow(alpha, 2.2f);
+                float r = Mathf.Clamp01(distance);
+                // Gaussian-like smooth cubic radial falloff to eliminate any harsh dots/points
+                float alpha = Mathf.Clamp01(1f - r);
+                alpha = alpha * alpha * (3f - 2f * alpha);
+                // Soft vapor opacity
+                alpha *= 0.50f;
 
                 texture.SetPixel(x, y, new Color(1f, 1f, 1f, alpha));
             }
@@ -306,6 +288,16 @@ public class GasLeakVisualController : MonoBehaviour
 
         texture.Apply();
         return texture;
+    }
+
+    public void StartLeak()
+    {
+        StartGasLeak(gameObject);
+    }
+
+    public void StopLeak()
+    {
+        StopGasLeak();
     }
 
     public void StopGasLeak()

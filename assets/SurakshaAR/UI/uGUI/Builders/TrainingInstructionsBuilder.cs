@@ -49,6 +49,7 @@ namespace SurakshaAR.UI.Builders
             var rootImg = root.AddComponent<Image>();
             rootImg.color  = Hex("#F8FAFC");
             rootImg.sprite = UIHelper.GetWhiteSprite();
+            rootImg.raycastTarget = false;
 
             // ── Scrollable Body ──────────────────────────────────────────
             var scrollRoot = UIHelper.MakeRect("ScrollArea", root.transform);
@@ -421,6 +422,7 @@ namespace SurakshaAR.UI.Builders
             var bg = bar.gameObject.AddComponent<Image>();
             bg.color  = Color.white;
             bg.sprite = UIHelper.GetWhiteSprite();
+            bg.raycastTarget = false;
 
             var topBorder = UIHelper.MakeRect("TopBorder", bar);
             topBorder.anchorMin = new Vector2(0, 1);
@@ -429,6 +431,7 @@ namespace SurakshaAR.UI.Builders
             topBorder.sizeDelta = new Vector2(0, 1.5f);
             var tbImg = topBorder.gameObject.AddComponent<Image>();
             tbImg.color = Hex("#E2E8F0");
+            tbImg.raycastTarget = false;
 
             var btn = UIHelper.MakeButton("btn-start-training", bar,
                 "Start Training", 36, SafetyGreen, Color.white, 20);

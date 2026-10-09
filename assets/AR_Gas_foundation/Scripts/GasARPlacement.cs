@@ -330,7 +330,11 @@ public class GasARPlacement : MonoBehaviour
 
         gasEnvironmentRoot.localScale = Vector3.one;
 
-        environmentBuilder.BuildEnvironment();
+        // Preserve pre-authored workstation hierarchy in AR_gas_Foundation scene — do NOT rebuild at runtime.
+        if (!gasEnvironmentRoot.gameObject.activeSelf)
+        {
+            gasEnvironmentRoot.gameObject.SetActive(true);
+        }
 
         ARAnchor existingAnchor = gasEnvironmentRoot.GetComponent<ARAnchor>();
         if (existingAnchor != null)

@@ -91,7 +91,7 @@ public class GasEnvironmentBuilder : MonoBehaviour
             currentGasCylinder = Instantiate(gasCylinderPrefab, transform, false);
             currentGasCylinder.name = "Realistic_Gas_Cylinder";
             currentGasCylinder.transform.localPosition = new Vector3(0.00f, 0.00f, 0.00f);
-            currentGasCylinder.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+            currentGasCylinder.transform.localRotation = Quaternion.identity;
             SetTargetPhysicalSize(currentGasCylinder, 1.20f);
 
             SnapMeshLowestLocalYToSurface(currentGasCylinder, transform, 0.00f, 0.00f);
@@ -157,42 +157,36 @@ public class GasEnvironmentBuilder : MonoBehaviour
         currentIndustrialEnvironment.transform.SetParent(transform, false);
         currentIndustrialEnvironment.transform.localPosition = Vector3.zero;
 
-        // RIGHT ZONE - LARGE CONFINED SPACE TRAINING STATION (Centered at X = +2.60m, Z = 0.00m)
+        // RIGHT ZONE - LARGE CONFINED SPACE TRAINING STATION (Centered at X = +3.00m, Z = 0.00m)
         GameObject confinedRoot = new GameObject("Confined_Space_Training_Area");
         confinedRoot.transform.SetParent(currentIndustrialEnvironment.transform, false);
-        confinedRoot.transform.localPosition = new Vector3(2.85f, 0.00f, 0.00f);
+        confinedRoot.transform.localPosition = new Vector3(3.00f, 0.00f, 0.00f);
 
-        // PRIMARY CONFINED SPACE MODEL: Real 53.7 MB industrial GLB asset (industrial_tanks_and_equipment.glb)
+        // PRIMARY CONFINED SPACE MODEL: Real industrial GLB asset (industrial_tanks_and_equipment.glb)
         GameObject vesselSource = industrialTanksPrefab != null ? industrialTanksPrefab : confinedVesselPrefab;
         if (vesselSource != null)
         {
             GameObject indEquipment = Instantiate(vesselSource, confinedRoot.transform, false);
             indEquipment.name = "Industrial_Tanks_And_Equipment";
-            // Remove clutter & physically assemble essential components:
-            // Object_6: Main Vessel & Entry Manhole
-            // Object_7: Supporting Frame & Legs
-            // Object_10: Ladder, Platform, & Railings
+
+            // Keep ALL sub-mesh components active and intact
             Transform node0 = indEquipment.transform.Find("root/GLTF_SceneRootNode/_0");
             if (node0 != null)
             {
                 for (int i = 0; i < node0.childCount; i++)
                 {
                     Transform child = node0.GetChild(i);
-                    bool isEssential = (child.name == "Object_6" || child.name == "Object_7" || child.name == "Object_10");
-                    child.gameObject.SetActive(isEssential);
+                    child.gameObject.SetActive(true);
+                    child.localPosition = Vector3.zero;
+                    child.localRotation = Quaternion.identity;
                 }
-
-                Transform obj6 = node0.Find("Object_6");
-                Transform obj7 = node0.Find("Object_7");
-                Transform obj10 = node0.Find("Object_10");
-
-                // Local physical assembly: Reset obj6, obj7, obj10 to Vector3.zero to restore native GLB model authoring alignment
-                if (obj7 != null) { obj7.localPosition = Vector3.zero; obj7.localRotation = Quaternion.identity; }
-                if (obj6 != null) { obj6.localPosition = Vector3.zero; obj6.localRotation = Quaternion.identity; }
-                if (obj10 != null) { obj10.localPosition = Vector3.zero; obj10.localRotation = Quaternion.identity; }
             }
 
-            SetTargetPhysicalSize(indEquipment, 5.025f); // 50% increase (1.5x scale, target height 1.866m)
+            // Apply UPRIGHT Rotation: Standing the main vessel cylinder vertically
+            indEquipment.transform.localRotation = Quaternion.Euler(0f, 90f, 90f);
+
+            // Scale to 2.80m height and snap lowest Y to ground plane (0.00m)
+            SetTargetPhysicalSize(indEquipment, 2.80f);
             SnapMeshLowestLocalYToSurface(indEquipment, confinedRoot.transform, 0.00f, 0.00f);
 
             Renderer[] rList = indEquipment.GetComponentsInChildren<Renderer>(false);
@@ -200,39 +194,6 @@ public class GasEnvironmentBuilder : MonoBehaviour
             {
                 Bounds b = GetLocalCombinedBounds(rList, confinedRoot.transform);
                 Debug.Log($"[PROPER_ARRANGEMENT_BOUNDS] Industrial_Tanks_And_Equipment local bounds.min.y = {b.min.y:F4}m, bounds.max.y = {b.max.y:F4}m, height = {b.size.y:F4}m");
-            }
-        }
-
-        if (ventilationFanPrefab != null)
-        {
-            GameObject fan = Instantiate(ventilationFanPrefab, confinedRoot.transform, false);
-            fan.name = "Axial_Ventilation_Fan";
-            fan.transform.localPosition = new Vector3(0.30f, 0.00f, 1.05f);
-            fan.transform.localRotation = Quaternion.Euler(0f, -140f, 0f); // Duct facing vessel manhole entry
-            SetTargetPhysicalSize(fan, 0.87f); // 1.5x scale
-            SnapMeshLowestLocalYToSurface(fan, confinedRoot.transform, 0.00f, 0.00f);
-
-            Renderer[] rList = fan.GetComponentsInChildren<Renderer>(false);
-            if (rList.Length > 0)
-            {
-                Bounds b = GetLocalCombinedBounds(rList, confinedRoot.transform);
-                Debug.Log($"[BOUNDS_LOG] Axial_Ventilation_Fan local bounds.min.y = {b.min.y:F4}m, bounds.max.y = {b.max.y:F4}m");
-            }
-        }
-
-        if (lifelinePrefab != null)
-        {
-            GameObject lifeline = Instantiate(lifelinePrefab, confinedRoot.transform, false);
-            lifeline.name = "Self_Retracting_Lifeline";
-            lifeline.transform.localPosition = new Vector3(1.25f, 2.22f, 0.00f);
-            lifeline.transform.localRotation = Quaternion.identity;
-            SetTargetPhysicalSize(lifeline, 0.78f); // 1.5x scale
-
-            Renderer[] rList = lifeline.GetComponentsInChildren<Renderer>(false);
-            if (rList.Length > 0)
-            {
-                Bounds b = GetLocalCombinedBounds(rList, confinedRoot.transform);
-                Debug.Log($"[BOUNDS_LOG] Self_Retracting_Lifeline local bounds.min.y = {b.min.y:F4}m, bounds.max.y = {b.max.y:F4}m");
             }
         }
 
@@ -354,7 +315,7 @@ public class GasEnvironmentBuilder : MonoBehaviour
         pipeAssemblyObj.transform.localScale = Vector3.one;
         currentPipelineAssembly = pipeAssemblyObj;
 
-        Vector3 cylNeckPos = new Vector3(0.00f, 1.150f, 0.00f);
+        Vector3 cylNeckPos = new Vector3(0.00f, 1.220f, 0.00f);
         float pipeRadius = 0.018f;
         float flangeRadius = 0.024f;
         float flangeThickness = 0.005f;

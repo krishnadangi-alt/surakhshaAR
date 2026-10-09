@@ -4,12 +4,15 @@ using UnityEngine;
 
 namespace SurakshaAR.Editor
 {
-    [InitializeOnLoad]
+    // [InitializeOnLoad]
     public static class DevanagariFontAssetCreator
     {
         static DevanagariFontAssetCreator()
         {
-            EditorApplication.delayCall += EnsureAllFontAssets;
+            if (!Application.isBatchMode)
+            {
+                EditorApplication.delayCall += EnsureAllFontAssets;
+            }
         }
 
         [MenuItem("SurakshaAR/Ensure All Font Assets (Hindi + Santali)")]

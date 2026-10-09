@@ -129,16 +129,16 @@ namespace SurakshaAR.Screens
                 if (c2Desc != null && loc != null) c2Desc.text = loc.Get("scenario.gas.confined.desc");
             }
 
-            // Card 3: 03 Gas Cylinder Leak
+            // Card 3: 03 Gas Leak Response & Emergency Isolation
             _cardScenario3 = UIHelper.FindButton(root, "card-scenario-3");
             if (_cardScenario3 != null)
             {
                 _cardScenario3.onClick.RemoveAllListeners();
-                _cardScenario3.onClick.AddListener(() => OnSelectScenario(103, "Gas Cylinder Leak"));
+                _cardScenario3.onClick.AddListener(() => OnSelectScenario(103, "Gas Leak Response & Emergency Isolation"));
                 var c3Title = _cardScenario3.transform.Find("Inner/TextCol/Title")?.GetComponent<TextMeshProUGUI>();
-                if (c3Title != null && loc != null) c3Title.text = loc.Get("scenario.gas.cylinder.title");
+                if (c3Title != null) c3Title.text = "Gas Leak Response & Emergency Isolation";
                 var c3Desc = _cardScenario3.transform.Find("Inner/TextCol/Desc")?.GetComponent<TextMeshProUGUI>();
-                if (c3Desc != null && loc != null) c3Desc.text = loc.Get("scenario.gas.cylinder.desc");
+                if (c3Desc != null) c3Desc.text = "Detect gas leak plume, verify multi-gas detector, select PPE, and isolate red cylinder valve.";
             }
 
             // Bottom navigation

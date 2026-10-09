@@ -31,25 +31,46 @@ namespace SurakshaAR.Screens
                 ? AppState.Instance.CurrentLanguage
                 : (loc != null ? loc.CurrentLanguage : AppLanguage.English);
 
+            bool isGasModule = (AppState.Instance?.SelectedModule?.id == ModuleId.GasLeakConfinedSpace) ||
+                               (AppState.Instance != null && AppState.Instance.SelectedScenarioIndex >= 100);
+
             _btnBack = UIHelper.FindButton(root, "btn-back");
             if (_btnBack != null)
             {
                 _btnBack.onClick.RemoveAllListeners();
-                _btnBack.onClick.AddListener(OnBack);
+                _btnBack.onClick.AddListener(() =>
+                {
+                    Debug.Log("[GAS UI INPUT] BACK TAP RECEIVED");
+                    Debug.Log($"[GAS UI INPUT] Back Button details: name={_btnBack.gameObject.name}, activeInHierarchy={_btnBack.gameObject.activeInHierarchy}, interactable={_btnBack.interactable}");
+                    OnBack();
+                });
+                _btnBack.interactable = true;
+                _btnBack.gameObject.SetActive(true);
             }
 
             _btnStartTraining = UIHelper.FindButton(root, "btn-start-training");
             if (_btnStartTraining != null)
             {
                 _btnStartTraining.onClick.RemoveAllListeners();
-                _btnStartTraining.onClick.AddListener(LaunchFireARScenario);
+                _btnStartTraining.onClick.AddListener(() =>
+                {
+                    Debug.Log("[GAS UI INPUT] START TRAINING TAP RECEIVED");
+                    Debug.Log($"[GAS UI INPUT] Start Button details: name={_btnStartTraining.gameObject.name}, activeInHierarchy={_btnStartTraining.gameObject.activeInHierarchy}, interactable={_btnStartTraining.interactable}");
+                    LaunchARScenario();
+                });
+                _btnStartTraining.interactable = true;
+                _btnStartTraining.gameObject.SetActive(true);
 
                 var startLbl = _btnStartTraining.GetComponentInChildren<TextMeshProUGUI>();
-                if (startLbl != null && loc != null)
+                if (startLbl != null)
                 {
-                    startLbl.text = loc.Get("inst.btn.start");
+                    startLbl.text = loc?.Get("inst.btn.start") ?? "START TRAINING";
                 }
             }
+
+            var es = Object.FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>();
+            var gr = root.GetComponentInParent<GraphicRaycaster>();
+            Debug.Log($"[GAS UI INPUT] Diagnostic Check: btnStart={(_btnStartTraining != null)}, btnBack={(_btnBack != null)}, eventSystem={es != null && es.enabled}, graphicRaycaster={gr != null && gr.enabled}");
 
             _btnLangPicker = UIHelper.FindButton(root, "btn-language-picker");
             if (_btnLangPicker != null)
@@ -71,26 +92,52 @@ namespace SurakshaAR.Screens
 
             // ── Localize Header ──────────────────────────────────────────
             var titleLbl = UIHelper.FindTMP(root, "label-title");
-            if (titleLbl != null && loc != null)
+            if (titleLbl != null)
             {
-                titleLbl.text = loc.Get("inst.header.title");
+                titleLbl.text = isGasModule ? "Gas Leak Response & Emergency Isolation" : (loc?.Get("inst.header.title") ?? "Electrical Panel Fire");
             }
 
             // ── Localize Banner ──────────────────────────────────────────
             var headLbl = root.transform.Find("ScrollArea/Viewport/Content/InfoBanner/InnerRow/TextCol/HeadLbl")?.GetComponent<TextMeshProUGUI>();
-            if (headLbl != null && loc != null) headLbl.text = loc.Get("inst.banner.title");
+            if (headLbl != null)
+            {
+                headLbl.text = isGasModule ? "Gas Leak Response & Emergency Isolation" : (loc?.Get("inst.banner.title") ?? "Electrical Panel Fire Instructions");
+            }
 
             var descLbl = root.transform.Find("ScrollArea/Viewport/Content/InfoBanner/InnerRow/TextCol/DescLbl")?.GetComponent<TextMeshProUGUI>();
-            if (descLbl != null && loc != null) descLbl.text = loc.Get("inst.banner.desc");
+            if (descLbl != null)
+            {
+                descLbl.text = isGasModule
+                    ? "Practice identifying a simulated gas leak, checking the atmosphere, recognizing the hazard area, following the required PPE and standby procedure, and performing simulated emergency isolation."
+                    : (loc?.Get("inst.banner.desc") ?? "Follow all safety guidelines and instructions before beginning the practical AR training drill.");
+            }
 
             // ── Localize Instruction Cards ───────────────────────────────
+            string[] gasCards = new string[]
+            {
+                "1. Start the drill by identifying the Gas Cylinder.",
+                "2. Check the atmosphere using the Multi-Gas Detector.",
+                "3. Identify the hazard area.",
+                "4. Select the required PPE.",
+                "5. Confirm the standby/buddy procedure.",
+                "6. Perform simulated isolation using the RED Isolation Valve.",
+                "7. Verify the safe state."
+            };
+
             var cards = new[] { "card-inst-1", "card-inst-2", "card-inst-3", "card-inst-4", "card-inst-5" };
             for (int i = 0; i < cards.Length; i++)
             {
                 var cardText = root.transform.Find($"ScrollArea/Viewport/Content/CardsCol/{cards[i]}/CardRow/TextLbl")?.GetComponent<TextMeshProUGUI>();
-                if (cardText != null && loc != null)
+                if (cardText != null)
                 {
-                    cardText.text = loc.Get($"inst.card.{i + 1}");
+                    if (isGasModule)
+                    {
+                        cardText.text = (i < gasCards.Length) ? gasCards[i] : "";
+                    }
+                    else if (loc != null)
+                    {
+                        cardText.text = loc.Get($"inst.card.{i + 1}");
+                    }
                 }
             }
 
@@ -165,47 +212,83 @@ namespace SurakshaAR.Screens
             }
         }
 
-        private void LaunchFireARScenario()
+        private void LaunchARScenario()
         {
             if (!_isAgreed) return;
 
-            var fireModule = AppManager.Instance?.GetModule(ModuleId.FireAndExplosion);
-            if (fireModule == null)
-            {
-                fireModule = new ModuleData
-                {
-                    id = ModuleId.FireAndExplosion,
-                    titleKey = "module.fire.title",
-                    arSceneName = "FireTraining",
-                    isImplemented = true
-                };
-            }
+            bool isGasModule = (AppState.Instance?.SelectedModule?.id == ModuleId.GasLeakConfinedSpace) ||
+                               (AppState.Instance != null && AppState.Instance.SelectedScenarioIndex >= 100);
 
-            if (AppState.Instance != null)
-            {
-                AppState.Instance.SelectedModule = fireModule;
-            }
+            ModuleData targetModule;
 
-            // Launch the authoritative existing Fire AR scenario
-            if (ARModuleLauncher.Instance != null && fireModule.isImplemented)
+            if (isGasModule)
             {
-                bool launched = ARModuleLauncher.Instance.TryLaunchModule(fireModule);
-                if (!launched)
+                targetModule = AppManager.Instance?.GetModule(ModuleId.GasLeakConfinedSpace);
+                if (targetModule == null)
                 {
-                    Debug.LogWarning("[TrainingInstructions] AR scene could not be launched directly. Routing to simulation assessment.");
-                    UIManager.Instance?.ShowScreen(ScreenId.Assessment);
+                    targetModule = new ModuleData
+                    {
+                        id = ModuleId.GasLeakConfinedSpace,
+                        titleKey = "module.gas.title",
+                        arSceneName = "AR_gas_Foundation",
+                        isImplemented = true
+                    };
+                }
+                else
+                {
+                    targetModule.isImplemented = true;
+                    targetModule.arSceneName = "AR_gas_Foundation";
                 }
             }
             else
             {
-                UIManager.Instance?.ShowScreen(ScreenId.Assessment);
+                targetModule = AppManager.Instance?.GetModule(ModuleId.FireAndExplosion);
+                if (targetModule == null)
+                {
+                    targetModule = new ModuleData
+                    {
+                        id = ModuleId.FireAndExplosion,
+                        titleKey = "module.fire.title",
+                        arSceneName = "FireTraining",
+                        isImplemented = true
+                    };
+                }
+            }
+
+            if (AppState.Instance != null)
+            {
+                AppState.Instance.SelectedModule = targetModule;
+            }
+
+            if (ARModuleLauncher.Instance != null && targetModule.isImplemented)
+            {
+                bool launched = ARModuleLauncher.Instance.TryLaunchModule(targetModule);
+                if (!launched)
+                {
+                    Debug.LogWarning("[TrainingInstructions] ARModuleLauncher returned false. Loading scene directly: " + targetModule.arSceneName);
+                    UnityEngine.SceneManagement.SceneManager.LoadScene(targetModule.arSceneName);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("[TrainingInstructions] Direct loading AR scene: " + targetModule.arSceneName);
+                UnityEngine.SceneManagement.SceneManager.LoadScene(targetModule.arSceneName);
             }
         }
 
         private void OnBack()
         {
-            // Back navigation: Training Instructions → Electrical Panel Fire detail
-            UIManager.Instance?.ShowScreen(ScreenId.ModuleDetail);
+            bool isGasModule = (AppState.Instance?.SelectedModule?.id == ModuleId.GasLeakConfinedSpace) ||
+                               (AppState.Instance != null && AppState.Instance.SelectedScenarioIndex >= 100);
+
+            if (isGasModule)
+            {
+                UIManager.Instance?.ShowScreen(ScreenId.GasModuleDetail);
+            }
+            else
+            {
+                UIManager.Instance?.ShowScreen(ScreenId.ModuleDetail);
+            }
         }
 
         public void OnHide()

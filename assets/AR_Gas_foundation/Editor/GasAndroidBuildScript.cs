@@ -13,7 +13,10 @@ public class GasAndroidBuildScript
         Debug.Log("[BUILD] Starting Gas Module Android APK Build");
         Debug.Log("==================================================");
 
-        string[] scenes = new string[] { "Assets/AR_Gas_foundation/scenes/AR_gas_Foundation.unity" };
+        string[] scenes = new string[] { 
+            "Assets/SurakshaAR/Scenes/Main.unity",
+            "Assets/AR_Gas_foundation/scenes/AR_gas_Foundation.unity" 
+        };
         string buildDir = "C:/SurakhshaAR/Builds";
         if (!Directory.Exists(buildDir))
         {

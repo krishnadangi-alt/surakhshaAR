@@ -2,7 +2,6 @@
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.UI;
 using System.IO;
 
 public class GasSceneInspector
@@ -18,68 +17,42 @@ public class GasSceneInspector
             writer.WriteLine("==================================================");
 
             string scenePath = "Assets/AR_Gas_foundation/scenes/AR_gas_Foundation.unity";
+            if (!File.Exists(scenePath))
+            {
+                writer.WriteLine($"[SCENE NOT FOUND] {scenePath}");
+                return;
+            }
+
+            AssetDatabase.ImportAsset(scenePath, ImportAssetOptions.ForceUpdate);
+
             var scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
             writer.WriteLine($"Active Scene: {scene.name}");
-
-            // 1. ALL CAMERAS
-            Camera[] cameras = Object.FindObjectsByType<Camera>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-            writer.WriteLine($"\n[CAMERAS: {cameras.Length}]");
-            foreach (var cam in cameras)
-            {
-                writer.WriteLine($"Camera Name: '{cam.gameObject.name}', Active={cam.gameObject.activeInHierarchy}, Pos={cam.transform.position.ToString("F3")}, Rot={cam.transform.eulerAngles.ToString("F3")}, FOV={cam.fieldOfView}, Near={cam.nearClipPlane}, Far={cam.farClipPlane}");
-            }
-
-            // 2. ALL CANVASES
-            Canvas[] canvases = Object.FindObjectsByType<Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-            writer.WriteLine($"\n[CANVASES: {canvases.Length}]");
-            foreach (var c in canvases)
-            {
-                writer.WriteLine($"Canvas Name: '{c.gameObject.name}', Active={c.gameObject.activeInHierarchy}, Mode={c.renderMode}, Rot={c.transform.eulerAngles.ToString("F3")}, Scale={c.transform.lossyScale.ToString("F3")}");
-                foreach (Transform child in c.transform)
-                {
-                    writer.WriteLine($"   Child UI: '{child.name}', Active={child.gameObject.activeInHierarchy}, LocalPos={child.localPosition.ToString("F3")}, LocalRot={child.localEulerAngles.ToString("F3")}");
-                }
-            }
-
-            // 3. ALL LINE RENDERERS (Check for White Line Artifact)
-            LineRenderer[] lines = Object.FindObjectsByType<LineRenderer>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-            writer.WriteLine($"\n[LINE RENDERERS: {lines.Length}]");
-            foreach (var l in lines)
-            {
-                writer.WriteLine($"LineRenderer: '{l.gameObject.name}' (Parent: '{(l.transform.parent != null ? l.transform.parent.name : "ROOT")}'), Active={l.gameObject.activeInHierarchy}, Enabled={l.enabled}, PosCount={l.positionCount}, WorldSpace={l.useWorldSpace}");
-                for (int i = 0; i < Mathf.Min(l.positionCount, 10); i++)
-                {
-                    writer.WriteLine($"   Pos[{i}] = {l.GetPosition(i).ToString("F3")}");
-                }
-            }
-
-            // 4. GAS SCENARIO ROOT & INDUSTRIAL WORKSTATION HIERARCHY
+            
             GameObject root = GameObject.Find("GasScenarioRoot");
             if (root != null)
             {
-                writer.WriteLine($"\n[GAS SCENARIO ROOT: '{root.name}']");
-                writer.WriteLine($"Root Pos={root.transform.position.ToString("F3")}, Rot={root.transform.eulerAngles.ToString("F3")}, Scale={root.transform.lossyScale.ToString("F3")}");
-
-                writer.WriteLine("\n[DIRECT CHILDREN]");
+                writer.WriteLine($"\n[GAS SCENARIO ROOT FOUND] Children count: {root.transform.childCount}");
                 for (int i = 0; i < root.transform.childCount; i++)
                 {
                     Transform child = root.transform.GetChild(i);
-                    writer.WriteLine($"Child [{i}]: '{child.name}', Active={child.gameObject.activeInHierarchy}, LocalPos={child.localPosition.ToString("F3")}, LocalRot={child.localEulerAngles.ToString("F3")}, LocalScale={child.localScale.ToString("F3")}");
+                    writer.WriteLine($"\n  Child [{i}]: '{child.name}', Active={child.gameObject.activeSelf}, LocalPos={child.localPosition.ToString("F3")}, LocalRot={child.localEulerAngles.ToString("F3")}, LocalScale={child.localScale.ToString("F3")}");
+                    DumpSubtree(child, writer, "     ");
                 }
 
                 writer.WriteLine("\n[RENDERERS & MESHES UNDER ROOT]");
                 Renderer[] rnds = root.GetComponentsInChildren<Renderer>(true);
+                writer.WriteLine($"Total Renderers under root: {rnds.Length}");
                 foreach (var r in rnds)
                 {
                     MeshFilter mf = r.GetComponent<MeshFilter>();
                     string meshName = mf != null && mf.sharedMesh != null ? mf.sharedMesh.name : "N/A";
                     string matName = r.sharedMaterial != null ? r.sharedMaterial.name : "NULL";
-                    writer.WriteLine($"  GO: '{r.gameObject.name}', Active={r.gameObject.activeInHierarchy}, Enabled={r.enabled}, Mesh='{meshName}', Mat='{matName}', BoundsCenter={r.bounds.center.ToString("F3")}, BoundsSize={r.bounds.size.ToString("F3")}");
+                    writer.WriteLine($"  GO: '{r.gameObject.name}', Path='{GetPath(r.transform)}', Active={r.gameObject.activeInHierarchy}, Enabled={r.enabled}, Mesh='{meshName}', Mat='{matName}', BoundsCenter={r.bounds.center.ToString("F3")}, BoundsSize={r.bounds.size.ToString("F3")}");
                 }
             }
             else
             {
-                writer.WriteLine("\n[ERROR] GasScenarioRoot NOT found in scene!");
+                writer.WriteLine("[ERROR] GasScenarioRoot NOT found!");
             }
 
             writer.WriteLine("\n==================================================");
@@ -88,6 +61,22 @@ public class GasSceneInspector
         }
 
         Debug.Log("[GasSceneInspector] Inspection finished. Log saved to C:/SurakhshaAR/gas_scene_inspection.txt");
+    }
+
+    private static void DumpSubtree(Transform parent, StreamWriter writer, string indent)
+    {
+        foreach (Transform child in parent)
+        {
+            writer.WriteLine($"{indent}Child: '{child.name}', Active={child.gameObject.activeSelf}, LocalPos={child.localPosition.ToString("F3")}, LocalScale={child.localScale.ToString("F3")}");
+            DumpSubtree(child, writer, indent + "  ");
+        }
+    }
+
+    private static string GetPath(Transform current)
+    {
+        if (current.parent == null)
+            return current.name;
+        return GetPath(current.parent) + "/" + current.name;
     }
 }
 #endif

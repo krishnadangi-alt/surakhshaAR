@@ -47,11 +47,11 @@ namespace SurakshaAR.Screens
                 _btnBack.onClick.AddListener(GoBack);
             }
 
-            // Start button is Coming Soon — register listener but no-op
             _btnStart = UIHelper.FindButton(root, "btn-start-ar-training");
             if (_btnStart != null)
             {
                 _btnStart.onClick.RemoveAllListeners();
+                _btnStart.onClick.AddListener(LaunchGasARScenario);
             }
 
             // Language Picker Pill: Cycle English -> Hindi -> Santali -> English
@@ -148,23 +148,23 @@ namespace SurakshaAR.Screens
             }
             else if (_gasScenarioIndex == 3)
             {
-                // Scenario 3 — Gas Cylinder Leak
-                title               = loc?.Get("scenario.gas.cylinder.title") ?? "Gas Cylinder Leak";
-                subtitle            = loc?.Get("scenario.gas.cylinder.desc") ?? "Respond to a gas cylinder leak and control the hazard safely.";
+                // Scenario 3 — Gas Leak Response & Emergency Isolation
+                title               = "Gas Leak Response & Emergency Isolation";
+                subtitle            = "Simulate a gas leak incident, detect multi-gas levels, wear required PPE, verify standby buddy, and isolate the gas cylinder.";
                 scenarioNumberBadge = "03";
                 duration            = loc?.Get("chip.val.10mins") ?? "~ 10 mins";
                 level               = loc?.Get("chip.val.beginner") ?? "Beginner";
                 focusVal            = loc?.Get("chip.val.isolation") ?? "Isolation";
                 focusSub            = loc?.Get("chip.sub.procedure") ?? "Procedure";
-                overview            = loc?.Get("scenario.gas.cylinder.overview") ?? "Learn to identify a gas cylinder leak, isolate the source, raise the alarm and follow safe handling and shut-off procedures.";
+                overview            = "Learn to detect gas release from cylinder & pipeline, verify multi-gas detector PPM levels, select appropriate SCBA/PPE, verify with standby buddy, and safely isolate the red cylinder valve.";
                 steps = new string[]
                 {
-                    loc?.Get("gas.cylinder.step1") ?? "Identify cylinder leak signs",
-                    loc?.Get("gas.cylinder.step2") ?? "Stop and isolate the source",
-                    loc?.Get("gas.cylinder.step3") ?? "Raise alarm and inform control room",
-                    loc?.Get("gas.cylinder.step4") ?? "Use appropriate PPE",
-                    loc?.Get("gas.cylinder.step5") ?? "Follow safe handling and shut-off procedure",
-                    loc?.Get("gas.cylinder.step6") ?? "Move to safe area and report"
+                    "1. Scan surface and place Gas workstation",
+                    "2. Detect gas leak plume & audio hiss from cylinder",
+                    "3. Tap Multi-Gas Detector to verify hazard reading",
+                    "4. Recognize hazard area and select appropriate PPE",
+                    "5. Confirm standby buddy and tap Red Isolation Valve",
+                    "6. Verify safe state reset and proceed to assessment"
                 };
             }
             else
@@ -180,12 +180,12 @@ namespace SurakshaAR.Screens
                 overview            = loc?.Get("scenario.gas.underground.overview") ?? "A gas leak has been detected in an underground mine area. Learn to identify the leak, raise the alarm, communicate the emergency and move to a safe area following proper procedures.";
                 steps = new string[]
                 {
-                    loc?.Get("gas.underground.step1") ?? "Identify gas leak signs and hazard area",
-                    loc?.Get("gas.underground.step2") ?? "Activate alarm and inform control room",
-                    loc?.Get("gas.underground.step3") ?? "Use gas detector and interpret readings",
-                    loc?.Get("gas.underground.step4") ?? "Follow safe withdrawal procedure",
-                    loc?.Get("gas.underground.step5") ?? "Follow ventilation and evacuation route",
-                    loc?.Get("gas.underground.step6") ?? "Maintain safe distance and move to safe area"
+                    "1. Scan surface and place Gas workstation",
+                    "2. Detect gas leak plume & audio hiss from cylinder",
+                    "3. Tap Multi-Gas Detector to verify hazard reading",
+                    "4. Recognize hazard area and select appropriate PPE",
+                    "5. Confirm standby buddy and tap Red Isolation Valve",
+                    "6. Verify safe state reset and proceed to assessment"
                 };
             }
 
@@ -220,13 +220,23 @@ namespace SurakshaAR.Screens
             var trainingHead = UIHelper.FindTMP(root, "TrainingHead");
             if (trainingHead != null && loc != null) trainingHead.text = loc.Get("ui.training.include");
 
-            // Coming Soon button
+            // Start Training Button configuration
             if (_btnStart != null)
             {
+                var btnImg = _btnStart.GetComponent<Image>();
                 var btnTxt = _btnStart.GetComponentInChildren<TextMeshProUGUI>();
-                if (btnTxt != null && loc != null)
+
+                if (_gasScenarioIndex == 3 || _gasScenarioIndex == 1)
                 {
-                    btnTxt.text = loc.Get("ui.coming_soon");
+                    _btnStart.interactable = true;
+                    if (btnImg != null) btnImg.color = UIColors.Hex("#EA580C");
+                    if (btnTxt != null) btnTxt.text = loc?.Get("ui.start_training") ?? "Start AR Training";
+                }
+                else
+                {
+                    _btnStart.interactable = false;
+                    if (btnImg != null) btnImg.color = UIColors.Hex("#94A3B8");
+                    if (btnTxt != null) btnTxt.text = loc?.Get("ui.coming_soon") ?? "Coming Soon";
                 }
             }
 
@@ -245,6 +255,28 @@ namespace SurakshaAR.Screens
                 ? AppState.Instance.CurrentLanguage
                 : (loc != null ? loc.CurrentLanguage : AppLanguage.English);
             UIManager.Instance?.ApplyLanguageFonts(root, currentLang);
+        }
+
+        private void LaunchGasARScenario()
+        {
+            var gasModule = AppManager.Instance?.GetModule(ModuleId.GasLeakConfinedSpace);
+            if (gasModule == null)
+            {
+                gasModule = new ModuleData
+                {
+                    id = ModuleId.GasLeakConfinedSpace,
+                    titleKey = "module.gas.title",
+                    arSceneName = "AR_gas_Foundation",
+                    isImplemented = true
+                };
+            }
+
+            if (AppState.Instance != null)
+            {
+                AppState.Instance.SelectedModule = gasModule;
+            }
+
+            UIManager.Instance?.ShowScreen(ScreenId.TrainingInstructions);
         }
 
         // ──────────────────────────────────────────────────────────────────

@@ -35,7 +35,7 @@ public class GasWorkstationAssemblyBuilder
         }
 
         // Clean up any old duplicate canvases safely
-        Canvas[] existingCanvases = Object.FindObjectsByType<Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        Canvas[] existingCanvases = Object.FindObjectsByType<Canvas>(FindObjectsInactive.Include);
         foreach (var c in existingCanvases)
         {
             if (c != null && c.gameObject != null && c.gameObject.name != "SurakshaAR_GasTrainingCanvas")
@@ -108,14 +108,14 @@ public class GasWorkstationAssemblyBuilder
         GasARPlacement placementScript = root.GetComponent<GasARPlacement>();
         if (placementScript != null) placementScript.HidePlanes();
 
-        LineRenderer[] lines = Object.FindObjectsByType<LineRenderer>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        LineRenderer[] lines = Object.FindObjectsByType<LineRenderer>(FindObjectsInactive.Include);
         foreach (var l in lines) if (l != null) l.enabled = false;
 
         // 6. Camera Setup & Capture (Portrait 1080x1920 & Landscape 1920x1080)
-        Camera cam = Camera.main ?? Object.FindFirstObjectByType<Camera>();
+        Camera cam = Camera.main ?? Object.FindAnyObjectByType<Camera>();
         if (cam != null)
         {
-            Canvas canvas = Object.FindFirstObjectByType<Canvas>();
+            Canvas canvas = Object.FindAnyObjectByType<Canvas>();
             if (canvas != null) canvas.renderMode = RenderMode.ScreenSpaceOverlay;
 
             string screenshotDir = "C:/SurakhshaAR/ReviewScreenshots";
@@ -146,7 +146,7 @@ public class GasWorkstationAssemblyBuilder
             File.WriteAllBytes(savePath, bytes);
             File.WriteAllBytes("C:/SurakhshaAR/GAS_FINAL_VISUAL_REVIEW_SHARE.png", bytes);
 
-            string artifactDir = "C:/Users/anjan/.gemini/antigravity/brain/6a0ab234-4e28-423a-9f0f-f4bae4b8c729";
+            string artifactDir = "C:/Users/anjan/.gemini/antigravity/brain/0e0b469b-8510-4312-8ed3-51030e05c0a6";
             if (Directory.Exists(artifactDir))
             {
                 File.WriteAllBytes(Path.Combine(artifactDir, "GAS_FINAL_VISUAL_REVIEW_SHARE.png"), bytes);

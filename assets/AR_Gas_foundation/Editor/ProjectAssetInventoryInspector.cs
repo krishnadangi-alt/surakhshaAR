@@ -1,65 +1,72 @@
 #if UNITY_EDITOR
+using System.IO;
 using UnityEditor;
 using UnityEngine;
-using System.IO;
-using System.Collections.Generic;
 
 public class ProjectAssetInventoryInspector
 {
-    public static void InspectAllProjectAssets()
+    [MenuItem("SurakshaAR/Print Full 3D Asset Inventory")]
+    public static void PrintInventory()
     {
         Debug.Log("==================================================");
-        Debug.Log("[ASSET INVENTORY] STARTING FULL PROJECT ASSET AUDIT");
+        Debug.Log("[FULL 3D ASSET INVENTORY AUDIT]");
         Debug.Log("==================================================");
 
-        string[] meshGuids = AssetDatabase.FindAssets("t:Mesh");
-        Debug.Log($"TOTAL MESH ASSETS FOUND IN PROJECT: {meshGuids.Length}");
+        string targetDir = "Assets/AR_Gas_foundation/3d";
+        string[] allFiles = Directory.GetFiles(targetDir, "*.*", SearchOption.AllDirectories);
 
-        foreach (string guid in meshGuids)
+        foreach (var file in allFiles)
         {
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            Mesh mesh = AssetDatabase.LoadAssetAtPath<Mesh>(path);
-            if (mesh != null)
+            string ext = Path.GetExtension(file).ToLower();
+            if (ext == ".obj" || ext == ".fbx" || ext == ".glb" || ext == ".gltf" || ext == ".prefab")
             {
-                Debug.Log($"[MESH] Path: '{path}' | Name: '{mesh.name}' | Verts: {mesh.vertexCount} | Triangles: {mesh.triangles.Length / 3} | Submeshes: {mesh.subMeshCount} | Bounds: {mesh.bounds.size}");
-            }
-        }
-
-        string[] prefabGuids = AssetDatabase.FindAssets("t:Prefab");
-        Debug.Log($"TOTAL PREFAB ASSETS FOUND IN PROJECT: {prefabGuids.Length}");
-        foreach (string guid in prefabGuids)
-        {
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            Debug.Log($"[PREFAB] Path: '{path}'");
-        }
-
-        string[] matGuids = AssetDatabase.FindAssets("t:Material");
-        Debug.Log($"TOTAL MATERIAL ASSETS FOUND IN PROJECT: {matGuids.Length}");
-        foreach (string guid in matGuids)
-        {
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            Material mat = AssetDatabase.LoadAssetAtPath<Material>(path);
-            if (mat != null)
-            {
-                Debug.Log($"[MATERIAL] Path: '{path}' | Shader: '{mat.shader.name}' | Color: {mat.color}");
-            }
-        }
-
-        string[] texGuids = AssetDatabase.FindAssets("t:Texture");
-        Debug.Log($"TOTAL TEXTURE ASSETS FOUND IN PROJECT: {texGuids.Length}");
-        foreach (string guid in texGuids)
-        {
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            Texture tex = AssetDatabase.LoadAssetAtPath<Texture>(path);
-            if (tex != null)
-            {
-                Debug.Log($"[TEXTURE] Path: '{path}' | Size: {tex.width}x{tex.height}");
+                string relativePath = file.Replace("\\", "/");
+                InspectFile(relativePath);
             }
         }
 
         Debug.Log("==================================================");
-        Debug.Log("[ASSET INVENTORY] COMPLETED FULL PROJECT ASSET AUDIT");
+        Debug.Log("[INVENTORY AUDIT COMPLETE]");
         Debug.Log("==================================================");
+    }
+
+    private static void InspectFile(string path)
+    {
+        Object asset = AssetDatabase.LoadAssetAtPath<Object>(path);
+        if (asset == null)
+        {
+            Debug.LogWarning($"[FILE UNLOADED/DEFAULT] {path}");
+            return;
+        }
+
+        System.Type t = asset.GetType();
+        long size = new FileInfo(path).Length;
+
+        if (asset is GameObject go)
+        {
+            MeshFilter mf = go.GetComponentInChildren<MeshFilter>();
+            MeshRenderer mr = go.GetComponentInChildren<MeshRenderer>();
+            string meshName = (mf != null && mf.sharedMesh != null) ? mf.sharedMesh.name : "None";
+            int vertCount = (mf != null && mf.sharedMesh != null) ? mf.sharedMesh.vertexCount : 0;
+
+            string matNames = "";
+            if (mr != null && mr.sharedMaterials != null)
+            {
+                foreach (var m in mr.sharedMaterials)
+                {
+                    if (m != null)
+                    {
+                        matNames += m.name + " (Shader: " + m.shader.name + "), ";
+                    }
+                }
+            }
+
+            Debug.Log($"[3D ASSET] {path} | Type: {t.Name} | Size: {size} bytes | Mesh: {meshName} (Verts: {vertCount}) | Mats: {matNames}");
+        }
+        else
+        {
+            Debug.Log($"[RAW ASSET] {path} | Type: {t.Name} | Size: {size} bytes");
+        }
     }
 }
 #endif
