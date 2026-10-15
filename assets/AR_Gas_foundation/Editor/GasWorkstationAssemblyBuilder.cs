@@ -35,7 +35,7 @@ public class GasWorkstationAssemblyBuilder
         }
 
         // Clean up any old duplicate canvases safely
-        Canvas[] existingCanvases = Object.FindObjectsByType<Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        Canvas[] existingCanvases = Object.FindObjectsByType<Canvas>(FindObjectsInactive.Include);
         foreach (var c in existingCanvases)
         {
             if (c != null && c.gameObject != null && c.gameObject.name != "SurakshaAR_GasTrainingCanvas")
@@ -108,14 +108,14 @@ public class GasWorkstationAssemblyBuilder
         GasARPlacement placementScript = root.GetComponent<GasARPlacement>();
         if (placementScript != null) placementScript.HidePlanes();
 
-        LineRenderer[] lines = Object.FindObjectsByType<LineRenderer>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        LineRenderer[] lines = Object.FindObjectsByType<LineRenderer>(FindObjectsInactive.Include);
         foreach (var l in lines) if (l != null) l.enabled = false;
 
         // 6. Camera Setup & Capture (Portrait 1080x1920 & Landscape 1920x1080)
-        Camera cam = Camera.main ?? Object.FindFirstObjectByType<Camera>();
+        Camera cam = Camera.main ?? Object.FindAnyObjectByType<Camera>();
         if (cam != null)
         {
-            Canvas canvas = Object.FindFirstObjectByType<Canvas>();
+            Canvas canvas = Object.FindAnyObjectByType<Canvas>();
             if (canvas != null) canvas.renderMode = RenderMode.ScreenSpaceOverlay;
 
             string screenshotDir = "C:/SurakhshaAR/ReviewScreenshots";

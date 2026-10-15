@@ -51,7 +51,7 @@ public class GasSceneCleaner
         soBuilder.ApplyModifiedProperties();
 
         // Setup GasARPlacement references
-        GasARPlacement placement = Object.FindFirstObjectByType<GasARPlacement>();
+        GasARPlacement placement = Object.FindAnyObjectByType<GasARPlacement>();
         if (placement != null)
         {
             SerializedObject soPlacement = new SerializedObject(placement);

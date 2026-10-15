@@ -22,7 +22,7 @@ public class GasSceneInspector
             writer.WriteLine($"Active Scene: {scene.name}");
 
             // 1. ALL CAMERAS
-            Camera[] cameras = Object.FindObjectsByType<Camera>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            Camera[] cameras = Object.FindObjectsByType<Camera>(FindObjectsInactive.Include);
             writer.WriteLine($"\n[CAMERAS: {cameras.Length}]");
             foreach (var cam in cameras)
             {
@@ -30,7 +30,7 @@ public class GasSceneInspector
             }
 
             // 2. ALL CANVASES
-            Canvas[] canvases = Object.FindObjectsByType<Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            Canvas[] canvases = Object.FindObjectsByType<Canvas>(FindObjectsInactive.Include);
             writer.WriteLine($"\n[CANVASES: {canvases.Length}]");
             foreach (var c in canvases)
             {
@@ -42,7 +42,7 @@ public class GasSceneInspector
             }
 
             // 3. ALL LINE RENDERERS (Check for White Line Artifact)
-            LineRenderer[] lines = Object.FindObjectsByType<LineRenderer>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            LineRenderer[] lines = Object.FindObjectsByType<LineRenderer>(FindObjectsInactive.Include);
             writer.WriteLine($"\n[LINE RENDERERS: {lines.Length}]");
             foreach (var l in lines)
             {

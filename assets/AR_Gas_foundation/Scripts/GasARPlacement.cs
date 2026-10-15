@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
@@ -47,8 +48,8 @@ public class GasARPlacement : MonoBehaviour
             planeManager.trackablesChanged.AddListener(OnPlanesChanged);
         }
 
-        if (environmentBuilder == null) environmentBuilder = FindFirstObjectByType<GasEnvironmentBuilder>();
-        if (stepController == null) stepController = FindFirstObjectByType<GasTrainingStepController>();
+        if (environmentBuilder == null) environmentBuilder = FindAnyObjectByType<GasEnvironmentBuilder>();
+        if (stepController == null) stepController = FindAnyObjectByType<GasTrainingStepController>();
 
         if (gasEnvironmentRoot == null)
         {
@@ -93,7 +94,7 @@ public class GasARPlacement : MonoBehaviour
         HidePlanes();
 
         Camera arCamera = Camera.main;
-        if (arCamera == null) arCamera = FindFirstObjectByType<Camera>();
+        if (arCamera == null) arCamera = FindAnyObjectByType<Camera>();
         if (arCamera != null)
         {
             arCamera.transform.position = new Vector3(0.00f, 1.35f, -2.80f);
@@ -161,7 +162,7 @@ public class GasARPlacement : MonoBehaviour
         if (raycastManager == null) return;
 
         Camera arCamera = Camera.main;
-        if (arCamera == null) arCamera = FindFirstObjectByType<Camera>();
+        if (arCamera == null) arCamera = FindAnyObjectByType<Camera>();
         if (arCamera == null) return;
 
         Vector2 screenCenter = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
@@ -262,6 +263,7 @@ public class GasARPlacement : MonoBehaviour
         Vector2 tapPosition = Vector2.zero;
         bool hasTap = false;
 
+        // 1. Enhanced Touch Input System
         if (Touch.activeTouches.Count > 0)
         {
             Touch touch = Touch.activeTouches[0];
@@ -272,19 +274,21 @@ public class GasARPlacement : MonoBehaviour
             }
         }
 
-        if (!hasTap && Input.touchCount > 0)
+        // 2. Touchscreen Input Fallback (New Input System)
+        if (!hasTap && Touchscreen.current != null)
         {
-            UnityEngine.Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began)
+            var primary = Touchscreen.current.primaryTouch;
+            if (primary.press.wasPressedThisFrame)
             {
-                tapPosition = touch.position;
+                tapPosition = primary.position.ReadValue();
                 hasTap = true;
             }
         }
 
-        if (!hasTap && Input.GetMouseButtonDown(0))
+        // 3. Mouse Click Fallback (New Input System for Editor / PC)
+        if (!hasTap && Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            tapPosition = Input.mousePosition;
+            tapPosition = Mouse.current.position.ReadValue();
             hasTap = true;
         }
 
@@ -309,7 +313,7 @@ public class GasARPlacement : MonoBehaviour
         gasEnvironmentRoot.position = hitPose.position;
 
         Camera arCamera = Camera.main;
-        if (arCamera == null) arCamera = FindFirstObjectByType<Camera>();
+        if (arCamera == null) arCamera = FindAnyObjectByType<Camera>();
         if (arCamera != null)
         {
             Vector3 lookDir = hitPose.position - arCamera.transform.position;
@@ -370,7 +374,7 @@ public class GasARPlacement : MonoBehaviour
             planeManager.enabled = false;
         }
 
-        ARPlane[] allPlanes = FindObjectsByType<ARPlane>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        ARPlane[] allPlanes = FindObjectsByType<ARPlane>(FindObjectsInactive.Include);
         foreach (var p in allPlanes)
         {
             if (p != null)

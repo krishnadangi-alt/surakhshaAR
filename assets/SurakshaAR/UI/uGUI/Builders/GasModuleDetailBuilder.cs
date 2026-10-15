@@ -444,9 +444,9 @@ namespace SurakshaAR.UI.Builders
                 flexibleWidth: true, flexWidth: 1,
                 preferredHeight: 96, minHeight: 90);
 
-            // Coming Soon button (disabled gray button)
+            // Start AR Training button (defaults to active green, controller adjusts for scenario)
             var btn = UIHelper.MakeButton("btn-start-ar-training", btnRow,
-                "Coming Soon", 36, Hex("#94A3B8"), Color.white, 20);
+                "Start AR Training", 36, Hex("#16A34A"), Color.white, 20);
             UIHelper.Stretch(btn.GetComponent<RectTransform>(), 0, 0, 0, 0);
 
             var btnLbl = btn.GetComponentInChildren<TextMeshProUGUI>();

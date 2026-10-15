@@ -47,11 +47,12 @@ namespace SurakshaAR.Screens
                 _btnBack.onClick.AddListener(GoBack);
             }
 
-            // Start button is Coming Soon — register listener but no-op
+            // Wire Start AR Training button
             _btnStart = UIHelper.FindButton(root, "btn-start-ar-training");
             if (_btnStart != null)
             {
                 _btnStart.onClick.RemoveAllListeners();
+                _btnStart.onClick.AddListener(OpenTrainingInstructions);
             }
 
             // Language Picker Pill: Cycle English -> Hindi -> Santali -> English
@@ -220,13 +221,30 @@ namespace SurakshaAR.Screens
             var trainingHead = UIHelper.FindTMP(root, "TrainingHead");
             if (trainingHead != null && loc != null) trainingHead.text = loc.Get("ui.training.include");
 
-            // Coming Soon button
+            var currentLang = AppState.Instance != null
+                ? AppState.Instance.CurrentLanguage
+                : (loc != null ? loc.CurrentLanguage : AppLanguage.English);
+
+            // Start AR Training Button
             if (_btnStart != null)
             {
+                var btnImg = _btnStart.GetComponent<Image>();
                 var btnTxt = _btnStart.GetComponentInChildren<TextMeshProUGUI>();
-                if (btnTxt != null && loc != null)
+
+                if (_gasScenarioIndex == 1)
                 {
-                    btnTxt.text = loc.Get("ui.coming_soon");
+                    if (btnImg != null) btnImg.color = UIColors.Hex("#16A34A"); // Active Green
+                    if (btnTxt != null)
+                    {
+                        string sText = loc?.Get("ui.btn.start_ar_training") ?? "Start AR Training";
+                        btnTxt.text = DevanagariShaper.Shape(sText);
+                        try { btnTxt.font = UIHelper.GetFontForLanguage(currentLang); } catch {}
+                    }
+                }
+                else
+                {
+                    if (btnImg != null) btnImg.color = UIColors.Hex("#94A3B8");
+                    if (btnTxt != null) btnTxt.text = loc?.Get("ui.coming_soon") ?? "Coming Soon";
                 }
             }
 
@@ -241,13 +259,25 @@ namespace SurakshaAR.Screens
                     GasModuleDetailBuilder.MakeStepItem(stepsList, i + 1, steps[i]);
             }
 
-            var currentLang = AppState.Instance != null
-                ? AppState.Instance.CurrentLanguage
-                : (loc != null ? loc.CurrentLanguage : AppLanguage.English);
             UIManager.Instance?.ApplyLanguageFonts(root, currentLang);
         }
 
         // ──────────────────────────────────────────────────────────────────
+        private void OpenTrainingInstructions()
+        {
+            // Scenario 1 (Underground Gas Release) routes to Training Instructions → real Gas AR Foundation.
+            // Scenarios 2 and 3 are Coming Soon — do nothing.
+            if (_gasScenarioIndex == 1)
+            {
+                var gasModule = AppManager.Instance?.GetModule(ModuleId.GasLeakConfinedSpace);
+                if (gasModule != null && AppState.Instance != null)
+                {
+                    AppState.Instance.SelectedModule = gasModule;
+                }
+                UIManager.Instance?.ShowScreen(ScreenId.TrainingInstructions);
+            }
+        }
+
         private void GoBack()
         {
             UIManager.Instance?.ShowScreen(ScreenId.GasScenarioSelection);

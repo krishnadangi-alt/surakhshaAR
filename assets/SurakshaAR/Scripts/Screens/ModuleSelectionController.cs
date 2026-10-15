@@ -129,7 +129,7 @@ namespace SurakshaAR.Screens
                     iconSprite  = UIHelper.LoadProjectSprite("icon_gas_ref1.png") ?? UIHelper.GetGasEmojiSprite();
                     iconBg      = UIColors.Hex("#E0F2FE");
                     statusColor = UIColors.Hex("#0284C7");
-                    statusLabel = _loc?.Get("module.statusTheoryOnly") ?? "THEORY / ASSESSMENT";
+                    statusLabel = _loc?.Get("module.statusAvailable") ?? "Available";
                     if (string.IsNullOrEmpty(title) || title == module.titleKey)
                         title = _loc?.Get("module.gas.title") ?? "Gas Leak & Confined Space";
                     if (string.IsNullOrEmpty(desc) || desc == module.descriptionKey)
@@ -193,7 +193,19 @@ namespace SurakshaAR.Screens
                     {
                         if (AppState.Instance != null)
                             AppState.Instance.SelectedModule = captured;
-                        UIManager.Instance?.ShowScreen(ScreenId.ModuleDetail, captured);
+
+                        if (captured.id == ModuleId.FireAndExplosion)
+                        {
+                            UIManager.Instance?.ShowScreen(ScreenId.ScenarioSelection);
+                        }
+                        else if (captured.id == ModuleId.GasLeakConfinedSpace)
+                        {
+                            UIManager.Instance?.ShowScreen(ScreenId.GasScenarioSelection);
+                        }
+                        else
+                        {
+                            UIManager.Instance?.ShowScreen(ScreenId.ModuleDetail, captured);
+                        }
                     });
                 }
             }

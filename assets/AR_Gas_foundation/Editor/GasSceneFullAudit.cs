@@ -22,7 +22,7 @@ public class GasSceneFullAudit
         sb.AppendLine($"\nOpened Scene: {scene.name} (Path: {scene.path})");
 
         // 1. ALL CAMERAS
-        Camera[] cameras = Object.FindObjectsByType<Camera>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        Camera[] cameras = Object.FindObjectsByType<Camera>(FindObjectsInactive.Include);
         sb.AppendLine($"\n--- CAMERAS ({cameras.Length}) ---");
         foreach (var cam in cameras)
         {
@@ -30,7 +30,7 @@ public class GasSceneFullAudit
         }
 
         // 2. ALL CANVASES & UI
-        Canvas[] canvases = Object.FindObjectsByType<Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        Canvas[] canvases = Object.FindObjectsByType<Canvas>(FindObjectsInactive.Include);
         sb.AppendLine($"\n--- CANVASES ({canvases.Length}) ---");
         foreach (var c in canvases)
         {
@@ -43,7 +43,7 @@ public class GasSceneFullAudit
         }
 
         // 3. ALL LINE RENDERERS (Check for White Line Artifact)
-        LineRenderer[] lines = Object.FindObjectsByType<LineRenderer>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        LineRenderer[] lines = Object.FindObjectsByType<LineRenderer>(FindObjectsInactive.Include);
         sb.AppendLine($"\n--- LINE RENDERERS ({lines.Length}) ---");
         foreach (var l in lines)
         {

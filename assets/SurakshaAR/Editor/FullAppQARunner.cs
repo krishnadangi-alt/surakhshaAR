@@ -65,6 +65,7 @@ namespace SurakshaAR.Editor
 
             MultilingualValidationCapture.CheckTrigger();
             RealWorkerFireValidation.CheckTrigger();
+            GasAutomatedVerification.CheckTrigger();
 
             if (File.Exists(ReadyFile))
             {

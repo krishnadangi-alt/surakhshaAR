@@ -249,7 +249,7 @@ public class GasWorkstationBuilder
         Debug.Log($"[WORKSTATION BUILDER] Multi-Gas Detector Prefab saved to {detectorPrefabPath}");
 
         // 7. Bind Builder Component References
-        GasEnvironmentBuilder builder = Object.FindFirstObjectByType<GasEnvironmentBuilder>();
+        GasEnvironmentBuilder builder = Object.FindAnyObjectByType<GasEnvironmentBuilder>();
         if (builder != null)
         {
             SerializedObject so = new SerializedObject(builder);

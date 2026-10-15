@@ -94,7 +94,7 @@ public class GasRuntimeDiagnostic
             stepController.SetStep(GasTrainingStepController.TrainingStep.Intro);
         }
 
-        Canvas canvas = Object.FindFirstObjectByType<Canvas>();
+        Canvas canvas = Object.FindAnyObjectByType<Canvas>();
         if (canvas != null)
         {
             Debug.Log($"[DIAGNOSTIC] Canvas found: {canvas.name}, RenderMode: {canvas.renderMode}");

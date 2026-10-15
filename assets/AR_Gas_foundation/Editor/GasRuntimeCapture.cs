@@ -25,24 +25,24 @@ public class GasRuntimeCapture
             return;
         }
 
-        GasARPlacement arPlacement = root.GetComponent<GasARPlacement>() ?? Object.FindFirstObjectByType<GasARPlacement>();
-        GasEnvironmentBuilder builder = root.GetComponent<GasEnvironmentBuilder>() ?? Object.FindFirstObjectByType<GasEnvironmentBuilder>();
-        GasLeakVisualController leakVisual = root.GetComponent<GasLeakVisualController>() ?? Object.FindFirstObjectByType<GasLeakVisualController>();
-        GasTrainingStepController stepController = root.GetComponent<GasTrainingStepController>() ?? Object.FindFirstObjectByType<GasTrainingStepController>();
+        GasARPlacement arPlacement = root.GetComponent<GasARPlacement>() ?? Object.FindAnyObjectByType<GasARPlacement>();
+        GasEnvironmentBuilder builder = root.GetComponent<GasEnvironmentBuilder>() ?? Object.FindAnyObjectByType<GasEnvironmentBuilder>();
+        GasLeakVisualController leakVisual = root.GetComponent<GasLeakVisualController>() ?? Object.FindAnyObjectByType<GasLeakVisualController>();
+        GasTrainingStepController stepController = root.GetComponent<GasTrainingStepController>() ?? Object.FindAnyObjectByType<GasTrainingStepController>();
 
         // Activate Non-AR Mode & Build Assembly
         if (arPlacement != null) arPlacement.ActivateNonArMode();
         if (builder != null) builder.BuildEnvironment();
 
         // Ensure LineRenderers are disabled in training runtime
-        LineRenderer[] lines = Object.FindObjectsByType<LineRenderer>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        LineRenderer[] lines = Object.FindObjectsByType<LineRenderer>(FindObjectsInactive.Include);
         foreach (var l in lines)
         {
             l.enabled = false;
             l.gameObject.SetActive(false);
         }
 
-        Camera cam = Camera.main ?? Object.FindFirstObjectByType<Camera>();
+        Camera cam = Camera.main ?? Object.FindAnyObjectByType<Camera>();
         if (cam == null)
         {
             Debug.LogError("[CAPTURE ERROR] Main Camera NOT found!");

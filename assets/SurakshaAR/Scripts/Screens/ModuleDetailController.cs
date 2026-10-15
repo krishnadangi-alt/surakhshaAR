@@ -24,6 +24,12 @@ namespace SurakshaAR.Screens
 
         public void OnShow(GameObject root, object param)
         {
+            if (AppState.Instance != null && AppState.Instance.SelectedModule?.id == ModuleId.GasLeakConfinedSpace)
+            {
+                UIManager.Instance?.ShowScreen(ScreenId.GasModuleDetail);
+                return;
+            }
+
             if (AppState.Instance != null)
             {
                 _scenarioIndex = AppState.Instance.SelectedScenarioIndex;

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
@@ -16,8 +17,18 @@ public class GasARInteraction : MonoBehaviour
         }
         if (stepController == null)
         {
-            stepController = FindFirstObjectByType<GasTrainingStepController>();
+            stepController = FindAnyObjectByType<GasTrainingStepController>();
         }
+    }
+
+    private void OnEnable()
+    {
+        try { EnhancedTouchSupport.Enable(); } catch { }
+    }
+
+    private void OnDisable()
+    {
+        try { EnhancedTouchSupport.Disable(); } catch { }
     }
 
     private void Update()
@@ -38,21 +49,21 @@ public class GasARInteraction : MonoBehaviour
             }
         }
 
-        // 2. Legacy Touch Input Fallback
-        if (!hasTouch && Input.touchCount > 0)
+        // 2. Touchscreen Input Fallback (New Input System)
+        if (!hasTouch && Touchscreen.current != null)
         {
-            UnityEngine.Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began)
+            var primary = Touchscreen.current.primaryTouch;
+            if (primary.press.wasPressedThisFrame)
             {
-                touchPos = touch.position;
+                touchPos = primary.position.ReadValue();
                 hasTouch = true;
             }
         }
 
-        // 3. Mouse Click Fallback
-        if (!hasTouch && Input.GetMouseButtonDown(0))
+        // 3. Mouse Click Fallback (New Input System for Editor / PC)
+        if (!hasTouch && Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            touchPos = Input.mousePosition;
+            touchPos = Mouse.current.position.ReadValue();
             hasTouch = true;
         }
 
@@ -67,7 +78,7 @@ public class GasARInteraction : MonoBehaviour
         if (arCamera == null)
         {
             arCamera = Camera.main;
-            if (arCamera == null) arCamera = FindFirstObjectByType<Camera>();
+            if (arCamera == null) arCamera = FindAnyObjectByType<Camera>();
         }
 
         if (arCamera == null) return;
@@ -92,6 +103,18 @@ public class GasARInteraction : MonoBehaviour
             else if (objCategory == "Detector")
             {
                 stepController.OnDetectorTapped();
+            }
+            else if (objCategory == "PPE")
+            {
+                stepController.SelectPpe("Approved_Gas_PPE", true);
+            }
+            else if (objCategory == "HazardZone")
+            {
+                stepController.OnHazardZoneAcknowledged();
+            }
+            else if (objCategory == "Buddy")
+            {
+                stepController.OnBuddyConfirmed();
             }
             else if (objCategory == "Valve")
             {
@@ -121,10 +144,93 @@ public class GasARInteraction : MonoBehaviour
         {
             stepController.OnWrongObjectTapped("Detector");
         }
+        else if (step == GasTrainingStepController.TrainingStep.PPECheck)
+        {
+            stepController.OnWrongObjectTapped("PPE");
+        }
+        else if (step == GasTrainingStepController.TrainingStep.HazardRecognition)
+        {
+            stepController.OnWrongObjectTapped("Hazard");
+        }
+        else if (step == GasTrainingStepController.TrainingStep.BuddySystemCheck)
+        {
+            stepController.OnWrongObjectTapped("Buddy");
+        }
         else if (step == GasTrainingStepController.TrainingStep.SafetyResponse)
         {
             stepController.OnWrongObjectTapped("Valve");
         }
+    }
+
+    public bool SimulateInteractionTest(string objCategory)
+    {
+        if (stepController == null)
+        {
+            stepController = GetComponent<GasTrainingStepController>() ?? FindAnyObjectByType<GasTrainingStepController>();
+        }
+        if (stepController == null) return false;
+
+        var step = stepController.CurrentStep;
+
+        if (objCategory == "Cylinder" || objCategory == "LeakPoint")
+        {
+            if (step == GasTrainingStepController.TrainingStep.WorkstationReady || step == GasTrainingStepController.TrainingStep.CylinderInteraction)
+            {
+                stepController.OnCylinderOrLeakPointTapped();
+                return true;
+            }
+        }
+        else if (objCategory == "Detector")
+        {
+            if (step == GasTrainingStepController.TrainingStep.DetectorInteraction)
+            {
+                stepController.OnDetectorTapped();
+                return true;
+            }
+        }
+        else if (objCategory == "PPE")
+        {
+            if (step == GasTrainingStepController.TrainingStep.PPECheck)
+            {
+                stepController.SelectPpe("Approved_Gas_PPE", true);
+                return true;
+            }
+        }
+        else if (objCategory == "HazardZone")
+        {
+            if (step == GasTrainingStepController.TrainingStep.HazardRecognition)
+            {
+                stepController.OnHazardZoneAcknowledged();
+                return true;
+            }
+        }
+        else if (objCategory == "Buddy")
+        {
+            if (step == GasTrainingStepController.TrainingStep.BuddySystemCheck)
+            {
+                stepController.OnBuddyConfirmed();
+                return true;
+            }
+        }
+        else if (objCategory == "Valve")
+        {
+            if (step == GasTrainingStepController.TrainingStep.SafetyResponse)
+            {
+                stepController.OnPipelineValveTapped();
+                return true;
+            }
+        }
+        else if (objCategory == "Vessel")
+        {
+            if (step == GasTrainingStepController.TrainingStep.ConfinedSpaceIntro || step == GasTrainingStepController.TrainingStep.ConfinedSpaceDrill)
+            {
+                stepController.OnConfinedSpaceTapped();
+                return true;
+            }
+        }
+
+        HandleWrongObjectTap();
+        return false;
     }
 
     private string GetHitObjectCategory(Transform t)
@@ -137,7 +243,10 @@ public class GasARInteraction : MonoBehaviour
             if (n.Contains("Regulator") || n.Contains("regulator")) return "Regulator";
             if (n.Contains("Gauge") || n.Contains("gauge")) return "Gauge";
             if (n.Contains("Valve") || n.Contains("valve") || n.Contains("Pipeline")) return "Valve";
-            if (n.Contains("Vessel") || n.Contains("Tank") || n.Contains("Confined")) return "Vessel";
+            if (n.Contains("Vessel") || n.Contains("Tank") || n.Contains("Confined") || n.Contains("Manhole") || n.Contains("Fan") || n.Contains("Lifeline")) return "Vessel";
+            if (n.Contains("Hazard") || n.Contains("Disk") || n.Contains("Perimeter")) return "HazardZone";
+            if (n.Contains("Workbench") || n.Contains("Hardhat") || n.Contains("Vest") || n.Contains("Goggles") || n.Contains("Gloves") || n.Contains("Boots") || n.Contains("PPE")) return "PPE";
+            if (n.Contains("Buddy") || n.Contains("Standby") || n.Contains("Worker")) return "Buddy";
             t = t.parent;
         }
         return "";

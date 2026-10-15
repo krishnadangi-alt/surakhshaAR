@@ -170,8 +170,13 @@ namespace SurakshaAR.Screens
 
         private void OnSelectScenario(int scenarioIndex, string scenarioTitle)
         {
+            var gasModule = AppManager.Instance?.GetModule(ModuleId.GasLeakConfinedSpace);
             if (AppState.Instance != null)
+            {
+                if (gasModule != null)
+                    AppState.Instance.SelectedModule = gasModule;
                 AppState.Instance.SelectScenario(scenarioIndex, scenarioTitle);
+            }
 
             UIManager.Instance?.ShowScreen(ScreenId.GasModuleDetail);
         }

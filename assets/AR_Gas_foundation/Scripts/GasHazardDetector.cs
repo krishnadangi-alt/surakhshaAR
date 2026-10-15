@@ -9,7 +9,7 @@ public class GasHazardDetector : MonoBehaviour
         environmentBuilder = GetComponent<GasEnvironmentBuilder>();
         if (environmentBuilder == null)
         {
-            environmentBuilder = FindFirstObjectByType<GasEnvironmentBuilder>();
+            environmentBuilder = FindAnyObjectByType<GasEnvironmentBuilder>();
         }
     }
 

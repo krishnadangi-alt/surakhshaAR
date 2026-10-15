@@ -27,6 +27,9 @@ public class GasLeakVisualController : MonoBehaviour
     [Header("Fallback")]
     [SerializeField] private float fallbackHeightOffset = 0.04f;
 
+    public float EndSize => endSize;
+    public float FallbackHeightOffset => fallbackHeightOffset;
+
     private ParticleSystem gasParticles;
     private GameObject gasEffectObject;
     private Material gasMaterial;
@@ -49,7 +52,7 @@ public class GasLeakVisualController : MonoBehaviour
             Debug.LogWarning("[GasAR] Gas Leak: No LeakPoint found on cylinder. Creating default at upper valve.");
             GameObject lpObj = new GameObject("LeakPoint");
             lpObj.transform.SetParent(cylinder.transform, false);
-            lpObj.transform.localPosition = new Vector3(0f, 1.05f, 0f);
+            lpObj.transform.localPosition = new Vector3(0f, 1.05f + fallbackHeightOffset, 0f);
             lpObj.transform.localRotation = Quaternion.identity;
             leakPoint = lpObj.transform;
         }
@@ -165,7 +168,8 @@ public class GasLeakVisualController : MonoBehaviour
             new Keyframe(1f, 1f)
         );
 
-        size.size = new ParticleSystem.MinMaxCurve(1f, sizeCurve);
+        float sizeMultiplier = (startSize > 0f && endSize > 0f) ? (endSize / startSize) : 1f;
+        size.size = new ParticleSystem.MinMaxCurve(sizeMultiplier, sizeCurve);
 
         ParticleSystem.ColorOverLifetimeModule color = ps.colorOverLifetime;
         color.enabled = true;

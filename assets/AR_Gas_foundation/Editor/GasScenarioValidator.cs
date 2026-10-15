@@ -49,7 +49,7 @@ public class GasScenarioValidator
         if (controller == null)
         {
             Debug.LogWarning("[VALIDATION WARNING] GasTrainingStepController missing on GasScenarioRoot (Checking children or scene)...");
-            controller = Object.FindFirstObjectByType<GasTrainingStepController>();
+            controller = Object.FindAnyObjectByType<GasTrainingStepController>();
         }
 
         if (controller != null)

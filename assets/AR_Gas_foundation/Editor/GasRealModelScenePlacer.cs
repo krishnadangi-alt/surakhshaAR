@@ -31,7 +31,7 @@ public class GasRealModelScenePlacer
         }
 
         // Also clean up any loose pipeline assembly objects in the scene
-        GameObject[] loosePipelines = GameObject.FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+        GameObject[] loosePipelines = GameObject.FindObjectsByType<GameObject>(FindObjectsInactive.Include);
         foreach (var go in loosePipelines)
         {
             if (go.name == "GasPipelineAssembly" || go.name == "Isolation_Valve_3D" || go.name == "Horizontal_Pipe_1")
