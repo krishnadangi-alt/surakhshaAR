@@ -1,0 +1,13 @@
+<linker>
+  <!-- Preserve NUnit.Framework to allow glTFast AnimationPlayableComponent to compile with IL2CPP -->
+  <assembly fullname="nunit.framework" preserve="all" />
+  
+  <!-- Preserve glTFast animation assembly -->
+  <assembly fullname="glTFast.Animation" preserve="all" />
+  <assembly fullname="glTFast" preserve="all" />
+
+  <!-- Preserve core Unity assemblies needed for AR/XR -->
+  <assembly fullname="UnityEngine" preserve="all" />
+  <assembly fullname="UnityEngine.XR.ARFoundation" preserve="all" />
+  <assembly fullname="UnityEngine.XR.ARSubsystems" preserve="all" />
+</linker>
