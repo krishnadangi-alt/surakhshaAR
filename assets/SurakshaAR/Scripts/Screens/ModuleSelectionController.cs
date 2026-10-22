@@ -140,7 +140,7 @@ namespace SurakshaAR.Screens
                     iconSprite  = UIHelper.LoadProjectSprite("icon_gear_ref1.png") ?? UIHelper.GetGearEmojiSprite();
                     iconBg      = UIColors.Hex("#DCFCE7");
                     statusColor = UIColors.Hex("#0D9488");
-                    statusLabel = _loc?.Get("module.statusTheoryOnly") ?? "THEORY / ASSESSMENT";
+                    statusLabel = _loc?.Get("module.statusAvailable") ?? "Available";
                     if (string.IsNullOrEmpty(title) || title == module.titleKey)
                         title = _loc?.Get("module.machinery.title") ?? "Machinery Safety";
                     if (string.IsNullOrEmpty(desc) || desc == module.descriptionKey)

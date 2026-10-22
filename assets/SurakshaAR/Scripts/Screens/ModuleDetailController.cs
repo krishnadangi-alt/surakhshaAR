@@ -24,6 +24,11 @@ namespace SurakshaAR.Screens
 
         public void OnShow(GameObject root, object param)
         {
+            if (param is ModuleData md && AppState.Instance != null)
+            {
+                AppState.Instance.SelectedModule = md;
+            }
+
             if (AppState.Instance != null && AppState.Instance.SelectedModule?.id == ModuleId.GasLeakConfinedSpace)
             {
                 UIManager.Instance?.ShowScreen(ScreenId.GasModuleDetail);
@@ -131,7 +136,31 @@ namespace SurakshaAR.Screens
             string overview;
             string[] steps;
 
-            if (_scenarioIndex == 2)
+            bool isMachinery = AppState.Instance?.SelectedModule?.id == ModuleId.MachinerySafety;
+
+            if (isMachinery)
+            {
+                title               = loc?.Get("scenario.machinery.conveyor.title") ?? "Conveyor Jam & LOTO Drill";
+                subtitle            = loc?.Get("scenario.machinery.conveyor.desc") ?? "Perform emergency stop, lockout/tagout, and clear blockage.";
+                heroImg             = "MachineryConveyorPreview.png";
+                scenarioNumberBadge = "01";
+                duration            = loc?.Get("chip.val.15mins") ?? "~ 15 mins";
+                level               = loc?.Get("chip.val.intermediate") ?? "Intermediate";
+                focusVal            = "LOTO & Isolation";
+                focusSub            = "Safety";
+                overview            = "An industrial conveyor belt has suffered a heavy coal blockage and stalled. Follow strict Lockout/Tagout (LOTO) protocols: press E-Stop, isolate electrical power, apply padlock and tag, verify zero energy, and safely clear the jam.";
+                steps = new string[]
+                {
+                    "Scan and anchor equipment in AR space",
+                    "Identify mechanical hazard and pinch points",
+                    "Engage Emergency Stop button",
+                    "Isolate Main Power Switch (turn OFF)",
+                    "Apply Lockout/Tagout hasp, padlock & tag",
+                    "Verify safe zero-energy state",
+                    "Safely clear coal blockage from conveyor"
+                };
+            }
+            else if (_scenarioIndex == 2)
             {
                 // Scenario 2 — Conveyor Belt Fire (Coming Soon)
                 title               = loc?.Get("scenario.fire.conveyor.title") ?? "Conveyor Belt Fire";
@@ -299,16 +328,23 @@ namespace SurakshaAR.Screens
 
         private void OpenTrainingInstructions()
         {
-            // Scenario 1 (Electrical Panel Fire) routes to Training Instructions → real Fire AR.
+            // Scenario 1 (Electrical Panel Fire) and Machinery route to Training Instructions → real AR.
             // Scenarios 2 and 3 are Coming Soon — do nothing.
-            if (_scenarioIndex == 1)
+            if (_scenarioIndex == 1 || AppState.Instance?.SelectedModule?.id == ModuleId.MachinerySafety)
                 UIManager.Instance?.ShowScreen(ScreenId.TrainingInstructions);
         }
 
         private void GoBack()
         {
-            // Back navigation: Scenario Detail → Fire Sub-Modules Selection
-            UIManager.Instance?.ShowScreen(ScreenId.ScenarioSelection);
+            if (AppState.Instance?.SelectedModule?.id == ModuleId.MachinerySafety)
+            {
+                UIManager.Instance?.ShowScreen(ScreenId.ModuleSelection);
+            }
+            else
+            {
+                // Back navigation: Scenario Detail → Fire Sub-Modules Selection
+                UIManager.Instance?.ShowScreen(ScreenId.ScenarioSelection);
+            }
         }
 
         public void OnHide()

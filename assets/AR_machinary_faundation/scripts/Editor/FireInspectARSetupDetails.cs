@@ -15,10 +15,10 @@ public static class FireInspectARSetupDetails
 
         EditorSceneManager.OpenScene("Assets/AR_Fire_foundation/scenes/FireTraining.unity", OpenSceneMode.Single);
 
-        var firePlacement = Object.FindFirstObjectByType<FireEquipmentInteraction>();
+        var firePlacement = Object.FindFirstObjectByType<FireScenarioUIController>();
         if (firePlacement != null)
         {
-            sb.AppendLine($"FireEquipmentInteraction: FOUND on {firePlacement.gameObject.name}");
+            sb.AppendLine($"FireScenarioUIController: FOUND on {firePlacement.gameObject.name}");
         }
 
         var xrOrigin = Object.FindFirstObjectByType<Unity.XR.CoreUtils.XROrigin>();

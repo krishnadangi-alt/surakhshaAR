@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using SurakshaAR.Core;
 using SurakshaAR.Data;
 using SurakshaAR.UI;
 
@@ -360,7 +361,14 @@ namespace SurakshaAR.Machinery
         private void Start()
         {
             _mainCamera = Camera.main;
-            SetUIState(MachineryUIState.MainMenu);
+            if (ARModuleLauncher.Instance != null && ARModuleLauncher.Instance.IsArActive)
+            {
+                SetUIState(MachineryUIState.ARScanning);
+            }
+            else
+            {
+                SetUIState(MachineryUIState.MainMenu);
+            }
         }
 
         private void Update()
@@ -470,6 +478,13 @@ namespace SurakshaAR.Machinery
 
             var btnBack = UIHelper.MakeButton("BackBtn", hHeader, "<", 30, ColorGrayButtonBg, ColorTextNavy, 16f);
             UIHelper.SetLayout(btnBack.gameObject, preferredWidth: 70, preferredHeight: 70);
+            btnBack.onClick.AddListener(() =>
+            {
+                if (ARModuleLauncher.Instance != null)
+                {
+                    ARModuleLauncher.Instance.ExitCurrentARScene();
+                }
+            });
 
             var titleBox = UIHelper.MakeVertical("TitleBox", hHeader, 2);
             UIHelper.SetLayout(titleBox.gameObject, flexibleWidth: true, flexWidth: 1);
@@ -666,7 +681,17 @@ namespace SurakshaAR.Machinery
 
             var btnBack = UIHelper.MakeButton("BackBtn", hTop, "<", 28, ColorGrayButtonBg, ColorTextNavy, 14f);
             UIHelper.SetLayout(btnBack.gameObject, preferredWidth: 54, preferredHeight: 54);
-            btnBack.onClick.AddListener(() => SetUIState(MachineryUIState.MainMenu));
+            btnBack.onClick.AddListener(() =>
+            {
+                if (ARModuleLauncher.Instance != null && ARModuleLauncher.Instance.IsArActive)
+                {
+                    ARModuleLauncher.Instance.ExitCurrentARScene();
+                }
+                else
+                {
+                    SetUIState(MachineryUIState.MainMenu);
+                }
+            });
 
             var vBoxTop = UIHelper.MakeVertical("TopContent", hTop, 4);
             UIHelper.SetLayout(vBoxTop.gameObject, flexibleWidth: true, flexWidth: 1);
@@ -730,7 +755,17 @@ namespace SurakshaAR.Machinery
 
             var btnBack = UIHelper.MakeButton("BackBtn", hTop, "<", 28, ColorGrayButtonBg, ColorTextNavy, 14f);
             UIHelper.SetLayout(btnBack.gameObject, preferredWidth: 54, preferredHeight: 54);
-            btnBack.onClick.AddListener(() => SetUIState(MachineryUIState.MainMenu));
+            btnBack.onClick.AddListener(() =>
+            {
+                if (ARModuleLauncher.Instance != null && ARModuleLauncher.Instance.IsArActive)
+                {
+                    ARModuleLauncher.Instance.ExitCurrentARScene();
+                }
+                else
+                {
+                    SetUIState(MachineryUIState.MainMenu);
+                }
+            });
 
             var vBox = UIHelper.MakeVertical("Content", hTop, 4);
             UIHelper.SetLayout(vBox.gameObject, flexibleWidth: true, flexWidth: 1);
@@ -755,7 +790,17 @@ namespace SurakshaAR.Machinery
 
             var btnBack = UIHelper.MakeButton("BackBtn", hTop, "<", 28, ColorGrayButtonBg, ColorTextNavy, 14f);
             UIHelper.SetLayout(btnBack.gameObject, preferredWidth: 54, preferredHeight: 54);
-            btnBack.onClick.AddListener(() => SetUIState(MachineryUIState.MainMenu));
+            btnBack.onClick.AddListener(() =>
+            {
+                if (ARModuleLauncher.Instance != null && ARModuleLauncher.Instance.IsArActive)
+                {
+                    ARModuleLauncher.Instance.ExitCurrentARScene();
+                }
+                else
+                {
+                    SetUIState(MachineryUIState.MainMenu);
+                }
+            });
 
             var vBoxTop = UIHelper.MakeVertical("TopContent", hTop, 6);
             UIHelper.SetLayout(vBoxTop.gameObject, flexibleWidth: true, flexWidth: 1);
@@ -1061,7 +1106,14 @@ namespace SurakshaAR.Machinery
                 }
                 else
                 {
-                    SetUIState(MachineryUIState.ComponentOverview);
+                    if (ARModuleLauncher.Instance != null && ARModuleLauncher.Instance.IsArActive)
+                    {
+                        ARModuleLauncher.Instance.ExitCurrentARScene();
+                    }
+                    else
+                    {
+                        SetUIState(MachineryUIState.ComponentOverview);
+                    }
                 }
             });
 
@@ -1566,7 +1618,14 @@ namespace SurakshaAR.Machinery
             UIHelper.SetLayout(btnMainMenu.gameObject, preferredHeight: 46);
             btnMainMenu.onClick.AddListener(() =>
             {
-                SetUIState(MachineryUIState.MainMenu);
+                if (ARModuleLauncher.Instance != null && ARModuleLauncher.Instance.IsArActive)
+                {
+                    ARModuleLauncher.Instance.ExitCurrentARScene();
+                }
+                else
+                {
+                    SetUIState(MachineryUIState.MainMenu);
+                }
             });
         }
 
@@ -1632,6 +1691,7 @@ namespace SurakshaAR.Machinery
 
                 case MachineryUIState.TrainingComplete:
                     if (_trainingCompletePanel != null) _trainingCompletePanel.gameObject.SetActive(true);
+                    TrainingEventManager.RaiseTrainingCompleted();
                     break;
             }
         }

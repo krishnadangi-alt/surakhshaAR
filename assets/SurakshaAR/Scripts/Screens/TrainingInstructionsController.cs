@@ -70,31 +70,41 @@ namespace SurakshaAR.Screens
             }
 
             var isGas = AppState.Instance?.SelectedModule?.id == ModuleId.GasLeakConfinedSpace;
+            var isMachinery = AppState.Instance?.SelectedModule?.id == ModuleId.MachinerySafety;
 
             // ── Localize Header ──────────────────────────────────────────
             var titleLbl = UIHelper.FindTMP(root, "label-title");
             if (titleLbl != null && loc != null)
             {
-                titleLbl.text = isGas
-                    ? (loc.Get("gas.module.title") ?? "Gas Leak & Confined Space")
-                    : loc.Get("inst.header.title");
+                if (isMachinery)
+                    titleLbl.text = loc.Get("module.machinery.title") ?? "Machinery Safety";
+                else if (isGas)
+                    titleLbl.text = loc.Get("gas.module.title") ?? "Gas Leak & Confined Space";
+                else
+                    titleLbl.text = loc.Get("inst.header.title");
             }
 
             // ── Localize Banner ──────────────────────────────────────────
             var headLbl = root.transform.Find("ScrollArea/Viewport/Content/InfoBanner/InnerRow/TextCol/HeadLbl")?.GetComponent<TextMeshProUGUI>();
             if (headLbl != null && loc != null)
             {
-                headLbl.text = isGas
-                    ? (loc.Get("scenario.gas.underground.title") ?? "Underground Gas Release")
-                    : loc.Get("inst.banner.title");
+                if (isMachinery)
+                    headLbl.text = "Conveyor Belt Jam & LOTO Drill";
+                else if (isGas)
+                    headLbl.text = loc.Get("scenario.gas.underground.title") ?? "Underground Gas Release";
+                else
+                    headLbl.text = loc.Get("inst.banner.title");
             }
 
             var descLbl = root.transform.Find("ScrollArea/Viewport/Content/InfoBanner/InnerRow/TextCol/DescLbl")?.GetComponent<TextMeshProUGUI>();
             if (descLbl != null && loc != null)
             {
-                descLbl.text = isGas
-                    ? (loc.Get("scenario.gas.underground.desc") ?? "Recognize gas release, use detector & follow safe withdrawal.")
-                    : loc.Get("inst.banner.desc");
+                if (isMachinery)
+                    descLbl.text = "Inspect conveyor, isolate power, apply LOTO lock and clear blockage safely.";
+                else if (isGas)
+                    descLbl.text = loc.Get("scenario.gas.underground.desc") ?? "Recognize gas release, use detector & follow safe withdrawal.";
+                else
+                    descLbl.text = loc.Get("inst.banner.desc");
             }
 
             // ── Localize Instruction Cards ───────────────────────────────
@@ -197,6 +207,16 @@ namespace SurakshaAR.Screens
                         id = ModuleId.GasLeakConfinedSpace,
                         titleKey = "module.gas.title",
                         arSceneName = "AR_gas_Foundation",
+                        isImplemented = true
+                    };
+                }
+                else if (currentModId == ModuleId.MachinerySafety)
+                {
+                    targetModule = new ModuleData
+                    {
+                        id = ModuleId.MachinerySafety,
+                        titleKey = "module.machinery.title",
+                        arSceneName = "MachineryConveyorJam",
                         isImplemented = true
                     };
                 }

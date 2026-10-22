@@ -54,7 +54,7 @@ namespace SurakshaAR.Data
             gas.arSceneName = "AR_gas_Foundation";
             list.Add(gas);
 
-            // ---- Machinery Safety (UI only, AR not built yet) ----
+            // ---- Machinery Safety (Implemented, AR scene ready) ----
             var machinery = ScriptableObjectUtil.CreateModule();
             machinery.id = ModuleId.MachinerySafety;
             machinery.titleKey = "module.machinery.title";
@@ -70,8 +70,8 @@ namespace SurakshaAR.Data
                 "module.machinery.learn.4", "module.machinery.learn.5"
             };
             machinery.isLocked = false;
-            machinery.isImplemented = false;
-            machinery.arSceneName = "";
+            machinery.isImplemented = true;
+            machinery.arSceneName = "MachineryConveyorJam";
             list.Add(machinery);
 
             // ---- Electrical Safety (locked / coming soon per mockup) ----
